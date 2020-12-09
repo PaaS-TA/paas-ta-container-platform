@@ -291,9 +291,7 @@ $ sudo su -
 
 # git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
-# tar xzfv keadm-v1.4.0-linux-amd64.tar.gz
-
-# cd keadm-v1.4.0-linux-amd64/keadm
+# cd paas-ta-container-platform-deployment/edge/keadm
 
 # cp keadm /usr/bin/keadm
 ```
