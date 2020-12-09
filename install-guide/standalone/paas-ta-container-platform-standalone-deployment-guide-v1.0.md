@@ -148,7 +148,7 @@ $ sudo apt-get install -y python3-pip
 
 - Kubespray 설치경로 이동, pip를 이용하여 Kubespray 설치에 필요한 Python Package 설치를 진행한다.
 ```
-$ cd paasta-container-platform-kubespray
+$ cd paasta-container-platform-deployment
 $ sudo pip3 install -r requirements.txt
 ```
 
