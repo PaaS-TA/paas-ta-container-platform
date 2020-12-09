@@ -129,7 +129,6 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 ```
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
-$ tar zxvf paasta-container-platform-kubespray.tar.gz
 ```
 
 <br>
