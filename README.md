@@ -4,12 +4,12 @@
 
 ## 가이드
 ### paas-ta-container-platform-standalone-deployment-guide
-paas-ta-container-platform-standalone-deployment-guide(https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)
+[paas-ta-container-platform-standalone-deployment-guide](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)
 
 ### paas-ta-container-platform-edge-deployment-guide
-paas-ta-container-platform-edge-deployment-guide(https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)
+[paas-ta-container-platform-edge-deployment-guide](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)
 
 ### paas-ta-container-platform-bosh-deployment-guide
-paas-ta-container-platform-bosh-deployment-guide(https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)
+[paas-ta-container-platform-bosh-deployment-guide](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)
 
 
