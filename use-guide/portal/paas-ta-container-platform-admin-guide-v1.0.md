@@ -347,7 +347,7 @@
 1. Replica Set 상세에서 수정 버튼을 클릭하여 Replica Set 수정 팝업창이 뜬다.
 
 #### Replica Set 상세 페이지
-![IMG_53]
+![IMG_053]
 
 #### Replica Set 수정 팝업창
 ![IMG_054]
