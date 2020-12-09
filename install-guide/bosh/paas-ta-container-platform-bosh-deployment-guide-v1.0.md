@@ -59,7 +59,6 @@ $ mkdir -p ~/workspace/paasta-5.5/deployment/
 $ cd ~/workspace/paasta-5.5/deployment/
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
-
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -202,9 +201,8 @@ jenkins_secret_file: "/var/vcap/jobs/container-jenkins-broker/data/docker-secret
 jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-namespace.yml"
 
 ```
-
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta-5.5/deployment/container-platform-deployment/deploy-{IAAS}.sh
 
 ```    
 #!/bin/bash
@@ -234,7 +232,10 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. Release 설치
 > 서비스형태의 단독배포 시
 
-- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.            
+- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
+  + 설치 릴리즈 파일 다운로드 :
+  [paasta-container-platform-release-svc-1.0.tgz]http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download) [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)          
+
 
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
@@ -242,7 +243,8 @@ $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
 # 서비스형태의 단독배포 시
-$ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ wget --content-disposition http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 paasta-container-platform-release-svc-1.0.tgz
 $ mv paasta-container-platform-release-svc-1.0.tgz paasta-container-platform-release-1.0.tgz
@@ -252,8 +254,8 @@ $ mv paasta-container-platform-release-svc-1.0.tgz paasta-container-platform-rel
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-release-1.0.tgz](https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git)
-  [docker.35.3.4.tgz](https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git)  
+  [paasta-container-platform-release-1.0.tgz](http://45.248.73.44/index.php/s/qAEjbJPSEaKFJ5S/download)
+  [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
 
 
 ```
@@ -263,7 +265,8 @@ $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
 # 서비스형태의 단독배포 시
-$ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ wget --content-disposition http://45.248.73.44/index.php/s/qAEjbJPSEaKFJ5S/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 ```
