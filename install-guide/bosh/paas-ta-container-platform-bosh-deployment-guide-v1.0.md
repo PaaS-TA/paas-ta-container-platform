@@ -51,18 +51,15 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
-
-  + Deployment 파일 다운로드 : [paasta-container-platform-deployment.tgz](https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git)
+- Container Platform Deployment Git Repository URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git 
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
-$ mkdir -p ~/workspace/paasta-5.5/deployment/container-platform-deployment
-$ cd ~/workspace/paasta-5.5/deployment/container-platform-deployment
+$ mkdir -p ~/workspace/paasta-5.5/deployment/
+$ cd ~/workspace/paasta-5.5/deployment/
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
-# 파일압축 해제
-$ tar -xvf paasta-container-platform-deployment.tar
+
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -130,7 +127,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않아 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/container-platform-deployment/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: openstack)
 ```
 # BOSH NAME
@@ -207,7 +204,7 @@ jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-nam
 ```
 
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/container-platform-deployment/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/deploy-{IAAS}.sh
 
 ```    
 #!/bin/bash
@@ -237,11 +234,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. Release 설치
 > 서비스형태의 단독배포 시
 
-- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
-  + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-svc-1.0.tgz](https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git) 
-  [docker.35.3.4.tgz](https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git)          
-
+- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.            
 
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
