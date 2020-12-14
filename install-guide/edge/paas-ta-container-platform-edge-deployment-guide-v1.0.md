@@ -291,9 +291,9 @@ $ sudo su -
 
 # git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
-# cd paas-ta-container-platform-deployment/edge/keadm
+# cd paas-ta-container-platform-deployment/edge
 
-# cp keadm /usr/bin/keadm
+# cp edge /usr/bin/keadm
 ```
 
 <br>
