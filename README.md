@@ -16,7 +16,7 @@
 - 운영자 포털
   + [Admin Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
 
-## 설치 소스 파일
+## 설치 파일
 - Kubespray 설치 소스 파일
   + [standalone](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - KubeEdge 설치 소스 파일
@@ -24,11 +24,7 @@
 - 단독 배포 설치 소스 파일 
   + [bosh](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)
 
-## Release 소스 파일
-- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev
-- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev
-
-## 프로젝트 개발 소스 파일 
+## 프로젝트 소스 파일 
 - API 개발 소스 파일
   + [api](https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev)
 - Common API 개발 소스파일
@@ -37,6 +33,10 @@
   + [webuser](https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev)
 - Webadmin 개발 소스 파일
   + [webadmin](https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev)
+  
+## Release 파일
+- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev
+- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev
   
 ## License
 paas-ta-container-platform은 [Apache-2.0 License](http://www.apache.org/licenses/LICENSE-2.0)를 사용합니다.
