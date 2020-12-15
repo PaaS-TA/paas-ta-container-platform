@@ -3,12 +3,9 @@
 쿠버네티스 기반의 컨테이너 오케스트레이션 플랫폼의 단독 배포 및 엣지 클라우드 배포 기능을 구현하기 위한 설치 가이드 및 문서를 제공합니다.
 
 ## 설치 가이드
-- Kubespray 설치
-  + [standalone](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)
-- KubeEdge 설치
-  + [edge](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)
-- 단독 배포 설치
-  + [bosh](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)
+- [Kubespray 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)  
+- [KubeEdge 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)  
+- [단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)  
 
 ## 포털 이용 가이드
 - 사용자 포털
@@ -26,13 +23,13 @@
 
 ## 프로젝트 소스 파일 
 - API 개발 소스 파일
-  + [api](https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev)
+  + [paas-ta-container-platform-api](https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev)
 - Common API 개발 소스파일
-  + [common-api](https://github.com/PaaS-TA/paas-ta-container-platform-common-api/tree/dev)
+  + [paas-ta-container-platform-common-api](https://github.com/PaaS-TA/paas-ta-container-platform-common-api/tree/dev)
 - Webuser 개발 소스 파일
-  + [webuser](https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev)
+  + [paas-ta-container-platform-webuser](https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev)
 - Webadmin 개발 소스 파일
-  + [webadmin](https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev)
+  + [paas-ta-container-platform-webadmin](https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev)
   
 ## Release 파일
 - https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev
