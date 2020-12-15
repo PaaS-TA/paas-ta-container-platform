@@ -12,7 +12,7 @@
 - [운영자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
 
 ## 설치 소스 파일
-- [standalone 설치 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone
+- [standalone 설치 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - [edge 설치 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/edge)
 - [bosh 설치 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)
 
