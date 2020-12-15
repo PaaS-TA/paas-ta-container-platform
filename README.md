@@ -24,7 +24,7 @@
 ## 프로젝트 소스 파일 
 - API 개발 소스 파일
   + [paas-ta-container-platform-api](https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev)
-- Common API 개발 소스파일
+- Common API 개발 소스 파일
   + [paas-ta-container-platform-common-api](https://github.com/PaaS-TA/paas-ta-container-platform-common-api/tree/dev)
 - Webuser 개발 소스 파일
   + [paas-ta-container-platform-webuser](https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev)
