@@ -226,7 +226,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-> paasta와 연동하지 않을 경우(서비스로 설치)에는 아래 두개 행은 제거한다. <br>
+> paasta와 연동하지 않을 경우(일반 단독배포)에는 아래 두개 행은 제거한다. <br>
   -o manifests/ops-files/add-jenkins-service-broker.yml \
   -o manifests/ops-files/add-service-broker.yml 
 
