@@ -269,7 +269,7 @@ $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
 # 서비스형태의 단독배포 시
-$ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob
+$ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
