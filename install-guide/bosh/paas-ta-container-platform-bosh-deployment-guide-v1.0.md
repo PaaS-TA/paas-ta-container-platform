@@ -128,7 +128,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않아 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: openstack)
 ```
 # BOSH NAME
