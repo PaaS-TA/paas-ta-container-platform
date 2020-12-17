@@ -477,8 +477,8 @@ private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7
 $ cf service-brokers
 Getting service brokers as admin...
 
-name                               url
-mysql-service-broker               http://10.0.121.71:8080
+name                       url
+container-service-broker   http://xxx.xxx.xxx.xxx:8888
 ```
  - Jenkins 서비스 브로커를 등록한다.
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
@@ -495,7 +495,7 @@ Getting service brokers as admin...
 
 name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:8888
-mysql-service-broker       http://10.0.121.71:8080
+jenkins-service-broker     http://xxx.xxx.xxx.xxx:8787
 ```
 - 접근 가능한 서비스 목록을 확인한다.
 ```
