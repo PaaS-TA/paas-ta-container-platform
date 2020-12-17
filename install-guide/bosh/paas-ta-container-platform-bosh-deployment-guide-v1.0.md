@@ -258,7 +258,7 @@ $ mv paasta-container-platform-release-svc-1.0.tgz paasta-container-platform-rel
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-release-1.0.tgz](http://45.248.73.44/index.php/s/qAEjbJPSEaKFJ5S/download)
+  [paasta-container-platform-release-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
 
 
@@ -269,7 +269,7 @@ $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
 # 서비스형태의 단독배포 시
-$ wget --content-disposition http://45.248.73.44/index.php/s/qAEjbJPSEaKFJ5S/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
