@@ -760,19 +760,46 @@ spec:
 ```
 
 #### 5.1.5. 배포 확인
-```
-$ kubectl apply -f container-platform-common-api.yml
-$ kubectl apply -f paas-ta-container-platform-api.yml
-$ kubectl apply -f paas-ta-container-platform-webuser.yml
-$ kubectl apply -f paas-ta-container-platform-webadmin.yml
+배포된 Deployment, Service를 확인한다.
 
+```
+$ kubectl apply -f paas-ta-container-platform-common-api.yml
+deployment.apps/common-api-deployment created
+service/common-api-deployment created
+
+$ kubectl apply -f paas-ta-container-platform-api.yml
+deployment.apps/api-deployment created
+service/api-deployment created
+
+$ kubectl apply -f paas-ta-container-platform-webuser.yml
+deployment.apps/webuser-deployment created
+service/webuser-deployment created
+
+$ kubectl apply -f paas-ta-container-platform-webadmin.yml
+deployment.apps/webadmin-deployment created
+service/webadmin-deployment created
+
+$ kubectl get deployments
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+api-deployment          1/1     1            1           59s
+common-api-deployment   1/1     1            1           77s
+webadmin-deployment     1/1     1            1           29s
+webuser-deployment      1/1     1            1           42s
 
 $ kubectl get pods
 NAME                                     READY   STATUS    RESTARTS   AGE
-api-deployment-5fc8bcbdbf-m2xdf          1/1     Running   0          85s
-common-api-deployment-68dd87f5ff-2p6rf   1/1     Running   0          85s
-webadmin-deployment-54cd8b8687-bzt5z     1/1     Running   0          85s
-webuser-deployment-7ddd64b5b9-cvlxm      1/1     Running   0          85s
+api-deployment-5fc8bcbdbf-qb6pr          1/1     Running   0          74s
+common-api-deployment-68dd87f5ff-2plnn   1/1     Running   0          92s
+webadmin-deployment-54cd8b8687-mgznp     1/1     Running   0          44s
+webuser-deployment-7ddd64b5b9-c74mx      1/1     Running   0          57s
+
+$ kubectl get svc
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+api-deployment          NodePort    10.111.181.163   <none>        3333:30333/TCP   103s
+common-api-deployment   NodePort    10.103.158.26    <none>        3334:30334/TCP   2m1s
+webadmin-deployment     NodePort    10.96.53.218     <none>        8080:32080/TCP   73s
+webuser-deployment      NodePort    10.105.86.253    <none>        8091:32091/TCP   86s
+
 ```
 
 ### 5.2 서비스형태의 단독배포 시 Deployment
@@ -937,7 +964,20 @@ spec:
     app: service-dashboard
   type: NodePort
 ```
+#### 5.2.4. 배포 확인
+```
+$ kubectl apply -f container-service-common-api.yml
+$ kubectl apply -f container-service-api.yml
+$ kubectl apply -f container-service-dashboard.yml
 
+
+$ kubectl get pods
+NAME                                            READY   STATUS    RESTARTS   AGE
+service-api-deployment-7c556d9c59-ms66r         1/1     Running   1          9d
+service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   1          9d
+service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   1          9d
+
+```
 ----
 [image 001]:images/cp-001.png
 [image 002]:images/cp-002.png
