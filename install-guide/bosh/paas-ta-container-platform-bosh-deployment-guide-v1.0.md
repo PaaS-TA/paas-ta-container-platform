@@ -232,7 +232,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 
 
 
-### <div id='2.5'>2.5. Release 설치
+### <div id='2.5'>2.5. 서비스 설치
 > 서비스형태의 단독배포 시
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
@@ -268,21 +268,21 @@ $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
-# 서비스형태의 단독배포 시
+# 일반 단독배포 시
 $ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 ```
 
-- Release를 설치한다.
+- 서비스를 설치한다.
 ```
 $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
 $ ./deploy-{IAAS}.sh
 ```
 
 ### <div id='2.6'>2.6. Release 설치 확인
-설치된 Release 를 확인한다.
+설치 완료된 서비스를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
 Using environment '10.0.1.6' as client 'admin'
