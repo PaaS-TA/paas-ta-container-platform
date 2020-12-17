@@ -555,7 +555,7 @@ $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000
 
 ### 5.1. 일반 단독배포 시 Deployment
 
-#### 5.5.1. paas-ta-container-platform-common-api 배포
+#### 5.1.1. paas-ta-container-platform-common-api 배포
 
 > vi container-platform-common-api.yml
 
@@ -607,7 +607,7 @@ spec:
   type: NodePort
 
 ```
-#### 5.5.2. paas-ta-container-platform-api 배포
+#### 5.1.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -658,7 +658,7 @@ spec:
     app: api
   type: NodePort
 ```
-#### 5.5.3. paas-ta-container-platform-webuser 배포
+#### 5.1.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -710,7 +710,7 @@ spec:
   type: NodePort
 
 ```
-#### 5.5.4. paas-ta-container-platform-webadmin 배포
+#### 5.1.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -759,7 +759,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.5.4. 배포 확인
+#### 5.1.5. 배포 확인
 ```
 $ kubectl apply -f container-platform-common-api.yml
 $ kubectl apply -f paas-ta-container-platform-api.yml
