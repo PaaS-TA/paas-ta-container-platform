@@ -153,8 +153,8 @@ stemcell_alias: "xenial"                                                      # 
 vm_type_small: "small"                                                        # vm type small
 vm_type_small_highmem_16GB: "small-highmem-16GB"                              # vm type small highmem
 vm_type_small_highmem_16GB_100GB: "small-highmem-16GB"                        # vm type small highmem_100GB
-vm_type_container_small: "small"                                                   # vm type small for caas's etc
-vm_type_container_small_api: "small"                                               # vm type small for caas's api
+vm_type_container_small: "small"                                              # vm type small for caas's etc
+vm_type_container_small_api: "small"                                          # vm type small for caas's api
 
 # NETWORK
 private_networks_name: "default"                                              # private network name
@@ -171,7 +171,7 @@ haproxy_http_port: 8080                                                       # 
 haproxy_azs: [z7]                                                             # haproxy azs
 
 # MARIADB
-mariadb_port: "3306"                                                         # mariadb port (e.g. 13306)-- Do Not Use "3306"
+mariadb_port: "3306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
 mariadb_admin_user_id: "<MARIADB_ADMIN_USER_ID>"                              # mariadb admin user name (e.g. root)
