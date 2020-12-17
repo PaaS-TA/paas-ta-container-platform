@@ -281,7 +281,7 @@ $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bos
 $ ./deploy-{IAAS}.sh
 ```
 
-### <div id='2.6'>2.6. Release 설치 확인
+### <div id='2.6'>2.6. 서비스 설치 확인
 설치 완료된 서비스를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
