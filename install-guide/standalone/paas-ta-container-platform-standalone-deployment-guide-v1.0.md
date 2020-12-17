@@ -122,6 +122,7 @@ $ vi .ssh/authorized_keys
 <br>
 
 ### <div id='2.3'> 2.3. Kubespray 다운로드
+> 2.3.부터는 Master Node에서만 진행을 하면 된다.
 Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 작업 경로로 위치시킨다.
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
