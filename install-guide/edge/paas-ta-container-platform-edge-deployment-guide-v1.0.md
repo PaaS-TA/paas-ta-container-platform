@@ -23,6 +23,7 @@
 4. [컨테이너 플랫폼 운영자 생성 및 Token 획득](#4)  
   4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
   4.2. [Namespace 사용자 Token 획득](#4.2)  
+  4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)
   
 5. [Resource 생성 시 주의사항](#5)  
 
@@ -484,6 +485,14 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
+
+### <div id='4.3'> 4.3. 컨테이너 플랫폼 Temp Namespace 생성
+컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다.
+
+- Temp Namespace를 생성한다.
+```
+$ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 <br>
