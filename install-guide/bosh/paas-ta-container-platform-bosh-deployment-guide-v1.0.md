@@ -557,7 +557,7 @@ $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000
 
 #### 5.1.1. paas-ta-container-platform-common-api 배포
 
-> vi container-platform-common-api.yml
+> vi paas-ta-container-platform-common-api.yml
 
 ```
 apiVersion: apps/v1
@@ -775,9 +775,13 @@ webadmin-deployment-54cd8b8687-bzt5z     1/1     Running   0          85s
 webuser-deployment-7ddd64b5b9-cvlxm      1/1     Running   0          85s
 ```
 
-### 5.2 서비스배포 시 Deployment
-> PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전에 Deployment가 미리 배포되어 있어야 한다.
-- container-service-common-api
+### 5.2 서비스형태의 단독배포 시 Deployment
+PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
+
+#### 5.2.1. container-service-common-api 배포
+
+> vi container-service-common-api.yml
+ 
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -825,7 +829,11 @@ spec:
     app: service-common-api
   type: NodePort
 ```
-- container-service-api
+
+#### 5.2.2. container-service-api 배포
+
+> vi container-service-api.yml
+ 
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -873,7 +881,11 @@ spec:
     app: service-api
   type: NodePort
 ```
-- container-service-dashboard
+
+#### 5.2.3. container-service-dashboard 배포
+
+> vi container-service-dashboard.yml
+
 ```
 apiVersion: apps/v1
 kind: Deployment
