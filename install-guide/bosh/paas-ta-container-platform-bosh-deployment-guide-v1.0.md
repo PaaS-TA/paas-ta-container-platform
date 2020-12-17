@@ -508,8 +508,8 @@ broker: container-service-broker
   container-service   Small      all      
 
 broker: jenkins-service-broker
-   service                     plan                        access   orgs
-   container-jenkins-service   jenkins_20GB                limit
+  service                     plan                        access   orgs
+  container-jenkins-service   jenkins_20GB                limit
 ```
 - 특정 조직에 해당 서비스 접근 허용을 할당한다.
 ```
@@ -528,8 +528,8 @@ broker: container-service-broker
   container-service   Small      all      
 
 broker: jenkins-service-broker
-   service                     plan                     access   orgs
-   container-jenkins-service   jenkins_20GB             all      
+  service                     plan                     access   orgs
+  container-jenkins-service   jenkins_20GB             all      
 ```
 
 ## 5. Kubernetes에 Container Platform API 배포
