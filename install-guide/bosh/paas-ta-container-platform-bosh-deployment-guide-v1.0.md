@@ -59,6 +59,7 @@ Succeeded
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
 $ mkdir -p ~/workspace/paasta-5.5/deployment/
 $ cd ~/workspace/paasta-5.5/deployment/
+
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
@@ -204,7 +205,7 @@ jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-nam
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/container-platform-deployment/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 
 ```    
 #!/bin/bash
@@ -243,6 +244,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
+
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
 # 서비스형태의 단독배포 시
 $ wget --content-disposition http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download
@@ -275,7 +277,7 @@ docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 
 - Release를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5/deployment/container-platform-deployment  
+$ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
 $ ./deploy-{IAAS}.sh
 ```
 
