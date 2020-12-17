@@ -294,7 +294,7 @@ $ sudo su -
 
 # cd paas-ta-container-platform-deployment/edge
 
-# cp edge /usr/bin/keadm
+# cp keadm /usr/bin/keadm
 ```
 
 <br>
