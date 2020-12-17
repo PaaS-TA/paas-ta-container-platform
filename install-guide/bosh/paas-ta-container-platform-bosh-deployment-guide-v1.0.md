@@ -553,14 +553,11 @@ $ sudo systemctl restart docker
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### 5.1 일반 단독배포 시 Deployment
+### 5.1. 일반 단독배포 시 Deployment
 
-1. paas-ta-container-platform-common-api 배포
+#### 5.5.1. paas-ta-container-platform-common-api 배포
 
-
-```
-vi container-platform-common-api.yml
-```
+> vi container-platform-common-api.yml
 
 ```
 apiVersion: apps/v1
@@ -610,12 +607,9 @@ spec:
   type: NodePort
 
 ```
-2. paas-ta-container-platform-api 배포
+#### 5.5.2. paas-ta-container-platform-api 배포
 
-
-```
-vi paas-ta-container-platform-api.yml
-```
+> vi paas-ta-container-platform-api.yml
 
 ```
 apiVersion: apps/v1
@@ -664,12 +658,9 @@ spec:
     app: api
   type: NodePort
 ```
-3. paas-ta-container-platform-webuser 배포
+#### 5.5.3. paas-ta-container-platform-webuser 배포
 
-
-```
-vi paas-ta-container-platform-webuser.yml
-```
+> vi paas-ta-container-platform-webuser.yml
 
 ```
 apiVersion: apps/v1
@@ -719,12 +710,9 @@ spec:
   type: NodePort
 
 ```
-4. paas-ta-container-platform-webadmin 배포
+#### 5.5.4. paas-ta-container-platform-webadmin 배포
 
-
-```
-vi paas-ta-container-platform-webadmin.yml
-```
+> vi paas-ta-container-platform-webadmin.yml
 
 ```
 apiVersion: apps/v1
@@ -771,8 +759,20 @@ spec:
   type: NodePort
 ```
 
+#### 5.5.4. 배포 확인
 ```
+$ kubectl apply -f container-platform-common-api.yml
+$ kubectl apply -f paas-ta-container-platform-api.yml
+$ kubectl apply -f paas-ta-container-platform-webuser.yml
+$ kubectl apply -f paas-ta-container-platform-webadmin.yml
 
+
+$ kubectl get pods
+NAME                                     READY   STATUS    RESTARTS   AGE
+api-deployment-5fc8bcbdbf-m2xdf          1/1     Running   0          85s
+common-api-deployment-68dd87f5ff-2p6rf   1/1     Running   0          85s
+webadmin-deployment-54cd8b8687-bzt5z     1/1     Running   0          85s
+webuser-deployment-7ddd64b5b9-cvlxm      1/1     Running   0          85s
 ```
 
 ### 5.2 서비스배포 시 Deployment
