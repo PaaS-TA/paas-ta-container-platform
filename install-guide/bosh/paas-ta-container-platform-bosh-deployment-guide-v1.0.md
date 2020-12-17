@@ -795,10 +795,10 @@ webuser-deployment-7ddd64b5b9-c74mx      1/1     Running   0          57s
 
 $ kubectl get svc
 NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-api-deployment          NodePort    10.111.181.163   <none>        3333:30333/TCP   103s
-common-api-deployment   NodePort    10.103.158.26    <none>        3334:30334/TCP   2m1s
-webadmin-deployment     NodePort    10.96.53.218     <none>        8080:32080/TCP   73s
-webuser-deployment      NodePort    10.105.86.253    <none>        8091:32091/TCP   86s
+api-deployment          NodePort    xxx.xxx.xxx.xxx  <none>        3333:30333/TCP   103s
+common-api-deployment   NodePort    xxx.xxx.xxx.xxx  <none>        3334:30334/TCP   2m1s
+webadmin-deployment     NodePort    xxx.xxx.xxx.xxx  <none>        8080:32080/TCP   73s
+webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TCP   86s
 
 ```
 
