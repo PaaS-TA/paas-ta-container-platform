@@ -128,7 +128,6 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 - git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.14.1 이다.
 ```
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
-
 ```
 
 <br>
@@ -363,6 +362,14 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
+
+### <div id='4.3'> 4.3. 컨테이너 플랫폼 Temp Namespace 생성
+컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다.
+
+- Temp Namespace를 생성한다.
+```
+$ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 <br>
