@@ -578,7 +578,7 @@ spec:
         ports:
         - containerPort: 3334
         env:
-        - name: MYSQL_IP
+        - name: HAPROXY_IP
           value: {HAProxy_IP}
       imagePullSecrets:
         - name: paasta
