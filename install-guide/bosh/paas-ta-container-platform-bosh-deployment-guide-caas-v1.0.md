@@ -16,20 +16,10 @@
 3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
 4. [Jenkins 서비스 브로커(Optional)](#4)  
 5. [Kubernetes에 Container Platform API 배포](#5)  
-5.1. [일반 단독배포 시 Deployment](#5.1) 
-5.1.1. [paas-ta-container-platform-common-api 배포](#5.1.1) 
-5.1.2. [paas-ta-container-platform-api 배포](#5.1.2) 
-5.1.3. [paas-ta-container-platform-webuser 배포](#5.1.3) 
-5.1.4. [paas-ta-container-platform-webadmin 배포](#5.1.4) 
-5.1.5. [배포 확인](#5.1.5) 
-5.2. [서비스형태의 단독배포 시 Deployment](#5.2) 
-5.2.1. [container-service-common-api 배포](#5.2.1) 
-5.2.2. [container-service-api 배포](#5.2.2) 
-5.2.3. [container-service-dashboard 배포](#5.2.3) 
-5.1.4. [배포 확인](#5.2.4) 
-
-  
-
+5.1. [K8s Cluster 설정](#5.1) 
+5.2. [Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성](#5.2) 
+5.3. [Deployment 배포](#5.3)
+ 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
 본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스를 등록하는 방법을 기술하였다.
@@ -299,7 +289,7 @@ Succeeded
 Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
 PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### 3.1 Container 서비스 브로커 등록
+### 3.1. Container 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -366,7 +356,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### 3.2 PaaS-TA 포탈에서 Container 서비스 조회 설정
+### 3.2. PaaS-TA 포탈에서 Container 서비스 조회 설정
 
  해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
