@@ -26,7 +26,7 @@
 5.2.1. [container-service-common-api 배포](#5.2.1) 
 5.2.2. [container-service-api 배포](#5.2.2) 
 5.2.3. [container-service-dashboard 배포](#5.2.3) 
-5.1.4. [배포 확인](#5.2.4) 
+5.2.4. [배포 확인](#5.2.4) 
 
   
 
