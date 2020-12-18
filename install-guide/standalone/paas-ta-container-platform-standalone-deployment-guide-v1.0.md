@@ -159,12 +159,7 @@ $ sudo pip3 install -r requirements.txt
 Kubespray inventory 파일에는 배포할 Master, Worker Node의 구성을 정의한다.
 본 설치 가이드에서는 1개의 Master Node와 3개의 Worker Node, 1개의 etcd 배포를 기준으로 가이드를 진행하며 기본 CNI는 calico로 설정되어있다.
 
-- inventory sample 디렉토리를 복사한다.
-```
-$ cp -rfp inventory/sample inventory/mycluster
-```
-
-- 복사한 mycluster 디렉토리의 inventory.ini 파일을 설정한다.
+- mycluster 디렉토리의 inventory.ini 파일을 설정한다.
 ```
 $ vi inventory/mycluster/inventory.ini
 ```
@@ -199,7 +194,7 @@ kube-node
 calico-rr
 ```
 
-- 설치할 Kubernetes Native Version을 변경한다.
+- Kubespray에서 일부 설정 변경된 항목이 있으며 변경사항은 다음과 같다.
 ```
 $ vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
 ```
@@ -233,7 +228,6 @@ kube_version: v1.18.6
 ... ((생략)) ...
 ```
 
-- inventory.py 파일을 수정하여 일부 설정을 변경한다.
 ```
 $ vi contrib/inventory_builder/inventory.py
 ```
