@@ -11,17 +11,17 @@
 2.4. [Deployment 파일 수정](#2.4)  
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6)
-3. [Container 서비스 브로커](#3)  
-3.1. [Container 서비스 브로커 등록](#3.1)  
-3.2. [Container 서비스 UAA Client 등록](#3.2)   
-3.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.3)      
-4. [Jenkins 서비스 브로커(Optional)](#4)   
-4.1. [K8s Cluster 설정](#4.1)   
-4.2. [Jenkins 서비스 브로커 등록](#4.2)   
-5. [Kubernetes에 Container Platform API 배포](#5)   
-5.1. [K8s Cluster 설정](#5.1)   
-5.2. [Secret 생성](#5.2)  
-5.3. [Deployment 배포](#5.3)  
+3. [Kubernetes에 Container Platform API 배포](#5)   
+3.1. [K8s Cluster 설정](#5.1)   
+3.2. [Secret 생성](#5.2)  
+3.3. [Deployment 배포](#5.3)  
+4. [Container 서비스 브로커](#3)  
+4.1. [Container 서비스 브로커 등록](#3.1)  
+4.2. [Container 서비스 UAA Client 등록](#3.2)   
+4.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.3)      
+5. [Jenkins 서비스 브로커(Optional)](#4)   
+5.1. [K8s Cluster 설정](#4.1)   
+5.2. [Jenkins 서비스 브로커 등록](#4.2)   
  
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -300,297 +300,10 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## <div id='3'>3. Container 서비스 브로커
-Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
-PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
-
-### <div id='3.1'>3.1. Container 서비스 브로커 등록
-
-서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
-
-
-- 서비스 브로커 목록을 확인한다.
- 
- ```
-$ cf service-brokers
-Getting service brokers as admin...
-
-name                               url
-mysql-service-broker               http://10.0.121.71:8080
- ```
-  - Container 서비스 브로커를 등록한다.
-  > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
-  > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
-  > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
-   ```
-  $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8888
-   ```
- - 등록된 Container 서비스 브로커를 확인한다.
-  ```
-  $ cf service-brokers
-Getting service brokers as admin...
-
-name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
-mysql-service-broker       http://10.0.121.71:8080
-```
-- 접근 가능한 서비스 목록을 확인한다.
-```
-$ cf service-access
-Getting service access as admin...
-broker: container-service-broker
-   service             plan       access   orgs
-   container-service   Advanced   none      
-   container-service   Micro      none      
-   container-service   Small      none      
-
-broker: mysql-service-broker
-   service    plan                 access   orgs
-   Mysql-DB   Mysql-Plan1-10con    all      
-   Mysql-DB   Mysql-Plan2-100con   all
-```
- - 특정 조직에 해당 서비스 접근 허용을 할당한다.
-```
-$ cf enable-service-access container-service
-Enabling access to all plans of service container-service for all orgs as admin...
-OK
-```
-- 접근 가능한 서비스 목록을 확인한다.
-```
-$ cf service-access
-Getting service access as admin...
-broker: container-service-broker
-   service             plan       access   orgs
-   container-service   Advanced   all      
-   container-service   Micro      all      
-   container-service   Small      all      
-
-broker: mysql-service-broker
-   service    plan                 access   orgs
-   Mysql-DB   Mysql-Plan1-10con    all      
-   Mysql-DB   Mysql-Plan2-100con   all    
-```
-
-### <div id='3.2'> 3.2. Container 서비스 UAA Client 등록
-UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
-
-- uaac server의 endpoint를 설정한다.
-
-```
-# endpoint 설정
-$ uaac target https://uaa.<DOMAIN> --skip-ssl-validation
-
-# target 확인
-$ uaac target
-Target: https://uaa.<DOMAIN>
-Context: uaa_admin, from client uaa_admin
-
-```
-
--	uaac 로그인을 한다.
-
-```
-$ uaac token client get <UAA_ADMIN_CLIENT_ID> -s <UAA_ADMIN_CLIENT_SECRET>
-Successfully fetched token via client credentials grant.
-Target: https://uaa.<DOMAIN>
-Context: admin, from client admin
-
-```
-
-- Container 서비스 계정 생성을 한다.
-
-> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 대시보드 URI} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
-  -	<CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
-  -	<CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
-  -	<Logging 서비스 URI> : 성공적으로 리다이렉션 할 Logging 서비스 접근 URI (http://<logging-service의 router public IP>)  
-  -	<퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
-  -	<권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
-  -	<권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
-  -	<자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
-
-```  
-# e.g. Container 서비스 계정 생성
-$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:8091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
-
-# e.g. Container 서비스 계정 생성 확인
-$ uaac clients
-caasclient
-    scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
-    resource_ids: none
-    authorized_grant_types: refresh_token client_credentials authorization_code
-    redirect_uri: http://101.55.50.201:8091
-    autoapprove: cloud_controller_service_permissions.read openid
-    authorities: uaa.resource
-    name: caasclient
-    lastmodified: 1592962300888
-
-```  
-
-### <div id='3.3'>3.3. PaaS-TA 포탈에서 Container 서비스 조회 설정
-
- 해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
-
-  1. PaaS-TA Admin 포탈에 접속한다.
-
-  ![image 002]
-
-  2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 를 클릭한 후 나타나는 페이지의 오른쪽 상단 [인프라 등록] 버튼을 클릭하여 해당 정보들을 입력한다.
-   - 해당 정보를 입력하기 위해 필요한 값들을 찾는다.
-   > $ bosh -e micro-bosh -d paasta-portal-api vms
-    > haproxy의 IP를 찾아 Portal_Api_Uri에 입력한다.
-
-```
-Deployment 'paasta-portal-api'
-
-Instance                                                          Process State  AZ  IPs            VM CID               VM Type        Active
-binary_storage/acfc944b-19b9-487e-a447-c42cb2342f62               running        z6  10.0.201.122   i-0af1de35c9669d11a  portal_small   true
-haproxy/8518a6c5-6ede-409d-8e51-39e8d2ecb39b                      running        z7  10.0.0.122     i-05613be8862607959  small          true
-                                                                                     52.78.144.229
-mariadb/d32412d3-ea66-42af-a714-9ce2af4416a5                      running        z6  10.0.201.121   i-0e6971c85e17575a5  portal_small   true
-paas-ta-portal-api/992a0ca4-7857-4bc7-9e57-edc1d1ad643e           running        z6  10.0.201.125   i-0b2b78182049beec2  portal_medium  true
-paas-ta-portal-common-api/895ffa41-b401-4abb-8316-ae3bc42b3e57    running        z6  10.0.201.126   i-0fa5873ed9092a4f8  portal_small   true
-paas-ta-portal-gateway/107836f5-e07d-446f-bc24-d727a388e16a       running        z6  10.0.201.123   i-067c248baed2d807a  portal_small   true
-paas-ta-portal-log-api/301d0a23-eccc-4565-9ff6-8dac9b113440       running        z6  10.0.201.128   i-045efbc8cd9f32dfd  portal_small   true
-paas-ta-portal-registration/d70189cc-aacb-43da-876f-7fe551797792  running        z6  10.0.201.124   i-0e07cb4f02250316d  portal_small   true
-paas-ta-portal-storage-api/20170f06-6b5b-4421-8238-9cac7a276618   running        z6  10.0.201.127   i-0b0ab24792fd3aa4d  portal_small   true
-
-9 vms
-```
-
-  > $ bosh -e micro-bosh -d paasta-container-platform vms
-    > haproxy의 IP를 찾아 CaaS_Api_Uri에 입력한다.
-
-```
-Deployment 'paasta-container-platform'
-
-Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/a458f442-2bc3-4004-afb5-a6f378fa527e  running        z6  10.0.201.132  i-023f9cf68fbde2ede  small    true
-container-service-broker/312de3ad-d072-4d38-aff2-db3c8139b7af  running        z6  10.0.201.133  i-09aa099d393009ad4  small    true
-haproxy/446ce2a6-5344-4335-a94c-e3448f48ada4                   running        z7  10.0.0.124    i-0cc170becd2f44b64  small    true
-                                                                                  3.35.95.75
-mariadb/b70e1276-66bc-4328-bd37-edc52e66f960                   running        z5  10.0.161.121  i-08a1b5dcc278226be  small    true
-private-image-repository/54597eb7-1157-4c44-8e23-e9a3785f2005  running        z7  10.0.0.125    i-0412c393c9e95ce52  small    true
-
-5 vms
-```
-
-```
-ex)
-- NAME : PaaS-TA 5.0 (Openstack)
-- Portal_Api_Uri : http://<portal_haproxy_IP>:2225
-- UAA_Uri : https://api.<CF DOMAIN>
-- Authorization : Basic YWRtaW46b3BlbnBhYXN0YQ==
-- 설명 : PaaS-TA 5.0 install infra
-- CaaS_Api_Uri : http://<container_service_haproxy_IP>
-- CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
-```
-
-
-
-![image 003]
-
-[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스항목을 Container_service로 변경 후 저장한다.
-
-![image 004]
-## <div id='4'>4. Jenkins 서비스 브로커(Optional)
-해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
-
-### <div id='4.1'>4.1. K8s Cluster 설정
-> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
-```
-$ sudo vi /etc/docker/daemon.json
-{
-        "insecure-registries": ["{HAProxy_IP}:5000"]
-}
-
-# docker restart
-$ sudo systemctl restart docker
-```
-
-### <div id='4.2'>4.2. Jenkins 서비스 브로커 등록
-
-- 배포된 Jenkins 서비스 VM 목록을 확인한다.
-> $ bosh -e micro-bosh -d paasta-container-platform
-```
-Deployment 'paasta-container-platform'
-
-Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/4181e787-8971-48a7-99fe-3b9c79ea83c5  running        z6  10.0.201.121  i-08070edaad67d4264  small    true
-container-service-broker/1ffe82c1-ef1c-4282-b143-59b3f5b8aa44  running        z6  10.0.201.122  i-05cffd02f3ccbe9d9  small    true
-haproxy/be936a47-0477-4983-8aed-94b3fce9b98d                   running        z7  10.0.0.122    i-062798eeb848b85ac  small    true
-                                                                                  3.35.95.75
-mariadb/a935fac7-4b23-47af-8cc2-bd20cf4bb2b5                   running        z5  10.0.161.121  i-0b8efeb5d74428142  small    true
-private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7  10.0.0.123    i-0d5ca33b08c7541e3  small    true
-
-5 vms
-```
-
-- 브로커 목록을 확인한다.
-
-```
-$ cf service-brokers
-Getting service brokers as admin...
-
-name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
-```
- - Jenkins 서비스 브로커를 등록한다.
-> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
-> - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
-> - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
- ```
-$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8787
- ```
-  - 등록된 Jenkins 서비스 브로커를 확인한다.
- ```
- $ cf service-brokers
-Getting service brokers as admin...
-
-name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
-jenkins-service-broker     http://xxx.xxx.xxx.xxx:8787
-```
-- 접근 가능한 서비스 목록을 확인한다.
-```
-$ cf service-access
-Getting service access as admin...
-broker: container-service-broker
-  service             plan       access   orgs
-  container-service   Advanced   all      
-  container-service   Micro      all      
-  container-service   Small      all      
-
-broker: jenkins-service-broker
-  service                     plan                        access   orgs
-  container-jenkins-service   jenkins_20GB                limit
-```
-- 특정 조직에 해당 서비스 접근 허용을 할당한다.
-```
-$ cf enable-service-access container-jenkins-service
-Enabling access to all plans of service container-jenkins-service for all orgs as admin...
-OK
-```
-- 접근 가능한 서비스 목록을 확인한다.
-```
-$ cf service-access
-Getting service access as admin...
-broker: container-service-broker
-  service             plan       access   orgs
-  container-service   Advanced   all      
-  container-service   Micro      all      
-  container-service   Small      all      
-
-broker: jenkins-service-broker
-  service                     plan                     access   orgs
-  container-jenkins-service   jenkins_20GB             all      
-```
-
-## <div id='5'>5. Kubernetes에 Container Platform API 배포
+## <div id='3'>3. Kubernetes에 Container Platform API 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
-### <div id='5.1'>5.1. K8s Cluster 설정
+### <div id='3.1'>3.1. K8s Cluster 설정
 > k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
 
 ```
@@ -603,7 +316,7 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='5.2'>5.2. Secret 생성
+### <div id='3.2'>3.2. Secret 생성
 Private Repository에 등록된 이미지를 활용하기 위해 단독배포된 Kubernetes에 secret을 생성한다.
  
 ```
@@ -611,7 +324,7 @@ $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000
 ```
 
 
-### <div id='5.3'>5.3. Deployment 배포
+### <div id='3.3'>3.3. Deployment 배포
 PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
 - container-service-common-api 배포
@@ -814,6 +527,295 @@ service-common-api-deployment   NodePort    xxx.xxx.xxx.xxx   <none>        3334
 service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091:32091/TCP   105s
 
 ```
+
+## <div id='4'>4. Container 서비스 브로커
+Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
+PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
+
+### <div id='4.1'>4.1. Container 서비스 브로커 등록
+
+서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
+
+
+- 서비스 브로커 목록을 확인한다.
+ 
+ ```
+$ cf service-brokers
+Getting service brokers as admin...
+
+name                               url
+mysql-service-broker               http://10.0.121.71:8080
+ ```
+  - Container 서비스 브로커를 등록한다.
+  > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
+  > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
+  > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
+  > - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
+   ```
+  $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8888
+   ```
+ - 등록된 Container 서비스 브로커를 확인한다.
+  ```
+  $ cf service-brokers
+Getting service brokers as admin...
+
+name                       url
+container-service-broker   http://xxx.xxx.xxx.xxx:8888
+mysql-service-broker       http://10.0.121.71:8080
+```
+- 접근 가능한 서비스 목록을 확인한다.
+```
+$ cf service-access
+Getting service access as admin...
+broker: container-service-broker
+   service             plan       access   orgs
+   container-service   Advanced   none      
+   container-service   Micro      none      
+   container-service   Small      none      
+
+broker: mysql-service-broker
+   service    plan                 access   orgs
+   Mysql-DB   Mysql-Plan1-10con    all      
+   Mysql-DB   Mysql-Plan2-100con   all
+```
+ - 특정 조직에 해당 서비스 접근 허용을 할당한다.
+```
+$ cf enable-service-access container-service
+Enabling access to all plans of service container-service for all orgs as admin...
+OK
+```
+- 접근 가능한 서비스 목록을 확인한다.
+```
+$ cf service-access
+Getting service access as admin...
+broker: container-service-broker
+   service             plan       access   orgs
+   container-service   Advanced   all      
+   container-service   Micro      all      
+   container-service   Small      all      
+
+broker: mysql-service-broker
+   service    plan                 access   orgs
+   Mysql-DB   Mysql-Plan1-10con    all      
+   Mysql-DB   Mysql-Plan2-100con   all    
+```
+
+### <div id='4.2'> 4.2. Container 서비스 UAA Client 등록
+UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
+
+- uaac server의 endpoint를 설정한다.
+
+```
+# endpoint 설정
+$ uaac target https://uaa.<DOMAIN> --skip-ssl-validation
+
+# target 확인
+$ uaac target
+Target: https://uaa.<DOMAIN>
+Context: uaa_admin, from client uaa_admin
+
+```
+
+-	uaac 로그인을 한다.
+
+```
+$ uaac token client get <UAA_ADMIN_CLIENT_ID> -s <UAA_ADMIN_CLIENT_SECRET>
+Successfully fetched token via client credentials grant.
+Target: https://uaa.<DOMAIN>
+Context: admin, from client admin
+
+```
+
+- Container 서비스 계정 생성을 한다.
+
+> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 대시보드 URI} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
+  -	<CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
+  -	<CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
+  -	<Logging 서비스 URI> : 성공적으로 리다이렉션 할 Logging 서비스 접근 URI (http://<logging-service의 router public IP>)  
+  -	<퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
+  -	<권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
+  -	<권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
+  -	<자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
+
+```  
+# e.g. Container 서비스 계정 생성
+$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:8091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
+
+# e.g. Container 서비스 계정 생성 확인
+$ uaac clients
+caasclient
+    scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
+    resource_ids: none
+    authorized_grant_types: refresh_token client_credentials authorization_code
+    redirect_uri: http://101.55.50.201:8091
+    autoapprove: cloud_controller_service_permissions.read openid
+    authorities: uaa.resource
+    name: caasclient
+    lastmodified: 1592962300888
+
+```  
+
+### <div id='4.3'>4.3. PaaS-TA 포탈에서 Container 서비스 조회 설정
+
+ 해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
+
+  1. PaaS-TA Admin 포탈에 접속한다.
+
+  ![image 002]
+
+  2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 를 클릭한 후 나타나는 페이지의 오른쪽 상단 [인프라 등록] 버튼을 클릭하여 해당 정보들을 입력한다.
+   - 해당 정보를 입력하기 위해 필요한 값들을 찾는다.
+   > $ bosh -e micro-bosh -d paasta-portal-api vms
+    > haproxy의 IP를 찾아 Portal_Api_Uri에 입력한다.
+
+```
+Deployment 'paasta-portal-api'
+
+Instance                                                          Process State  AZ  IPs            VM CID               VM Type        Active
+binary_storage/acfc944b-19b9-487e-a447-c42cb2342f62               running        z6  10.0.201.122   i-0af1de35c9669d11a  portal_small   true
+haproxy/8518a6c5-6ede-409d-8e51-39e8d2ecb39b                      running        z7  10.0.0.122     i-05613be8862607959  small          true
+                                                                                     52.78.144.229
+mariadb/d32412d3-ea66-42af-a714-9ce2af4416a5                      running        z6  10.0.201.121   i-0e6971c85e17575a5  portal_small   true
+paas-ta-portal-api/992a0ca4-7857-4bc7-9e57-edc1d1ad643e           running        z6  10.0.201.125   i-0b2b78182049beec2  portal_medium  true
+paas-ta-portal-common-api/895ffa41-b401-4abb-8316-ae3bc42b3e57    running        z6  10.0.201.126   i-0fa5873ed9092a4f8  portal_small   true
+paas-ta-portal-gateway/107836f5-e07d-446f-bc24-d727a388e16a       running        z6  10.0.201.123   i-067c248baed2d807a  portal_small   true
+paas-ta-portal-log-api/301d0a23-eccc-4565-9ff6-8dac9b113440       running        z6  10.0.201.128   i-045efbc8cd9f32dfd  portal_small   true
+paas-ta-portal-registration/d70189cc-aacb-43da-876f-7fe551797792  running        z6  10.0.201.124   i-0e07cb4f02250316d  portal_small   true
+paas-ta-portal-storage-api/20170f06-6b5b-4421-8238-9cac7a276618   running        z6  10.0.201.127   i-0b0ab24792fd3aa4d  portal_small   true
+
+9 vms
+```
+
+  > $ bosh -e micro-bosh -d paasta-container-platform vms
+    > haproxy의 IP를 찾아 CaaS_Api_Uri에 입력한다.
+
+```
+Deployment 'paasta-container-platform'
+
+Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
+container-jenkins-broker/a458f442-2bc3-4004-afb5-a6f378fa527e  running        z6  10.0.201.132  i-023f9cf68fbde2ede  small    true
+container-service-broker/312de3ad-d072-4d38-aff2-db3c8139b7af  running        z6  10.0.201.133  i-09aa099d393009ad4  small    true
+haproxy/446ce2a6-5344-4335-a94c-e3448f48ada4                   running        z7  10.0.0.124    i-0cc170becd2f44b64  small    true
+                                                                                  3.35.95.75
+mariadb/b70e1276-66bc-4328-bd37-edc52e66f960                   running        z5  10.0.161.121  i-08a1b5dcc278226be  small    true
+private-image-repository/54597eb7-1157-4c44-8e23-e9a3785f2005  running        z7  10.0.0.125    i-0412c393c9e95ce52  small    true
+
+5 vms
+```
+
+```
+ex)
+- NAME : PaaS-TA 5.0 (Openstack)
+- Portal_Api_Uri : http://<portal_haproxy_IP>:2225
+- UAA_Uri : https://api.<CF DOMAIN>
+- Authorization : Basic YWRtaW46b3BlbnBhYXN0YQ==
+- 설명 : PaaS-TA 5.0 install infra
+- CaaS_Api_Uri : http://<container_service_haproxy_IP>
+- CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
+```
+
+
+
+![image 003]
+
+[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스항목을 Container_service로 변경 후 저장한다.
+
+![image 004]
+## <div id='5'>5. Jenkins 서비스 브로커(Optional)
+해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
+
+### <div id='5.1'>5.1. K8s Cluster 설정
+> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+```
+$ sudo vi /etc/docker/daemon.json
+{
+        "insecure-registries": ["{HAProxy_IP}:5000"]
+}
+
+# docker restart
+$ sudo systemctl restart docker
+```
+
+### <div id='5.2'>5.2. Jenkins 서비스 브로커 등록
+
+- 배포된 Jenkins 서비스 VM 목록을 확인한다.
+> $ bosh -e micro-bosh -d paasta-container-platform
+```
+Deployment 'paasta-container-platform'
+
+Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
+container-jenkins-broker/4181e787-8971-48a7-99fe-3b9c79ea83c5  running        z6  10.0.201.121  i-08070edaad67d4264  small    true
+container-service-broker/1ffe82c1-ef1c-4282-b143-59b3f5b8aa44  running        z6  10.0.201.122  i-05cffd02f3ccbe9d9  small    true
+haproxy/be936a47-0477-4983-8aed-94b3fce9b98d                   running        z7  10.0.0.122    i-062798eeb848b85ac  small    true
+                                                                                  3.35.95.75
+mariadb/a935fac7-4b23-47af-8cc2-bd20cf4bb2b5                   running        z5  10.0.161.121  i-0b8efeb5d74428142  small    true
+private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7  10.0.0.123    i-0d5ca33b08c7541e3  small    true
+
+5 vms
+```
+
+- 브로커 목록을 확인한다.
+
+```
+$ cf service-brokers
+Getting service brokers as admin...
+
+name                       url
+container-service-broker   http://xxx.xxx.xxx.xxx:8888
+```
+ - Jenkins 서비스 브로커를 등록한다.
+> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
+> - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
+> - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
+> - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
+ ```
+$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8787
+ ```
+  - 등록된 Jenkins 서비스 브로커를 확인한다.
+ ```
+ $ cf service-brokers
+Getting service brokers as admin...
+
+name                       url
+container-service-broker   http://xxx.xxx.xxx.xxx:8888
+jenkins-service-broker     http://xxx.xxx.xxx.xxx:8787
+```
+- 접근 가능한 서비스 목록을 확인한다.
+```
+$ cf service-access
+Getting service access as admin...
+broker: container-service-broker
+  service             plan       access   orgs
+  container-service   Advanced   all      
+  container-service   Micro      all      
+  container-service   Small      all      
+
+broker: jenkins-service-broker
+  service                     plan                        access   orgs
+  container-jenkins-service   jenkins_20GB                limit
+```
+- 특정 조직에 해당 서비스 접근 허용을 할당한다.
+```
+$ cf enable-service-access container-jenkins-service
+Enabling access to all plans of service container-jenkins-service for all orgs as admin...
+OK
+```
+- 접근 가능한 서비스 목록을 확인한다.
+```
+$ cf service-access
+Getting service access as admin...
+broker: container-service-broker
+  service             plan       access   orgs
+  container-service   Advanced   all      
+  container-service   Micro      all      
+  container-service   Small      all      
+
+broker: jenkins-service-broker
+  service                     plan                     access   orgs
+  container-jenkins-service   jenkins_20GB             all      
+```
+
+
 ----
 [image 001]:images/cp-001.png
 [image 002]:images/cp-002.png
