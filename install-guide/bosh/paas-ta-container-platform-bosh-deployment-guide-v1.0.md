@@ -53,7 +53,7 @@ Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업�
 Using environment '10.0.1.6' as client 'admin'
 
 Name                                     Version  OS             CPI  CID
-bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.78   ubuntu-xenial  -    ami-0694eb07c57faca73
+bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.94   ubuntu-xenial  -    ami-0694eb07c57faca73
 
 (*) Currently deployed
 
@@ -141,7 +141,7 @@ Succeeded
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
-(e.g. {IAAS} :: openstack)
+(e.g. {IAAS} :: AWS)
 ```
 # BOSH NAME
 director_name: "micro-bosh"                                                   # bosh name (caas_cluster_name에 필요.)
@@ -237,7 +237,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 ### <div id='2.5'>2.5. Release 설치
 - Release 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 Release 설치 작업 경로로 위치시킨다.  
-  + 설치 릴리즈 파일 다운로드 :
+  + 설치 릴리즈 파일 다운로드 :  
   [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)  
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
 ```
