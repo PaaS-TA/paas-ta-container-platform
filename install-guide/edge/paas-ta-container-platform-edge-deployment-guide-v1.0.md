@@ -485,7 +485,7 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 ```
 
 ### <div id='4.3'> 4.3. 컨테이너 플랫폼 Temp Namespace 생성
-컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다.
+컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 포털 내 사용자 계정 관리를 위해 이용된다.
 
 - Temp Namespace를 생성한다.
 ```
