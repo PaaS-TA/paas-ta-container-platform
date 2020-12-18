@@ -10,7 +10,7 @@
 2.3. [Deployment 다운로드](#2.3)  
 2.4. [Deployment 파일 수정](#2.4)  
 2.5. [서비스 설치](#2.5)  
-2.6. [서비스 설치 확인](#2.6) 
+2.6. [서비스 설치 확인](#2.6)
 3. [Container 서비스 브로커](#3)  
 3.1. [Container 서비스 브로커 등록](#3.1) 
 3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
@@ -292,11 +292,11 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## 3. Container 서비스 브로커
+## <div id='3'>3. Container 서비스 브로커
 Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
 PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### 3.1. Container 서비스 브로커 등록
+### <div id='3.1'>3.1. Container 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -363,7 +363,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### 3.2. PaaS-TA 포탈에서 Container 서비스 조회 설정
+### <div id='3.2'>3.2. PaaS-TA 포탈에서 Container 서비스 조회 설정
 
  해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
@@ -429,7 +429,7 @@ ex)
 [운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스항목을 Container_service로 변경 후 저장한다.
 
 ![image 004]
-## 4. Jenkins 서비스 브로커(Optional)
+## <div id='4'>4. Jenkins 서비스 브로커(Optional)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
 1. K8s Cluster 설정
@@ -521,10 +521,10 @@ broker: jenkins-service-broker
   container-jenkins-service   jenkins_20GB             all      
 ```
 
-## 5. Kubernetes에 Container Platform API 배포
+## <div id='5'>5. Kubernetes에 Container Platform API 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
-### 5.1. K8s Cluster 설정
+### <div id='5.1'>5.1. K8s Cluster 설정
 > k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -536,14 +536,14 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### 5.2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
+### <div id='5.2'>5.2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
 
 ```
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 
-### 5.3. Deployment 배포
+### <div id='5.3'>5.3. Deployment 배포
 PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
 - container-service-common-api 배포
