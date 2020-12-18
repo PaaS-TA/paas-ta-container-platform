@@ -15,9 +15,11 @@
 3.1. [Container 서비스 브로커 등록](#3.1)   
 3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2)    
 4. [Jenkins 서비스 브로커(Optional)](#4)   
+4.1. [K8s Cluster 설정](#4.1)   
+4.2. [Jenkins 서비스 브로커 등록](#4.2)   
 5. [Kubernetes에 Container Platform API 배포](#5)   
 5.1. [K8s Cluster 설정](#5.1)   
-5.2. [secret 생성](#5.2)  
+5.2. [Secret 생성](#5.2)  
 5.3. [Deployment 배포](#5.3)  
  
 ## <div id='1'>1. 문서 개요
@@ -452,7 +454,7 @@ $ sudo systemctl restart docker
 
 ### <div id='4.2'>4.2. Jenkins 서비스 브로커 등록
 
-- 배포된 Jenkins 서비스 VM 목록을 확인
+- 배포된 Jenkins 서비스 VM 목록을 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform
 ```
 Deployment 'paasta-container-platform'
@@ -545,7 +547,7 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='5.2'>5.2. secret 생성
+### <div id='5.2'>5.2. Secret 생성
 Private Repository에 등록된 이미지를 활용하기 위해 단독배포된 Kubernetes에 secret을 생성한다.
  
 ```
