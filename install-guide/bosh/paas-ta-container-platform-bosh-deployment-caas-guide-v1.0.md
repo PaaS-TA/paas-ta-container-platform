@@ -450,6 +450,8 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
+### <div id='4.2'>4.2. Jenkins 서비스 브로커 등록
+
 - 배포된 Jenkins 서비스 VM 목록을 확인
 > $ bosh -e micro-bosh -d paasta-container-platform
 ```
@@ -466,7 +468,6 @@ private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7
 5 vms
 ```
 
-### <div id='4.2'>4.2. Jenkins 서비스 브로커 등록
 - 브로커 목록을 확인한다.
 
 ```
