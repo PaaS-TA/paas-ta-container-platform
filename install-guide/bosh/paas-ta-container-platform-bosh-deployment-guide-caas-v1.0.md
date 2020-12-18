@@ -709,6 +709,7 @@ spec:
   type: NodePort
 ```
 - 배포 확인
+
 배포된 Deployment, Service를 확인한다.
 
 ```
