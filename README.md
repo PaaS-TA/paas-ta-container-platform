@@ -1,7 +1,7 @@
 # paas-ta-container-platform
 
 ## 소개
-PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 단독배포와 ContainerPlatform을 위해 Bosh Release만 배포되어 배포된 쿠버네티스 클러스터에 개발된 API를 Contaienr에 올려 서비스 하기 위한 설치 방법 및 가이드를 다루고 있습니다.
+Native Kubernetes 설치 가이드 및 Kubernetes에 Container Platform을 배포하여 사용할 수 있는 2가지 방법(PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 서비스 배포, 단독 배포)에 대한 설치 및 활용 가이드를 다루고 있습니다.
 
 ## Kubernetes 설치 가이드
 **서비스를 배포 하기 위한 kubernetes 설치 방법을 선택하여 설치한다.**
