@@ -1,28 +1,32 @@
 ## Table of Contents
 
 1. [문서 개요](#1)  
-1.1. [목적](#1.1)  
-1.2. [범위](#1.2)  
-1.3. [시스템 구성도](#1.3)  
-1.4. [참고자료](#1.4)  
+ 1.1. [목적](#1.1)  
+ 1.2. [범위](#1.2)  
+ 1.3. [시스템 구성도](#1.3)  
+ 1.4. [참고자료](#1.4)  
+
 2. [Container 서비스 설치](#2)  
-2.1. [Prerequisite](#2.1)  
-2.2. [Stemcell 확인](#2.2)  
-2.3. [Deployment 다운로드](#2.3)  
-2.4. [Deployment 파일 수정](#2.4)  
-2.5. [서비스 설치](#2.5)  
-2.6. [서비스 설치 확인](#2.6)
+ 2.1. [Prerequisite](#2.1)  
+ 2.2. [Stemcell 확인](#2.2)  
+ 2.3. [Deployment 다운로드](#2.3)  
+ 2.4. [Deployment 파일 수정](#2.4)  
+ 2.5. [서비스 설치](#2.5)  
+ 2.6. [서비스 설치 확인](#2.6)
+
 3. [Kubernetes Container Platform 배포](#3)   
-3.1. [Kubernetes Cluster 설정](#3.1)   
-3.2. [Secret 생성](#3.2)  
-3.3. [Deployment 배포](#3.3)  
+ 3.1. [Kubernetes Cluster 설정](#3.1)   
+ 3.2. [Secret 생성](#3.2)  
+ 3.3. [Deployment 배포](#3.3)  
+
 4. [Container 서비스 브로커](#4)  
-4.1. [Container 서비스 브로커 등록](#4.1)  
-4.2. [Container 서비스 UAA Client 등록](#4.2)   
-4.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#4.3)      
+ 4.1. [Container 서비스 브로커 등록](#4.1)  
+ 4.2. [Container 서비스 UAA Client 등록](#4.2)   
+ 4.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#4.3)      
+
 5. [Jenkins 서비스 브로커(Optional)](#5)   
-5.1. [Kubernetes Cluster 설정](#5.1)   
-5.2. [Jenkins 서비스 브로커 등록](#5.2)   
+ 5.1. [Kubernetes Cluster 설정](#5.1)   
+ 5.2. [Jenkins 서비스 브로커 등록](#5.2)   
  
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
