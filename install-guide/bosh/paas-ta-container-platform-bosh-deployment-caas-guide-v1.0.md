@@ -256,7 +256,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
 
-# 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
+# 릴리즈 파일 다운로드(paasta-container-platform-svc-1.0.tgz) 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
