@@ -244,14 +244,10 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-> paasta와 연동하지 않을 경우(일반 단독배포)에는 아래 두개 행은 제거한다. <br>
-  -o manifests/ops-files/add-jenkins-service-broker.yml \
-  -o manifests/ops-files/add-service-broker.yml 
 
 
 
 ### <div id='2.5'>2.5. 서비스 설치
-> 서비스형태의 단독배포 시
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :
@@ -264,33 +260,11 @@ $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
-# 서비스형태의 단독배포 시
 $ wget --content-disposition http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
 paasta-container-platform-release-svc-1.0.tgz
 $ mv paasta-container-platform-release-svc-1.0.tgz paasta-container-platform-release-1.0.tgz
-```
-
-> 일반 단독배포 시
-
-- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
-  + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-release-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)
-  [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
-
-
-```
-# 릴리즈 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5/release/service
-$ cd ~/workspace/paasta-5.5/release/service
-
-# 릴리즈 파일 다운로드(paasta-container-platform-release-1.0.tgz) 및 파일 경로 확인
-# 일반 단독배포 시
-$ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
-$ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
-$ ls ~/workspace/paasta-5.5/release/service
-docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 ```
 
 - 서비스를 설치한다.
