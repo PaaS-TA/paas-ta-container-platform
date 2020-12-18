@@ -527,7 +527,7 @@ broker: jenkins-service-broker
 ## 5. Kubernetes에 Container Platform API 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
-1. K8s Cluster 설정
+### 5.1. K8s Cluster 설정
 > k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -539,17 +539,17 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
+### 5.2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
 
 ```
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 
-### 5.2 서비스형태의 단독배포 시 Deployment
+### 5.3. Deployment 배포
 PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
-#### 5.2.1. container-service-common-api 배포
+#### 5.3.1. container-service-common-api 배포
 
 > vi container-service-common-api.yml
  
@@ -601,7 +601,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.2.2. container-service-api 배포
+#### 5.3.2. container-service-api 배포
 
 > vi container-service-api.yml
  
@@ -653,7 +653,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.2.3. container-service-dashboard 배포
+#### 5.3.3. container-service-dashboard 배포
 
 > vi container-service-dashboard.yml
 
@@ -708,7 +708,7 @@ spec:
     app: service-dashboard
   type: NodePort
 ```
-#### 5.2.4. 배포 확인
+#### 5.3.4. 배포 확인
 ```
 $ kubectl apply -f container-service-common-api.yml
 $ kubectl apply -f container-service-api.yml
