@@ -1,34 +1,36 @@
 ## Table of Contents
 
 1. [문서 개요](#1)  
-1.1. [목적](#1.1)  
-1.2. [범위](#1.2)  
-1.3. [시스템 구성도](#1.3)  
-1.4. [참고자료](#1.4)  
+    1.1. [목적](#1.1)  
+    1.2. [범위](#1.2)  
+    1.3. [시스템 구성도](#1.3)  
+    1.4. [참고자료](#1.4)  
+
 2. [Container 서비스 설치](#2)  
-2.1. [Prerequisite](#2.1)  
-2.2. [Stemcell 확인](#2.2)  
-2.3. [Deployment 다운로드](#2.3)  
-2.4. [Deployment 파일 수정](#2.4)  
-2.5. [서비스 설치](#2.5)  
-2.6. [서비스 설치 확인](#2.6) 
+    2.1. [Prerequisite](#2.1)  
+    2.2. [Stemcell 확인](#2.2)  
+    2.3. [Deployment 다운로드](#2.3)  
+    2.4. [Deployment 파일 수정](#2.4)  
+    2.5. [서비스 설치](#2.5)  
+    2.6. [서비스 설치 확인](#2.6) 
+
 3. [Kubernetes에 Container Platform API 배포](#3)  
-3.1. [일반 단독배포 시 Deployment](#3.1)  
-3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
-3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
-3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
-3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
-3.1.5. [배포 확인](#3.1.5)  
+    3.1. [일반 단독배포 시 Deployment](#3.1)  
+        3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
+        3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
+        3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
+        3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
+        3.1.5. [배포 확인](#3.1.5)  
     
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 하는 방법을 기술하였다.
+본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
 ### <div id='1.2'>1.2. 범위
-설치 범위는 Kubernetes 일반 단독 배포를 기준으로 작성하였다.
+설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
 본 문서의 설치된 시스템 구성도이다.
@@ -40,12 +42,12 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Linux환경에서 설치하는 것을 기준으로 작성하였다. 서비스팩 설치를 위해서는 BOSH 2.0이 설치되어 있어야 한다.
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 BOSH 2.0이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
-Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.1 과 동일 stemcell 사용)
-- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.   
+Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 과 동일 stemcell 사용)
+- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -228,27 +230,18 @@ export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environm
 bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
     -l manifests/paasta-container-service-vars-{IAAS}.yml \
     -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
-    -o manifests/ops-files/misc/first-time-deploy.yml \
-    -o manifests/ops-files/add-jenkins-service-broker.yml \
-    -o manifests/ops-files/add-service-broker.yml \
+    -o manifests/ops-files/misc/first-time-deploy.yml \   
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-> paasta와 연동하지 않을 경우(일반 단독배포)에는 아래 두개 행은 제거한다. <br>
-  -o manifests/ops-files/add-jenkins-service-broker.yml \
-  -o manifests/ops-files/add-service-broker.yml 
-
-
-
-### <div id='2.5'>2.5. 서비스 설치
-- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
+### <div id='2.5'>2.5. Release 설치
+- Release 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 Release 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)
+  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)  
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
-
-
 ```
+
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
@@ -260,14 +253,14 @@ $ ls ~/workspace/paasta-5.5/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 ```
 
-- 서비스를 설치한다.
+- Release를 설치한다.
 ```
 $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
 $ ./deploy-{IAAS}.sh
 ```
 
-### <div id='2.6'>2.6. 서비스 설치 확인
-설치 완료된 서비스를 확인한다.
+### <div id='2.6'>2.6. Release 설치 확인
+설치 완료된 Release를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -307,7 +300,7 @@ $ sudo systemctl restart docker
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.1.'>3.1. 일반 단독배포 시 Deployment
+### <div id='3.1.'>3.1. 단독 배포 시 Deployment
 
 #### <div id='3.1.1'>3.1.1. paas-ta-container-platform-common-api 배포
 
@@ -512,11 +505,6 @@ spec:
     app: webadmin
   type: NodePort
 ```
-
-#### <div id='3.1.5'>3.1.5. 배포 확인
-배포된 Deployment, Service를 확인한다.
-
-```
 $ kubectl apply -f paas-ta-container-platform-common-api.yml
 deployment.apps/common-api-deployment created
 service/common-api-deployment created
@@ -533,6 +521,10 @@ $ kubectl apply -f paas-ta-container-platform-webadmin.yml
 deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 
+#### <div id='3.1.5'>3.1.5. 배포 확인
+배포된 Deployment, Service를 확인한다.
+
+```
 $ kubectl get deployments
 NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
 api-deployment          1/1     1            1           59s
