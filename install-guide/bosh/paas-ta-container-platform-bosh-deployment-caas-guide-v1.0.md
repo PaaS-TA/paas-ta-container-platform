@@ -628,7 +628,7 @@ Context: admin, from client admin
 
 - Container 서비스 계정 생성을 한다.
 
-> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 대시보드 URI} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
+> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {http://<kubernetes master의 public ip>:<web_user_nodeport>} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   -	<CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
   -	<CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
   -	<Logging 서비스 URI> : 성공적으로 리다이렉션 할 Logging 서비스 접근 URI (http://<logging-service의 router public IP>)  
@@ -639,7 +639,7 @@ Context: admin, from client admin
 
 ```  
 # e.g. Container 서비스 계정 생성
-$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:8091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
+$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
 
 # e.g. Container 서비스 계정 생성 확인
 $ uaac clients
@@ -647,7 +647,7 @@ caasclient
     scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
     resource_ids: none
     authorized_grant_types: refresh_token client_credentials authorization_code
-    redirect_uri: http://101.55.50.201:8091
+    redirect_uri: http://xxx.xxx.xxx.xxx:32091
     autoapprove: cloud_controller_service_permissions.read openid
     authorities: uaa.resource
     name: caasclient
