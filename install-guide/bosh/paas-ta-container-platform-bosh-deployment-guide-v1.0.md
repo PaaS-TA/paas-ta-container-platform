@@ -505,6 +505,7 @@ spec:
     app: webadmin
   type: NodePort
 ```
+```
 $ kubectl apply -f paas-ta-container-platform-common-api.yml
 deployment.apps/common-api-deployment created
 service/common-api-deployment created
@@ -520,6 +521,7 @@ service/webuser-deployment created
 $ kubectl apply -f paas-ta-container-platform-webadmin.yml
 deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
+```
 
 #### <div id='3.1.5'>3.1.5. 배포 확인
 배포된 Deployment, Service를 확인한다.
