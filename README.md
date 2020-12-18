@@ -32,6 +32,7 @@ PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 단독배포�
   + [Admin Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
 
 ## 프로젝트 소스 파일 
+**Container Platform서비스를 제공할 어플리케이션 소스이다.** 
 - API 개발 소스 파일
   + [paas-ta-container-platform-api](https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev)
 - Common API 개발 소스 파일
