@@ -12,13 +12,13 @@
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6)
 3. [Container 서비스 브로커](#3)
-3.1. [Container 서비스 브로커 등록](#3.1)
-3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
-4. [Jenkins 서비스 브로커(Optional)](#4)
-5. [Kubernetes에 Container Platform API 배포](#5)
-5.1. [K8s Cluster 설정](#5.1)
-5.2. [secret 생성](#5.2)
-5.3. [Deployment 배포](#5.3)
+3.1. [Container 서비스 브로커 등록](#3.1)   
+3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2)    
+4. [Jenkins 서비스 브로커(Optional)](#4)   
+5. [Kubernetes에 Container Platform API 배포](#5)   
+5.1. [K8s Cluster 설정](#5.1)   
+5.2. [secret 생성](#5.2)  
+5.3. [Deployment 배포](#5.3)  
  
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
