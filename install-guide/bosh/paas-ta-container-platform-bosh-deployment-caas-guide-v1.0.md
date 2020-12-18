@@ -12,8 +12,9 @@
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6)
 3. [Container 서비스 브로커](#3)  
-3.1. [Container 서비스 브로커 등록](#3.1)   
-3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2)    
+3.1. [Container 서비스 브로커 등록](#3.1)
+3.2. Container 서비스 UAA Client 등록(#3.2) 
+3.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.3)    
 4. [Jenkins 서비스 브로커(Optional)](#4)   
 4.1. [K8s Cluster 설정](#4.1)   
 4.2. [Jenkins 서비스 브로커 등록](#4.2)   
@@ -371,7 +372,89 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### <div id='3.2'>3.2. PaaS-TA 포탈에서 Container 서비스 조회 설정
+### <div id='3.2'> 3.2. Container 서비스 UAA Client 등록
+UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
+
+- Container 서비스 대시보드에 접근이 가능한 IP를 알기 위해 **haproxy IP** 를 확인한다.
+
+```
+Deployment 'container-service'
+
+Instance                                                           Process State  AZ  IPs            VM CID                                VM Type             Active  Stemcell  
+container-jenkins-broker/129ad9e6-3fb9-48f4-a876-9bd1aeb2793d      running        z2  10.0.41.135    4a7c6cd6-d338-424d-ab30-66b563c0f0c5  small               true    -  
+container-service-api/f7902066-0978-4de3-bf2d-e432b0c14199         running        z5  10.0.161.127   ab210e7e-af10-476e-8dfa-4d6081fd494c  small               true    -  
+container-service-broker/e193844e-6d47-4477-a73c-b5014d4573e7      running        z6  10.0.201.141   e31e74a9-a567-4b38-9e21-b796492f3466  small               true    -  
+container-service-common-api/b2b5e67b-0a5f-4943-a3da-6e9826a6f8fa  running        z5  10.0.161.128   03ad70ab-b2c1-4791-b8fb-5903b6b680ba  small               true    -  
+container-service-dashboard/300fead4-4487-4a65-b77c-5e3487818453   running        z6  10.0.201.140   fec06a82-df4c-4c00-b8e8-bd646ad4e1cc  small               true    -  
+haproxy/cd60739e-a6b7-436d-9fe9-a515d28629fd                       running        z7  10.0.0.126     b8bad420-e726-41c8-9aae-f7d45c2f2679  small               true    -  
+                                                                                      101.55.50.201                                                                      
+mariadb/9755e6a4-243f-4350-a6d8-517566c6dcbf                       running        z5  10.0.161.126   ef081b0a-7c1a-4854-a695-200d80194db2  small               true    -  
+master/68782774-455e-43f7-95a4-20d09fa4936c                        running        z7  10.0.0.125     0da12a95-9f2b-4fa7-9079-d4c59b573c3a  small-highmem-16GB  true    -  
+                                                                                      101.55.50.204                                                                      
+private-image-repository/1a416603-ced1-4b1c-8090-5f3962309456      running        z7  10.0.0.127     895010f1-ae53-457f-bd8d-138a68ca847c  small               true    -  
+                                                                                      101.55.50.202                                                                      
+worker/23886843-ab6b-4ae1-a676-89f7307d5b01                        running        z5  10.0.161.125   e4eaa60c-084c-4384-ab3f-915aca22dc4c  small-highmem-16GB  true    -  
+worker/3c37840f-c743-410e-81c7-f6754afb60f7                        running        z6  10.0.201.139   7a44994c-b833-4b6c-a6dd-f314d048b171  small-highmem-16GB  true    -  
+worker/d6ef01d8-d783-40a6-a8f7-b43f8fd4c52f                        running        z4  10.0.121.122   ab557f46-57b7-480c-8826-ce9aac256f9f  small-highmem-16GB  true    -  
+
+12 vms
+
+Succeeded
+```
+
+- uaac server의 endpoint를 설정한다.
+
+```
+# endpoint 설정
+$ uaac target https://uaa.<DOMAIN> --skip-ssl-validation
+
+# target 확인
+$ uaac target
+Target: https://uaa.<DOMAIN>
+Context: uaa_admin, from client uaa_admin
+
+```
+
+-	uaac 로그인을 한다.
+
+```
+$ uaac token client get <UAA_ADMIN_CLIENT_ID> -s <UAA_ADMIN_CLIENT_SECRET>
+Successfully fetched token via client credentials grant.
+Target: https://uaa.<DOMAIN>
+Context: admin, from client admin
+
+```
+
+- Container 서비스 계정 생성을 한다.
+
+> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 대시보드 URI} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
+  -	<CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
+  -	<CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
+  -	<Logging 서비스 URI> : 성공적으로 리다이렉션 할 Logging 서비스 접근 URI (http://<logging-service의 router public IP>)  
+  -	<퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
+  -	<권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
+  -	<권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
+  -	<자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
+
+```  
+# e.g. Container 서비스 계정 생성
+$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:8091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
+
+# e.g. Container 서비스 계정 생성 확인
+$ uaac clients
+caasclient
+    scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
+    resource_ids: none
+    authorized_grant_types: refresh_token client_credentials authorization_code
+    redirect_uri: http://101.55.50.201:8091
+    autoapprove: cloud_controller_service_permissions.read openid
+    authorities: uaa.resource
+    name: caasclient
+    lastmodified: 1592962300888
+
+```  
+
+### <div id='3.3'>3.3. PaaS-TA 포탈에서 Container 서비스 조회 설정
 
  해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
