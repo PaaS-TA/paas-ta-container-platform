@@ -258,8 +258,8 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. 서비스 설치
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
-  + 설치 릴리즈 파일 다운로드 :
-  [paasta-container-platform-svc-1.0.tgz](http://45.248.73.44/index.php/s/6NkXWQnW8yA6M6Z/download) 
+  + 설치 릴리즈 파일 다운로드 :  
+  [paasta-container-platform-svc-1.0.tgz](http://45.248.73.44/index.php/s/6NkXWQnW8yA6M6Z/download)   
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)          
 
 
