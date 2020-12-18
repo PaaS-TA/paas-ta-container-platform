@@ -157,11 +157,14 @@ aws_access_key_id_worker: '<AWS_ACCESS_KEY>'                                  # 
 aws_secret_access_key_worker: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
 kubernetes_cluster_tag: 'kubernetes'                                          # Do not update!
 
-
 # STEMCELL
 stemcell_os: "ubuntu-xenial"                                                  # stemcell os
 stemcell_version: "621.94"                                                    # stemcell version
 stemcell_alias: "xenial"                                                      # stemcell alias
+
+# CREDHUB
+credhub_server_url: "<CREDHUB_IP>:8844"
+credhub_admin_client_secret: "eft2zkfaerzyt8g6eonj"
 
 # VM_TYPE
 vm_type_small: "small"                                                        # vm type small
@@ -189,7 +192,7 @@ haproxy_azs: [z7]                                                             # 
 mariadb_port: "3306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
-mariadb_admin_user_id: "<MARIADB_ADMIN_USER_ID>"                              # mariadb admin user name (e.g. root)
+mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
 mariadb_admin_user_password: "<MARIADB_ADMIN_USER_PASSWORD>"                  # mariadb admin user password (e.g. paasta!admin)
 mariadb_role_set_administrator_code_name: "Administrator"                     # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                 # administrator role's code (e.g. RS0001)
