@@ -710,7 +710,7 @@ spec:
 ```
 - 배포 확인
 
-배포된 Deployment, Service를 확인한다.
+배포된 Deployment, Pod, Service를 확인한다.
 
 ```
 $ kubectl apply -f container-service-common-api.yml
@@ -729,16 +729,16 @@ service/service-dashboard-deployment created
 #Deployment 배포 정상 확인
 $ kubectl get deployments
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-service-api-deployment          0/1     1            0           68s
-service-common-api-deployment   0/1     1            0           78s
-service-dashboard-deployment    0/1     1            0           56s
+service-api-deployment          1/1     1            1           68s
+service-common-api-deployment   1/1     1            1           78s
+service-dashboard-deployment    1/1     1            1           56s
 
 #Pod 배포 정상 확인
 $ kubectl get pods
-NAME                                             READY   STATUS              RESTARTS   AGE
-service-api-deployment-6b56c776d6-vcvjz          0/1     ContainerCreating   0          97s
-service-common-api-deployment-56899f9c6f-vswcs   0/1     ContainerCreating   0          108s
-service-dashboard-deployment-8889c975c-wjh7p     0/1     ContainerCreating   0          85s
+NAME                                            READY   STATUS    RESTARTS   AGE
+service-api-deployment-7c556d9c59-ms66r         1/1     Running   1          97s
+service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   1          108s
+service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   1          85s
 
 #Service 배포 정상 확인
 $ kubectl get svc
@@ -747,7 +747,6 @@ kubernetes                      ClusterIP   xxx.xxx.xxx.xxx   <none>        443/
 service-api-deployment          NodePort    xxx.xxx.xxx.xxx   <none>        3333:30333/TCP   117s
 service-common-api-deployment   NodePort    xxx.xxx.xxx.xxx   <none>        3334:30334/TCP   2m8s
 service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091:32091/TCP   105s
-
 
 ```
 ----
