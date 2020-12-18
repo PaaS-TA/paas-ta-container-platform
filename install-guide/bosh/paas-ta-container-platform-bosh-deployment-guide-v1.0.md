@@ -12,6 +12,21 @@
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6) 
 3. [Container 서비스 브로커](#3)
+3.1. [Container 서비스 브로커 등록](#3.1)  
+3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2)
+4. [Jenkins 서비스 브로커(Optional)](#4)
+5. [Kubernetes에 Container Platform API 배포](#5)
+5.1. [일반 단독배포 시 Deployment](#5.1)  
+5.1.1. [paas-ta-container-platform-common-api 배포](#5.1.1)  
+5.1.2. [paas-ta-container-platform-api 배포](#5.1.2)  
+5.1.3. [paas-ta-container-platform-webuser 배포](#5.1.3)  
+5.1.4. [paas-ta-container-platform-webadmin 배포](#5.1.4)  
+5.1.5. [배포 확인](#5.1.5)  
+5.2. [서비스형태의 단독배포 시 Deployment](#5.2)  
+5.2.1. [container-service-common-api 배포](#5.2.1)  
+5.2.2. [container-service-api 배포](#5.2.2)  
+5.2.3. [container-service-dashboard 배포](#5.2.3)  
+5.2.4. [배포 확인](#5.2.4)  
 
   
 
@@ -307,11 +322,11 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## 3. Container 서비스 브로커
+## <div id='3'>3. Container 서비스 브로커
 Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
 PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### 3.1 Container 서비스 브로커 등록
+### <div id='3.1'>3.1 Container 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -378,7 +393,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### 3.2 PaaS-TA 포탈에서 Container 서비스 조회 설정
+### <div id='3.2'>3.2 PaaS-TA 포탈에서 Container 서비스 조회 설정
 
  해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
@@ -444,7 +459,7 @@ ex)
 [운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스항목을 Container_service로 변경 후 저장한다.
 
 ![image 004]
-## 4. Jenkins 서비스 브로커(Optional)
+## <div id='4'>4. Jenkins 서비스 브로커(Optional)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
 1. K8s Cluster 설정
@@ -536,7 +551,7 @@ broker: jenkins-service-broker
   container-jenkins-service   jenkins_20GB             all      
 ```
 
-## 5. Kubernetes에 Container Platform API 배포
+## <div id='5'>5. Kubernetes에 Container Platform API 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 1. K8s Cluster 설정
@@ -557,9 +572,9 @@ $ sudo systemctl restart docker
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### 5.1. 일반 단독배포 시 Deployment
+### <div id='5.1.'>5.1. 일반 단독배포 시 Deployment
 
-#### 5.1.1. paas-ta-container-platform-common-api 배포
+#### <div id='5.1.1'>5.1.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -611,7 +626,7 @@ spec:
   type: NodePort
 
 ```
-#### 5.1.2. paas-ta-container-platform-api 배포
+#### <div id='5.1.2'>5.1.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -662,7 +677,7 @@ spec:
     app: api
   type: NodePort
 ```
-#### 5.1.3. paas-ta-container-platform-webuser 배포
+#### <div id='5.1.3'>5.1.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -714,7 +729,7 @@ spec:
   type: NodePort
 
 ```
-#### 5.1.4. paas-ta-container-platform-webadmin 배포
+#### <div id='5.1.4'>5.1.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -763,7 +778,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.1.5. 배포 확인
+#### <div id='5.1.5'>5.1.5. 배포 확인
 배포된 Deployment, Service를 확인한다.
 
 ```
@@ -806,10 +821,10 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ```
 
-### 5.2 서비스형태의 단독배포 시 Deployment
+### <div id='5.2'>5.2 서비스형태의 단독배포 시 Deployment
 PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
-#### 5.2.1. container-service-common-api 배포
+#### <div id='5.2.1'>5.2.1. container-service-common-api 배포
 
 > vi container-service-common-api.yml
  
@@ -861,7 +876,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.2.2. container-service-api 배포
+#### <div id='5.2.2'>5.2.2. container-service-api 배포
 
 > vi container-service-api.yml
  
@@ -913,7 +928,7 @@ spec:
   type: NodePort
 ```
 
-#### 5.2.3. container-service-dashboard 배포
+#### <div id='5.2.3'>5.2.3. container-service-dashboard 배포
 
 > vi container-service-dashboard.yml
 
@@ -968,7 +983,7 @@ spec:
     app: service-dashboard
   type: NodePort
 ```
-#### 5.2.4. 배포 확인
+#### <div id='5.2.4'>5.2.4. 배포 확인
 ```
 $ kubectl apply -f container-service-common-api.yml
 $ kubectl apply -f container-service-api.yml
