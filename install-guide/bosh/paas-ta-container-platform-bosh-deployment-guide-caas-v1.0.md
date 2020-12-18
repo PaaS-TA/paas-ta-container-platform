@@ -525,7 +525,8 @@ broker: jenkins-service-broker
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='5.1'>5.1. K8s Cluster 설정
-> k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
+> k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+
 ```
 $ sudo vi /etc/docker/daemon.json
 {
@@ -536,8 +537,9 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='5.2'>5.2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
-
+### <div id='5.2'>5.2. secret 생성
+Private Repository에 등록된 이미지를 활용하기 위해 단독배포된 Kubernetes에 secret을 생성한다.
+ 
 ```
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
