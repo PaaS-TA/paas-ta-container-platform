@@ -13,9 +13,7 @@
 2.6. [서비스 설치 확인](#2.6)
 3. [Container 서비스 브로커](#3)
 
-
 3.1. [Container 서비스 브로커 등록](#3.1)
-
 
 3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
 4. [Jenkins 서비스 브로커(Optional)](#4)
