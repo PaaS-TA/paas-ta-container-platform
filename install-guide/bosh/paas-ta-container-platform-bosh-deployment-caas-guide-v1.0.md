@@ -30,12 +30,12 @@
  
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스를 등록하는 방법을 기술하였다.
+본 문서(Container 서비스 설치 가이드)는 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스 등록 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
 ### <div id='1.2'>1.2. 범위
-설치 범위는 Kubernetes 서비스 단독 배포를 기준으로 작성하였다.
+설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
 본 문서의 설치된 시스템 구성도이다.
@@ -47,7 +47,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스팩 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.1, PaaS-TA 포털이 설치되어 있어야 한다.
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
 - [PaaS-TA 포털](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md) 
@@ -143,7 +143,7 @@ vm_types:
 Succeeded
 ```
 
-> 일부 application의 경우 이중화를 위한 조치는 되어 있지 않아 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
+> 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
@@ -231,7 +231,7 @@ jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-nam
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}-svc.sh
 
 ```    
 #!/bin/bash
@@ -280,7 +280,7 @@ $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 
 ```
 $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
-$ ./deploy-{IAAS}.sh
+$ ./deploy-{IAAS}-svc.sh
 ```
 
 ### <div id='2.6'>2.6. 서비스 설치 확인
@@ -307,7 +307,7 @@ Succeeded
 ```
 
 ## <div id='3'>3. Kubernetes Container Platform 배포
-단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
 > k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
@@ -323,8 +323,7 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='3.2'>3.2. Secret 생성
-Private Repository에 등록된 이미지를 활용하기 위해 단독배포된 Kubernetes에 secret을 생성한다.
- 
+Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
 ```
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
@@ -335,7 +334,7 @@ PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deploy
 
 - container-service-common-api 배포
 
-> vi container-service-common-api.yml
+> $ vi container-service-common-api.yml
  
 ```
 apiVersion: apps/v1
@@ -387,7 +386,7 @@ spec:
 
 - container-service-api 배포
 
-> vi container-service-api.yml
+> $ vi container-service-api.yml
  
 ```
 apiVersion: apps/v1
@@ -439,7 +438,7 @@ spec:
 
 - container-service-dashboard 배포
 
-> vi container-service-dashboard.yml
+> $ vi container-service-dashboard.yml
 
 ```
 apiVersion: apps/v1
@@ -534,11 +533,10 @@ service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091
 
 ```
 
-## <div id='4'>4. Container 서비스 브로커
-Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다.
-PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
+## <div id='4'>4. Container Platform 서비스 브로커
+Container Platform 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container Platform 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### <div id='4.1'>4.1. Container 서비스 브로커 등록
+### <div id='4.1'>4.1. Container Platform 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -552,7 +550,7 @@ Getting service brokers as admin...
 name                               url
 mysql-service-broker               http://10.0.121.71:8080
  ```
-  - Container 서비스 브로커를 등록한다.
+  - Container Platform 서비스 브로커를 등록한다.
   > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
@@ -560,7 +558,7 @@ mysql-service-broker               http://10.0.121.71:8080
    ```
   $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8888
    ```
- - 등록된 Container 서비스 브로커를 확인한다.
+ - 등록된 Container Platform 서비스 브로커를 확인한다.
   ```
   $ cf service-brokers
 Getting service brokers as admin...
@@ -606,7 +604,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### <div id='4.2'> 4.2. Container 서비스 UAA Client 등록
+### <div id='4.2'> 4.2. Container Platform 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
 - uaac server의 endpoint를 설정한다.
