@@ -492,10 +492,6 @@ spec:
     app: service-dashboard
   type: NodePort
 ```
-- 배포 확인
-
-배포된 Deployment, Pod, Service를 확인한다.
-
 ```
 $ kubectl apply -f container-service-common-api.yml
 deployment.apps/service-common-api-deployment created
@@ -508,8 +504,12 @@ service/service-api-deployment created
 $ kubectl apply -f container-service-dashboard.yml
 deployment.apps/service-dashboard-deployment created
 service/service-dashboard-deployment created
+```
+- 배포 확인
 
+배포된 Deployment, Pod, Service를 확인한다.
 
+```
 #Deployment 배포 정상 확인
 $ kubectl get deployments
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
