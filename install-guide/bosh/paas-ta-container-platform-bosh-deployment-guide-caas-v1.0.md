@@ -736,9 +736,9 @@ service-dashboard-deployment    1/1     1            1           56s
 #Pod 배포 정상 확인
 $ kubectl get pods
 NAME                                            READY   STATUS    RESTARTS   AGE
-service-api-deployment-7c556d9c59-ms66r         1/1     Running   1          97s
-service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   1          108s
-service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   1          85s
+service-api-deployment-7c556d9c59-ms66r         1/1     Running   0          97s
+service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   0          108s
+service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   0          85s
 
 #Service 배포 정상 확인
 $ kubectl get svc
