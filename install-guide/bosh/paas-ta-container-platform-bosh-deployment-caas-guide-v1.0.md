@@ -378,27 +378,21 @@ UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 - Container 서비스 대시보드에 접근이 가능한 IP를 알기 위해 **haproxy IP** 를 확인한다.
 
 ```
-Deployment 'container-service'
+Using environment '10.0.1.6' as client 'admin'
 
-Instance                                                           Process State  AZ  IPs            VM CID                                VM Type             Active  Stemcell  
-container-jenkins-broker/129ad9e6-3fb9-48f4-a876-9bd1aeb2793d      running        z2  10.0.41.135    4a7c6cd6-d338-424d-ab30-66b563c0f0c5  small               true    -  
-container-service-api/f7902066-0978-4de3-bf2d-e432b0c14199         running        z5  10.0.161.127   ab210e7e-af10-476e-8dfa-4d6081fd494c  small               true    -  
-container-service-broker/e193844e-6d47-4477-a73c-b5014d4573e7      running        z6  10.0.201.141   e31e74a9-a567-4b38-9e21-b796492f3466  small               true    -  
-container-service-common-api/b2b5e67b-0a5f-4943-a3da-6e9826a6f8fa  running        z5  10.0.161.128   03ad70ab-b2c1-4791-b8fb-5903b6b680ba  small               true    -  
-container-service-dashboard/300fead4-4487-4a65-b77c-5e3487818453   running        z6  10.0.201.140   fec06a82-df4c-4c00-b8e8-bd646ad4e1cc  small               true    -  
-haproxy/cd60739e-a6b7-436d-9fe9-a515d28629fd                       running        z7  10.0.0.126     b8bad420-e726-41c8-9aae-f7d45c2f2679  small               true    -  
-                                                                                      101.55.50.201                                                                      
-mariadb/9755e6a4-243f-4350-a6d8-517566c6dcbf                       running        z5  10.0.161.126   ef081b0a-7c1a-4854-a695-200d80194db2  small               true    -  
-master/68782774-455e-43f7-95a4-20d09fa4936c                        running        z7  10.0.0.125     0da12a95-9f2b-4fa7-9079-d4c59b573c3a  small-highmem-16GB  true    -  
-                                                                                      101.55.50.204                                                                      
-private-image-repository/1a416603-ced1-4b1c-8090-5f3962309456      running        z7  10.0.0.127     895010f1-ae53-457f-bd8d-138a68ca847c  small               true    -  
-                                                                                      101.55.50.202                                                                      
-worker/23886843-ab6b-4ae1-a676-89f7307d5b01                        running        z5  10.0.161.125   e4eaa60c-084c-4384-ab3f-915aca22dc4c  small-highmem-16GB  true    -  
-worker/3c37840f-c743-410e-81c7-f6754afb60f7                        running        z6  10.0.201.139   7a44994c-b833-4b6c-a6dd-f314d048b171  small-highmem-16GB  true    -  
-worker/d6ef01d8-d783-40a6-a8f7-b43f8fd4c52f                        running        z4  10.0.121.122   ab557f46-57b7-480c-8826-ce9aac256f9f  small-highmem-16GB  true    -  
+Task 2983. Done
 
-12 vms
+Deployment 'paasta-container-platform'
 
+Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
+container-jenkins-broker/ff84ac36-8c24-4dcf-88e7-fc700e777936  running        z6  10.0.201.121  i-0c50e8bef11a7d5d8  small    true
+container-service-broker/7bc8e449-2e95-4f54-aa94-c59e3767c907  running        z6  10.0.201.122  i-04c934cc859998219  small    true
+haproxy/32d1ff4e-1007-4e9a-8ebd-ffb33ba37348                   running        z7  10.0.0.121    i-0e6c374f2377ecf12  small    true
+                                                                                  3.35.95.75
+mariadb/42657509-69b6-4b4e-a006-20690e5ce2ea                   running        z5  10.0.161.121  i-0a8c71fb43ba3f34a  small    true
+private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7  10.0.0.122    i-0d5e4c451075e446b  small    true
+
+5 vms
 Succeeded
 ```
 
