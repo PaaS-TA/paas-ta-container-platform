@@ -6,16 +6,16 @@
     1.3. [시스템 구성도](#1.3)  
     1.4. [참고자료](#1.4)  
 
-2. [Container 서비스 설치](#2)  
+2. [Container Platform 설치](#2)  
     2.1. [Prerequisite](#2.1)  
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
-    2.5. [서비스 설치](#2.5)  
-    2.6. [서비스 설치 확인](#2.6) 
+    2.5. [Release  설치](#2.5)  
+    2.6. [Release  설치 확인](#2.6) 
 
 3. [Kubernetes에 Container Platform API 배포](#3)  
-    3.1. [일반 단독배포 시 Deployment](#3.1)  
+    3.1. [단독배포 시 Deployment](#3.1)  
         3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
         3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
@@ -40,7 +40,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 > http://bosh.io/docs
 > http://docs.cloudfoundry.storage
 
-## <div id='2'>2. Container 서비스 설치
+## <div id='2'>2. Container Platform 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 BOSH 2.0이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
@@ -300,7 +300,7 @@ $ sudo systemctl restart docker
 $ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.1.'>3.1. 단독 배포 시 Deployment
+### <div id='3.1'>3.1. 단독 배포 시 Deployment
 
 #### <div id='3.1.1'>3.1.1. paas-ta-container-platform-common-api 배포
 
