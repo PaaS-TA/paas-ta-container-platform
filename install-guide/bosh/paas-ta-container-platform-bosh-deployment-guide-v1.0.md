@@ -44,7 +44,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.1 과 동일 stemcell 사용)
-- Stemcell Upload 및 Cloud Config 부분은 [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 하시기 바랍니다.   
+- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 하시기 바랍니다.   
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
