@@ -1,25 +1,35 @@
 # paas-ta-container-platform
 
 ## 소개
-쿠버네티스 기반의 컨테이너 오케스트레이션 플랫폼의 단독 배포 및 엣지 클라우드 배포 기능을 구현하기 위한 설치 가이드, 사용자 포털 및 운영자 포털의 이용 가이드 문서를 제공합니다.
-## 설치 가이드
+PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 단독배포와 ContainerPlatform을 위해 Bosh Release만 배포되어 배포된 쿠버네티스 클러스터에 개발된 API를 Contaienr에 올려 서비스 하기 위한 설치 방법 및 가이드를 다루고 있습니다.
+
+## 플랫폼 설치 가이드
+**서비스팩 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.1이 설치되어 있어야 한다.**
+- [설치 파일 다운로드 받기](https://paas-ta.kr/download/package)
+- 운영 환경 설치
+  - PaaS-TA 플랫폼 수동 설치
+    - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
+    - [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
+    
+## Kubernetes 설치 가이드
+**서비스를 배포 하기 위한 kubernetes 설치 방법을 선택하여 설치한다.**
 - [Kubespray 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)  
+  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - [KubeEdge 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)  
+  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/edge)
+
+## 서비스 설치 가이드
+**Bosh 기반 Release의 설치 및 서비스를 등록한다.**
 - [단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)  
+- [서비스 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md)
+  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)
 
 ## 포털 이용 가이드
+** **
 - 사용자 포털
-  + [User Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
+  + [User Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 - 운영자 포털
   + [Admin Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
-
-## 설치 파일
-- Kubespray 설치 소스 파일
-  + [standalone](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
-- KubeEdge 설치 소스 파일
-  + [edge](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/edge)
-- 단독 배포 설치 소스 파일 
-  + [bosh](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)
 
 ## 프로젝트 소스 파일 
 - API 개발 소스 파일
