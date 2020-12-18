@@ -50,7 +50,7 @@ Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업�
 Using environment '10.0.1.6' as client 'admin'
 
 Name                                     Version  OS             CPI  CID
-bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.78   ubuntu-xenial  -    ami-0694eb07c57faca73
+bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.94   ubuntu-xenial  -    ami-0694eb07c57faca73
 
 (*) Currently deployed
 
@@ -140,21 +140,27 @@ Succeeded
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: openstack)
 ```
-# BOSH NAME
-director_name: "micro-bosh"                                                   # bosh name (caas_cluster_name에 필요.)
+# INCEPTION OS USER NAME
+inception_os_user_name: "ubuntu"
+
+# REQUIRED FILE PATH VARIABLE
+paasta_version: "5.5"
+
+# RELEASE
+container_platform_release_name: "paasta-container-platform"
+container_platform_release_version: "1.0"
 
 # IAAS
-auth_url: 'http://<IAAS-IP>:5000/v3'                                          # auth url
-openstack_domain: '<OPENSTACK_DOMAIN>'                                        # openstack domain
-openstack_username: '<OPENSTACK_USERNAME>'                                    # openstack username
-openstack_password: '<OPENSTACK_PASSWORD>'                                    # openstack password
-openstack_project_id: '<OPENSTACK_PROJECT_ID>'                                # openstack project id
-region: '<OPENSTACK_REGION>'                                                  # region
-ignore-volume-az: true                                                        # ignore volume az (default : true)
+aws_access_key_id_master: '<AWS_ACCESS_KEY>'                                  # aws access key
+aws_secret_access_key_master: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
+aws_access_key_id_worker: '<AWS_ACCESS_KEY>'                                  # aws access key
+aws_secret_access_key_worker: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
+kubernetes_cluster_tag: 'kubernetes'    # Do not update!
+
 
 # STEMCELL
 stemcell_os: "ubuntu-xenial"                                                  # stemcell os
-stemcell_version: "621.78"                                                    # stemcell version
+stemcell_version: "621.94"                                                    # stemcell version
 stemcell_alias: "xenial"                                                      # stemcell alias
 
 # VM_TYPE
@@ -165,8 +171,9 @@ vm_type_container_small: "small"                                              # 
 vm_type_container_small_api: "small"                                          # vm type small for caas's api
 
 # NETWORK
-private_networks_name: "default"                                              # private network name
-public_networks_name: "vip"                                                   # public network name
+service_private_nat_networks_name: "default"                                  # private network name
+service_private_networks_name: "default"
+service_public_networks_name: "vip"                                           # public network name
 
 # IPS
 k8s_api_server_ip: "<K8S_API_SERVER_IP>"
@@ -253,8 +260,8 @@ $ cd ~/workspace/paasta-5.5/release/service
 $ wget --content-disposition http://45.248.73.44/index.php/s/7iBrNFHqNBnBtxr/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
-paasta-container-platform-release-svc-1.0.tgz
-$ mv paasta-container-platform-release-svc-1.0.tgz paasta-container-platform-release-1.0.tgz
+paasta-container-platform-svc-1.0.tgz
+$ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 ```
 
 - 서비스를 설치한다.
