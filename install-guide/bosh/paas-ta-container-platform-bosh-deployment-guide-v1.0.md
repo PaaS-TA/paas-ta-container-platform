@@ -1,4 +1,5 @@
-### Table of Contents
+## Table of Contents
+
 1. [문서 개요](#1)  
 1.1. [목적](#1.1)  
 1.2. [범위](#1.2)  
@@ -22,12 +23,12 @@
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스를 등록하는 방법을 기술하였다.
+본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 하는 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
 ### <div id='1.2'>1.2. 범위
-설치 범위는 Kubernetes 단독배포를 기준으로 작성하였다.
+설치 범위는 Kubernetes 일반 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
 본 문서의 설치된 시스템 구성도이다.
@@ -44,7 +45,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.1 과 동일 stemcell 사용)
-- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 하시기 바랍니다.   
+- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.   
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -253,7 +254,6 @@ $ mkdir -p ~/workspace/paasta-5.5/release/service
 $ cd ~/workspace/paasta-5.5/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-# 일반 단독배포 시
 $ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta-5.5/release/service
