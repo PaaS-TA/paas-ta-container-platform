@@ -49,7 +49,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Linux환경에서 설치하는 것을 기준으로 작성하였다. 서비스팩 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.1이 설치되어 있어야 한다.
+본 설치 가이드는 Linux환경에서 설치하는 것을 기준으로 작성하였다. 서비스팩 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.1, PaaS-TA 포털이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
 
