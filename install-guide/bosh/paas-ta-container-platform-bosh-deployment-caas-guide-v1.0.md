@@ -11,8 +11,8 @@
 2.4. [Deployment 파일 수정](#2.4)  
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6)
-3. [Kubernetes에 Container Platform API 배포](#5)   
-3.1. [K8s Cluster 설정](#5.1)   
+3. [Kubernetes Container Platform 배포](#5)   
+3.1. [Kubernetes Cluster 설정](#5.1)   
 3.2. [Secret 생성](#5.2)  
 3.3. [Deployment 배포](#5.3)  
 4. [Container 서비스 브로커](#3)  
@@ -20,7 +20,7 @@
 4.2. [Container 서비스 UAA Client 등록](#3.2)   
 4.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.3)      
 5. [Jenkins 서비스 브로커(Optional)](#4)   
-5.1. [K8s Cluster 설정](#4.1)   
+5.1. [Kubernetes Cluster 설정](#4.1)   
 5.2. [Jenkins 서비스 브로커 등록](#4.2)   
  
 ## <div id='1'>1. 문서 개요
@@ -300,7 +300,7 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## <div id='3'>3. Kubernetes에 Container Platform API 배포
+## <div id='3'>3. Kubernetes Container Platform 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
@@ -724,8 +724,8 @@ ex)
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
-### <div id='5.1'>5.1. K8s Cluster 설정
-> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+### <div id='5.1'>5.1. Kubernetes Cluster 설정
+> 단독배포된 Kubernetes master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
