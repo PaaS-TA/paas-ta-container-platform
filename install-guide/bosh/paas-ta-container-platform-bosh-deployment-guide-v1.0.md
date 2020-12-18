@@ -141,7 +141,7 @@ Succeeded
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
-(e.g. {IAAS} :: AWS)
+(e.g. {IAAS} :: OPENSTACK)
 ```
 # BOSH NAME
 director_name: "micro-bosh"                                                   # bosh name (caas_cluster_name에 필요.)
