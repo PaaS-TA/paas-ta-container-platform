@@ -439,7 +439,7 @@ ex)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='4.1'>4.1. K8s Cluster 설정
-> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
+> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
