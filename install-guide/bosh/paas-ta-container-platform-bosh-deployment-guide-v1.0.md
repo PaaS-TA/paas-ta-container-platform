@@ -11,22 +11,7 @@
 2.4. [Deployment 파일 수정](#2.4)  
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6) 
-3. [Container 서비스 브로커](#3)  
-3.1. [Container 서비스 브로커 등록](#3.1) 
-3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
-4. [Jenkins 서비스 브로커(Optional)](#4)  
-5. [Kubernetes에 Container Platform API 배포](#5)  
-5.1. [일반 단독배포 시 Deployment](#5.1) 
-5.1.1. [paas-ta-container-platform-common-api 배포](#5.1.1) 
-5.1.2. [paas-ta-container-platform-api 배포](#5.1.2) 
-5.1.3. [paas-ta-container-platform-webuser 배포](#5.1.3) 
-5.1.4. [paas-ta-container-platform-webadmin 배포](#5.1.4) 
-5.1.5. [배포 확인](#5.1.5) 
-5.2. [서비스형태의 단독배포 시 Deployment](#5.2) 
-5.2.1. [container-service-common-api 배포](#5.2.1) 
-5.2.2. [container-service-api 배포](#5.2.2) 
-5.2.3. [container-service-dashboard 배포](#5.2.3) 
-5.2.4. [배포 확인](#5.2.4) 
+3. [Container 서비스 브로커](#3)
 
   
 
