@@ -438,8 +438,8 @@ ex)
 ## <div id='4'>4. Jenkins 서비스 브로커(Optional)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
-1. K8s Cluster 설정
-> k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
+### <div id='4.1'>4.1. K8s Cluster 설정
+> 단독배포된 k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
 ```
 $ sudo vi /etc/docker/daemon.json
 {
@@ -450,7 +450,7 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-2. 배포된 Jenkins 서비스 VM 목록을 확인
+- 배포된 Jenkins 서비스 VM 목록을 확인
 > $ bosh -e micro-bosh -d paasta-container-platform
 ```
 Deployment 'paasta-container-platform'
@@ -466,8 +466,9 @@ private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7
 5 vms
 ```
 
-3. Jenkins 서비스 브로커를 등록한다.
+### <div id='4.2'>4.2. Jenkins 서비스 브로커 등록
 - 브로커 목록을 확인한다.
+
 ```
 $ cf service-brokers
 Getting service brokers as admin...
