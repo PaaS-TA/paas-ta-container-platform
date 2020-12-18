@@ -22,10 +22,10 @@ Native Kubernetes 설치 가이드 및 Kubernetes에 Container Platform을 배�
 **Bosh 기반 Release의 설치 및 서비스를 등록한다.**
 - [일반 단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)  
   + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)  
-  + [Container Platform Release](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev)
+  + [Container Platform Release 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev)
 - [서비스용 단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md)
   + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)   
-  + [Container Platform Release](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev)
+  + [Container Platform Release ](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev)
 
 
 ## 포털 이용 가이드
