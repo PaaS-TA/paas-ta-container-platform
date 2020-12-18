@@ -27,7 +27,7 @@ PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 단독배포�
 
 
 ## 포털 이용 가이드
-**Container Platform 서비스를 사용할 사용 방법에 대한 가이드이다.**
+**Container Platform 서비스를 사용할 포털 사용 방법에 대한 가이드이다.**
 - 사용자 포털
   + [User Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 - 운영자 포털
