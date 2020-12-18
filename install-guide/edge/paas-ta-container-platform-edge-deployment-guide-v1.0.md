@@ -1,4 +1,3 @@
-
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -13,17 +12,17 @@
   2.3. [kubeadm, kubectl, kubelet 설치](#2.3)  
   2.4. [Kubernetes Native Cluster 배포](#2.4)  
   2.5. [KubeEdge keadm 설치](#2.5)  
-  2.6. [KebeEdge CloudCore 설치](#2.6)  
-  2.7. [KebeEdge EdgeCore 설치](#2.7)  
+  2.6. [KubeEdge CloudCore 설치](#2.6)  
+  2.7. [KubeEdge EdgeCore 설치](#2.7)  
   2.8. [kubectl logs 기능 활성화](#2.8)  
   2.9. [KubeEdge 설치 확인](#2.9)  
 
 3. [KubeEdge Reset](#3)  
 
-4. [컨테이너 플랫폼 운영자 생성 및 Token 획득](#4)  
+4. [컨테이너 플랫폼 운영자 생성 및 Token 획득, Namespace 생성](#4)  
   4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
   4.2. [Namespace 사용자 Token 획득](#4.2)  
-  4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)
+  4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)  
   
 5. [Resource 생성 시 주의사항](#5)  
 
@@ -195,7 +194,7 @@ $ sudo apt-mark hold kubelet kubeadm kubectl
 ### <div id='2.4'> 2.4. Kubernetes Native Cluster 배포
 KubeEdge 설치를 위해서는 Master Node에 Kubernetes Cluster가 배포되어있어야 한다. 
 
-- Master Node에 Kubernetes Cluster 배포를 진행한다. 배포 완료 후 출력되는 kubeadm join 명령어는 KubeEdge 설치에서는 사용하지 않는다.
+- Master Node에 Kubernetes Cluster 배포를 진행한다. Cluster 배포는 kubeadm을 통해 진행하며 배포 완료 후 출력되는 kubeadm join 명령어는 KubeEdge 설치에서는 사용하지 않는다.
 ```
 # {MASTER_NODE_IP} : Master Node Private IP
 # --pod-network-cidr=10.244.0.0/16은 flannel CNI 설치 시 설정값
@@ -265,22 +264,6 @@ $ kubectl edit daemonsets.apps -n kube-system kube-flannel-ds-amd64
   operator: DoesNotExist
 ```
 
-- KubeEdge v1.4.0 에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. kubectl logs 기능 활성화를 위해서는 이후 Worker Node에 kube-proxy가 배포되지 않도록 조치가 필요하다.
-```
-$ kubectl edit daemonsets.apps -n kube-system kube-proxy
-```
-
-- spec.template.spec 경로에 아래 내용을 추가한다.
-```
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: node-role.kubernetes.io/edge
-              operator: DoesNotExist
-```
-
 <br>
 
 ### <div id='2.5'> 2.5. KubeEdge keadm 설치
@@ -299,7 +282,7 @@ $ sudo su -
 
 <br>
 
-### <div id='2.6'> 2.6. KebeEdge CloudCore 설치
+### <div id='2.6'> 2.6. KubeEdge CloudCore 설치
 본 항목부터 Master Node, Worker Node의 명칭을 KubeEdge 공식 가이드에 맞춰 각각 Cloud Side, Edge Side로 명시한다.
 KubeEdge Cloud Side에 CloudCore를 설치하여 설정을 진행한다.
 
@@ -316,7 +299,7 @@ KubeEdge Cloud Side에 CloudCore를 설치하여 설정을 진행한다.
 
 <br>
 
-### <div id='2.7'> 2.7. KebeEdge EdgeCore 설치
+### <div id='2.7'> 2.7. KubeEdge EdgeCore 설치
 KubeEdge Edge Side에 EdgeCore를 설치하여 설정을 진행한다.
 
 - keadm join 명령으로 Edge Side에 EdgeCore 설치를 진행한다.
@@ -404,8 +387,22 @@ edgeStream:
 # nohup cloudcore > cloudcore.log 2>&1 &
 ```
 
+- KubeEdge는 EdgeMesh를 사용하여 통신하나 현재 NodePort를 사용할 수 없는 이슈가 확인되어 kube-proxy를 사용하여야 NodePort가 정상 동작한다.  
+  kube-proxy 배포되어 있을 경우 edgecore 재시작이 불가능하므로 edgecore 재시작 시 kube-proxy 배포 여부를 우회할 수 있는 방법을 기술한다.
+
+- edgecore.service 파일을 수정한다.
+```
+$ sudo vi /etc/kubeedge/edgecore.service
+```
+
+- edgecore.service 파일의 [Service]에 다음을 추가한다.
+```
+Environment="CHECK_EDGECORE_ENVIRONMENT=false"
+```
+
 - Edge Side에서 edgecore를 재시작한다.
 ```
+# systemctl daemon-reload
 # systemctl restart edgecore.service
 ```
 
@@ -488,7 +485,7 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 ```
 
 ### <div id='4.3'> 4.3. 컨테이너 플랫폼 Temp Namespace 생성
-컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 포털 내 사용자 계정 관리를 위해 이용된다.
+컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다.
 
 - Temp Namespace를 생성한다.
 ```
@@ -518,6 +515,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ||resources|
 
 <br>
+
 
 ----
 [image 001]:images/cp-001.png
