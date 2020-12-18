@@ -155,7 +155,7 @@ aws_access_key_id_master: '<AWS_ACCESS_KEY>'                                  # 
 aws_secret_access_key_master: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
 aws_access_key_id_worker: '<AWS_ACCESS_KEY>'                                  # aws access key
 aws_secret_access_key_worker: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
-kubernetes_cluster_tag: 'kubernetes'    # Do not update!
+kubernetes_cluster_tag: 'kubernetes'                                          # Do not update!
 
 
 # STEMCELL
@@ -207,7 +207,6 @@ container_service_broker_azs: [z6]
 private_image_repository_azs: [z7]                                                     # private image repository azs
 private_image_repository_port: 15001                                                   # private image repository port (e.g. 15001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
-private_image_repository_public_url: "<PRIVATE_IMAGE_REPOSITORY_PUBLIC_URL>"           # private image repository's public IP
 private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
 
 # JENKINS BROKER
