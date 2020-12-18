@@ -11,13 +11,13 @@
 2.4. [Deployment 파일 수정](#2.4)  
 2.5. [서비스 설치](#2.5)  
 2.6. [서비스 설치 확인](#2.6)
-3. [Container 서비스 브로커](#3)  
+3. [Container 서비스 브로커](#3)
 3.1. [Container 서비스 브로커 등록](#3.1) 
 3.2. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#3.2) 
 4. [Jenkins 서비스 브로커(Optional)](#4)  
 5. [Kubernetes에 Container Platform API 배포](#5)  
 5.1. [K8s Cluster 설정](#5.1) 
-5.2. [Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성](#5.2) 
+5.2. [secret 생성](#5.2) 
 5.3. [Deployment 배포](#5.3)
  
 ## <div id='1'>1. 문서 개요
@@ -265,6 +265,7 @@ $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 ```
 
 - 서비스를 설치한다.
+
 ```
 $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
 $ ./deploy-{IAAS}.sh
@@ -273,6 +274,7 @@ $ ./deploy-{IAAS}.sh
 ### <div id='2.6'>2.6. 서비스 설치 확인
 설치 완료된 서비스를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
+
 ```
 Using environment '10.0.1.6' as client 'admin'
 
@@ -301,7 +303,8 @@ PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
 
- - 서비스 브로커 목록을 확인한다.
+- 서비스 브로커 목록을 확인한다.
+ 
  ```
 $ cf service-brokers
 Getting service brokers as admin...
