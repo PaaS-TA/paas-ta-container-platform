@@ -21,6 +21,7 @@ PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 단독배포�
 ## Container Platform 설치 가이드
 **Bosh 기반 Release의 설치 및 서비스를 등록한다.**
 - [일반 단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)  
+  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)  
 - [서비스용 단독 배포 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md)
   + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)   
 
