@@ -1,4 +1,5 @@
-### Table of Contents
+## Table of Contents
+
 1. [문서 개요](#1)  
 1.1. [목적](#1.1)  
 1.2. [범위](#1.2)  
@@ -30,7 +31,7 @@
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
 ### <div id='1.2'>1.2. 범위
-설치 범위는 Kubernetes 단독배포를 기준으로 작성하였다.
+설치 범위는 Kubernetes 서비스 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
 본 문서의 설치된 시스템 구성도이다.
@@ -45,6 +46,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 본 설치 가이드는 Linux환경에서 설치하는 것을 기준으로 작성하였다. 서비스팩 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.1, PaaS-TA 포털이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
+- [PaaS-TA 포털](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md) 
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.1 과 동일 stemcell 사용)
