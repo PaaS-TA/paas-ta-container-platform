@@ -147,7 +147,7 @@ Succeeded
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
-(e.g. {IAAS} :: AWS)
+(e.g. {IAAS} :: aws)
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
