@@ -394,8 +394,10 @@ spec:
         env:
         - name: K8S_IP
           value: "{K8S_IP}"
+        - name: CLUSTER_NAME
+          value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334"
+          value: "common-api-deployment.default.svc.cluster.local:3334"  
       imagePullSecrets:
         - name: paasta
 ---
