@@ -141,24 +141,33 @@ Succeeded
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
-(e.g. {IAAS} :: OPENSTACK)
+(e.g. {IAAS} :: aws)
 ```
-# BOSH NAME
-director_name: "micro-bosh"                                                   # bosh name (caas_cluster_name에 필요.)
+# INCEPTION OS USER NAME
+inception_os_user_name: "ubuntu"
+
+# REQUIRED FILE PATH VARIABLE
+paasta_version: "5.5"
+
+# RELEASE
+container_platform_release_name: "paasta-container-platform"
+container_platform_release_version: "1.0"
 
 # IAAS
-auth_url: 'http://<IAAS-IP>:5000/v3'                                          # auth url
-openstack_domain: '<OPENSTACK_DOMAIN>'                                        # openstack domain
-openstack_username: '<OPENSTACK_USERNAME>'                                    # openstack username
-openstack_password: '<OPENSTACK_PASSWORD>'                                    # openstack password
-openstack_project_id: '<OPENSTACK_PROJECT_ID>'                                # openstack project id
-region: '<OPENSTACK_REGION>'                                                  # region
-ignore-volume-az: true                                                        # ignore volume az (default : true)
+aws_access_key_id_master: '<AWS_ACCESS_KEY>'                                  # aws access key
+aws_secret_access_key_master: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
+aws_access_key_id_worker: '<AWS_ACCESS_KEY>'                                  # aws access key
+aws_secret_access_key_worker: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
+kubernetes_cluster_tag: 'kubernetes'                                          # Do not update!
 
 # STEMCELL
 stemcell_os: "ubuntu-xenial"                                                  # stemcell os
-stemcell_version: "621.78"                                                    # stemcell version
+stemcell_version: "621.94"                                                    # stemcell version
 stemcell_alias: "xenial"                                                      # stemcell alias
+
+# CREDHUB
+credhub_server_url: "<CREDHUB_IP>:8844"
+credhub_admin_client_secret: "eft2zkfaerzyt8g6eonj"
 
 # VM_TYPE
 vm_type_small: "small"                                                        # vm type small
@@ -168,8 +177,9 @@ vm_type_container_small: "small"                                              # 
 vm_type_container_small_api: "small"                                          # vm type small for caas's api
 
 # NETWORK
-private_networks_name: "default"                                              # private network name
-public_networks_name: "vip"                                                   # public network name
+service_private_nat_networks_name: "default"                                  # private network name
+service_private_networks_name: "default"
+service_public_networks_name: "vip"                                           # public network name
 
 # IPS
 k8s_api_server_ip: "<K8S_API_SERVER_IP>"
@@ -185,7 +195,7 @@ haproxy_azs: [z7]                                                             # 
 mariadb_port: "3306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
-mariadb_admin_user_id: "<MARIADB_ADMIN_USER_ID>"                              # mariadb admin user name (e.g. root)
+mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
 mariadb_admin_user_password: "<MARIADB_ADMIN_USER_PASSWORD>"                  # mariadb admin user password (e.g. paasta!admin)
 mariadb_role_set_administrator_code_name: "Administrator"                     # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                 # administrator role's code (e.g. RS0001)
@@ -203,7 +213,6 @@ container_service_broker_azs: [z6]
 private_image_repository_azs: [z7]                                                     # private image repository azs
 private_image_repository_port: 15001                                                   # private image repository port (e.g. 15001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
-private_image_repository_public_url: "<PRIVATE_IMAGE_REPOSITORY_PUBLIC_URL>"           # private image repository's public IP
 private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
 
 # JENKINS BROKER
