@@ -30,10 +30,11 @@ Native Kubernetes 설치 가이드 및 Kubernetes에 Container Platform을 배�
 
 ## 포털 이용 가이드
 **Container Platform 서비스를 사용할 포털 사용 방법에 대한 가이드이다.**
-- 사용자 포털
-  + [User Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 - 운영자 포털
-  + [Admin Portal](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
+  + [운영자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
+- 사용자 포털
+  + [사용자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
+
 
 ## 프로젝트 소스 파일 
 **Container Platform서비스를 제공할 어플리케이션 소스이다.** 
