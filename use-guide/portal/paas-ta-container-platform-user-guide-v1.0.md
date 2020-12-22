@@ -62,10 +62,10 @@
 # <div id='1'/> 1. 문서 개요
 
 ## <div id='1-1'/> 1.1. 목적
-본 문서는 Container Platform 서비스를 사용할 사용자의 사용 방법에 대해 기술하였다.
+본 문서는 Container Platform을 사용할 사용자의 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 Container Platform 서비스를 사용할 사용자의 사용 방법에 대해 작성되었다.
+본 문서는 Windows 환경을 기준으로 Container Platform을 사용할 사용자의 사용 방법에 대해 작성되었다.
 
 # <div id='2'/> 2. Container Platform 접속
 
@@ -83,14 +83,14 @@
 
 ![IMG_003]
 
-## <div id='3'/> 3. Container Platform 서비스 사용자 메뉴얼
+## <div id='3'/> 3. Container Platform 사용자 메뉴얼
 
 
-## <div id='3-1'/> 3.1. Container Platform 서비스 사용자 메뉴 구성
+## <div id='3-1'/> 3.1. Container Platform 사용자 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
-| Intro | Overview | Container Platform 서비스 대시보드 |
-|| Access | Container Platform 서비스 CLI 사용을 위한 환경 설정 정보 관리 |
+| Intro | Overview | Container Platform 대시보드 |
+|| Access | Container Platform CLI 사용을 위한 환경 설정 정보 관리 |
 || Private Registry | Private Registry 를 Container 상에 배포 및 사용하기 위한 설정 정보 관리 |
 | Workloads | Overview | Workloads 대시보드 |
 || Deployments | Deployments 정보 관리 |
@@ -102,8 +102,8 @@
 | Roles | Roles | Role 조회 |
 
 
-## <div id='3-2'/> 3.2. Container Platform 서비스 사용자 메뉴 설명
-본 장에서는 Container Platform 서비스의 5개 메뉴에 대한 설명을 기술한다.
+## <div id='3-2'/> 3.2. Container Platform 사용자 메뉴 설명
+본 장에서는 Container Platform의 5개 메뉴에 대한 설명을 기술한다.
 
 ### <div id='3-2-1'/> 3.2.1. Intro
 
@@ -116,7 +116,7 @@
 
 
 #### <div id='3-2-1-2'/> 3.2.1.2. Access
-- Container 서비스의 CLI 사용을 위한 환경 설정 정보를 조회한다.
+- Container Platform의 CLI 사용을 위한 환경 설정 정보를 조회한다.
 
 1. Intro의 Access 탭을 클릭하여 Access 페이지로 이동한다.
 
@@ -168,18 +168,18 @@
 | CLUSTER_ADMIN | cluster-admin | User삭제, Role변경 |
 | NAMESPACE_ADMIN | paas-ta-container-platform-admin-role | Role변경 |
 | USER | paas-ta-container-platform-init-role | 조회만 가능 |
-- 본 장에서는 Container Platform 서비스를 사용하는 사용자들의 정보 조회 수정 및 삭제, Role 정보 조회 및 변경에 대한 설명을 기술한다.
+- 본 장에서는 Container Platform을 사용하는 사용자들의 정보 조회 수정 및 삭제, Role 정보 조회 및 변경에 대한 설명을 기술한다.
 - Role 변경은 cluster-admin Role을 가진 CLUSTER_ADMIN과 paas-ta-container-platform-admin-role Role을 가진 NAMESPACE_ADMIN 둘다 가능하다.
 - User 삭제는 cluster-admin Role을 가진 CLUSTER_ADMIN만이 가능하다.
 
 
 #### <div id='3-2-2-1'/> 3.2.2.1. My info 수정
-1. Container Platform 서비스를 사용하는 User의 정보를 수정한다.
+1. Container Platform을 사용하는 User의 정보를 수정한다.
 
 ![IMG_016]
 
 #### <div id='3-2-2-2'/> 3.2.2.2. User 목록 조회
-1. Container Platform 서비스를 사용하는 User 목록을 조회한다.
+1. Container Platform을 사용하는 User 목록을 조회한다.
 
 ![IMG_017]
 
@@ -198,7 +198,7 @@
 ### <div id='3-2-3'/> 3.2.3. Roles
 #### <div id='3-2-3-1'/> 3.2.3.1. Role 목록 조회
 
-1. Container Platform 서비스의 사용 가능한 권한을 조회한다.
+1. Container Platform 사용 가능한 권한을 조회한다.
 
 ![IMG_022]
 
