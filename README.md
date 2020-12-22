@@ -5,20 +5,19 @@ Native Kubernetes 설치 가이드(KubeEdge 설치, KubeSpray 설치) 및 Kubern
 
 ## Edge 배포
 - [KubeEdge 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)  
-  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/edge)
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/edge)
 
 ## 단독 배포   
-- [Kubespray 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)  
-  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
+- [Kubespray 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - [단독 배포 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-guide-v1.0.md)  
-  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)  
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)  
   + [Release 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev)
 
 ## CaaS 배포 
 - [Kubespray 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md)  
-  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - [CaaS 배포 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md)
-  + [설치 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)   
+  + [설치 및  파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)   
   + [Release 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev) 
 
 ## 포털 이용 가이드
