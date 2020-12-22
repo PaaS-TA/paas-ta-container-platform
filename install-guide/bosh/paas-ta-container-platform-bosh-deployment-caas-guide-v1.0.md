@@ -356,7 +356,7 @@ spec:
     spec:
       containers:
       - name: service-common-api
-        image: {HAProxy_IP}:5000/container-platform/container-service-common-api:latest
+        image: {HAProxy_IP}:5000/container-service-common-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3334
