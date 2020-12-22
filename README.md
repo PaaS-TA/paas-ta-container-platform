@@ -36,6 +36,10 @@ Native Kubernetes 설치 가이드(KubeEdge 설치, KubeSpray 설치) 및 Kubern
   + https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev
 - Webadmin 개발 소스 파일
   + https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev
+
+## 릴리즈  
+- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev  
+- https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev
   
-## License
+## 라이선스
 paas-ta-container-platform은 [Apache-2.0 License](http://www.apache.org/licenses/LICENSE-2.0)를 사용합니다.
