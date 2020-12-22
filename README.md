@@ -1,7 +1,7 @@
 # PaaS-TA 컨테이너 플랫폼
 
 ## 소개
-Native Kubernetes 설치 가이드(KubeEdge 설치, KubeSpray 설치) 및 Kubernetes에 Container Platform을 배포하여 사용할 수 있는 방법(PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 형태의 서비스 배포, 단독 배포)에 대한 설치 및 활용 가이드를 다루고 있습니다.
+Native Kubernetes 설치 가이드(KubeEdge 설치, KubeSpray 설치) 및 Kubernetes에 Container Platform을 배포하여 사용할 수 있는 방법(PaaS-TA를 통해 서비스 형태로 배포되는 CaaS 배포, 단독 배포)에 대한 설치 및 활용 가이드를 다루고 있습니다.
 
 ## Edge 배포
 - [KubeEdge 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md)  
