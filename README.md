@@ -39,4 +39,4 @@ Native Kubernetes 설치 가이드(KubeEdge 설치, KubeSpray 설치) 및 Kubern
 
   
 ## 라이선스
-paas-ta-container-platform은 [Apache-2.0 License](http://www.apache.org/licenses/LICENSE-2.0)를 사용합니다.
+[Apache-2.0 License](http://www.apache.org/licenses/LICENSE-2.0)를 사용합니다.
