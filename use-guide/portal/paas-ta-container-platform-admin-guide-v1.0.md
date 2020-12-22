@@ -6,9 +6,9 @@
 2. [Container Platform 접속](#2)
     * [2.1. PaaS-TA 운영자 포털 회원가입](#2-1)
     * [2.2. PaaS-TA 운영자 포털 로그인](#2-2)    
-3. [Container Platform 서비스 운영자 메뉴얼](#3)
-    * [3.1. Container Platform 서비스 운영자 메뉴 구성](#3-1)
-    * [3.2. Container Platform 서비스 운영자 메뉴 설명](#3-2)
+3. [Container Platform 운영자 메뉴얼](#3)
+    * [3.1. Container Platform 운영자 메뉴 구성](#3-1)
+    * [3.2. Container Platform 운영자 메뉴 설명](#3-2)
     * [3.2.1. Overview](#3-2-1)
     * [3.2.1.1. Overview 목록 조회](#3-2-1-1)
     * [3.2.1.2. Overview Namespace 변경](#3-2-1-2)
@@ -99,10 +99,10 @@
 # <div id='1'/> 1. 문서 개요
 
 ## <div id='1-1'/> 1.1. 목적
-본 문서는 Container Platform 서비스를 사용할 운영자의 사용 방법에 대해 기술하였다.
+본 문서는 Container Platform을 사용할 운영자의 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 Container Platform 서비스를 사용할 운영자의 사용 방법에 대해 작성되었다.
+본 문서는 Windows 환경을 기준으로 Container Platform을 사용할 운영자의 사용 방법에 대해 작성되었다.
 
 # <div id='2'/> 2. Container Platform 접속
 
@@ -120,13 +120,13 @@
 
 ![IMG_003]
 
-# <div id='3'/> 3. Container Platform 서비스 운영자 메뉴얼
+# <div id='3'/> 3. Container Platform 운영자 메뉴얼
 
 
-## <div id='3-1'/> 3.1. Container Platform 서비스 운영자 메뉴 구성
+## <div id='3-1'/> 3.1. Container Platform 운영자 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
-|| Overview | Container Platform 서비스 대시보드 |
+|| Overview | Container Platform 대시보드 |
 | Clusters | Namespaces | Namespaces 정보 관리 |
 || Nodes | Nodes 정보 관리 |
 | Workloads | Deployments | Deployments 정보 관리 |
@@ -142,8 +142,8 @@
 || Limit Ranges | Limit Ranges 정보 관리 |
 
 
-## <div id='3-2'/> 3.2. Container Platform 서비스 운영자 메뉴 설명
-본 장에서는 Container Platform 서비스의 메뉴에 대한 설명을 기술한다.
+## <div id='3-2'/> 3.2. Container Platform 운영자 메뉴 설명
+본 장에서는 Container Platform의 메뉴에 대한 설명을 기술한다.
 
 ### <div id='3-2-1'/> 3.2.1. Overview
 #### <div id='3-2-1-1'/> 3.2.1.1. Overview 목록 조회
