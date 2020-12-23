@@ -282,7 +282,8 @@ $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 - 서비스를 설치한다.
 
 ```
-$ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
+$ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh
+$ chmod +x *.sh
 $ ./deploy-{IAAS}-svc.sh
 ```
 
