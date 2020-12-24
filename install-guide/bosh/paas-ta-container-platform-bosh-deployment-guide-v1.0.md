@@ -306,7 +306,7 @@ $ sudo systemctl restart docker
 2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
 
 ```
-$ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
+$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 ### <div id='3.1'>3.1. 단독 배포 시 Deployment
@@ -343,7 +343,7 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
@@ -399,7 +399,7 @@ spec:
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"  
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
@@ -454,7 +454,7 @@ spec:
         - name: CONTAINER_PLATFORM_API_URL
           value: "http://api-deployment.default.svc.cluster.local:3333"     
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
