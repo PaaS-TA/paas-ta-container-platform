@@ -329,7 +329,7 @@ $ sudo systemctl restart docker
 ### <div id='3.2'>3.2. Secret 생성
 Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
 ```
-$ kubectl create secret docker-registry paasta --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
+$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 
@@ -368,7 +368,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
@@ -420,7 +420,7 @@ spec:
         - name: K8S_IP
           value: {K8S_IP}
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
@@ -476,7 +476,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
