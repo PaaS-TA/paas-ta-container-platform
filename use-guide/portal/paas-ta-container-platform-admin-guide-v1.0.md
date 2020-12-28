@@ -745,10 +745,11 @@
 1. Limit Range 상세에서 삭제 버튼을 클릭하여 Limit Range 삭제를 한다.
 
 #### Limit Range 상세 페이지
-![IMG_145]
+![IMG_158]
 
 #### Limit Range 삭제 팝업창
-![IMG_146]
+![IMG_159]
+![IMG_160]
 
 ----
 
