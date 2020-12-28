@@ -12,6 +12,7 @@
     * [3.2.1. Overview](#3-2-1)
     * [3.2.1.1. Overview 목록 조회](#3-2-1-1)
     * [3.2.1.2. Overview Namespace 변경](#3-2-1-2)
+    * [3.2.1.3. Overview My info 변경](#3-2-1-2)
     * [3.2.2. Clusters 메뉴](#3-2-2)
     * [3.2.2.1. Namespaces](#3-2-2-1)
     * [3.2.2.1.1. Namespace 목록 조회](#3-2-2-1-1)
@@ -114,11 +115,12 @@
 2. Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
 
 ![IMG_002]
+![IMG_003]
 
 ## <div id='2-2'/> 2.2. PaaS-TA 운영자 포털 로그인
 1. 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 PaaS-TA 운영자 포털에 로그인 한다.
 
-![IMG_003]
+![IMG_004]
 
 # <div id='3'/> 3. Container Platform 운영자 메뉴얼
 
@@ -151,31 +153,38 @@
 
 1. Login 후 첫 화면으로 Overview 페이지로 이동한다.
 
-![IMG_004]
+![IMG_005]
 
 #### <div id='3-2-1-2'/> 3.2.1.2. Overview Namespace 변경
 - 화면 상단 Select Box를 누르면 전체 Namespace 목록에서 원하는 Namespace를 선택한다.
 
 1. Select Box에서 Namespace를 선택하면 해당 Namespace에 대한 Overview 페이지로 이동한다.
 
-![IMG_005]
 ![IMG_006]
+![IMG_007]
+
+#### <div id='3-2-1-3'/> 3.2.1.3. Overview My info 변경
+- 화면 우측상단 톱니바퀴 아이콘을 클릭한다.
+
+1. My info 팝업창에서 Password, E-mail 정보를 수정 한다.
+
+![IMG_008]
 
 ### <div id='3-2-2'/> 3.2.2. Clusters 메뉴
 #### <div id='3-2-2-1'/> 3.2.2.1. Namespaces
 ##### <div id='3-2-2-1-1'/> 3.2.2.1.1. Namespace 목록 조회
 1. Clusters 메뉴의 Namespaces를 클릭하여 Namespace 목록 페이지로 이동한다.
 
-![IMG_007]
+![IMG_009]
 
 ##### <div id='3-2-2-1-2'/> 3.2.2.1.2. Namespace 상세 조회
 1. Namespace 목록에서 Namespace명을 클릭하여 Namespace 상세 페이지로 이동한다.
 
 #### Namespace 목록 페이지
-![IMG_008]
+![IMG_010]
 
 #### Namespace 상세 페이지
-![IMG_009]
+![IMG_011]
 
 ##### <div id='3-2-2-1-3'/> 3.2.2.1.3. Namespace 생성
 - Namespace 생성 페이지에 Resource Quotas, Limit Ranges를 생성시 선택할 수 있는 Check Box가 있다.
@@ -183,378 +192,386 @@
 1. Namespace 목록에서 생성 버튼을 클릭하여 Namespace 생성 페이지로 이동한다.
 
 #### Namespace 목록 페이지
-![IMG_010]
+![IMG_012]
 
 #### Namespace 생성 페이지
-![IMG_011]
-![IMG_012]
 ![IMG_013]
 ![IMG_014]
 ![IMG_015]
+![IMG_016]
+![IMG_017]
 
 ##### <div id='3-2-2-1-4'/> 3.2.2.1.4. Namespace 수정
 1. Namespace 상세에서 수정 버튼을 클릭하여 Namespace 수정 페이지로 이동한다.
 
 #### Namespace 상세 페이지
-![IMG_016]
+![IMG_018]
 
 #### Namespace 수정 페이지
-![IMG_017]
-![IMG_018]
 ![IMG_019]
+![IMG_020]
+![IMG_021]
 
 
 ##### <div id='3-2-2-1-5'/> 3.2.2.1.5. Namespace 삭제
 1. Namespace 상세에서 삭제 버튼을 클릭하여 Namespace 삭제를 한다.
 
 #### Namespace 상세 페이지
-![IMG_020]
+![IMG_022]
 
 #### Namespace 삭제 팝업창
-![IMG_021]
+![IMG_023]
+![IMG_024]
 
 #### <div id='3-2-2-2'/> 3.2.2.2. Nodes
 ##### <div id='3-2-2-2-1'/> 3.2.2.2.1. Node 목록 조회
 1. Clusters 메뉴의 Nodes를 클릭하여 Node 목록 페이지로 이동한다.
 
-![IMG_022]
+![IMG_025]
 
 ##### <div id='3-2-2-2-2'/> 3.2.2.2.2. Node 상세 조회
 1. Node 목록에서 Node명을 클릭하여 Node 상세 페이지로 이동한다.
 
 #### Node 목록 페이지
-![IMG_023]
+![IMG_026]
 
 #### Node 상세 페이지
-![IMG_024]
+![IMG_027]
 
 ### <div id='3-2-3'/> 3.2.3. Workloads 메뉴
 #### <div id='3-2-3-1'/> 3.2.3.1 Deployment
 ##### <div id='3-2-3-1-1'/> 3.2.3.1.1. Deployment 목록 조회
 1. Workloads의 Deployments를 클릭하여 Deployment 목록 페이지로 이동한다.
 
-![IMG_025]
+![IMG_028]
 
 ##### <div id='3-2-3-1-2'/> 3.2.3.1.2. Deployment 상세 조회
 1. Deployment 목록에서 Deployment명을 클릭하여 Deployment 상세 페이지로 이동한다.
 
 #### Deployment 목록 페이지
-![IMG_026]
+![IMG_029]
 
 #### Deployment 상세 페이지
-![IMG_027]
+![IMG_030]
 
 ##### <div id='3-2-3-1-3'/> 3.2.3.1.3. Deployment 생성
 1. Deployment 목록에서 생성 버튼을 클릭하여 Deployment 생성 팝업창이 뜬다.
 
 #### Deployment 목록 페이지
-![IMG_028]
+![IMG_031]
 
 #### Deployment 생성 팝업창
-![IMG_029]
-![IMG_030]
+![IMG_032]
+![IMG_033]
 
 
 ##### <div id='3-2-3-1-4'/> 3.2.3.1.4. Deployment 수정
 1. Deployment 상세에서 수정 버튼을 클릭하여 Deployment 수정 팝업창이 뜬다.
 
 #### Deployment 상세 페이지
-![IMG_031]
+![IMG_034]
 
 #### Deployment 수정 팝업창
-![IMG_032]
-![IMG_033]
+![IMG_035]
+![IMG_036]
 
 ##### <div id='3-2-3-1-5'/> 3.2.3.1.5. Deployment 삭제
 1. Deployment 상세에서 삭제 버튼을 클릭하여 Deployment 삭제를 한다.
 
 #### Deployment 상세 페이지
-![IMG_034]
+![IMG_037]
 
 #### Deployment 삭제 팝업창
-![IMG_035]
+![IMG_038]
+![IMG_039]
 
 #### <div id='3-2-3-2'/> 3.2.3.2. Pods
 ##### <div id='3-2-3-2-1'/> 3.2.3.2.1. Pod 목록 조회
 1. Workloads의 Pods를 클릭하여 Pod 목록 페이지로 이동한다.
 
-![IMG_036]
+![IMG_040]
 
 ##### <div id='3-2-3-2-2'/> 3.2.3.2.2. Pod 상세 조회
 1. Pod 목록에서 Pod명을 클릭하여 Pod 상세 페이지로 이동한다.
 
 #### Pod 목록 페이지
-![IMG_037]
+![IMG_041]
 
 #### Pod 상세 페이지
-![IMG_038]
+![IMG_042]
 
 ##### <div id='3-2-3-2-3'/> 3.2.3.2.3. Pod 생성
 1. Pod 목록에서 생성 버튼을 클릭하여 Pod 생성 팝업창이 뜬다.
 
 #### Pod 목록 페이지
-![IMG_039]
+![IMG_043]
 
 #### Pod 생성 팝업창
-![IMG_040]
-![IMG_041]
+![IMG_044]
+![IMG_045]
 
 ##### <div id='3-2-3-2-4'/> 3.2.3.2.4. Pod 수정
 1. Pod 상세에서 수정 버튼을 클릭하여 Pod 수정 팝업창이 뜬다.
 
 #### Pod 상세 페이지
-![IMG_042]
+![IMG_046]
 
 #### Pod 수정 팝업창
-![IMG_043]
-![IMG_044]
+![IMG_047]
+![IMG_048]
 
 ##### <div id='3-2-3-2-5'/> 3.2.3.2.5. Pod 삭제
 1. Pod 상세에서 삭제 버튼을 클릭하여 Pod 삭제를 한다.
 
 #### Pod 상세 페이지
-![IMG_045]
+![IMG_049]
 
 #### Pod 삭제 팝업창
-![IMG_046]
+![IMG_050]
+![IMG_051]
 
 #### <div id='3-2-3-3'/> 3.2.3.3. Replica Sets
 ##### <div id='3-2-3-3-1'/> 3.2.3.3.1. Replica Set 목록 조회
 1. Workloads의 Replica Sets을 클릭하여 Replica Set 목록 페이지로 이동한다.
 
-![IMG_047]
+![IMG_052]
 
 ##### <div id='3-2-3-3-2'/> 3.2.3.3.2. Replica Set 상세 조회
 1. Replica Set 목록에서 Replica Set명을 클릭하여 Replica Set 상세 페이지로 이동한다.
 
 #### Replica Set 목록 페이지
-![IMG_048]
+![IMG_053]
 
 #### Replica Set 상세 페이지
-![IMG_049]
+![IMG_054]
 
 ##### <div id='3-2-3-3-3'/> 3.2.3.3.3. Replica Set 생성
 1. Replica Set 목록에서 생성 버튼을 클릭하여 Replica Set 생성 팝업창이 뜬다.
 
 #### Replica Set 목록 페이지
-![IMG_050]
+![IMG_055]
 
 #### Replica Set  생성 팝업창
-![IMG_051]
-![IMG_052]
+![IMG_056]
+![IMG_057]
 
 ##### <div id='3-2-3-3-4'/> 3.2.3.3.4. Replica Set 수정
 1. Replica Set 상세에서 수정 버튼을 클릭하여 Replica Set 수정 팝업창이 뜬다.
 
 #### Replica Set 상세 페이지
-![IMG_053]
+![IMG_058]
 
 #### Replica Set 수정 팝업창
-![IMG_054]
-![IMG_055]
+![IMG_059]
+![IMG_060]
 
 ##### <div id='3-2-3-3-5'/> 3.2.3.3.5. Replica Set 삭제
 1. Replica Set 상세에서 삭제 버튼을 클릭하여 Replica Set 삭제를 한다.
 
 #### Replica Set 상세 페이지
-![IMG_056]
+![IMG_061]
 
 #### Replica Set 삭제 팝업창
-![IMG_057]
+![IMG_062]
+![IMG_063]
 
 ### <div id='3-2-4'/> 3.2.4. Services 메뉴
 #### <div id='3-2-4-1'/> 3.2.4.1. Service 목록 조회
 1. Services를 클릭하여 Service 목록 페이지로 이동한다.
 
-![IMG_058]
+![IMG_064]
 
 #### <div id='3-2-4-2'/> 3.2.4.2. Service 상세 조회
 1. Service 목록에서 Service명을 클릭하여 Service 상세 페이지로 이동한다.
 
 #### Service 목록 페이지
-![IMG_059]
+![IMG_065]
 
 #### Service 상세 페이지
-![IMG_060]
+![IMG_066]
 
 #### <div id='3-2-4-3'/> 3.2.4.3. Service 생성
 1. Service 목록에서 생성 버튼을 클릭하여 Service 생성 팝업창이 뜬다.
 
 #### Service 목록 페이지
-![IMG_061]
+![IMG_067]
 
 #### Service 생성 팝업창
-![IMG_062]
-![IMG_063]
+![IMG_068]
+![IMG_069]
 
 #### <div id='3-2-4-4'/> 3.2.4.4. Service 수정
 1. Service 상세에서 수정 버튼을 클릭하여 Service 수정 팝업창이 뜬다.
 
 #### Service 상세 페이지
-![IMG_064]
+![IMG_070]
 
 #### Service 수정 팝업창
-![IMG_065]
-![IMG_066]
+![IMG_071]
+![IMG_072]
 
 #### <div id='3-2-4-5'/> 3.2.4.5. Service 삭제
 
 1. Service 상세에서 삭제 버튼을 클릭하여 Service 삭제를 한다.
 
 #### Service 상세 페이지
-![IMG_067]
+![IMG_073]
 
 #### Service 삭제 팝업창
-![IMG_068]
+![IMG_074]
+![IMG_075]
 
 ### <div id='3-2-5'/> 3.2.5. Storages 메뉴
 #### <div id='3-2-5-1'/> 3.2.5.1. Persistent Volumes
 ##### <div id='3-2-5-1-1'/> 3.2.5.1.1. Persistent Volume 목록 조회
 1. Storages의 Persistent Volumes를 클릭하여 Persistent Volume 목록 페이지로 이동한다.
 
-![IMG_069]
+![IMG_076]
 
 ##### <div id='3-2-5-1-2'/> 3.2.5.1.2. Persistent Volume 상세 조회
 1. Persistent Volume 목록에서 Persistent Volume명을 클릭하여 Persistent Volume 상세 페이지로 이동한다.
 
 #### Persistent Volume 목록 페이지
-![IMG_070]
+![IMG_077]
 
 #### Persistent Volume 상세 페이지
-![IMG_071]
+![IMG_078]
 
 ##### <div id='3-2-5-1-3'/> 3.2.5.1.3. Persistent Volumee 생성
 1. Persistent Volume 목록에서 생성 버튼을 클릭하여 Persistent Volume 생성 팝업창이 뜬다.
 
 #### Persistent Volume 목록 페이지
-![IMG_072]
+![IMG_079]
 
 #### Persistent Volume 생성 팝업창
-![IMG_073]
-![IMG_074]
+![IMG_080]
+![IMG_081]
 
 ##### <div id='3-2-5-1-4'/> 3.2.5.1.4. Persistent Volume 수정
 1. Persistent Volume 상세에서 수정 버튼을 클릭하여 Persistent Volume 수정 팝업창이 뜬다.
 
 #### Persistent Volume 상세 페이지
-![IMG_075]
+![IMG_082]
 
 #### Persistent Volume 수정 팝업창
-![IMG_076]
-![IMG_077]
+![IMG_083]
+![IMG_084]
 
 ##### <div id='3-2-5-1-5'/> 3.2.5.1.5. Persistent Volume 삭제
 1. Persistent Volume 상세에서 삭제 버튼을 클릭하여 Persistent Volume 삭제를 한다.
 
 #### Persistent Volume 상세 페이지
-![IMG_078]
+![IMG_085]
 
 #### Persistent Volume 삭제 팝업창
-![IMG_079]
+![IMG_086]
+![IMG_087]
 
 #### <div id='3-2-5-2'/> 3.2.5.2. Persistent Volume Claims
 ##### <div id='3-2-5-2-1'/> 3.2.5.2.1. Persistent Volume Claim 목록 조회
 1. Storages의 Persistent Volume Claims를 클릭하여 Persistent Volume Claim 목록 페이지로 이동한다.
 
-![IMG_080]
+![IMG_088]
 
 ##### <div id='3-2-5-2-2'/> 3.2.5.2.2. Persistent Volume Claim 상세 조회
 1. Persistent Volume Claim 목록에서 Persistent Volume명을 클릭하여 Persistent Volume Claim 상세 페이지로 이동한다.
 
 #### Persistent Volume Claim 목록 페이지
-![IMG_081]
+![IMG_089]
 
 #### Persistent Volume Claim 상세 페이지
-![IMG_082]
+![IMG_090]
 
 ##### <div id='3-2-5-2-3'/> 3.2.5.2.3. Persistent Volumee Claim 생성
 1. Persistent Volume Claim 목록에서 생성 버튼을 클릭하여 Persistent Volume Claim 생성 팝업창이 뜬다.
 
 #### Persistent Volume Claim 목록 페이지
-![IMG_083]
+![IMG_091]
 
 #### Persistent Volume Claim 생성 팝업창
-![IMG_084]
-![IMG_085]
+![IMG_092]
+![IMG_093]
 
 ##### <div id='3-2-5-2-4'/> 3.2.5.2.4. Persistent Volume Claim 수정
 1. Persistent Volume Claim 상세에서 수정 버튼을 클릭하여 Persistent Volume Claim 수정 팝업창이 뜬다.
 
 #### Persistent Volume Claim 상세 페이지
-![IMG_086]
+![IMG_094]
 
 #### Persistent Volume Claim 수정 팝업창
-![IMG_087]
-![IMG_088]
+![IMG_095]
+![IMG_096]
 
 ##### <div id='3-2-5-2-5'/> 3.2.5.2.5. Persistent Volume Claim 삭제
 1. Persistent Volume Claim 상세에서 삭제 버튼을 클릭하여 Persistent Volume Claim 삭제를 한다.
 
 #### Persistent Volume Claim 상세 페이지
-![IMG_089]
+![IMG_097]
 
 #### Persistent Volume Claim 삭제 팝업창
-![IMG_090]
+![IMG_098]
+![IMG_099]
 
 #### <div id='3-2-5-3'/> 3.2.5.3. Storage Classes
 ##### <div id='3-2-5-3-1'/> 3.2.5.3.1. Storage Class 목록 조회
 1. Storages의 Storage Classes를 클릭하여 Storage Class 목록 페이지로 이동한다.
 
-![IMG_091]
+![IMG_100]
 
 ##### <div id='3-2-5-3-2'/> 3.2.5.3.2. Storage Class 상세 조회
 1. Storage Class 목록에서 Storage Class명을 클릭하여 Storage Class 상세 페이지로 이동한다.
 
 #### Storage Class 목록 페이지
-![IMG_092]
+![IMG_101]
 
 #### Storage Class 상세 페이지
-![IMG_093]
+![IMG_102]
 
 ##### <div id='3-2-5-3-3'/> 3.2.5.3.3. Storage Class 생성
 1. Storage Class 목록에서 생성 버튼을 클릭하여 Storage Class 생성 팝업창이 뜬다.
 
 #### Storage Class 목록 페이지
-![IMG_094]
+![IMG_103]
 
 #### Storage Class 생성 팝업창
-![IMG_095]
-![IMG_096]
+![IMG_104]
+![IMG_105]
 
 ##### <div id='3-2-5-3-4'/> 3.2.5.3.4. Storage Class 수정
 1. Storage Class 상세에서 수정 버튼을 클릭하여 Storage Class 수정 팝업창이 뜬다.
 
 #### Storage Class 상세 페이지
-![IMG_097]
+![IMG_106]
 
 #### Storage Class 수정 팝업창
-![IMG_098]
-![IMG_099]
+![IMG_107]
+![IMG_108]
 
 ##### <div id='3-2-5-3-5'/> 3.2.5.3.5. Storage Class 삭제
 1. Storage Class 상세에서 삭제 버튼을 클릭하여 Storage Class 삭제를 한다.
 
 #### Storage Class 상세 페이지
-![IMG_100]
+![IMG_109]
 
 #### Storage Class 삭제 팝업창
-![IMG_101]
+![IMG_110]
+![IMG_111]
 
 ### <div id='3-2-6'/> 3.2.6. Managements
 #### <div id='3-2-6-1'/> 3.2.6.1. Users
 ##### <div id='3-2-6-1-1'/> 3.2.6.1.1. User 목록 조회
 1. Managements 메뉴의 Users를 클릭하여 User 목록 페이지로 이동한다.
 
-![IMG_102]
+![IMG_112]
 
 ##### <div id='3-2-6-1-2'/> 3.2.6.1.2. User 상세 조회
 1. User 목록에서 User명을 클릭하여 User 상세 페이지로 이동한다.
 
 #### User 목록 페이지
-![IMG_103]
+![IMG_113]
 
 #### User 상세 페이지
-![IMG_104]
+![IMG_114]
 
 ##### <div id='3-2-6-1-3'/> 3.2.6.1.3. User 생성
 - User 생성 페이지에 Namespaces, Roles를 선택할 수 있는 Check Box 팝업창이 있다.
@@ -562,12 +579,12 @@
 1. User 목록에서 생성 버튼을 클릭하여 User 생성 페이지로 이동한다.
 
 #### User 목록 페이지
-![IMG_105]
+![IMG_115]
 
 #### User 생성 팝업창
-![IMG_106]
-![IMG_107]
-![IMG_108]
+![IMG_116]
+![IMG_117]
+![IMG_118]
 
 ##### <div id='3-2-6-1-4'/> 3.2.6.1.4. User 수정
 - User 수정 페이지에 Namespaces, Roles를 변경할 수 있는 Check Box 팝업창이 있다.
@@ -575,35 +592,36 @@
 1. User 상세에서 수정 버튼을 클릭하여 User 수정 페이지로 이동한다.
 
 #### User 상세 페이지
-![IMG_109]
+![IMG_119]
 
 #### User 수정 팝업창
-![IMG_110]
-![IMG_111]
+![IMG_120]
+![IMG_121]
 
 ##### <div id='3-2-6-1-5'/> 3.2.6.1.5. User 삭제
 1. User 상세에서 삭제 버튼을 클릭하여 User 삭제를 한다.
 
 #### User 상세 페이지
-![IMG_112]
+![IMG_122]
 
 #### User 삭제 팝업창
-![IMG_113]
+![IMG_123]
+![IMG_124]
 
 #### <div id='3-2-6-2'/> 3.2.6.2. Roles
 ##### <div id='3-2-6-2-1'/> 3.2.6.2.1. Role 목록 조회
 1. Managements 메뉴의 Roles를 클릭하여 Role 목록 페이지로 이동한다.
 
-![IMG_114]
+![IMG_125]
 
 ##### <div id='3-2-6-2-2'/> 3.2.6.2.2. Role 상세 조회
 1. Role 목록에서 Role명을 클릭하여 Role 상세 페이지로 이동한다.
 
 #### Role 목록 페이지
-![IMG_115]
+![IMG_126]
 
 #### Role 상세 페이지
-![IMG_116]
+![IMG_127]
 
 ##### <div id='3-2-6-2-3'/> 3.2.6.2.3. Role 생성
 - Role 생성 페이지에 Resource Quotas, Limit Ranges를 선택할 수 있는 Check Box 팝업창이 있다.
@@ -611,11 +629,11 @@
 1. Role 목록에서 생성 버튼을 클릭하여 Role 생성 페이지로 이동한다.
 
 #### Role 목록 페이지
-![IMG_117]
+![IMG_128]
 
 #### Role 생성 팝업창
-![IMG_118]
-![IMG_119]
+![IMG_129]
+![IMG_130]
 
 ##### <div id='3-2-6-2-4'/> 3.2.6.2.4. Role 수정
 - Role 수정 페이지에 Resource Quotas, Limit Ranges를 변경할 수 있는 Check Box 팝업창이 있다.
@@ -623,79 +641,81 @@
 1. Role 상세에서 수정 버튼을 클릭하여 Role 수정 페이지로 이동한다.
 
 #### Role 상세 페이지
-![IMG_120]
+![IMG_131]
 
 #### Role 수정 팝업창
-![IMG_121]
-![IMG_122]
+![IMG_132]
+![IMG_133]
 
 ##### <div id='3-2-6-2-5'/> 3.2.6.2.5. Role 삭제
 1. Role 상세에서 삭제 버튼을 클릭하여 Role 삭제를 한다.
 
 #### Role 상세 페이지
-![IMG_123]
+![IMG_134]
 
 #### Role 삭제 팝업창
-![IMG_124]
+![IMG_135]
+![IMG_136]
 
 #### <div id='3-2-6-3'/> 3.2.6.3. Resource Quotas
 ##### <div id='3-2-6-3-1'/> 3.2.6.3.1. Resource Quota 목록 조회
 1. Managements 메뉴의 Resource Quotas를 클릭하여 Resource Quota 목록 페이지로 이동한다.
 
-![IMG_125]
+![IMG_137]
 
 ##### <div id='3-2-6-3-2'/> 3.2.6.3.2. Resource Quota 상세 조회
 1. Resource Quota 목록에서 Resource Quota명을 클릭하여 Resource Quota 상세 페이지로 이동한다.
 
 #### Resource Quota 목록 페이지
-![IMG_126]
+![IMG_138]
 
 #### Resource Quota 상세 페이지
-![IMG_127]
+![IMG_139]
 
 ##### <div id='3-2-6-3-3'/> 3.2.6.3.3. Resource Quota 생성
 1. Resource Quota 목록에서 생성 버튼을 클릭하여 Resource Quota 생성 팝업창이 뜬다.
 
 #### Resource Quota 목록 페이지
-![IMG_128]
+![IMG_140]
 
 #### Resource Quota 생성 팝업창
-![IMG_129]
-![IMG_130]
+![IMG_141]
+![IMG_142]
 
 ##### <div id='3-2-6-3-4'/> 3.2.6.3.4. Resource Quota 수정
 1. Resource Quota 상세에서 수정 버튼을 클릭하여 Resource Quota 수정 팝업창이 뜬다.
 
 #### Resource Quota 상세 페이지
-![IMG_131]
+![IMG_143]
 
 #### Resource Quota 수정 팝업창
-![IMG_132]
-![IMG_133]
+![IMG_144]
+![IMG_145]
 
 ##### <div id='3-2-6-3-5'/> 3.2.6.3.5. Resource Quota 삭제
 1. Resource Quota 상세에서 삭제 버튼을 클릭하여 Resource Quota 삭제를 한다.
 
 #### Resource Quota 상세 페이지
-![IMG_134]
+![IMG_146]
 
 #### Resource Quota 삭제 팝업창
-![IMG_135]
+![IMG_147]
+![IMG_148]
 
 #### <div id='3-2-6-4'/> 3.2.6.4. Limit Ranges
 ##### <div id='3-2-6-4-1'/> 3.2.6.4.1. Limit Range 목록 조회
 1. Managements 메뉴의 Limit Ranges를 클릭하여 Limit Range 목록 페이지로 이동한다.
 
-![IMG_136]
+![IMG_149]
 
 ##### <div id='3-2-6-4-2'/> 3.2.6.4.2. Limit Range 상세 조회
 1. Limit Range 목록에서 Limit Range명을 클릭하여 Limit Range 상세 페이지로 이동한다.
 
 #### Limit Range 목록 페이지
-![IMG_137]
+![IMG_150]
 
 #### Limit Range 상세 페이지
-![IMG_138]
+![IMG_151]
 
 ##### <div id='3-2-6-4-3'/> 3.2.6.4.3. Limit Range 생성
 - Limit Range 생성 페이지에 Resource Quotas, Limit Ranges를 선택할 수 있는 Check Box 팝업창이 있다.
@@ -703,11 +723,11 @@
 1. Limit Range 목록에서 생성 버튼을 클릭하여 Role 생성 페이지로 이동한다.
 
 #### Limit Range 목록 페이지
-![IMG_139]
+![IMG_152]
 
 #### Limit Range 생성 팝업창
-![IMG_140]
-![IMG_141]
+![IMG_153]
+![IMG_154]
 
 ##### <div id='3-2-6-4-4'/> 3.2.6.4.4. Limit Range 수정
 - Limit Range 수정 페이지에 Resource Quotas, Limit Ranges를 변경할 수 있는 Check Box 팝업창이 있다.
@@ -715,11 +735,11 @@
 1. Limit Range 상세에서 수정 버튼을 클릭하여 Limit Range 수정 페이지로 이동한다.
 
 #### Limit Range 상세 페이지
-![IMG_142]
+![IMG_155]
 
 #### Limit Range 수정 팝업창
-![IMG_143]
-![IMG_144]
+![IMG_156]
+![IMG_157]
 
 ##### <div id='3-2-6-4-5'/> 3.2.6.4.5. Limit Range 삭제
 1. Limit Range 상세에서 삭제 버튼을 클릭하여 Limit Range 삭제를 한다.
@@ -878,6 +898,21 @@
 [IMG_144]:../images/container-platform/admin-portal/cp-144.png
 [IMG_145]:../images/container-platform/admin-portal/cp-145.png
 [IMG_146]:../images/container-platform/admin-portal/cp-146.png
+[IMG_147]:../images/container-platform/admin-portal/cp-147.png
+[IMG_148]:../images/container-platform/admin-portal/cp-148.png
+[IMG_149]:../images/container-platform/admin-portal/cp-149.png
+[IMG_150]:../images/container-platform/admin-portal/cp-150.png
+[IMG_151]:../images/container-platform/admin-portal/cp-151.png
+[IMG_152]:../images/container-platform/admin-portal/cp-152.png
+[IMG_153]:../images/container-platform/admin-portal/cp-153.png
+[IMG_154]:../images/container-platform/admin-portal/cp-154.png
+[IMG_155]:../images/container-platform/admin-portal/cp-155.png
+[IMG_156]:../images/container-platform/admin-portal/cp-156.png
+[IMG_157]:../images/container-platform/admin-portal/cp-157.png
+[IMG_158]:../images/container-platform/admin-portal/cp-158.png
+[IMG_159]:../images/container-platform/admin-portal/cp-159.png
+[IMG_160]:../images/container-platform/admin-portal/cp-160.png
+
 
 
 
