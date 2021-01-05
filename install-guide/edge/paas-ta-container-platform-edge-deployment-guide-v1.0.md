@@ -24,7 +24,9 @@
   4.2. [Namespace 사용자 Token 획득](#4.2)  
   4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)  
   
-5. [Resource 생성 시 주의사항](#5)  
+5. [Kubernates Monitoring 도구 (Metric-server) 배포](#5)    
+
+6. [Resource 생성 시 주의사항](#6)  
 
 <br>
 
@@ -494,7 +496,71 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 
 <br>
 
-## <div id='5'> 5. Resource 생성 시 주의사항
+## <div id='5'> 5. Kubernates Monitoring 도구 (Metrics-server) 배포
+배포된 Resource의 CPU/Memory 사용량 등을 확인하기 위해서는 Metric-server 배포가 필요하며, 컨테이너 플랫폼 사용자포탈에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.  
+또한 KubeEdge에서 Metrics-Server 배포 시 2.8. kubectl logs 기능 활성화 가 필수적으로 진행되어야 한다.
+
+- Metrics-Server 배포를 위한 yaml 파일을 다운받는다.
+```
+$ wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.0/components.yaml
+```
+
+- components.yaml 파일을 수정한다.
+```
+$ vi components.yaml
+```
+
+```
+# spec.template.spec 하위에 추가
+# {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}
+      hostNetwork: true
+
+# args에 추가
+
+      - args:
+        - --v=2
+        - --kubelet-insecure-tls
+```
+
+- Metrics-Server를 배포한다.
+```
+$ kubectl apply -f components.yaml
+```
+
+- Metrics 정보를 확인한다.
+```
+$ kubectl top nodes
+NAME            CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+ip-10-0-0-234   83m          4%     2438Mi          31%
+ip-10-0-0-97    38m          1%     2971Mi          38%
+
+$ kubectl top pods -n kube-system
+NAME                                    CPU(cores)   MEMORY(bytes)
+coredns-66bff467f8-8lngp                2m           6Mi
+coredns-66bff467f8-cjqzv                2m           6Mi
+etcd-ip-10-0-0-234                      11m          45Mi
+kube-apiserver-ip-10-0-0-234            19m          286Mi
+kube-controller-manager-ip-10-0-0-234   8m           40Mi
+kube-flannel-ds-amd64-tstq9             2m           9Mi
+kube-proxy-7cz4b                        1m           10Mi
+kube-proxy-nntnh                        1m           10Mi
+kube-scheduler-ip-10-0-0-234            3m           11Mi
+metrics-server-68cb9f9b79-xvkks         3m           12Mi
+```
+
+<br>
+
+## <div id='6'> 6. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
 
 |Resource 명|생성 시 제외해야 할 prefix|
