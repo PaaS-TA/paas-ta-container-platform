@@ -16,8 +16,8 @@
 
 3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
-        3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
-        3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
+        3.1.1. [paas-ta-container-platform-api 배포](#3.1.1) 
+        3.1.2. [paas-ta-container-platform-common-api 배포](#3.1.2)  
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
         3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
         3.1.5. [배포 확인](#3.1.5)  
@@ -310,8 +310,72 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 ```
 
 ### <div id='3.1'>3.1. 단독 배포 시 Deployment
+#### <div id='3.1.1'>3.1.1. paas-ta-container-platform-api 배포
 
-#### <div id='3.1.1'>3.1.1. paas-ta-container-platform-common-api 배포
+> vi paas-ta-container-platform-api.yml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels:
+    app: api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname         
+      hostNetwork: true
+      containers:
+      - name: api
+        image: {HAProxy_IP}:5000/container-platform-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3333
+        env:
+        - name: K8S_IP
+          value: "{K8S_IP}"
+        - name: CLUSTER_NAME
+          value: "{CLUSTER_NAME}"
+        - name: CONTAINER_PLATFORM_COMMON_API_URL
+          value: "http://{CLOUD_SIDE_IP}:30334"  
+      imagePullSecrets:
+        - name: cp-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-deployment
+  labels:
+    app: api
+  namespace: default
+spec:
+  ports:
+  - nodePort: 30333
+    port: 3333
+    protocol: TCP
+    targetPort: 3333
+  selector:
+    app: api
+  type: NodePort
+```
+#### <div id='3.1.2'>3.1.2. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -372,71 +436,6 @@ spec:
     app: common-api
   type: NodePort
 ```
-#### <div id='3.1.2'>3.1.2. paas-ta-container-platform-api 배포
-
-> vi paas-ta-container-platform-api.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: api-deployment
-  labels:
-    app: api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: api
-  template:
-    metadata:
-      labels:
-        app: api
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname         
-      hostNetwork: true
-      containers:
-      - name: api
-        image: {HAProxy_IP}:5000/container-platform-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3333
-        env:
-        - name: K8S_IP
-          value: "{K8S_IP}"
-        - name: CLUSTER_NAME
-          value: "{CLUSTER_NAME}"
-        - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_HOSTNAME}:30334"  
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-deployment
-  labels:
-    app: api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30333
-    port: 3333
-    protocol: TCP
-    targetPort: 3333
-  selector:
-    app: api
-  type: NodePort
-```
 #### <div id='3.1.3'>3.1.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
@@ -479,9 +478,9 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_HOSTNAME}:30334"
+          value: "http://{CLOUD_SIDE_IP}:30334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://{CLOUD_SIDE_HOSTNAME}:30333"     
+          value: "http://{CLOUD_SIDE_IP}:30333"     
       imagePullSecrets:
         - name: cp-secret
 ---
