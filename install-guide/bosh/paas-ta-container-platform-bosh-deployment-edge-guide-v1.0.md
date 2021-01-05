@@ -16,7 +16,7 @@
 
 3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
-        3.1.1. [paas-ta-container-platform-api 배포](#3.1.1) 
+        3.1.1. [paas-ta-container-platform-api 배포](#3.1.1)  
         3.1.2. [paas-ta-container-platform-common-api 배포](#3.1.2)  
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
         3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
