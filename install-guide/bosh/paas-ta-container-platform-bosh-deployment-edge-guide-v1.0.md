@@ -341,7 +341,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
       hostNetwork: true	
       containers:
       - name: common-api
@@ -402,7 +402,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname         
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname         
       hostNetwork: true
       containers:
       - name: api
@@ -467,7 +467,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
       hostNetwork: true
       containers:
       - name: webuser
@@ -532,7 +532,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
       hostNetwork: true
       containers:
       - name: webadmin
