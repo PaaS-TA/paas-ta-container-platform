@@ -333,6 +333,16 @@ spec:
       labels:
         app: common-api
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+      hostNetwork: true	
       containers:
       - name: common-api
         image: ${HAProxy_IP}:5000/container-platform-common-api:latest
@@ -361,7 +371,6 @@ spec:
   selector:
     app: common-api
   type: NodePort
-
 ```
 #### <div id='3.1.2'>3.1.2. paas-ta-container-platform-api 배포
 
@@ -385,6 +394,16 @@ spec:
       labels:
         app: api
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname         
+      hostNetwork: true
       containers:
       - name: api
         image: {HAProxy_IP}:5000/container-platform-api:latest
@@ -397,7 +416,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334"  
+          value: "http://{CLOUD_SIDE_HOSTNAME}:30334"  
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -440,6 +459,16 @@ spec:
       labels:
         app: webuser
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+      hostNetwork: true
       containers:
       - name: webuser
         image: {HAProxy_IP}:5000/container-platform-webuser:latest
@@ -450,9 +479,9 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334"
+          value: "http://{CLOUD_SIDE_HOSTNAME}:30334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://api-deployment.default.svc.cluster.local:3333"     
+          value: "http://{CLOUD_SIDE_HOSTNAME}:30333"     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -472,7 +501,6 @@ spec:
   selector:
     app: webuser
   type: NodePort
-
 ```
 #### <div id='3.1.4'>3.1.4. paas-ta-container-platform-webadmin 배포
 
@@ -496,6 +524,16 @@ spec:
       labels:
         app: webadmin
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}          # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side hostname
+      hostNetwork: true
       containers:
       - name: webadmin
         image: {HAProxy_IP}:5000/container-platform-webadmin:latest
