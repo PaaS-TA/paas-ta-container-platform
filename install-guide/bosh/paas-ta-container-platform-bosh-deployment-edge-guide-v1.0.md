@@ -354,7 +354,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_IP}:30334"  
+          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30334"  
       imagePullSecrets:
         - name: cp-secret
 ---
