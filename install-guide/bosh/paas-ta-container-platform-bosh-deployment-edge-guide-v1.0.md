@@ -409,7 +409,7 @@ spec:
       hostNetwork: true	
       containers:
       - name: common-api
-        image: ${HAProxy_IP}:5000/container-platform-common-api:latest
+        image: {HAProxy_IP}:5000/container-platform-common-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3334
