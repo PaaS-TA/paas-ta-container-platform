@@ -14,7 +14,7 @@
     2.5. [Release  설치](#2.5)  
     2.6. [Release  설치 확인](#2.6) 
 
-3. [Kubernetes에 Container Platform API 배포](#3)  
+3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
         3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
         3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
@@ -288,7 +288,7 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## <div id='3'>3. Kubernetes에 Container Platform API 배포
+## <div id='3'>3. Container Platform 배포
 단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 1. K8s Cluster 설정
