@@ -340,7 +340,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname         
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)         
       hostNetwork: true
       containers:
       - name: api
@@ -350,11 +350,11 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"
+          value: "{MASTER_NODE_PUBLIC_IP}"                        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30334"  
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30334"  
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -405,7 +405,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
       hostNetwork: true	
       containers:
       - name: common-api
@@ -466,7 +466,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
       hostNetwork: true
       containers:
       - name: webuser
@@ -478,9 +478,9 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30334"
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30334"            # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30333"     
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -531,7 +531,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
       hostNetwork: true
       containers:
       - name: webadmin
