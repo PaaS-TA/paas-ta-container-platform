@@ -478,9 +478,9 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://{CLOUD_SIDE_IP}:30334"
+          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://{CLOUD_SIDE_IP}:30333"     
+          value: "http://{CLOUD_SIDE_PUBLIC_IP}:30333"     
       imagePullSecrets:
         - name: cp-secret
 ---
