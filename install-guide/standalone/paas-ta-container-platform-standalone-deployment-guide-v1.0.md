@@ -23,9 +23,7 @@
   4.2. [Namespace 사용자 Token 획득](#4.2)  
   4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)
 
-5. [Kubernates Monitoring 도구(Metric-server) 배포](#5)  
-
-6. [Resource 생성 시 주의사항](#5)  
+5. [Resource 생성 시 주의사항](#5)  
 
 <br>
 
@@ -369,51 +367,9 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 ```
 $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
-
 <br>
 
-## <div id='5'> 5. Kubernates Monitoring 도구(Metric-server) 배포
-  
-배포된 Resource의 CPU/Memory 사용량등을 확인하기 위해서는 Metric-server 배포가 필요하며, 사용자포탈에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.
-
-```
-$ wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.0/components.yaml
-
-# yaml 수정
-$ vi components.yaml
-...
-- args:
-        - --cert-dir=/tmp
-        - --secure-port=4443
-        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-        - --kubelet-insecure-tls
-...
-
-# 배포
-$ kubectl apply -f components.yaml
-
-# 배포 확인
-$ kubectl get pod -n kube-system
-$ kubectl get deploy -n kube-system
-
-# metric 정보 확인
-$ kubectl top pods -n default
-NAME                                     CPU(cores)   MEMORY(bytes)
-api-deployment-54f4965d6f-49cmr          1m           204Mi
-common-api-deployment-54f574cd84-7bmhm   1m           228Mi
-webadmin-deployment-7d87bf9779-8l5qt     1m           104Mi
-webuser-deployment-cb44db4b5-mh56d       1m           257Mi
-
-$ kubectl top nodes
-NAME                       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-paasta-cp-k8s-master-001   152m         7%     2114Mi          27%
-paasta-cp-k8s-worker-001   222m         11%    4220Mi          55%
-paasta-cp-k8s-worker-002   225m         11%    3952Mi          51%
-paasta-cp-k8s-worker-003   150m         7%     4375Mi          57%
-```
-<br>
-
-## <div id='6'> 6. Resource 생성 시 주의사항
+## <div id='5'> 5. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
 
 |Resource 명|생성 시 제외해야 할 prefix|
