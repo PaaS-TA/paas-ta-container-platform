@@ -416,6 +416,8 @@ spec:
         env:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
+        - name: CONTAINER_PLATFORM_API_URL
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
       imagePullSecrets:
         - name: cp-secret
 ---
