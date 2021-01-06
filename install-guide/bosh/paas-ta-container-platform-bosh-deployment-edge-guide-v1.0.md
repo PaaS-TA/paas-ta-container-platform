@@ -478,7 +478,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"
+          value: "{K8S_IP}"                                        # {K8S_IP} : K8S Master Node PUBLIC IP(=CLOUD_SIDE_PUBLIC_IP)
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "http://{MASTER_NODE_PUBLIC_IP}:30334"            # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CONTAINER_PLATFORM_API_URL
