@@ -342,6 +342,8 @@ spec:
         env:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
+        - name: CONTAINER_PLATFORM_API_URL
+          value: "http://api-deployment.default.svc.cluster.local:3333"  
       imagePullSecrets:
         - name: cp-secret
 ---
