@@ -542,7 +542,7 @@ spec:
         ports:
         - containerPort: 8080
       imagePullSecrets:
-        - name: paasta
+        - name: cp-secret
 ---
 apiVersion: v1
 kind: Service
