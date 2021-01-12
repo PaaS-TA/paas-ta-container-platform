@@ -201,7 +201,7 @@ haproxy_http_port: 8080                                                       # 
 haproxy_azs: [z7]                                                             # haproxy azs
 
 # MARIADB
-mariadb_port: "3306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
+mariadb_port: "13306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
 mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
@@ -220,7 +220,7 @@ container_service_broker_azs: [z6]
 
 # PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                     # private image repository azs
-private_image_repository_port: 15001                                                   # private image repository port (e.g. 15001)-- Do Not Use "5000"
+private_image_repository_port: 5001                                                   # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
 
@@ -319,7 +319,7 @@ kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bos
 ```
 $ sudo vi /etc/docker/daemon.json
 {
-        "insecure-registries": ["{HAProxy_IP}:5000"]
+        "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
 # docker restart
@@ -329,7 +329,7 @@ $ sudo systemctl restart docker
 ### <div id='3.2'>3.2. Secret 생성
 Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
 ```
-$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
+$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 
@@ -360,7 +360,7 @@ spec:
     spec:
       containers:
       - name: service-common-api
-        image: {HAProxy_IP}:5000/container-service-common-api:latest
+        image: {HAProxy_IP}:5001/container-service-common-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3334
@@ -412,7 +412,7 @@ spec:
     spec:
       containers:
       - name: service-api
-        image: {HAProxy_IP}:5000/container-service-api:latest
+        image: {HAProxy_IP}:5001/container-service-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3333
@@ -464,7 +464,7 @@ spec:
     spec:
       containers:
       - name: service-dashboard
-        image: {HAProxy_IP}:5000/container-service-dashboard:latest
+        image: {HAProxy_IP}:5001/container-service-dashboard:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8091
@@ -673,7 +673,7 @@ caasclient
 
   2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 를 클릭한 후 나타나는 페이지의 오른쪽 상단 [인프라 등록] 버튼을 클릭하여 해당 정보들을 입력한다.
    - 해당 정보를 입력하기 위해 필요한 값들을 찾는다.
-   > $ bosh -e micro-bosh -d paasta-portal-api vms
+   > $ bosh -e micro-bosh -d portal-api vms
     > haproxy의 IP를 찾아 Portal_Api_Uri에 입력한다.
 
 ```
@@ -737,7 +737,7 @@ ex)
 ```
 $ sudo vi /etc/docker/daemon.json
 {
-        "insecure-registries": ["{HAProxy_IP}:5000"]
+        "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
 # docker restart

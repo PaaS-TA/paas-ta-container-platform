@@ -192,7 +192,7 @@ haproxy_http_port: 8080                                                       # 
 haproxy_azs: [z7]                                                             # haproxy azs
 
 # MARIADB
-mariadb_port: "3306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
+mariadb_port: "13306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
 mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
@@ -211,7 +211,7 @@ container_service_broker_azs: [z6]
 
 # PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                     # private image repository azs
-private_image_repository_port: 15001                                                   # private image repository port (e.g. 15001)-- Do Not Use "5000"
+private_image_repository_port: 5001                                                   # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
 
@@ -296,7 +296,7 @@ Succeeded
 ```
 $ sudo vi /etc/docker/daemon.json
 {
-        "insecure-registries": ["{HAProxy_IP}:5000"]
+        "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
 # docker restart
@@ -306,7 +306,7 @@ $ sudo systemctl restart docker
 2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
 
 ```
-$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5000 --docker-username=admin --docker-password=admin --namespace=default
+$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 ### <div id='3.1'>3.1. 단독 배포 시 Deployment
@@ -335,7 +335,7 @@ spec:
     spec:
       containers:
       - name: common-api
-        image: {HAProxy_IP}:5000/container-platform-common-api:latest
+        image: {HAProxy_IP}:5001/container-platform-common-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3334
@@ -389,7 +389,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: {HAProxy_IP}:5000/container-platform-api:latest
+        image: {HAProxy_IP}:5001/container-platform-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3333
@@ -444,7 +444,7 @@ spec:
     spec:
       containers:
       - name: webuser
-        image: {HAProxy_IP}:5000/container-platform-webuser:latest
+        image: {HAProxy_IP}:5001/container-platform-webuser:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8091
@@ -500,7 +500,7 @@ spec:
     spec:
       containers:
       - name: webadmin
-        image: {HAProxy_IP}:5000/container-platform-webadmin:latest
+        image: {HAProxy_IP}:5001/container-platform-webadmin:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
