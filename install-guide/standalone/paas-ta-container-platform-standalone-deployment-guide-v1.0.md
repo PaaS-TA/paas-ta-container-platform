@@ -32,7 +32,7 @@
 ### <div id='1.1'> 1.1. 목적
 본 문서 (Kubespray 설치 가이드) 는 개방형 PaaS 플랫폼 고도화 및 개발자 지원 환경 기반의 Open PaaS에 배포되는 컨테이터 플랫폼을 설치하기 위한 Kubernetes Native를 Kubespray를 이용하여 설치하는 방법을 기술하였다.
 
-PaaS-TA 6.0 버전부터는 Kubespray 기반으로 단독 배포를 지원한다. 기존 Container 서비스 기반으로 설치를 원할 경우에는 PaaS-TA 5.0 이하 버전의 문서를 참고한다.
+PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다. 기존 Container 서비스 기반으로 설치를 원할 경우에는 PaaS-TA 5.0 이하 버전의 문서를 참고한다.
 
 <br>
 
@@ -170,10 +170,10 @@ $ vi inventory/mycluster/inventory.ini
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
 
 [all]
-{MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP}  # ip={MASTER_NODE_IP} etcd_member_name=etcd1
-{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1}  # ip={WORKER_NODE_IP1}
-{WORKER_HOST_NAME2} ansible_host={WORKER_NODE_IP2}  # ip={WORKER_NODE_IP2}
-{WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3}  # ip={WORKER_NODE_IP3}
+{MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
+{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}
+{WORKER_HOST_NAME2} ansible_host={WORKER_NODE_IP2} ip={WORKER_NODE_IP2}
+{WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3} ip={WORKER_NODE_IP3}
 
 [kube-master]
 {MASTER_HOST_NAME}
