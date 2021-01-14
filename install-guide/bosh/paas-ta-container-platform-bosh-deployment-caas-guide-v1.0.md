@@ -76,8 +76,8 @@ Succeeded
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
-$ mkdir -p ~/workspace/paasta-5.5/deployment/
-$ cd ~/workspace/paasta-5.5/deployment/
+$ mkdir -p ~/workspace/paasta/deployment/
+$ cd ~/workspace/paasta/deployment/
 
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
@@ -151,7 +151,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 ```
 # INCEPTION OS USER NAME
@@ -236,7 +236,7 @@ jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-nam
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}-svc.sh
+> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}-svc.sh
 
 ```    
 #!/bin/bash
@@ -270,13 +270,13 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5/release/service
-$ cd ~/workspace/paasta-5.5/release/service
+$ mkdir -p ~/workspace/paasta/release/service
+$ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/2sYiSoZemWrpkKT/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
-$ ls ~/workspace/paasta-5.5/release/service
+$ ls ~/workspace/paasta/release/service
 paasta-container-platform-svc-1.0.tgz
 $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 ```
@@ -284,7 +284,7 @@ $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 - 서비스를 설치한다.
 
 ```
-$ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh
+$ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh
 $ chmod +x *.sh
 $ ./deploy-{IAAS}-svc.sh
 ```
