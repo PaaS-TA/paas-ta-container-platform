@@ -27,7 +27,9 @@
 5. [Jenkins 서비스 브로커(Optional)](#5)   
  5.1. [Kubernetes Cluster 설정](#5.1)   
  5.2. [Jenkins 서비스 브로커 등록](#5.2)   
- 
+
+6. [CVE 조치사항 적용](#6)     
+
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
 본 문서(Container 서비스 설치 가이드)는 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스 등록 방법을 기술하였다.
@@ -50,7 +52,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털이 설치되어 있어야 한다.
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
-- [PaaS-TA 포털](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md) 
+- [PaaS-TA 포털](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 stemcell 사용)
@@ -339,7 +341,7 @@ PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deploy
 - container-service-common-api 배포
 
 > $ vi container-service-common-api.yml
- 
+
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -391,7 +393,7 @@ spec:
 - container-service-api 배포
 
 > $ vi container-service-api.yml
- 
+
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -546,7 +548,7 @@ Container Platform 서비스 형태로 설치하는 경우에 CF와 배포된 K8
 
 
 - 서비스 브로커 목록을 확인한다.
- 
+
  ```
 $ cf service-brokers
 Getting service brokers as admin...
@@ -823,6 +825,21 @@ broker: jenkins-service-broker
   container-jenkins-service   jenkins_20GB             all      
 ```
 
+## <div id='6'>6. CVE 조치사항 적용  
+#### TCP timestamp responses 비활성화 설정  
+ - 일시 적용  
+```
+ $ sudo sysctl -w net.ipv4.tcp_timestamps=0
+```
+ - 영구 적용  
+```
+ $ sudo vi /etc/sysctl.conf
+ ----------------------------------------
+ ## Add at the bottom
+ net.ipv4.tcp_timestamps=0
+ ----------------------------------------
+ $ sudo reboot
+```
 
 ----
 [image 001]:images/cp-001.png
