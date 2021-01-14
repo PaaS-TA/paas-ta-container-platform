@@ -16,8 +16,8 @@
 
 3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
-        3.1.1. [paas-ta-container-platform-api 배포](#3.1.1)  
-        3.1.2. [paas-ta-container-platform-common-api 배포](#3.1.2)  
+        3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
+        3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
         3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
         3.1.5. [배포 확인](#3.1.5)  
@@ -43,11 +43,11 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 ## <div id='2'>2. Container Platform 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 BOSH 2.0이 설치되어 있어야 한다.
-- [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
+- [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 stemcell 사용)
-- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
+- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -64,12 +64,12 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- Container Platform Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
-$ mkdir -p ~/workspace/paasta-5.5/deployment/
-$ cd ~/workspace/paasta-5.5/deployment/
+$ mkdir -p ~/workspace/paasta/deployment/
+$ cd ~/workspace/paasta/deployment/
 
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
@@ -140,7 +140,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 ```
 # INCEPTION OS USER NAME
@@ -192,7 +192,7 @@ haproxy_http_port: 8080                                                       # 
 haproxy_azs: [z7]                                                             # haproxy azs
 
 # MARIADB
-mariadb_port: "13306"                                                          # mariadb port (e.g. 13306)-- Do Not Use "3306"
+mariadb_port: "13306"                                                         # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                             # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
 mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
@@ -211,7 +211,7 @@ container_service_broker_azs: [z6]
 
 # PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                     # private image repository azs
-private_image_repository_port: 5001                                                   # private image repository port (e.g. 5001)-- Do Not Use "5000"
+private_image_repository_port: 5001                                                    # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
 
@@ -225,7 +225,7 @@ jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-nam
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 
 ```    
 #!/bin/bash
@@ -252,19 +252,19 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 
 # 릴리즈 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5/release/service
-$ cd ~/workspace/paasta-5.5/release/service
+$ mkdir -p ~/workspace/paasta/release/service
+$ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
-$ ls ~/workspace/paasta-5.5/release/service
+$ ls ~/workspace/paasta/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
 ```
 
 - Release를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh  
+$ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh  
 $ ./deploy-{IAAS}.sh
 ```
 
@@ -310,7 +310,70 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 ```
 
 ### <div id='3.1'>3.1. 단독 배포 시 Deployment
-#### <div id='3.1.1'>3.1.1. paas-ta-container-platform-api 배포
+#### <div id='3.1.1'>3.1.1. paas-ta-container-platform-common-api 배포
+
+> vi paas-ta-container-platform-common-api.yml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-api-deployment
+  labels:
+    app: common-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: common-api
+  template:
+    metadata:
+      labels:
+        app: common-api
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
+      hostNetwork: true	
+      containers:
+      - name: common-api
+        image: {HAProxy_IP}:5001/container-platform-common-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3334
+        env:
+        - name: HAPROXY_IP
+          value: "{HAProxy_IP}"
+        - name: CONTAINER_PLATFORM_API_URL
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
+      imagePullSecrets:
+        - name: cp-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-api-deployment
+  labels:
+    app: common-api
+  namespace: default
+spec:
+  ports:
+  - nodePort: 30334
+    port: 3334
+    protocol: TCP
+    targetPort: 3334
+  selector:
+    app: common-api
+  type: NodePort
+```
+#### <div id='3.1.2'>3.1.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -373,69 +436,6 @@ spec:
     targetPort: 3333
   selector:
     app: api
-  type: NodePort
-```
-#### <div id='3.1.2'>3.1.2. paas-ta-container-platform-common-api 배포
-
-> vi paas-ta-container-platform-common-api.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: common-api-deployment
-  labels:
-    app: common-api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: common-api
-  template:
-    metadata:
-      labels:
-        app: common-api
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
-      hostNetwork: true	
-      containers:
-      - name: common-api
-        image: {HAProxy_IP}:5001/container-platform-common-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3334
-        env:
-        - name: HAPROXY_IP
-          value: "{HAProxy_IP}"
-        - name: CONTAINER_PLATFORM_API_URL
-          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: common-api-deployment
-  labels:
-    app: common-api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30334
-    port: 3334
-    protocol: TCP
-    targetPort: 3334
-  selector:
-    app: common-api
   type: NodePort
 ```
 #### <div id='3.1.3'>3.1.3. paas-ta-container-platform-webuser 배포
