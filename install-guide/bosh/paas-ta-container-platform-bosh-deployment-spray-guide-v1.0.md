@@ -455,7 +455,7 @@ spec:
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://api-deployment.default.svc.cluster.local:3333"     
+          value: "api-deployment.default.svc.cluster.local:3333"     
       imagePullSecrets:
         - name: cp-secret
 ---
