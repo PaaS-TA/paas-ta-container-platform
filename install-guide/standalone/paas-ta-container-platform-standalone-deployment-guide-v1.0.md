@@ -61,9 +61,9 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 
 |주요 소프트웨어|Version|Python Package|Version
 |---|---|---|---|
-|Kubespray|v2.14.1|ansible|2.9.6|
+|Kubespray|v2.14.2|ansible|2.9.16|
 |Kubernetes Native|v1.18.6|jinja2|2.11.1|
-|Docker|v19.03.12|netaddr|0.7.19|
+|Docker|v20.10.2|netaddr|0.7.19|
 |||pbr|5.4.4|
 |||jmespath|0.9.5|
 |||ruamel.yaml|0.16.10|
@@ -192,57 +192,6 @@ $ vi inventory/mycluster/inventory.ini
 kube-master
 kube-node
 calico-rr
-```
-
-- Kubespray에서 일부 설정 변경된 항목이 있으며 변경사항은 다음과 같다.
-```
-$ vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-```
-
-```
-# k8s-cluster.yml
-# 23 Line kube_version: v1.18.9 -> kube_version: v1.18.6 변경
----
-# Kubernetes configuration dirs and system namespace.
-# Those are where all the additional config stuff goes
-# the kubernetes normally puts in /srv/kubernetes.
-# This puts them in a sane location and namespace.
-# Editing those values will almost surely break something.
-kube_config_dir: /etc/kubernetes
-kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
-kube_manifest_dir: "{{ kube_config_dir }}/manifests"
-
-# This is where all the cert scripts and certs will be located
-kube_cert_dir: "{{ kube_config_dir }}/ssl"
-
-# This is where all of the bearer tokens will be stored
-kube_token_dir: "{{ kube_config_dir }}/tokens"
-
-# This is where to save basic auth file
-kube_users_dir: "{{ kube_config_dir }}/users"
-
-kube_api_anonymous_auth: true
-
-## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.18.6
-... ((생략)) ...
-```
-
-```
-$ vi contrib/inventory_builder/inventory.py
-```
-
-```
-# inventory.py
-
-# 본 설치 가이드에서는 1개의 Master Node로 설치를 진행하므로 Master Node의 갯수를 1개로 변경한다.
-# 66 Line KUBE_MASTERS = int(os.environ.get("KUBE_MASTERS_MASTERS", 2)) -> KUBE_MASTERS = int(os.environ.get("KUBE_MASTERS_MASTERS", 1)) 변경
-
-# False : 실제 hostname을 자동으로 변경한다 (ex: node1, node2 node3, node4), True : 실제 hostname을 유지한다.
-# 73 Line USE_REAL_HOSTNAME = get_var_as_bool("USE_REAL_HOSTNAME", False) -> USE_REAL_HOSTNAME = get_var_as_bool("USE_REAL_HOSTNAME", True) 변경
-
-# 본 설치 가이드에서는 총 4개의 Node를 사용하므로 변경하지 않을 시 inventory.ini 설정과는 무관하게 3개의 etcd가 설치된다.
-# 102 Line etcd_hosts_count = 3 if len(self.hosts.keys()) >= 3 else 1 -> etcd_hosts_count = 3 if KUBE_MASTERS >= 3 else 1 변경
 ```
 
 <br>
