@@ -12,7 +12,7 @@
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
     2.5. [Release  설치](#2.5)  
-    2.6. [Release  설치 확인](#2.6) 
+    2.6. [Release  설치 확인](#2.6)
 
 3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
@@ -21,7 +21,8 @@
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
         3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
         3.1.5. [배포 확인](#3.1.5)  
-    
+
+4. [CVE 조치사항 적용](#4)     
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -567,6 +568,23 @@ common-api-deployment   NodePort    xxx.xxx.xxx.xxx  <none>        3334:30334/TC
 webadmin-deployment     NodePort    xxx.xxx.xxx.xxx  <none>        8080:32080/TCP   73s
 webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TCP   86s
 
+```
+
+
+## <div id='4'>4. CVE 조치사항 적용  
+#### TCP timestamp responses 비활성화 설정  
+ - 일시 적용  
+```
+ $ sudo sysctl -w net.ipv4.tcp_timestamps=0
+```
+ - 영구 적용  
+```
+ $ sudo vi /etc/sysctl.conf
+ ----------------------------------------
+ ## Add at the bottom
+ net.ipv4.tcp_timestamps=0
+ ----------------------------------------
+ $ sudo reboot
 ```
 
 ----

@@ -12,7 +12,7 @@
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
     2.5. [Release  설치](#2.5)  
-    2.6. [Release  설치 확인](#2.6) 
+    2.6. [Release  설치 확인](#2.6)
 
 3. [Container Platform 배포](#3)  
     3.1. [단독배포 시 Deployment](#3.1)  
@@ -21,7 +21,8 @@
         3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
         3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
         3.1.5. [배포 확인](#3.1.5)  
-    
+
+4. [CVE 조치사항 적용](#4)    
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -340,8 +341,8 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
-      hostNetwork: true	
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
+      hostNetwork: true
       containers:
       - name: common-api
         image: {HAProxy_IP}:5001/container-platform-common-api:latest
@@ -352,7 +353,7 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
+          value: "http://{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -468,7 +469,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
       hostNetwork: true
       containers:
       - name: webuser
@@ -533,7 +534,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.) 
+                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
       hostNetwork: true
       containers:
       - name: webadmin
@@ -606,5 +607,20 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ```
 
+## <div id='4'>4. CVE 조치사항 적용  
+#### TCP timestamp responses 비활성화 설정  
+ - 일시 적용  
+```
+ $ sudo sysctl -w net.ipv4.tcp_timestamps=0
+```
+ - 영구 적용  
+```
+ $ sudo vi /etc/sysctl.conf
+ ----------------------------------------
+ ## Add at the bottom
+ net.ipv4.tcp_timestamps=0
+ ----------------------------------------
+ $ sudo reboot
+```
 ----
 [image 001]:images/cp-001.png
