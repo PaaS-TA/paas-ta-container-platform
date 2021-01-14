@@ -457,8 +457,9 @@ Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account�
 
 - Service Account를 생성한다.
 ```
-# {SERVICE_ACCOUNT} : Service Account 예시
+# {SERVICE_ACCOUNT} : Service Account 명
 $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(eg. kubectl create serviceaccount k8sadmin -n kube-system)
 ```
 
 - Cluster Role을 생성한 Service Account에 바인딩한다.
