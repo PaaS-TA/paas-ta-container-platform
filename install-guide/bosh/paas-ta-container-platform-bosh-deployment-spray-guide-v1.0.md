@@ -344,7 +344,7 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://api-deployment.default.svc.cluster.local:3333"  
+          value: "api-deployment.default.svc.cluster.local:3333"  
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -400,7 +400,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://common-api-deployment.default.svc.cluster.local:3334"  
+          value: "common-api-deployment.default.svc.cluster.local:3334"  
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -453,9 +453,9 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "http://common-api-deployment.default.svc.cluster.local:3334"
+          value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "http://api-deployment.default.svc.cluster.local:3333"     
+          value: "api-deployment.default.svc.cluster.local:3333"     
       imagePullSecrets:
         - name: cp-secret
 ---
