@@ -264,7 +264,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-svc-1.0.tgz](http://45.248.73.44/index.php/s/2sYiSoZemWrpkKT/download)   
+  [paasta-container-platform-svc-1.0.tgz](http://45.248.73.44/index.php/s/qfJnQySE7jBQX5n/download)   
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)          
 
 
@@ -274,7 +274,7 @@ $ mkdir -p ~/workspace/paasta/release/service
 $ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/2sYiSoZemWrpkKT/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/qfJnQySE7jBQX5n/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta/release/service
 paasta-container-platform-svc-1.0.tgz
@@ -497,6 +497,79 @@ spec:
     app: service-dashboard
   type: NodePort
 ```
+
+- container-service-broker 배포
+
+> $ vi container-service-broker.yml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-broker-deployment
+  labels:
+    app: service-broker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-broker
+  template:
+    metadata:
+      labels:
+        app: service-broker
+    spec:
+      containers:
+      - name: service-broker
+        image: {HAPROXY_IP}:5001/container-service-broker:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8091
+        env:
+        - name: K8S_IP
+          value: {K8S_IP}
+        - name: K8S_PORT
+          value: "6443"
+        - name: K8S_AUTH_BEARER
+          value: {K8S_AUTH_BEARER}
+        - name: HAPROXY_IP
+          value: {HAPROXY_IP}
+        - name: USER_NAME
+          value: root
+        - name: PASSWORD
+          value: PaaS-TA@2020
+        - name: COMMON_API_ID
+          value: admin
+        - name: COMMON_API_PASSWORD
+          value: PaaS-TA
+        - name: LOGGGING_LEVEL
+          value: INFO
+        - name: REGISTRY_PORT
+          value: "5001"
+        - name: MARIADB_PORT
+          value: "13306"
+      imagePullSecrets:
+        - name: cp-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-broker-deployment
+  labels:
+    app: service-broker
+  namespace: default
+spec:
+  ports:
+  - nodePort: 31888
+    port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    app: service-broker
+  type: NodePort
+```
+
 ```
 $ kubectl apply -f container-service-common-api.yml
 deployment.apps/service-common-api-deployment created
@@ -509,6 +582,10 @@ service/service-api-deployment created
 $ kubectl apply -f container-service-dashboard.yml
 deployment.apps/service-dashboard-deployment created
 service/service-dashboard-deployment created
+
+$ kubectl apply -f container-service-broker.yml
+deployment.apps/service-deployment-deployment created
+service/service-deployment-deployment created
 ```
 - 배포 확인
 
@@ -521,6 +598,7 @@ NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 service-api-deployment          1/1     1            1           68s
 service-common-api-deployment   1/1     1            1           78s
 service-dashboard-deployment    1/1     1            1           56s
+service-broker-deployment       1/1     1            1           112s
 
 #Pod 배포 정상 확인
 $ kubectl get pods
@@ -528,6 +606,7 @@ NAME                                            READY   STATUS    RESTARTS   AGE
 service-api-deployment-7c556d9c59-ms66r         1/1     Running   0          97s
 service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   0          108s
 service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   0          85s
+service-broker-deployment-7fb5dd69f6-pdhnq      1/1     Running   0          26h
 
 #Service 배포 정상 확인
 $ kubectl get svc
@@ -536,6 +615,7 @@ kubernetes                      ClusterIP   xxx.xxx.xxx.xxx   <none>        443/
 service-api-deployment          NodePort    xxx.xxx.xxx.xxx   <none>        3333:30333/TCP   117s
 service-common-api-deployment   NodePort    xxx.xxx.xxx.xxx   <none>        3334:30334/TCP   2m8s
 service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091:32091/TCP   105s
+service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888:31888/TCP
 
 ```
 
@@ -570,7 +650,7 @@ mysql-service-broker               http://10.0.121.71:8080
 Getting service brokers as admin...
 
 name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
+container-service-broker   http://xxx.xxx.xxx.xxx:31888
 mysql-service-broker       http://10.0.121.71:8080
 ```
 - 접근 가능한 서비스 목록을 확인한다.
