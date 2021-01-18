@@ -248,7 +248,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. Release 설치
 - Release 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 Release 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download)  
+  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/LeJiQbknR8bZAxy/download)  
   [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
 ```
 
@@ -257,7 +257,7 @@ $ mkdir -p ~/workspace/paasta/release/service
 $ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/nDdJiRfZHACozob/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/LeJiQbknR8bZAxy/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta/release/service
 docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
