@@ -368,6 +368,8 @@ spec:
         env:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
+        - name: MARIADB_PORT
+          value: "13306"  
       imagePullSecrets:
         - name: cp-secret
 ---
