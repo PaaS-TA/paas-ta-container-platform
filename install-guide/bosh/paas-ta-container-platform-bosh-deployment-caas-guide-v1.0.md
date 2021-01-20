@@ -276,7 +276,7 @@ $ cd ~/workspace/paasta/release/service
 $ wget --content-disposition http://45.248.73.44/index.php/s/qfJnQySE7jBQX5n/download
 $ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta/release/service
-paasta-container-platform-svc-1.0.tgz
+  docker-35.3.4.tgz  paasta-container-platform-svc-1.0.tgz
 $ mv paasta-container-platform-svc-1.0.tgz paasta-container-platform-1.0.tgz
 ```
 
