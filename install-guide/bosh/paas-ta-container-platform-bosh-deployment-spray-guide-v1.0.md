@@ -421,6 +421,12 @@ spec:
     app: api
   type: NodePort
 ```
+
+Deployment YAML 내 정의한 환경변수(env) 중 CLUSTER_NAME 값은 배포 후 운영자 포탈 회원가입 시 Kubernetes Cluster Name 항목에 동일한 값으로  입력이 필요하다.<br>
+> ex) "{CLUSTER_NAME}" 에 "cp-cluster" 값으로 정의 후 배포할 시, 운영자 포탈 회원가입 kubernetes Cluster Name 항목에 "cp-cluster" 값 입력 필요 
+
+![image 005]
+
 #### <div id='3.1.3'>3.1.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
@@ -589,3 +595,4 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ----
 [image 001]:images/cp-001.png
+[image 005]:images/cp-005.png
