@@ -634,7 +634,7 @@ kubernetes                      ClusterIP   xxx.xxx.xxx.xxx   <none>        443/
 service-api-deployment          NodePort    xxx.xxx.xxx.xxx   <none>        3333:30333/TCP   117s
 service-common-api-deployment   NodePort    xxx.xxx.xxx.xxx   <none>        3334:30334/TCP   2m8s
 service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091:32091/TCP   105s
-service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888:31888/TCP
+service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888:31888/TCP   118s
 
 ```
 
@@ -656,12 +656,12 @@ name                               url
 mysql-service-broker               http://10.0.121.71:8080
  ```
   - Container Platform 서비스 브로커를 등록한다.
-  > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
+  > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
+  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 서비스 브로커 NodePort
    ```
-  $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8888
+  $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
    ```
  - 등록된 Container Platform 서비스 브로커를 확인한다.
   ```
