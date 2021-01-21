@@ -294,7 +294,7 @@ Succeeded
 kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
-> k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Kubernetes Master Node, Worker Node 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
 
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -307,7 +307,9 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='3.2'>3.2. Container 서비스 이미지 업로드
-Private Repository에 이미지 등록을 위해 Container 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다. 
+Private Repository에 이미지 등록을 위해 Container 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+해당 내용은 Kubernetes Master Node에서 실행한다.
+ 
 + Container 서비스 이미지 파일 다운로드 :  
    [cp-caas-images.tar](http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download)  
 
