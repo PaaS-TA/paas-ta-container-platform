@@ -335,7 +335,7 @@ $ mkdir -p ~/workspace/paasta/container-platform/image
 $ cd ~/workspace/paasta/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/dBx25aQi4WLy9DS/download
 
 $ ls ~/workspace/paasta/container-platform
   cp-caas-images.tar
