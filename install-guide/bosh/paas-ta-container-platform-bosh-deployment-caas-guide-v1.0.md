@@ -281,12 +281,13 @@ Task 2983. Done
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-haproxy/32d1ff4e-1007-4e9a-8ebd-ffb33ba37348                   running        z7  10.0.0.121    i-0e6c374f2377ecf12  small    true
-                                                                                  3.35.95.75
-mariadb/42657509-69b6-4b4e-a006-20690e5ce2ea                   running        z5  10.0.161.121  i-0a8c71fb43ba3f34a  small    true
-private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7  10.0.0.122    i-0d5e4c451075e446b  small    true
+haproxy/cbd5d103-765d-47e0-ac5b-233a21108c77                   running        z7  10.0.0.122    i-0f49ce7431aaa2901  small    true
+                                                                                  15.164.15.53
+mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5  10.0.161.121  i-09b27b184b7aea066  small    true
+private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
 
 3 vms
+
 Succeeded
 ```
 
@@ -805,14 +806,13 @@ paas-ta-portal-storage-api/20170f06-6b5b-4421-8238-9cac7a276618   running       
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/a458f442-2bc3-4004-afb5-a6f378fa527e  running        z6  10.0.201.132  i-023f9cf68fbde2ede  small    true
-container-service-broker/312de3ad-d072-4d38-aff2-db3c8139b7af  running        z6  10.0.201.133  i-09aa099d393009ad4  small    true
-haproxy/446ce2a6-5344-4335-a94c-e3448f48ada4                   running        z7  10.0.0.124    i-0cc170becd2f44b64  small    true
-                                                                                  3.35.95.75
-mariadb/b70e1276-66bc-4328-bd37-edc52e66f960                   running        z5  10.0.161.121  i-08a1b5dcc278226be  small    true
-private-image-repository/54597eb7-1157-4c44-8e23-e9a3785f2005  running        z7  10.0.0.125    i-0412c393c9e95ce52  small    true
+haproxy/cbd5d103-765d-47e0-ac5b-233a21108c77                   running        z7  10.0.0.122    i-0f49ce7431aaa2901  small    true
+                                                                                  15.164.15.53
+mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5  10.0.161.121  i-09b27b184b7aea066  small    true
+private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
 
-5 vms
+3 vms
+
 ```
 
 ```
@@ -849,7 +849,7 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins Serivce Deployment가 미리 배포되어 있어야 한다.
+> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins Service Deployment가 미리 배포되어 있어야 한다.
 
 -  container-jenkins-broker 배포
 
