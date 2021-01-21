@@ -220,22 +220,22 @@ private_image_repository_persistent_disk_type: "10GB"                           
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}-svc.sh
+> $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
+(e.g. {IAAS} :: aws)
 
 ```    
 #!/bin/bash
 
 # SET VARIABLES
 export CONTAINER_DEPLOYMENT_NAME='paasta-container-platform'   # deployment name
-export CONTAINER_BOSH2_NAME="<BOSH_NAME>"                     # bosh name (e.g. micro-bosh)
+export CONTAINER_BOSH2_NAME='micro-bosh'                       # bosh name (e.g. micro-bosh)
 export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environment --json) --path=/Tables/0/Rows/0/uuid`
 
 # DEPLOY
-bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
-    -l manifests/paasta-container-service-vars-{IAAS}.yml \
-    -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
+bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-aws.yml \
+    -l manifests/paasta-container-service-vars-aws.yml \
+    -o manifests/ops-files/paasta-container-service/network-aws.yml \
     -o manifests/ops-files/misc/first-time-deploy.yml \
-    -o manifests/ops-files/add-jenkins-service-broker.yml \
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
@@ -265,7 +265,7 @@ $ ls ~/workspace/paasta/release/service
 ```
 $ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh
 $ chmod +x *.sh
-$ ./deploy-{IAAS}-svc.sh
+$ ./deploy-{IAAS}.sh
 ```
 
 ### <div id='2.6'>2.6. 서비스 설치 확인
@@ -280,14 +280,12 @@ Task 2983. Done
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/ff84ac36-8c24-4dcf-88e7-fc700e777936  running        z6  10.0.201.121  i-0c50e8bef11a7d5d8  small    true
-container-service-broker/7bc8e449-2e95-4f54-aa94-c59e3767c907  running        z6  10.0.201.122  i-04c934cc859998219  small    true
 haproxy/32d1ff4e-1007-4e9a-8ebd-ffb33ba37348                   running        z7  10.0.0.121    i-0e6c374f2377ecf12  small    true
                                                                                   3.35.95.75
 mariadb/42657509-69b6-4b4e-a006-20690e5ce2ea                   running        z5  10.0.161.121  i-0a8c71fb43ba3f34a  small    true
 private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7  10.0.0.122    i-0d5e4c451075e446b  small    true
 
-5 vms
+3 vms
 Succeeded
 ```
 
