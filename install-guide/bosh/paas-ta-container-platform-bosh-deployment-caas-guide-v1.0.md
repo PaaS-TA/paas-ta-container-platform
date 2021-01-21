@@ -323,7 +323,7 @@ $ cd ~/workspace/paasta/container-platform
 $ wget --content-disposition http://45.248.73.44/index.php/s/dBx25aQi4WLy9DS/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-caas-images.tar
+  cp-caas-images.tar  image
 
 # 이미지 다운로드 파일 압축 해제
 $ tar -xvf cp-caas-images.tar -C image
