@@ -14,10 +14,11 @@
  2.5. [서비스 설치](#2.5)  
  2.6. [서비스 설치 확인](#2.6)
 
-3. [Kubernetes Container Platform 배포](#3)   
+3. [Kubernetes Container 서비스 배포](#3)   
  3.1. [Kubernetes Cluster 설정](#3.1)   
- 3.2. [Secret 생성](#3.2)  
- 3.3. [Deployment 배포](#3.3)  
+ 3.2. [Container 서비스 이미지 업로드](#3.2)   
+ 3.3. [Secret 생성](#3.3)  
+ 3.4. [Deployment 배포](#3.4)  
 
 4. [Container 서비스 브로커](#4)  
  4.1. [Container 서비스 브로커 등록](#4.1)  
@@ -311,8 +312,8 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-## <div id='3'>3. Kubernetes Container Platform 배포
-kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+## <div id='3'>3. Kubernetes Container 서비스 배포
+kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
 > k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
@@ -327,14 +328,54 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='3.2'>3.2. Secret 생성
+### <div id='3.2'>3.2. Container 서비스 이미지 업로드
+Private Repository에 이미지 등록을 위해 Container 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다. 
++ Container 서비스 이미지 파일 다운로드 :  
+   [cp-caas-images.tar](http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download)  
+
+```
+# 이미지 다운로드 파일 위치 경로 생성
+$ mkdir -p ~/workspace/paasta/container-platform/image
+$ cd ~/workspace/paasta/container-platform
+
+# 이미지 파일 다운로드 및 파일 경로 확인
+$ wget --content-disposition http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download
+
+$ ls ~/workspace/paasta/container-platform
+  cp-caas-images.tar
+
+# 이미지 다운로드 파일 압축 해제
+$ tar -xvf cp-caas-images.tar -C image
+$ cd ~/workspace/paasta/container-platform/image
+$ ls ~/workspace/paasta/container-platform/image
+  container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz
+  container-service-api.tar.gz     container-service-common-api.tar.gz  paasta-jenkins.tar.gz  image_upload_caas.sh
+ 
+ ```
+ 
+ + Private Repository에 이미지를 업로드한다.
+ ```
+ $ chmod +x *.sh  
+ $ ./image_upload_caas.sh {HAProxy_IP}:5001 
+ ```
+ 
+ + Private Repository에 업로드 된 이미지 목록을 확인한다.
+ 
+ ```
+ $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
+ 
+ {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]} 
+```
+
+
+### <div id='3.3'>3.3. Secret 생성
 Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
 ```
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
 
-### <div id='3.3'>3.3. Deployment 배포
+### <div id='3.4'>3.4. Deployment 배포
 PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
 - container-service-common-api 배포
