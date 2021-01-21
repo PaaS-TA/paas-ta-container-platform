@@ -156,75 +156,57 @@ container_platform_release_name: "paasta-container-platform"
 container_platform_release_version: "1.0"
 
 # IAAS
-aws_access_key_id_master: '<AWS_ACCESS_KEY>'                                  # aws access key
-aws_secret_access_key_master: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
-aws_access_key_id_worker: '<AWS_ACCESS_KEY>'                                  # aws access key
-aws_secret_access_key_worker: '<AWS_SECRET_ACCESS_KEY>'                       # aws secret access key
-kubernetes_cluster_tag: 'kubernetes'                                          # Do not update!
+kubernetes_cluster_tag: 'kubernetes'                                                # Do not update!
 
 # STEMCELL
-stemcell_os: "ubuntu-xenial"                                                  # stemcell os
-stemcell_version: "621.94"                                                    # stemcell version
-stemcell_alias: "xenial"                                                      # stemcell alias
+stemcell_os: "ubuntu-xenial"                                                        # stemcell os
+stemcell_version: "621.94"                                                          # stemcell version
+stemcell_alias: "xenial"                                                            # stemcell alias
 
 # CREDHUB
-credhub_server_url: "<CREDHUB_IP>:8844"
+credhub_server_url: "10.0.1.6:8844"
 credhub_admin_client_secret: "eft2zkfaerzyt8g6eonj"
 
 # VM_TYPE
-vm_type_small: "small"                                                        # vm type small
-vm_type_small_highmem_16GB: "small-highmem-16GB"                              # vm type small highmem
-vm_type_small_highmem_16GB_100GB: "small-highmem-16GB"                        # vm type small highmem_100GB
-vm_type_container_small: "small"                                              # vm type small for caas's etc
-vm_type_container_small_api: "small"                                          # vm type small for caas's api
+vm_type_small: "small"                                                              # vm type small
+vm_type_small_highmem_16GB: "small-highmem-16GB"                                    # vm type small highmem
+vm_type_small_highmem_16GB_100GB: "small-highmem-16GB"                              # vm type small highmem_100GB
+vm_type_container_small: "small"                                                    # vm type small for caas's etc
+vm_type_container_small_api: "small"                                                # vm type small for caas's api
 
 # NETWORK
-service_private_nat_networks_name: "default"                                  # private network name
+service_private_nat_networks_name: "default"                                        # private network name
 service_private_networks_name: "default"
-service_public_networks_name: "vip"                                           # public network name
+service_public_networks_name: "vip"                                                 # public network name
 
 # IPS
-k8s_api_server_ip: "<K8S_API_SERVER_IP>"
+haproxy_public_url: "<HAPROXY_IP>"                                                  # haproxy's public IP
+k8s_api_server_ip: "<KUBERNETES_API_SERVER_IP>"
 k8s_api_server_port: "6443"
-k8s_auth_bearer: "<K8S_AUTH_BEARER_VALUE>"
-haproxy_public_url: "<HAPROXY_PUBLIC_URL>"                                    # haproxy's public IP
+k8s_auth_bearer: "<KUBERNETES_AUTH_KEY>"
 
 # HAPROXY
-haproxy_http_port: 8080                                                       # haproxy port
-haproxy_azs: [z7]                                                             # haproxy azs
+haproxy_http_port: 8080                                                             # haproxy port
+haproxy_azs: [z7]                                                                   # haproxy azs
 
 # MARIADB
-mariadb_port: "13306"                                                         # mariadb port (e.g. 13306)-- Do Not Use "3306"
-mariadb_azs: [z5]                                                             # mariadb azs
-mariadb_persistent_disk_type: "10GB"                                          # mariadb persistent disk type
-mariadb_admin_user_id: "root"                                                 # mariadb admin user name (e.g. root)
-mariadb_admin_user_password: "<MARIADB_ADMIN_USER_PASSWORD>"                  # mariadb admin user password (e.g. paasta!admin)
-mariadb_role_set_administrator_code_name: "Administrator"                     # administrator role's code name (e.g. Administrator)
-mariadb_role_set_administrator_code: "RS0001"                                 # administrator role's code (e.g. RS0001)
-mariadb_role_set_regular_user_code_name: "Regular User"                       # regular user role's code name (e.g. Regular User)
-mariadb_role_set_regular_user_code: "RS0002"                                  # regular user role's code (e.g. RS0002)
-mariadb_role_set_init_user_code_name: "Init User"                             # init user role's code name (e.g. Init User)
-mariadb_role_set_init_user_code: "RS0003"                                     # init user role's code (e.g. RS0003)
+mariadb_port: "13306"                                                               # mariadb port (e.g. 13306)-- Do Not Use "3306"
+mariadb_azs: [z5]                                                                   # mariadb azs
+mariadb_persistent_disk_type: "10GB"                                                # mariadb persistent disk type
+mariadb_admin_user_id: "root"                                                       # mariadb admin user name (e.g. root)
+mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. paasta!admin)
+mariadb_role_set_administrator_code_name: "Administrator"                           # administrator role's code name (e.g. Administrator)
+mariadb_role_set_administrator_code: "RS0001"                                       # administrator role's code (e.g. RS0001)
+mariadb_role_set_regular_user_code_name: "Regular User"                             # regular user role's code name (e.g. Regular User)
+mariadb_role_set_regular_user_code: "RS0002"                                        # regular user role's code (e.g. RS0002)
+mariadb_role_set_init_user_code_name: "Init User"                                   # init user role's code name (e.g. Init User)
+mariadb_role_set_init_user_code: "RS0003"                                           # init user role's code (e.g. RS0003)
 
-# SERVICE BROKER
-container_service_broker_instances: 1
-container_service_broker_port: 8888
-container_service_broker_azs: [z6]
-
-# PRIVATE IMAGE REPOSITORY
-private_image_repository_azs: [z7]                                                     # private image repository azs
-private_image_repository_port: 5001                                                    # private image repository port (e.g. 5001)-- Do Not Use "5000"
-private_image_repository_root_directory: "/var/vcap/data/private-image-repository"     # private image repository root directory
-private_image_repository_persistent_disk_type: "10GB"                                  # private image repository's persistent disk type
-
-# JENKINS BROKER
-jenkins_broker_instances: 1
-jenkins_broker_port: 8787
-jenkins_broker_azs: [z6]
-jenkins_namespace: "jenkins-namespace"
-jenkins_secret_file: "/var/vcap/jobs/container-jenkins-broker/data/docker-secret.yml"
-jenkins_namespace_file: "/var/vcap/jobs/container-jenkins-broker/data/create-namespace.yml"
-
+#PRIVATE IMAGE REPOSITORY
+private_image_repository_azs: [z7]                                                   # private image repository azs
+private_image_repository_port: 5001                                                  # private image repository port (e.g. 5001)-- Do Not Use "5000"
+private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
+private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
