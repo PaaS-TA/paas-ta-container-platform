@@ -931,12 +931,10 @@ $ kubectl get deployments
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 jenkins-broker-deployment       1/1     1            1           2m20s
 
-
 #Pod 배포 정상 확인
 $ kubectl get pods
 NAME                                             READY   STATUS    RESTARTS   AGE
 jenkins-broker-deployment-7f84f69cf8-wgzbv       1/1     Running   0          2m30s
-
 
 #Service 배포 정상 확인
 $ kubectl get svc
