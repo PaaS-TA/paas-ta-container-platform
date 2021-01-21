@@ -15,12 +15,13 @@
     2.6. [Release  설치 확인](#2.6)
 
 3. [Container Platform 배포](#3)  
-    3.1. [단독배포 시 Deployment](#3.1)  
-        3.1.1. [paas-ta-container-platform-common-api 배포](#3.1.1)  
-        3.1.2. [paas-ta-container-platform-api 배포](#3.1.2)  
-        3.1.3. [paas-ta-container-platform-webuser 배포](#3.1.3)  
-        3.1.4. [paas-ta-container-platform-webadmin 배포](#3.1.4)  
-        3.1.5. [배포 확인](#3.1.5)  
+    3.1. [생성한 이미지를 배포된 이미지 Registry로 임포트](#3.1)  
+    3.2. [단독배포 시 Deployment](#3.2)  
+        3.2.1. [paas-ta-container-platform-common-api 배포](#3.2.1)  
+        3.2.2. [paas-ta-container-platform-api 배포](#3.2.2)  
+        3.2.3. [paas-ta-container-platform-webuser 배포](#3.2.3)  
+        3.2.4. [paas-ta-container-platform-webadmin 배포](#3.2.4)  
+        3.2.5. [배포 확인](#3.2.5)  
 
 4. [CVE 조치사항 적용](#4)    
 
@@ -248,8 +249,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. Release 설치
 - Release 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 Release 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/LeJiQbknR8bZAxy/download)  
-  [docker.35.3.4.tgz](http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download)  
+  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/LeJiQbknR8bZAxy/download)      
 ```
 
 # 릴리즈 다운로드 파일 위치 경로 생성
@@ -258,9 +258,8 @@ $ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/LeJiQbknR8bZAxy/download
-$ wget --content-disposition http://45.248.73.44/index.php/s/yRbGQkMLZ4CJAx9/download
 $ ls ~/workspace/paasta/release/service
-docker-35.3.4.tgz  paasta-container-platform-1.0.tgz
+paasta-container-platform-1.0.tgz
 ```
 
 - Release를 설치한다.
@@ -310,8 +309,78 @@ $ sudo systemctl restart docker
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.1'>3.1. 단독 배포 시 Deployment
-#### <div id='3.1.1'>3.1.1. paas-ta-container-platform-common-api 배포
+### <div id='3.1'>3.1. 생성한 이미지를 배포된 이미지 Registry로 임포트
+1. Repository에 Load할 이미지 다운로드 
+```
+$ wget --content-disposition http://45.248.73.44/index.php/s/xR6XstGL7YXacBE/download
+
+$ ls 
+cp-standalone-image.tar
+
+```
+2. 다운로드한 파일 압축 해제
+```
+$ tar -xvf cp-standalone-image.tar
+
+$ ls
+container-platform-api.tar.gz   container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  container-platform-webadmin.tar.gz
+```
+
+3. 복사한 이미지 파일을 local Repository에 로드
+```
+$ sudo docker load -i container-platform-api.tar.gz
+
+$ sudo docker load -i container-platform-common-api.tar.gz
+
+$ sudo docker load -i container-platform-webuser.tar.gz
+
+$ sudo docker load -i container-platform-webadmin.tar.gz
+
+# local Repository를 확인
+$ sudo docker images
+```
+
+4. 도커 image tag 변경
+이미지를 원격 레포지토리(BOSH로 배포한 PrivateRepository)로 올리기 위해 tag를 수정해야 한다.
+```
+# REPOSITORY 경로확인 : $ sudo docker images 명령어로 REPOSITORY 확인
+$ sudo docker tag {}:8090/container-platform/container-platform-api {HAProxy_IP}:5001/container-platform-api
+
+$ sudo docker tag {}:8090/container-platform/container-platform-common-api {HAProxy_IP}:5001/container-platform-common-api
+
+$ sudo docker tag {}:8090/container-platform/container-platform-webuser {HAProxy_IP}:5001/ccontainer-platform-webuser
+
+$ sudo docker tag {}:8090/container-platform/container-platform-webadmin {HAProxy_IP}:5001/container-platform-webadmin
+
+# 변경된 image tag 확인
+$ sudo docker images
+```
+
+5. 원격 레포지토리에 로그인
+Bosh로 배포한 Priavte Repository에 로그인한다.
+id/password : admin/admin
+```
+$ sudo docker login http://{HAProxy_IP}:5001
+```
+
+6. 원격 레포지토리에 image 푸쉬
+```
+$ sudo docker push {HAProxy_IP}:5001/container-platform-api
+
+$ sudo docker push {HAProxy_IP}:5001/container-platform-common-api
+
+$ sudo docker push {HAProxy_IP}:5001/container-platform-webuser
+
+$ sudo docker push {HAProxy_IP}:5001/container-platform-webadmin
+```
+
+7. 푸쉬한 이미지 확인
+```
+$ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
+```
+
+### <div id='3.2'>3.2. 단독 배포 시 Deployment
+#### <div id='3.2.1'>3.2.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -374,7 +443,7 @@ spec:
     app: common-api
   type: NodePort
 ```
-#### <div id='3.1.2'>3.1.2. paas-ta-container-platform-api 배포
+#### <div id='3.2.2'>3.2.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -445,7 +514,7 @@ Deployment YAML 내 정의한 환경변수(env) 중 CLUSTER_NAME 값은 배포 �
 
 ![image 005]
 
-#### <div id='3.1.3'>3.1.3. paas-ta-container-platform-webuser 배포
+#### <div id='3.2.3'>3.2.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -510,7 +579,7 @@ spec:
     app: webuser
   type: NodePort
 ```
-#### <div id='3.1.4'>3.1.4. paas-ta-container-platform-webadmin 배포
+#### <div id='3.2.4'>3.2.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -586,7 +655,7 @@ deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 ```
 
-#### <div id='3.1.5'>3.1.5. 배포 확인
+#### <div id='3.2.5'>3.2.5. 배포 확인
 배포된 Deployment, Service를 확인한다.
 
 ```
