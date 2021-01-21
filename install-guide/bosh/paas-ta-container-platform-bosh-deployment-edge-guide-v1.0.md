@@ -202,7 +202,7 @@ mariadb_role_set_regular_user_code: "RS0002"                                    
 mariadb_role_set_init_user_code_name: "Init User"                                   # init user role's code name (e.g. Init User)
 mariadb_role_set_init_user_code: "RS0003"                                           # init user role's code (e.g. RS0003)
 
-#PRIVATE IMAGE REPOSITORY
+# PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                   # private image repository azs
 private_image_repository_port: 5001                                                  # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
@@ -292,6 +292,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 ```
 
 ### <div id='3.1'>3.1. 생성한 이미지를 배포된 이미지 Registry로 임포트
+Docker가 설치된 서버 Repository에 이미지가 Load 되어야 하므로 master 서버에서 원격 Repository에 이미지 푸쉬하는 과정을 수행한다. 
 1. Repository에 Load할 이미지 다운로드 
 ```
 $ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
