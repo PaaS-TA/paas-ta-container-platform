@@ -295,7 +295,7 @@ Succeeded
 kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
-> Kubernetes Master Node, Worker Node 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -642,10 +642,10 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 
 ```
 
-## <div id='4'>4. Container Platform 서비스 브로커
-Container Platform 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container Platform 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
+## <div id='4'>4. Container 서비스 브로커
+Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### <div id='4.1'>4.1. Container Platform 서비스 브로커 등록
+### <div id='4.1'>4.1. Container 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -659,15 +659,15 @@ Getting service brokers as admin...
 name                               url
 mysql-service-broker               http://10.0.121.71:8080
  ```
-  - Container Platform 서비스 브로커를 등록한다.
+  - Container 서비스 브로커를 등록한다.
   > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 서비스 브로커 NodePort
+  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Container 서비스 브로커 NodePort
    ```
   $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
    ```
- - 등록된 Container Platform 서비스 브로커를 확인한다.
+ - 등록된 Container 서비스 브로커를 확인한다.
   ```
   $ cf service-brokers
 Getting service brokers as admin...
@@ -713,7 +713,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### <div id='4.2'> 4.2. Container Platform 서비스 UAA Client 등록
+### <div id='4.2'> 4.2. Container 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
 - uaac server의 endpoint를 설정한다.
@@ -834,22 +834,22 @@ ex)
 
 ![image 004]
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
-해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
+해당 설정은 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='5.1'>5.1. Kubernetes Cluster 설정
-> 단독배포된 Kubernetes master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
-# docker restart
+# docker 재시작
 $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins Service Deployment가 미리 배포되어 있어야 한다.
+> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
 
 -  container-jenkins-broker 배포
 
@@ -960,7 +960,7 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 브로커 NodePort
+> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 서비스 브로커 NodePort
  ```
 $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{K8S_IP}:31787
  ```
