@@ -303,7 +303,7 @@ $ sudo vi /etc/docker/daemon.json
         "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
-# docker restart
+# docker 재시작
 $ sudo systemctl restart docker
 ```
 
