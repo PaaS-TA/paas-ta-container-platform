@@ -15,15 +15,17 @@
     2.6. [Release  설치 확인](#2.6)
 
 3. [Container Platform 배포](#3)  
-    3.1. [생성한 이미지를 배포된 이미지 Registry로 임포트](#3.1)  
-    3.2. [단독배포 시 Deployment](#3.2)  
-        3.2.1. [paas-ta-container-platform-common-api 배포](#3.2.1)  
-        3.2.2. [paas-ta-container-platform-api 배포](#3.2.2)  
-        3.2.3. [paas-ta-container-platform-webuser 배포](#3.2.3)  
-        3.2.4. [paas-ta-container-platform-webadmin 배포](#3.2.4)  
-        3.2.5. [배포 확인](#3.2.5)  
+    3.1. [kubernetes Cluster 설정](#3.1)  
+    3.2. [Container Platform 이미지 업로드](#3.2)  
+    3.3. [Secret 생성](#3.3)  
+    3.4. [Deployment 배포](#3.4)  
+    3.4.1. [paas-ta-container-platform-common-api 배포](#3.4.1)  
+    3.4.2. [paas-ta-container-platform-api 배포](#3.4.2)    
+    3.4.3. [paas-ta-container-platform-webuser 배포](#3.4.3)    
+    3.4.4. [paas-ta-container-platform-webadmin 배포](#3.4.4)    
+    3.4.5. [배포 확인](#3.4.5)    
 
-4. [CVE 조치사항 적용](#4)    
+4. [CVE 조치사항 적용](#4)     
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -271,61 +273,71 @@ Succeeded
 ```
 
 ## <div id='3'>3. Container Platform 배포
-단독 배포된 kubernetes에서 PaaS-TA용 Container Platform 을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
-1. K8s Cluster 설정
-> k8s master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker 재시작
+### <div id='3.1'>3.1. kubernetes Cluster 설정
+> 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
-# docker restart
+# docker 재시작
 $ sudo systemctl restart docker
 ```
 
-2. Private Repository에 등록된 이미지를 활용하기 위해서는 Kubernetes에 secret 생성
+### <div id='3.2'>3.2. Container Platform 이미지 업로드
+Private Repository에 이미지 등록을 위해 Container Platform 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+해당 내용은 Kubernetes Master Node에서 실행한다.
+ 
++ Container Platform 이미지 파일 다운로드 :  
+   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download)  
 
+```
+# 이미지 다운로드 파일 위치 경로 생성
+$ mkdir -p ~/workspace/paasta/container-platform/image
+$ cd ~/workspace/paasta/container-platform
+
+# 이미지 파일 다운로드 및 파일 경로 확인
+$ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
+
+$ ls ~/workspace/paasta/container-platform
+  cp-standalone-images.tar  image
+
+# 이미지 다운로드 파일 압축 해제
+$ tar -xvf cp-standalone-images.tar -C image
+$ cd ~/workspace/paasta/container-platform/image
+$ ls ~/workspace/paasta/container-platform/image
+  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
+  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz
+   
+ ```
+ 
+ + Private Repository에 이미지를 업로드한다.
+ ```
+ $ chmod +x *.sh  
+ $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
+ ```
+ 
+ + Private Repository에 업로드 된 이미지 목록을 확인한다.
+ 
+ ```
+ $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
+ 
+{"repositories":["container-platform-api","container-platform-common-api","container-platform-webadmin","container-platform-webuser"]}
+```
+
+
+### <div id='3.3'>3.3. Secret 생성
+Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
 ```
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.1'>3.1. 생성한 이미지를 배포된 이미지 Registry로 임포트
-Docker가 설치된 서버 Repository에 이미지가 Load 되어야 하므로 master 서버에서 원격 Repository에 이미지 푸쉬하는 과정을 수행한다. 
-1. Repository에 Load할 이미지 다운로드 
-```
-$ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
+### <div id='3.4'>3.4. Deployment 배포
 
-$ ls 
-cp-standalone-images.tar  
-
-```
-2. 다운로드한 파일 압축 해제
-```
-$ tar -xvf cp-standalone-images.tar
-
-$ ls
-container-platform-api.tar.gz   container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  container-platform-webadmin.tar.gz  image-upload-standalone.sh
-```
-
-3. 스크립트 실행
-```
-$ chmod +x image-upload-standalone.sh
-
-$ ./image-upload-standalone.sh {HAProxy_IP}:5001
-
-# local Repository를 확인
-$ sudo docker images
-```
-
-4. 이미지 확인
-```
-$ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
-```
-
-### <div id='3.2'>3.2. 단독 배포 시 Deployment
-#### <div id='3.2.1'>3.2.1. paas-ta-container-platform-common-api 배포
+#### <div id='3.4.1'>3.4.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -388,7 +400,7 @@ spec:
     app: common-api
   type: NodePort
 ```
-#### <div id='3.2.2'>3.2.2. paas-ta-container-platform-api 배포
+#### <div id='3.4.2'>3.4.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -459,7 +471,7 @@ Deployment YAML 내 정의한 환경변수(env) 중 CLUSTER_NAME 값은 배포 �
 
 ![image 005]
 
-#### <div id='3.2.3'>3.2.3. paas-ta-container-platform-webuser 배포
+#### <div id='3.4.3'>3.4.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -524,7 +536,7 @@ spec:
     app: webuser
   type: NodePort
 ```
-#### <div id='3.2.4'>3.2.4. paas-ta-container-platform-webadmin 배포
+#### <div id='3.4.4'>3.4.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -600,8 +612,8 @@ deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 ```
 
-#### <div id='3.2.5'>3.2.5. 배포 확인
-배포된 Deployment, Service를 확인한다.
+#### <div id='3.4.5'>3.4.5. 배포 확인
+배포된 Deployment, Pod, Service를 확인한다.
 
 ```
 $ kubectl get deployments
