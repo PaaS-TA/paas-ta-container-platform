@@ -27,7 +27,8 @@
 
 5. [Jenkins 서비스 브로커(Optional)](#5)   
  5.1. [Kubernetes Cluster 설정](#5.1)   
- 5.2. [Jenkins 서비스 브로커 등록](#5.2)   
+ 5.2. [Deployment 배포](#5.2)  
+ 5.3. [Jenkins 서비스 브로커 등록](#5.3)   
 
 6. [CVE 조치사항 적용](#6)     
 
@@ -845,23 +846,106 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='5.2'>5.2. Jenkins 서비스 브로커 등록
+### <div id='5.2'>5.2. Deployment 배포
+> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins Serivce Deployment가 미리 배포되어 있어야 한다.
 
-- 배포된 Jenkins 서비스 VM 목록을 확인한다.
-> $ bosh -e micro-bosh -d paasta-container-platform
+-  container-jenkins-broker 배포
+
+> $ vi container-jenkins-broker.yml
+
 ```
-Deployment 'paasta-container-platform'
-
-Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/4181e787-8971-48a7-99fe-3b9c79ea83c5  running        z6  10.0.201.121  i-08070edaad67d4264  small    true
-container-service-broker/1ffe82c1-ef1c-4282-b143-59b3f5b8aa44  running        z6  10.0.201.122  i-05cffd02f3ccbe9d9  small    true
-haproxy/be936a47-0477-4983-8aed-94b3fce9b98d                   running        z7  10.0.0.122    i-062798eeb848b85ac  small    true
-                                                                                  3.35.95.75
-mariadb/a935fac7-4b23-47af-8cc2-bd20cf4bb2b5                   running        z5  10.0.161.121  i-0b8efeb5d74428142  small    true
-private-image-repository/9c9e88e4-b16a-4046-901e-08946508bb47  running        z7  10.0.0.123    i-0d5ca33b08c7541e3  small    true
-
-5 vms
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-broker-deployment
+  labels:
+    app: jenkins-broker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-broker
+  template:
+    metadata:
+      labels:
+        app: jenkins-broker
+    spec:
+      containers:
+      - name: jenkins-broker
+        image: {HAPROXY_IP}:5001/container-jenkins-broker:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8091
+        env:
+        - name: K8S_IP
+          value: {K8S_IP}
+        - name: K8S_PORT
+          value: "6443"
+        - name: K8S_AUTH_BEARER
+          value: {K8S_AUTH_BEARER}
+        - name: HAPROXY_IP
+          value: {HAPROXY_IP}
+        - name: USER_NAME
+          value: root
+        - name: PASSWORD
+          value: PaaS-TA@2020
+        - name: REGISTRY_PORT
+          value: "5001"
+        - name: MARIADB_PORT
+          value: "13306"
+      imagePullSecrets:
+        - name: cp-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-broker-deployment
+  labels:
+    app: jenkins-broker
+  namespace: default
+spec:
+  ports:
+  - nodePort: 31787
+    port: 8787
+    protocol: TCP
+    targetPort: 8787
+  selector:
+    app: jenkins-broker
+  type: NodePort
 ```
+
+```
+$ kubectl apply -f container-jenkins-broker.yml
+deployment.apps/jenkins-broker-deployment created
+service/jenkins-broker-deployment created
+```
+
+- 배포 확인
+
+배포된 Deployment, Pod, Service를 확인한다.
+
+```
+#Deployment 배포 정상 확인
+$ kubectl get deployments
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+jenkins-broker-deployment       1/1     1            1           2m20s
+
+
+#Pod 배포 정상 확인
+$ kubectl get pods
+NAME                                             READY   STATUS    RESTARTS   AGE
+jenkins-broker-deployment-7f84f69cf8-wgzbv       1/1     Running   0          2m30s
+
+
+#Service 배포 정상 확인
+$ kubectl get svc
+NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+jenkins-broker-deployment       NodePort    10.233.9.92     <none>        8787:31787/TCP   2m49s
+
+```
+
+### <div id='5.3'>5.3. Jenkins 서비스 브로커 등록
 
 - 브로커 목록을 확인한다.
 
@@ -870,15 +954,15 @@ $ cf service-brokers
 Getting service brokers as admin...
 
 name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
+container-service-broker   http://xxx.xxx.xxx.xxx:31888
 ```
  - Jenkins 서비스 브로커를 등록한다.
-> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}
+> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL
+> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 브로커 NodePort
  ```
-$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:8787
+$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{K8S_IP}:31787
  ```
   - 등록된 Jenkins 서비스 브로커를 확인한다.
  ```
@@ -886,8 +970,8 @@ $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.
 Getting service brokers as admin...
 
 name                       url
-container-service-broker   http://xxx.xxx.xxx.xxx:8888
-jenkins-service-broker     http://xxx.xxx.xxx.xxx:8787
+container-service-broker   http://xxx.xxx.xxx.xxx:31888
+jenkins-service-broker     http://xxx.xxx.xxx.xxx:31787
 ```
 - 접근 가능한 서비스 목록을 확인한다.
 ```
