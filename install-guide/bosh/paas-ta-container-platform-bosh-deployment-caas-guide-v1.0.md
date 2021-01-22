@@ -356,7 +356,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 
 ### <div id='3.4'>3.4. Deployment 배포
-PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
+PaaS-TA 사용자포탈에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
 
 - container-service-common-api 배포
 
@@ -837,19 +837,19 @@ ex)
 해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='5.1'>5.1. Kubernetes Cluster 설정
-> 단독배포된 Kubernetes master, worker 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Kubernetes Master Node, Worker Node 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
-# docker restart
+# docker 재시작
 $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins Serivce Deployment가 미리 배포되어 있어야 한다.
+> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins Serivce Deployment가 미리 배포되어 있어야 한다.
 
 -  container-jenkins-broker 배포
 
