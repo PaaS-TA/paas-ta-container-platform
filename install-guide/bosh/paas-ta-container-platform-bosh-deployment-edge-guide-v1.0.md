@@ -144,6 +144,10 @@ Succeeded
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
+
+> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
+  IPS - k8s_auth_bearer : [KubeEdge 설치 가이드 - Cluster Role 운영자 생성 및 Token 획득 참고](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
+
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
