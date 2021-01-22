@@ -74,7 +74,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- Container Platform Deployment Git Repository URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -155,11 +155,6 @@ Succeeded
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
-
-> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
-  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - Cluster Role 운영자 생성 및 Token 획득 참고](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
-  
-
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -253,15 +248,15 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/eNrX3oTMkdSfZ7k/download)   
-
+  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/Z65FNSQ3qG4nbE7/download)   
+       
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta/release/service
 $ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/eNrX3oTMkdSfZ7k/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/Z65FNSQ3qG4nbE7/download
 $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz
 ```
@@ -286,12 +281,13 @@ Task 2983. Done
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-haproxy/32d1ff4e-1007-4e9a-8ebd-ffb33ba37348                   running        z7  10.0.0.121    i-0e6c374f2377ecf12  small    true
-                                                                                  3.35.95.75
-mariadb/42657509-69b6-4b4e-a006-20690e5ce2ea                   running        z5  10.0.161.121  i-0a8c71fb43ba3f34a  small    true
-private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7  10.0.0.122    i-0d5e4c451075e446b  small    true
+haproxy/cbd5d103-765d-47e0-ac5b-233a21108c77                   running        z7  10.0.0.122    i-0f49ce7431aaa2901  small    true
+                                                                                  15.164.15.53
+mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5  10.0.161.121  i-09b27b184b7aea066  small    true
+private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
 
 3 vms
+
 Succeeded
 ```
 
@@ -299,7 +295,7 @@ Succeeded
 kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
-> Kubernetes Master Node, Worker Node 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -307,14 +303,14 @@ $ sudo vi /etc/docker/daemon.json
         "insecure-registries": ["{HAProxy_IP}:5001"]
 }
 
-# docker restart
+# docker 재시작
 $ sudo systemctl restart docker
 ```
 
 ### <div id='3.2'>3.2. Container 서비스 이미지 업로드
 Private Repository에 이미지 등록을 위해 Container 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
-
+ 
 + Container 서비스 이미지 파일 다운로드 :  
    [cp-caas-images.tar](http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download)  
 
@@ -327,7 +323,7 @@ $ cd ~/workspace/paasta/container-platform
 $ wget --content-disposition http://45.248.73.44/index.php/s/dBx25aQi4WLy9DS/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-caas-images.tar
+  cp-caas-images.tar  image
 
 # 이미지 다운로드 파일 압축 해제
 $ tar -xvf cp-caas-images.tar -C image
@@ -335,21 +331,21 @@ $ cd ~/workspace/paasta/container-platform/image
 $ ls ~/workspace/paasta/container-platform/image
   container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz
   container-service-api.tar.gz     container-service-common-api.tar.gz  paasta-jenkins.tar.gz  image_upload_caas.sh
-
+ 
  ```
-
+ 
  + Private Repository에 이미지를 업로드한다.
  ```
  $ chmod +x *.sh  
- $ ./image_upload_caas.sh {HAProxy_IP}:5001
+ $ ./image_upload_caas.sh {HAProxy_IP}:5001 
  ```
-
+ 
  + Private Repository에 업로드 된 이미지 목록을 확인한다.
-
+ 
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
-
- {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]}
+ 
+ {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]} 
 ```
 
 
@@ -361,7 +357,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 
 ### <div id='3.4'>3.4. Deployment 배포
-PaaS-TA 사용자포탈에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
+PaaS-TA 사용자포탈에서 CaaS서비스를 추가하기 전 아래의 Deployment가 미리 배포되어 있어야 한다.
 
 - container-service-common-api 배포
 
@@ -646,10 +642,10 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 
 ```
 
-## <div id='4'>4. Container Platform 서비스 브로커
-Container Platform 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container Platform 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
+## <div id='4'>4. Container 서비스 브로커
+Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
 
-### <div id='4.1'>4.1. Container Platform 서비스 브로커 등록
+### <div id='4.1'>4.1. Container 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -663,15 +659,15 @@ Getting service brokers as admin...
 name                               url
 mysql-service-broker               http://10.0.121.71:8080
  ```
-  - Container Platform 서비스 브로커를 등록한다.
+  - Container 서비스 브로커를 등록한다.
   > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 서비스 브로커 NodePort
+  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Container 서비스 브로커 NodePort
    ```
   $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
    ```
- - 등록된 Container Platform 서비스 브로커를 확인한다.
+ - 등록된 Container 서비스 브로커를 확인한다.
   ```
   $ cf service-brokers
 Getting service brokers as admin...
@@ -717,7 +713,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### <div id='4.2'> 4.2. Container Platform 서비스 UAA Client 등록
+### <div id='4.2'> 4.2. Container 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
 - uaac server의 endpoint를 설정한다.
@@ -810,14 +806,13 @@ paas-ta-portal-storage-api/20170f06-6b5b-4421-8238-9cac7a276618   running       
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-container-jenkins-broker/a458f442-2bc3-4004-afb5-a6f378fa527e  running        z6  10.0.201.132  i-023f9cf68fbde2ede  small    true
-container-service-broker/312de3ad-d072-4d38-aff2-db3c8139b7af  running        z6  10.0.201.133  i-09aa099d393009ad4  small    true
-haproxy/446ce2a6-5344-4335-a94c-e3448f48ada4                   running        z7  10.0.0.124    i-0cc170becd2f44b64  small    true
-                                                                                  3.35.95.75
-mariadb/b70e1276-66bc-4328-bd37-edc52e66f960                   running        z5  10.0.161.121  i-08a1b5dcc278226be  small    true
-private-image-repository/54597eb7-1157-4c44-8e23-e9a3785f2005  running        z7  10.0.0.125    i-0412c393c9e95ce52  small    true
+haproxy/cbd5d103-765d-47e0-ac5b-233a21108c77                   running        z7  10.0.0.122    i-0f49ce7431aaa2901  small    true
+                                                                                  15.164.15.53
+mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5  10.0.161.121  i-09b27b184b7aea066  small    true
+private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
 
-5 vms
+3 vms
+
 ```
 
 ```
@@ -839,10 +834,10 @@ ex)
 
 ![image 004]
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
-해당 설정은 Jenkins 서비스에서 설치된 jenkins 서비스를 이용하기 위한 설정이다.
+해당 설정은 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='5.1'>5.1. Kubernetes Cluster 설정
-> Kubernetes Master Node, Worker Node 에서 daemon.json 에 insecure-registries 로 private image repository url 설정 후 docker를 재시작한다.
+> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
@@ -854,7 +849,7 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins Serivce Deployment가 미리 배포되어 있어야 한다.
+> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 단독배포된 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
 
 -  container-jenkins-broker 배포
 
@@ -965,7 +960,7 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 브로커 NodePort
+> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 서비스 브로커 NodePort
  ```
 $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{K8S_IP}:31787
  ```
