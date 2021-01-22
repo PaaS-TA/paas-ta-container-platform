@@ -384,6 +384,11 @@ spec:
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
+      tolerations:
+      - key: "node-role.kubernetes.io"
+        operator: "Equal"
+        value: "master"
+        effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -449,6 +454,11 @@ spec:
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30334"  
+      tolerations:
+      - key: "node-role.kubernetes.io"
+        operator: "Equal"
+        value: "master"
+        effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -520,6 +530,11 @@ spec:
           value: "{MASTER_NODE_PUBLIC_IP}:30334"            # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"     
+      tolerations:
+      - key: "node-role.kubernetes.io"
+        operator: "Equal"
+        value: "master"
+        effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -578,6 +593,11 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+      tolerations:
+      - key: "node-role.kubernetes.io"
+        operator: "Equal"
+        value: "master"
+        effect: "NoSchedule"  
       imagePullSecrets:
         - name: cp-secret
 ---
