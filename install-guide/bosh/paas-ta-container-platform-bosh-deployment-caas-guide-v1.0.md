@@ -316,7 +316,7 @@ Private Repository에 이미지 등록을 위해 Container 서비스 이미지 �
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + Container 서비스 이미지 파일 다운로드 :  
-   [cp-caas-images.tar](http://45.248.73.44/index.php/s/JES9z4dB8yz6HM8/download)  
+   [cp-caas-images.tar](http://45.248.73.44/index.php/s/dBx25aQi4WLy9DS/download)  
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
