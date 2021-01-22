@@ -74,7 +74,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- Container Platform Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -155,6 +155,11 @@ Succeeded
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
+
+> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
+  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - Cluster Role 운영자 생성 및 Token 획득 참고](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
+  
+
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
