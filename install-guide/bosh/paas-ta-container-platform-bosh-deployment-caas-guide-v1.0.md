@@ -217,7 +217,7 @@ mariadb_role_set_regular_user_code: "RS0002"                                    
 mariadb_role_set_init_user_code_name: "Init User"                                   # init user role's code name (e.g. Init User)
 mariadb_role_set_init_user_code: "RS0003"                                           # init user role's code (e.g. RS0003)
 
-#PRIVATE IMAGE REPOSITORY
+# PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                   # private image repository azs
 private_image_repository_port: 5001                                                  # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
@@ -395,9 +395,9 @@ spec:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)          
+          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)          
         - name: MARIADB_PORT
           value: "13306"  
       imagePullSecrets:
@@ -567,9 +567,9 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)    
+          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)    
         - name: COMMON_API_ID
           value: admin
         - name: COMMON_API_PASSWORD
@@ -897,9 +897,9 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)    
+          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)    
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
