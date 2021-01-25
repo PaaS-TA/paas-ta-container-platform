@@ -394,6 +394,10 @@ spec:
         env:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
+        - name: MARIADB_USER_ID
+          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+        - name: MARIADB_USER_PASSWORD
+          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)          
         - name: MARIADB_PORT
           value: "13306"  
       imagePullSecrets:
@@ -562,10 +566,10 @@ spec:
           value: {K8S_AUTH_BEARER}
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
-        - name: USER_NAME
-          value: cp-admin
-        - name: PASSWORD
-          value: PaaS-TA@2020
+        - name: MARIADB_USER_ID
+          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+        - name: MARIADB_USER_PASSWORD
+          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)    
         - name: COMMON_API_ID
           value: admin
         - name: COMMON_API_PASSWORD
@@ -892,10 +896,10 @@ spec:
           value: {K8S_AUTH_BEARER}
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
-        - name: USER_NAME
-          value: cp-admin
-        - name: PASSWORD
-          value: PaaS-TA@2020
+        - name: MARIADB_USER_ID
+          value: {MARIADB_USER_ID}           #(e.g. cp-admin)
+        - name: MARIADB_USER_PASSWORD
+          value: {MARIADB_USER_PASSWORD}     #(e.g. PaaS-TA@2020)    
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
