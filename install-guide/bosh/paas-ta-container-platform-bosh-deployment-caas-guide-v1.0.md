@@ -196,9 +196,9 @@ service_public_networks_name: "vip"                                             
 
 # IPS
 haproxy_public_url: "<HAPROXY_IP>"                                                  # haproxy's public IP
-k8s_api_server_ip: "<KUBERNETES_API_SERVER_IP>"
-k8s_api_server_port: "6443"
-k8s_auth_bearer: "<KUBERNETES_AUTH_KEY>"
+k8s_api_server_ip: "<KUBERNETES_API_SERVER_IP>"                                     # kubernetes master node IP
+k8s_api_server_port: "6443"                                                      
+k8s_auth_bearer: "<KUBERNETES_AUTH_KEY>"                                            # kubernetes bearer token
 
 # HAPROXY
 haproxy_http_port: 8080                                                             # haproxy port
@@ -208,8 +208,8 @@ haproxy_azs: [z7]                                                               
 mariadb_port: "13306"                                                               # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                                   # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                                # mariadb persistent disk type
-mariadb_admin_user_id: "root"                                                       # mariadb admin user name (e.g. root)
-mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. paasta!admin)
+mariadb_admin_user_id: "cp-admin"                                                   # mariadb admin user name (e.g. cp-admin)
+mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. PaaS-TA@2020)
 mariadb_role_set_administrator_code_name: "Administrator"                           # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                       # administrator role's code (e.g. RS0001)
 mariadb_role_set_regular_user_code_name: "Regular User"                             # regular user role's code name (e.g. Regular User)
@@ -563,7 +563,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: USER_NAME
-          value: root
+          value: cp-admin
         - name: PASSWORD
           value: PaaS-TA@2020
         - name: COMMON_API_ID
@@ -893,7 +893,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: USER_NAME
-          value: root
+          value: cp-admin
         - name: PASSWORD
           value: PaaS-TA@2020
         - name: REGISTRY_PORT
