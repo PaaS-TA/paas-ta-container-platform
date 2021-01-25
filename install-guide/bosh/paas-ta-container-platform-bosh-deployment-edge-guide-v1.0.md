@@ -187,9 +187,9 @@ service_public_networks_name: "vip"                                             
 
 # IPS
 haproxy_public_url: "<HAPROXY_IP>"                                                  # haproxy's public IP
-k8s_api_server_ip: "<KUBERNETES_API_SERVER_IP>"
-k8s_api_server_port: "6443"
-k8s_auth_bearer: "<KUBERNETES_AUTH_KEY>"
+k8s_api_server_ip: "<KUBERNETES_API_SERVER_IP>"                                     # kubernetes master node IP
+k8s_api_server_port: "6443"                                                      
+k8s_auth_bearer: "<KUBERNETES_AUTH_KEY>"                                            # kubernetes bearer token
 
 # HAPROXY
 haproxy_http_port: 8080                                                             # haproxy port
@@ -199,8 +199,8 @@ haproxy_azs: [z7]                                                               
 mariadb_port: "13306"                                                               # mariadb port (e.g. 13306)-- Do Not Use "3306"
 mariadb_azs: [z5]                                                                   # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                                # mariadb persistent disk type
-mariadb_admin_user_id: "root"                                                       # mariadb admin user name (e.g. root)
-mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. paasta!admin)
+mariadb_admin_user_id: "cp-admin"                                                   # mariadb admin user name (e.g. cp-admin)
+mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. PaaS-TA@2020)
 mariadb_role_set_administrator_code_name: "Administrator"                           # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                       # administrator role's code (e.g. RS0001)
 mariadb_role_set_regular_user_code_name: "Regular User"                             # regular user role's code name (e.g. Regular User)
@@ -371,7 +371,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
+                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
       hostNetwork: true
       containers:
       - name: common-api
@@ -383,7 +383,11 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30333"             # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}:30333"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
+        - name: MARIADB_USER_ID
+          value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
+        - name: MARIADB_USER_PASSWORD
+          value: {MARIADB_USER_PASSWORD}                # (e.g. PaaS-TA@2020)           
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
@@ -439,7 +443,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)         
+                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)        
       hostNetwork: true
       containers:
       - name: api
@@ -449,7 +453,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{MASTER_NODE_PUBLIC_IP}"                        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}"              # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
@@ -515,7 +519,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
+                - {CLOUD_SIDE_HOSTNAME}                # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
       hostNetwork: true
       containers:
       - name: webuser
@@ -525,9 +529,9 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                        # {K8S_IP} : K8S Master Node PUBLIC IP(=CLOUD_SIDE_PUBLIC_IP)
+          value: "{K8S_IP}"                              # {K8S_IP} : K8S Master Node PUBLIC IP(=CLOUD_SIDE_PUBLIC_IP)
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30334"            # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}:30334"         # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"     
       tolerations:
@@ -585,7 +589,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - {CLOUD_SIDE_HOSTNAME}                            # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
+                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
       hostNetwork: true
       containers:
       - name: webadmin
