@@ -42,7 +42,8 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
+본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
+
 ![image 001]
 
 <br>

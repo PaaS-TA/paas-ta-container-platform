@@ -45,6 +45,8 @@ PaaS-TA 6.0 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
+본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
+
 ![image 001]
 
 <br>
@@ -435,7 +437,7 @@ kube-scheduler-ip-10-0-0-18            1/1     Running   0          58m
 
 <br>
 
-## <div id='3'> 3. KubeEdge Reset
+## <div id='3'> 3. KubeEdge Reset (참고)
 Cloud Side, Edge Side에서 KubeEdge를 중지합니다. 필수구성요소는 삭제하지 않습니다.
 
 - Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제합니다.
@@ -450,7 +452,7 @@ Cloud Side, Edge Side에서 KubeEdge를 중지합니다. 필수구성요소는 �
 
 <br>
 
-## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득
+## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
 ### <div id='4.1'> 4.1. Cluster Role 운영자 생성 및 Token 획득
 Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
@@ -497,7 +499,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 
 <br>
 
-## <div id='5'> 5. Kubernates Monitoring 도구 (Metrics-server) 배포
+## <div id='5'> 5. Kubernates Monitoring 도구 (Metrics-server) 배포 
 배포된 Resource의 CPU/Memory 사용량 등을 확인하기 위해서는 Metric-server 배포가 필요하며, 컨테이너 플랫폼 사용자포탈에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.  
 또한 KubeEdge에서 Metrics-Server 배포 시 2.8. kubectl logs 기능 활성화 가 필수적으로 진행되어야 한다.
 

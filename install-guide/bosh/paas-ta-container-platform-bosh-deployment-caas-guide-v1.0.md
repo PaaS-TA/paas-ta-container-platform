@@ -42,7 +42,8 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다.
+본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Inception 환경을 구성하기 위해 VM 1개가 필요하다.
+
 ![image 001]
 
 ### <div id='1.4'>1.4. 참고 자료
@@ -51,13 +52,15 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털이 설치되어 있어야 한다.
-- [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide/tree/working-5.1)
-- [PaaS-TA 포털](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA API, PaaS-TA 포털이 설치되어 있어야 한다.
+- [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
+- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
+- [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
+- [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 stemcell 사용)
+- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -246,8 +249,6 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
 
-
-
 ### <div id='2.5'>2.5. 서비스 설치
 
 - 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
@@ -263,10 +264,23 @@ $ cd ~/workspace/paasta/release/service
 $ wget --content-disposition http://45.248.73.44/index.php/s/eNrX3oTMkdSfZ7k/download
 $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz
+
+# 릴리즈 파일 업로드
+$ bosh -e <bosh_name> upload-release paasta-container-platform-1.0.tgz
+```
+- 업로드 된 Release 확인
+> $ bosh -e <bosh_name> releases
+```
+Name                               Version  Commit Hash  
+paasta-container-platform-release  1.0      5425be0+  
+
+(*) Currently deployed
+(+) Uncommitted changes
+
+1 releases
 ```
 
 - 서비스를 설치한다.
-
 ```
 $ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh
 $ chmod +x *.sh
@@ -320,22 +334,21 @@ Private Repository에 이미지 등록을 위해 Container 서비스 이미지 �
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta/container-platform/image
+$ mkdir -p ~/workspace/paasta/container-platform
 $ cd ~/workspace/paasta/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/dBx25aQi4WLy9DS/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-caas-images.tar  image
+  cp-caas-images.tar
 
 # 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-caas-images.tar -C image
-$ cd ~/workspace/paasta/container-platform/image
-$ ls ~/workspace/paasta/container-platform/image
-  container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz
-  container-service-api.tar.gz     container-service-common-api.tar.gz  paasta-jenkins.tar.gz  image_upload_caas.sh
- 
+$ tar -xvf cp-caas-images.tar
+$ cd ~/workspace/paasta/container-platform/container-service-image
+$ ls ~/workspace/paasta/container-platform/container-service-image
+  container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz  paasta-jenkins.tar.gz
+  container-service-api.tar.gz     container-service-common-api.tar.gz  image_upload_caas.sh 
  ```
  
  + Private Repository에 이미지를 업로드한다.
