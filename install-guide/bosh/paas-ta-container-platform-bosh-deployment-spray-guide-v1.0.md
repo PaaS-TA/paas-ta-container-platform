@@ -645,7 +645,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 ```
 
 ## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
-### <div id='5-1'/>5.1. Container Platform 운영자 포털 회원가입 
+### <div id='5.1'/>5.1. Container Platform 운영자 포털 회원가입 
 운영자 포털에 접속을 위해서 Kubespray 설치 가이드의 [4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.3)이 사전에 진행 되어야 한다. 
 > $ kubectl get namespace 
 ```
@@ -660,40 +660,41 @@ paas-ta-container-platform-temp-namespace   Active   4d
 - Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
 
 ![image 005]
->{Cluster Name} : paas-ta-container-platform-api.yml에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{API URL} : {K8S Master Node Public IP}:6443 을 입력한다.  
+>{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
+>{API URL} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {K8S_IP}를 입력한다.  
+              https://{K8S_IP}:6443 을 입력한다. 
 >{Token} : Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 입력한다.
 ```
-#eg
+#ex)
 #{Cluster Name} : cp-cluster-new
-#{API URL} : xx.xx.xx.xx:6443
+#{API URL} : xxx.xxx.xxx.xxx:6443
 #{Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
 
 ```
-### <div id='5-2'/>5.2. Container Platform 운영자 포털 로그인
+### <div id='5.2'/>5.2. Container Platform 운영자 포털 로그인
 - 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 PaaS-TA 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자포털로 이동하여 회원가입을 진행한다.
 
 ![image 006]
 
-### <div id='5-3'/>5.3. Container Platform 사용자 포털 회원가입
+### <div id='5.3'/>5.3. Container Platform 사용자 포털 회원가입
 - 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 사용자 포털에 회원가입을 한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자 Namespace와 Role을 할당한다. 
 
 ![image 007]
 
-### <div id='5-4'/>5.4. Container Platform 운영자 포털 User Namespace/Role 할당
+### <div id='5.4'/>5.4. Container Platform 운영자 포털 User Namespace/Role 할당
 -  Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼 선택 > 해당 Namespace 관리자로 지정할 User를 선택, Resource Quotas, Limit Ranges를 할당 > 저장버튼을 선택한다.
 
 ![image 008]
 
-### <div id='5-5'/>5.5. Container Platform 사용자 포털 로그인
+### <div id='5.5'/>5.5. Container Platform 사용자 포털 로그인
 - 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 PaaS-TA 사용자 포털에 로그인 한다.
 
 ![image 009]
 
-### <div id='5-6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
+### <div id='5.6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
 - 포털 사용방법은 포털 사용가이드를 참고 한다.      
-[사용자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)    
-[운영자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
+사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
+운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
 
 ----
 [image 001]:images/cp-001.png

@@ -750,26 +750,25 @@ Context: uaa_admin, from client uaa_admin
 
 ```
 
--	uaac 로그인을 한다.
+- uaac 로그인을 한다.
 
 ```
 $ uaac token client get <UAA_ADMIN_CLIENT_ID> -s <UAA_ADMIN_CLIENT_SECRET>
 Successfully fetched token via client credentials grant.
 Target: https://uaa.<DOMAIN>
 Context: admin, from client admin
-
 ```
 
 - Container 서비스 계정 생성을 한다.
 
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {http://<Kubernetes Master Node의 Public IP>:32091} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
-  -	<CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
-  -	<CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
-  -	<Container 서비스 URI> : 성공적으로 리다이렉션 할 Container 서비스 접근 URI (http://<Kubernetes Master Node의 Public IP>:<Container 서비스 Dashboard의 NodePort>)  
-  -	<퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
-  -	<권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
-  -	<권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
-  -	<자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
+  - <CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
+  - <CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
+  - <Container 서비스 URI> : 성공적으로 리다이렉션 할 Container 서비스 접근 URI (http://<Kubernetes Master Node의 Public IP>:<Container 서비스 Dashboard의 NodePort>)  
+  - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
+  - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
+  - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
+  - <자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
 
 ```  
 # e.g. Container 서비스 계정 생성
