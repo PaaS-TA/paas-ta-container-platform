@@ -16,9 +16,9 @@
   2.6. [Kubespray 설치](#2.6)  
   2.7. [Kubespray 설치 확인](#2.7)  
 
-3. [Kubespray 삭제](#3)  
+3. [Kubespray 삭제 (참고)](#3)  
 
-4. [컨테이너 플랫폼 운영자 생성 및 Token 획득](#4)  
+4. [컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)](#4)  
   4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
   4.2. [Namespace 사용자 Token 획득](#4.2)  
   4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)
@@ -55,7 +55,8 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 ## <div id='2'> 2. Kubespray 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 Ubuntu 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v2.9 +, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 한다.
+본 설치 가이드는 Ubuntu 18.04 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v2.9 +, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 하며 설치 가이드에 따라 순차적으로 설치가 진행된다.
+
 
 Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
@@ -114,7 +115,7 @@ $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbbm8OzCYjGPFNexrxU2OyfHAUzLhs+ovXafX0RG5bvm44B04LH01maV8j32Vkag0DtNEiA96WjR9wpTeqfZy0Qwko9+TJOfK7lVT7+GCPm112pzU/t3i9oaptFdalGLYC+ib2+ViibkV0rZ8ds/zz/i0uzXDqvYl1HYfc7kA1CtinAimxV2FU/7WDTIj5HAfPnhyXPf+k1d3hPJEZ+T3qUmLnVpIXS2AHETPz29mu/I8EWUfc8/OVFJqS8RAyGghfnbFPrVEL3+jp/K6nwfX9nnpJWXvMtYenKwHI+mY8iuEYr ubuntu@ip-10-0-0-34
 ```
 
-- 사용할 Master, Worker Node의 authorized_keys 파일에 공개키를 복사한다.
+- 사용할 Master, Worker Node의 authorized_keys 파일 본문의 마지막 부분에 공개키를 복사한다.
 ```
 $ vi .ssh/authorized_keys
 ```
@@ -168,6 +169,9 @@ $ vi inventory/mycluster/inventory.ini
 # inventory.ini
 # {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+# eg
+# kube-master ansible_host=10.0.0.1x ip=10.0.0.1x etcd_member_name=etcd1
+# kube-worker1 ansible_host=10.0.0.2x ip=10.0.0.2x
 
 [all]
 {MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
@@ -202,6 +206,9 @@ Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
 - 인벤토리 빌더로 Ansible 인벤토리 파일을 업데이트한다.
 ```
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+# eg
+# declare -a IPS=(10.0.0.1x 10.0.0.2x 10.0.0.3x 10.0.0.4x)
+
 $ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_NODE_IP3})
 
 $ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
@@ -264,7 +271,7 @@ nodelocaldns-zhf2v                            1/1     Running   0          85s
 
 <br>
 
-## <div id='3'> 3. Kubespray 삭제
+## <div id='3'> 3. Kubespray 삭제 (참고)
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 
 ```
@@ -273,7 +280,7 @@ $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=roo
 
 <br>
 
-## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득
+## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
 ### <div id='4.1'> 4.1. Cluster Role 운영자 생성 및 Token 획득
 Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
