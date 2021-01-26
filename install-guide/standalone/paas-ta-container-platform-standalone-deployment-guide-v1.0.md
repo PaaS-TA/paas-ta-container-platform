@@ -42,6 +42,7 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
+본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
 ![image 001]
 
 <br>
@@ -115,7 +116,7 @@ $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbbm8OzCYjGPFNexrxU2OyfHAUzLhs+ovXafX0RG5bvm44B04LH01maV8j32Vkag0DtNEiA96WjR9wpTeqfZy0Qwko9+TJOfK7lVT7+GCPm112pzU/t3i9oaptFdalGLYC+ib2+ViibkV0rZ8ds/zz/i0uzXDqvYl1HYfc7kA1CtinAimxV2FU/7WDTIj5HAfPnhyXPf+k1d3hPJEZ+T3qUmLnVpIXS2AHETPz29mu/I8EWUfc8/OVFJqS8RAyGghfnbFPrVEL3+jp/K6nwfX9nnpJWXvMtYenKwHI+mY8iuEYr ubuntu@ip-10-0-0-34
 ```
 
-- 사용할 Master, Worker Node의 authorized_keys 파일 본문의 마지막 부분에 공개키를 복사한다.
+- 사용할 Master, Worker Node의 authorized_keys 파일 본문의 마지막 부분(기존 본문 내용 아래 추가)에 공개키를 복사한다.
 ```
 $ vi .ssh/authorized_keys
 ```
@@ -123,10 +124,10 @@ $ vi .ssh/authorized_keys
 <br>
 
 ### <div id='2.3'> 2.3. Kubespray 다운로드
-2.3.부터는 Master Node에서만 진행을 하면 된다.
+2.3.부터는 Master Node에서만 진행을 하면 된다.(Worker Node에는 더 이상 추가 작업이 없다.)
 Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 작업 경로로 위치시킨다.
 
-- Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+- Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 - git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.14.1 이다.
 ```
@@ -159,6 +160,7 @@ $ sudo pip3 install -r requirements.txt
 ### <div id='2.5'> 2.5. Kubespray 파일 수정
 Kubespray inventory 파일에는 배포할 Master, Worker Node의 구성을 정의한다.
 본 설치 가이드에서는 1개의 Master Node와 3개의 Worker Node, 1개의 etcd 배포를 기준으로 가이드를 진행하며 기본 CNI는 calico로 설정되어있다.
+(기본 Cluster 환경 구성은 Master Node 1개와 Worker Node 1개 이상을 필요로 한다.)
 
 - mycluster 디렉토리의 inventory.ini 파일을 설정한다.
 ```
@@ -175,7 +177,7 @@ $ vi inventory/mycluster/inventory.ini
 
 [all]
 {MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
-{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}
+{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성 
 {WORKER_HOST_NAME2} ansible_host={WORKER_NODE_IP2} ip={WORKER_NODE_IP2}
 {WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3} ip={WORKER_NODE_IP3}
 
@@ -186,7 +188,7 @@ $ vi inventory/mycluster/inventory.ini
 {MASTER_HOST_NAME}
 
 [kube-node]
-{WORKER_HOST_NAME1}
+{WORKER_HOST_NAME1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
 {WORKER_HOST_NAME2}
 {WORKER_HOST_NAME3}
 
@@ -206,6 +208,7 @@ Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
 - 인벤토리 빌더로 Ansible 인벤토리 파일을 업데이트한다.
 ```
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+# {WORKER_NODE_IP}는 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
 # eg
 # declare -a IPS=(10.0.0.1x 10.0.0.2x 10.0.0.3x 10.0.0.4x)
 
@@ -287,7 +290,7 @@ Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account�
 
 - Service Account를 생성한다.
 ```
-# {SERVICE_ACCOUNT} : Service Account 명
+# {SERVICE_ACCOUNT} : 생성할 Service Account 명
 $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
 (eg. kubectl create serviceaccount k8sadmin -n kube-system)
 ```

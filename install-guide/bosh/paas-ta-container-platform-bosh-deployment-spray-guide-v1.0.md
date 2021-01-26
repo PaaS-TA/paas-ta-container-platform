@@ -27,6 +27,14 @@
 
 4. [CVE 조치사항 적용](#4)     
 
+5. [단독 배포후 Container Platform 운영자/사용자 회원가입](#5)    
+    5.1. [Container Platform 운영자 포털 회원가입](#5.1)    
+    5.2. [Container Platform 운영자 포털 로그인](#5.2)    
+    5.3. [Container Platform 사용자 포털 로그인](#5.3)    
+    5.4. [Container Platform 운영자 포털 User Namespace/Role 할당](#5.4)    
+    5.5. [Container Platform 사용자 포털 로그인](#5.5)    
+    5.6. [Container Platform 사용자/운영자 포털 사용 가이드](#5.6)  
+
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
 본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 방법을 기술하였다.
@@ -37,7 +45,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다.
+본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본문서는 Inception 환경을 구성하기 위해 VM 1개가 필요하다. 
 ![image 001]
 
 ### <div id='1.4'>1.4. 참고 자료
@@ -46,12 +54,13 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container Platform 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 BOSH 2.0이 설치되어 있어야 한다.
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.1 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다. 
 - [BOSH 2.0 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
+- [PaaS-TA 5.1 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 stemcell 사용)
-- Stemcell 업로드 및 Cloud Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
+- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -148,7 +157,7 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
-  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - Cluster Role 운영자 생성 및 Token 획득 참고](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
+  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
   
 ```
 # INCEPTION OS USER NAME
@@ -248,6 +257,22 @@ $ cd ~/workspace/paasta/release/service
 $ wget --content-disposition http://45.248.73.44/index.php/s/eNrX3oTMkdSfZ7k/download
 $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz
+
+# 릴리즈 파일 업로드
+$ bosh -e <bosh_name> upload-release paasta-container-platform-1.0.tgz
+
+```
+
+- 업로드 된 Release 확인
+> $ bosh -e <bosh_name> releases
+```
+Name                               Version  Commit Hash  
+paasta-container-platform-release  1.0      5425be0+  
+
+(*) Currently deployed
+(+) Uncommitted changes
+
+1 releases
 ```
 
 - Release를 설치한다.
@@ -277,7 +302,7 @@ Succeeded
 ```
 
 ## <div id='3'>3. Container Platform 배포
-kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. kubernetes Cluster 설정
 > 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
@@ -307,15 +332,14 @@ $ cd ~/workspace/paasta/container-platform
 $ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-standalone-images.tar  image
+  cp-standalone-images.tar
 
 # 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-standalone-images.tar -C image
-$ cd ~/workspace/paasta/container-platform/image
-$ ls ~/workspace/paasta/container-platform/image
+$ tar -xvf cp-standalone-images.tar 
+$ cd ~/workspace/paasta/container-platform/container-platform-image
+$ ls ~/workspace/paasta/container-platform/container-platform-image
   container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
-  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz
-   
+  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  
  ```
  
  + Private Repository에 이미지를 업로드한다.
@@ -454,11 +478,6 @@ spec:
     app: api
   type: NodePort
 ```
-
-Deployment YAML 내 정의한 환경변수(env) 중 CLUSTER_NAME 값은 배포 후 운영자 포탈 회원가입 시 Kubernetes Cluster Name 항목에 동일한 값으로  입력이 필요하다.<br>
-> ex) "{CLUSTER_NAME}" 에 "cp-cluster" 값으로 정의 후 배포할 시, 운영자 포탈 회원가입 kubernetes Cluster Name 항목에 "cp-cluster" 값 입력 필요 
-
-![image 005]
 
 #### <div id='3.4.3'>3.4.3. paas-ta-container-platform-webuser 배포
 
@@ -626,6 +645,62 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
  $ sudo reboot
 ```
 
+## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
+### <div id='5-1'/> 5.1. Container Platform 운영자 포털 회원가입 
+운영자 포털에 접속을 위해서 Kubespray 설치 가이드의 "[4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.3)" 이 사전에 진행 되어야 한다. 
+> $ kubectl get namespace 
+```
+NAME                                        STATUS   AGE
+default                                     Active   5d19h
+kube-node-lease                             Active   5d19h
+kube-public                                 Active   5d19h
+kube-system                                 Active   5d19h
+kubeedge                                    Active   5d19h
+paas-ta-container-platform-temp-namespace   Active   4d
+```
+- Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
+
+![IMG_005]
+>{Cluster Name} : paas-ta-container-platform-api.yml에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.
+>{API URL} : {K8S Master Node Public IP}:6443 을 입력한다.
+>{Token} : Kubespray 설치 가이드의 "[4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)" 을 입력한다.
+```
+#eg
+#{Cluster Name} : cp-cluster-new
+#{API URL} : xx.xx.xx.xx:6443
+#{Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+
+```
+### <div id='5-2'/> 5.2. Container Platform 운영자 포털 로그인
+- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 PaaS-TA 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자포털로 이동하여 회원가입을 진행한다.
+
+![IMG_006]
+
+### <div id='5-3'/> 5.3. Container Platform 사용자 포털 회원가입
+- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 사용자 포털에 회원가입을 한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자 Namespace와 Role을 할당한다. 
+
+![IMG_007]
+
+### <div id='5-4'/> 5.4. Container Platform 운영자 포털 User Namespace/Role 할당
+-  Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼 선택 > 해당 Namespace 관리자로 지정할 User를 선택, Resource Quotas, Limit Ranges를 할당 > 저장버튼을 선택한다.
+
+![IMG_008]
+
+### <div id='5-5'/> 5.5. Container Platform 사용자 포털 로그인
+- 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 PaaS-TA 사용자 포털에 로그인 한다.
+
+![IMG_009]
+
+### <div id='5-6'/> 5.6. Container Platform 사용자/운영자 포털 사용 가이드
+- 포털 사용방법은 포털 사용가이드를 참고 한다.
+[사용자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
+[운영자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
+
 ----
 [image 001]:images/cp-001.png
 [image 005]:images/cp-005.png
+[image 006]:images/cp-006.png
+[image 007]:images/cp-007.png
+[image 008]:images/cp-008.png
+[image 009]:images/cp-009.png
+
