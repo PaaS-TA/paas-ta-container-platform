@@ -667,7 +667,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ```
 #ex)
 #{Cluster Name} : cp-cluster-new
-#{API URL} : xxx.xxx.xxx.xxx:6443
+#{API URL} :  https://xxx.xxx.xxx.xxx:6443
 #{Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
 
 ```
@@ -693,8 +693,8 @@ paas-ta-container-platform-temp-namespace   Active   4d
 
 ### <div id='5.6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
 - 포털 사용방법은 포털 사용가이드를 참고 한다.      
-사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
-운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
+  + 사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
+  + 운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
 
 ----
 [image 001]:images/cp-001.png

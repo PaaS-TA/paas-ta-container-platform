@@ -725,7 +725,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ```
 #ex)
 #{Cluster Name} : cp-cluster-new
-#{API URL} : xxx.xxx.xxx.xxx:6443
+#{API URL} :  https://xxx.xxx.xxx.xxx:6443
 #{Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
 
 ```
