@@ -27,12 +27,12 @@
 
 4. [CVE 조치사항 적용](#4)     
 
-5. [단독 배포후 Container Platform 운영자/사용자 회원가입](#5)    
-    5.1. [Container Platform 운영자 포털 회원가입](#5.1)    
-    5.2. [Container Platform 운영자 포털 로그인](#5.2)    
-    5.3. [Container Platform 사용자 포털 로그인](#5.3)    
-    5.4. [Container Platform 운영자 포털 User Namespace/Role 할당](#5.4)    
-    5.5. [Container Platform 사용자 포털 로그인](#5.5)    
+5. [단독 배포후 Container Platform 운영자/사용자 회원가입](#5)      
+    5.1. [Container Platform 운영자 포털 회원가입](#5.1)      
+    5.2. [Container Platform 운영자 포털 로그인](#5.2)      
+    5.3. [Container Platform 사용자 포털 로그인](#5.3)      
+    5.4. [Container Platform 운영자 포털 User Namespace/Role 할당](#5.4)      
+    5.5. [Container Platform 사용자 포털 로그인](#5.5)      
     5.6. [Container Platform 사용자/운영자 포털 사용 가이드](#5.6)  
 
 
@@ -61,7 +61,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
-Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 stemcell 사용)
+Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
 - Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
@@ -159,7 +159,7 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
-  IPS - k8s_auth_bearer : [KubeEdge 설치 가이드 - Cluster Role 운영자 생성 및 Token 획득 참고](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#-41-cluster-role-%EC%9A%B4%EC%98%81%EC%9E%90-%EC%83%9D%EC%84%B1-%EB%B0%8F-token-%ED%9A%8D%EB%93%9D)
+  IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4.1)
 
 ```
 # INCEPTION OS USER NAME
@@ -322,7 +322,7 @@ Private Repository에 이미지 등록을 위해 Container Platform 이미지 �
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + Container Platform 이미지 파일 다운로드 :  
-   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download)  
+   [cp-edge-images.tar](http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download)  
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
@@ -333,20 +333,20 @@ $ cd ~/workspace/paasta/container-platform
 $ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-standalone-images.tar
+  cp-edge-images.tar
 
 # 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-standalone-images.tar 
+$ tar -xvf cp-edge-images.tar 
 $ cd ~/workspace/paasta/container-platform/container-platform-image
 $ ls ~/workspace/paasta/container-platform/container-platform-image
-  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
+  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-edge.sh
   container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  
  ```
  
  + Private Repository에 이미지를 업로드한다.
  ```
  $ chmod +x *.sh  
- $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
+ $ ./image-upload-edge.sh {HAProxy_IP}:5001 
  ```
  
  + Private Repository에 업로드 된 이미지 목록을 확인한다.
@@ -704,7 +704,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
 ### <div id='5-1'/>5.1. Container Platform 운영자 포털 회원가입 
-운영자 포털에 접속을 위해서 Kubespray 설치 가이드의 "[4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.3)" 이 사전에 진행 되어야 한다. 
+운영자 포털에 접속을 위해서 Kubeedge 설치 가이드의 [4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4.3) 이 사전에 진행 되어야 한다. 
 > $ kubectl get namespace 
 ```
 NAME                                        STATUS   AGE
@@ -720,7 +720,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 005]
 >{Cluster Name} : paas-ta-container-platform-api.yml에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
 >{API URL} : {K8S Master Node Public IP}:6443 을 입력한다.  
->{Token} : Kubespray 설치 가이드의 "[4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)" 을 입력한다.
+>{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4)을 입력한다.
 ```
 #eg
 #{Cluster Name} : cp-cluster-new
@@ -749,7 +749,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 009]
 
 ### <div id='5-6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
-- 포털 사용방법은 포털 사용가이드를 참고 한다.
+- 포털 사용방법은 포털 사용가이드를 참고 한다.  
 [사용자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 [운영자 포털](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
 

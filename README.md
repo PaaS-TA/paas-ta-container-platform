@@ -22,7 +22,7 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/standalone)
 - [CaaS 배포 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md)
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev/bosh)   
-  + [Release 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/caas-dev) 
+  + [Release 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/dev) 
 
 ## 포털 이용 가이드
 - 운영자 포털
@@ -31,6 +31,7 @@
   + [사용자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 
 ## 프로젝트
+#### paas-ta-container-platform
 - API 개발 소스 파일
   + https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev
 - Common API 개발 소스 파일
@@ -39,6 +40,18 @@
   + https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev
 - Webadmin 개발 소스 파일
   + https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev
+
+#### CaaS
+- API 개발 소스 파일
+  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-api
+- Common API 개발 소스 파일
+  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-common-api
+- Dashboard 개발 소스 파일
+  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-dashboard
+- Service-Broker 개발 소스 파일
+  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-service-broker
+- Jenkins-Broker 개발 소스 파일
+  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-jenkins-broker
 
   
 ## 라이선스
