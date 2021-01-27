@@ -367,6 +367,15 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 #### <div id='3.4.1'>3.4.1. paas-ta-container-platform-common-api 배포
 
++ Container Platform yaml 파일 
+```
+# Container Platform yaml 파일 경로이동
+$ cd ~/workspace/paasta/container-platform/container-platform-standalone-yaml
+$ ls ~/workspace/paasta/container-platform/container-platform-standalone-yaml
+  paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
+  paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
+```
+
 > vi paas-ta-container-platform-common-api.yml
 
 ```
@@ -661,8 +670,9 @@ paas-ta-container-platform-temp-namespace   Active   4d
 
 ![image 005]
 >{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{API URL} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {K8S_IP}를 입력한다.  
-              https://{K8S_IP}:6443 을 입력한다. 
+>{API URL} : https://{K8S_IP}:6443 을 입력한다.   
+[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {K8S_IP}를 입력한다.  
+
 >{Token} : Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 입력한다.
 ```
 #ex)

@@ -303,7 +303,7 @@ Succeeded
 ```
 
 ## <div id='3'>3. Container Platform 배포
-kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. kubernetes Cluster 설정
 > 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
@@ -333,20 +333,20 @@ $ cd ~/workspace/paasta/container-platform
 $ wget --content-disposition http://45.248.73.44/index.php/s/MDBn89G78fnXd4W/download
 
 $ ls ~/workspace/paasta/container-platform
-  cp-edge-images.tar
+  cp-standalone-images.tar
 
 # 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-edge-images.tar 
+$ tar -xvf cp-standalone-images.tar 
 $ cd ~/workspace/paasta/container-platform/container-platform-image
 $ ls ~/workspace/paasta/container-platform/container-platform-image
-  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-edge.sh
-  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  
+  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
+  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz   
  ```
  
  + Private Repository에 이미지를 업로드한다.
  ```
  $ chmod +x *.sh  
- $ ./image-upload-edge.sh {HAProxy_IP}:5001 
+ $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
  ```
  
  + Private Repository에 업로드 된 이미지 목록을 확인한다.
@@ -367,6 +367,15 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 ### <div id='3.4'>3.4. Deployment 배포
 
 #### <div id='3.4.1'>3.4.1. paas-ta-container-platform-common-api 배포
+
++ Container Platform yaml 파일 
+```
+# Container Platform yaml 파일 경로이동
+$ cd ~/workspace/paasta/container-platform/container-platform-edge-yaml
+$ ls ~/workspace/paasta/container-platform/container-platform-edge-yaml
+  paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
+  paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
+```
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -719,8 +728,9 @@ paas-ta-container-platform-temp-namespace   Active   4d
 
 ![image 005]
 >{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{API URL} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
-              https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다.  
+>{API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다.    
+[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
+
 >{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4)을 입력한다.
 ```
 #ex)
