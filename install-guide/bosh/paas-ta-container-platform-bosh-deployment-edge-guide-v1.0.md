@@ -279,6 +279,7 @@ paasta-container-platform-release  1.0      5425be0+
 - Release를 설치한다.
 ```
 $ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh  
+$ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
 
