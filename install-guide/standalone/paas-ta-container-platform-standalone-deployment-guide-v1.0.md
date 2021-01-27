@@ -42,7 +42,7 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container-Platform 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다. 
 
 ![image 001]
 
@@ -120,12 +120,16 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbb
 - 사용할 Master, Worker Node의 authorized_keys 파일 본문의 마지막 부분(기존 본문 내용 아래 추가)에 공개키를 복사한다.
 ```
 $ vi .ssh/authorized_keys
+
+#ex)
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDU+CSWd/bC4IfC+cuRDDJwAfjiPXAZAYFc7S8B8rUqAcuCPZUcbSZu5BIEAxZC+DCtpAJmtCGl/w7Gp1Wwij6hm/WlYeWapoqTe1yeLA/k0YhY0kQWuobfGlo9w7gxFKY8Aqtft+lRLhxteYc+/XxENFoq+eVFbX9jAOBbhM73K1oiV2YZcNAriLXixFYYVTmOPnJYUabJLi7E5ZEo3RaQ7Wol2fPPKQyvblwl9T5AoKF+/haWifeNEDHsd4XW9lveIRMsY3x7zUsnCtxzAlQKsw/eogKpyCc6E1GhmSTNy+K5fzhLgBJvl3J8t/+MKf8UGJA11pAn1L0vt56dTOdj aws-paasta-kube-key
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbbm8OzCYjGPFNexrxU2OyfHAUzLhs+ovXafX0RG5bvm44B04LH01maV8j32Vkag0DtNEiA96WjR9wpTeqfZy0Qwko9+TJOfK7lVT7+GCPm112pzU/t3i9oaptFdalGLYC+ib2+ViibkV0rZ8ds/zz/i0uzXDqvYl1HYfc7kA1CtinAimxV2FU/7WDTIj5HAfPnhyXPf+k1d3hPJEZ+T3qUmLnVpIXS2AHETPz29mu/I8EWUfc8/OVFJqS8RAyGghfnbFPrVEL3+jp/
 ```
 
 <br>
 
 ### <div id='2.3'> 2.3. Kubespray 다운로드
-2.3.부터는 Master Node에서만 진행을 하면 된다.(Worker Node에는 더 이상 추가 작업이 없다.)
+2.3.부터는 Master Node에서만 진행을 하면 된다.(Worker Node에는 더 이상 추가 작업이 없음)
 Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 작업 경로로 위치시킨다.
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev

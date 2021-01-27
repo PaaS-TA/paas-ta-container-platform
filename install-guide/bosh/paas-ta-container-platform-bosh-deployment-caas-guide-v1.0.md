@@ -42,7 +42,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Inception 환경을 구성하기 위해 VM 1개가 필요하다.
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Inception 환경을 구성하기 위한 VM 설치 내용이다. 
 
 ![image 001]
 
@@ -52,7 +52,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ## <div id='2'>2. Container 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치되어 있어야 한다.
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
@@ -375,6 +375,14 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 ### <div id='3.4'>3.4. Deployment 배포
 PaaS-TA 사용자포탈에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
+
+- Container Platform yaml 파일 경로이동
+```
+$ cd ~/workspace/paasta/container-platform/container-service-yaml
+$ ls ~/workspace/paasta/container-platform/container-service-yaml
+  container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
+  container-service-api.yml     container-service-common-api.yml
+```
 
 - container-service-common-api 배포
 
@@ -871,6 +879,13 @@ $ sudo systemctl restart docker
 ### <div id='5.2'>5.2. Deployment 배포
 > PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
 
+- Container Platform yaml 파일 경로이동
+```
+$ cd ~/workspace/paasta/container-platform/container-service-yaml
+$ ls ~/workspace/paasta/container-platform/container-service-yaml
+  container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
+  container-service-api.yml     container-service-common-api.yml
+```
 -  container-jenkins-broker 배포
 
 > $ vi container-jenkins-broker.yml

@@ -17,9 +17,9 @@
   2.8. [kubectl logs 기능 활성화](#2.8)  
   2.9. [KubeEdge 설치 확인](#2.9)  
 
-3. [KubeEdge Reset](#3)  
+3. [KubeEdge Reset (참고)](#3)  
 
-4. [컨테이너 플랫폼 운영자 생성 및 Token 획득, Namespace 생성](#4)  
+4. [컨테이너 플랫폼 운영자 생성 및 Token 획득, Namespace 생성 (참고)](#4)  
   4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
   4.2. [Namespace 사용자 Token 획득](#4.2)  
   4.3. [컨테이너 플랫폼 Temp Namespace 생성](#4.3)  
@@ -45,7 +45,7 @@ PaaS-TA 6.0 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-본 문서의 설치된 시스템 구성도이다. Cluster(Master, Worker)와 Inception(DBMS, HAproxy, Private Registry) 환경으로 구성 되어있으며 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하다. 본 문서는 Cluster 환경을 구성하기 위해 Master VM 1개와 Worker VM 1개 이상이 필요하다. 
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container-Platform 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
 
 ![image 001]
 
@@ -55,7 +55,7 @@ PaaS-TA 6.0 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 > https://docs.docker.com/engine/install/  
 > https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/  
 > https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/  
-> https://docs.kubeedge.io/en/latest/  
+> https://kubeedge.io/en/docs/ 
 > https://github.com/kubeedge/kubeedge
 
 <br>
