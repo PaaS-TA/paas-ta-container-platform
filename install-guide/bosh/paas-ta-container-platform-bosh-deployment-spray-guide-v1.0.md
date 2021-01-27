@@ -45,7 +45,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container-Platform 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Inception 환경을 구성하기 위한 VM 설치 내용이다. 
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Inception 환경을 구성하기 위한 VM 설치 내용이다. 
 
 ![image 001]
 
@@ -685,7 +685,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 006]
 
 ### <div id='5.3'/>5.3. Container Platform 사용자 포털 회원가입
-- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자 Namespace와 Role을 할당한다.
+- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다.
 
 ![image 007]
 
