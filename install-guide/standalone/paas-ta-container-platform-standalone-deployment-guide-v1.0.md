@@ -221,6 +221,7 @@ Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
 
 $ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_NODE_IP3})
 
+# ${IPS[@]}는 변수가 아니라 명령어의 일부분이므로 주의
 $ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 ```
 
