@@ -260,11 +260,11 @@ $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz
 
 # 릴리즈 파일 업로드
-$ bosh -e <bosh_name> upload-release paasta-container-platform-1.0.tgz
+$ bosh -e micro-bosh upload-release paasta-container-platform-1.0.tgz
 ```
 
 - 업로드 된 Release 확인
-> $ bosh -e <bosh_name> releases
+> $ bosh -e micro-bosh releases
 ```
 Name                               Version  Commit Hash  
 paasta-container-platform-release  1.0      5425be0+  
