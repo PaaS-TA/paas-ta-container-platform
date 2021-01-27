@@ -170,11 +170,12 @@ $ vi inventory/mycluster/inventory.ini
 
 ```
 # inventory.ini
-# {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname
+# {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname ($ hostname 명령어를 입력시 나오는 이름) 
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
-# eg
-# kube-master ansible_host=10.0.0.1x ip=10.0.0.1x etcd_member_name=etcd1
-# kube-worker1 ansible_host=10.0.0.2x ip=10.0.0.2x
+
+# ex)
+# ip-10-0-0-1xx ansible_host=10.0.0.1xx ip=10.0.0.1xx etcd_member_name=etcd1
+# ip-10-0-0-2xx ansible_host=10.0.0.2xx ip=10.0.0.2xx
 
 [all]
 {MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
@@ -183,13 +184,13 @@ $ vi inventory/mycluster/inventory.ini
 {WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3} ip={WORKER_NODE_IP3}
 
 [kube-master]
-{MASTER_HOST_NAME}
+ip-10-0-0-1xx           #{MASTER_HOST_NAME}
 
 [etcd]
-{MASTER_HOST_NAME}
+ip-10-0-0-1xx           #{MASTER_HOST_NAME}
 
 [kube-node]
-{WORKER_HOST_NAME1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
+ip-10-0-0-2xx           #{WORKER_HOST_NAME1}: 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
 {WORKER_HOST_NAME2}
 {WORKER_HOST_NAME3}
 
@@ -210,7 +211,8 @@ Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
 ```
 # {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
 # {WORKER_NODE_IP}는 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
-# eg
+
+# ex)
 # declare -a IPS=(10.0.0.1x 10.0.0.2x 10.0.0.3x 10.0.0.4x)
 
 $ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_NODE_IP3})
@@ -293,7 +295,7 @@ Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account�
 ```
 # {SERVICE_ACCOUNT} : 생성할 Service Account 명
 $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(eg. kubectl create serviceaccount k8sadmin -n kube-system)
+(ex. kubectl create serviceaccount k8sadmin -n kube-system)
 ```
 
 - Cluster Role을 생성한 Service Account에 바인딩한다.
