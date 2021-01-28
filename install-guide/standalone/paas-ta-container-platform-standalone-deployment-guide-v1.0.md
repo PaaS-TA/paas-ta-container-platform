@@ -238,18 +238,28 @@ $ source {OPENSTACK_PROJECT_NAME}-openrc.sh
 Please enter your OpenStack Password for project admin as user admin: {패스워드 입력}
 ```
 
+- Openstack 네트워크 인터페이스의 MTU값이 기본값 1450이 아닐 경우 CNI Plugin MTU 설정 변경이 필요하다.
+```
+# MTU 확인 (ex mtu 1400)
+
+$ ifconfig
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
+        inet 10.xx.xx.xx  netmask 255.255.255.0  broadcast 10.xx.xx.xxx
+        inet6 fe80::xxxx:xxxx:xxxx:xxxx  prefixlen 64  scopeid 0x20<link>
+        ether fa:xx:xx:xx:xx:xx  txqueuelen 1000  (Ethernet)
+        RX packets 346254  bytes 1363064162 (1.3 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 323884  bytes 191720735 (191.7 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+$ vi ~/paas-ta-container-platform-deployment/standalone/inventory/mycluster/group_vars/k8s-cluster/k8s-net-calico.yml
+
+calico_mtu: 1450 > calico_mtu: 1400
+```
+
 - Ansible playbook으로 Kubespray 배포를 진행한다. playbook은 root로 실행하도록 옵션을 지정한다. (--become-user=root)
 ```
 $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
-```
-
-- Kubespray 설치 완료 후 Cluster 사용을 위하여 다음 과정을 실행한다.
-```
-$ mkdir -p $HOME/.kube
-
-$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-
-$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 <br>
