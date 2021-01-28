@@ -274,7 +274,7 @@ $ bosh -e micro-bosh upload-release paasta-container-platform-1.0.tgz
 > $ bosh -e micro-bosh releases
 ```
 Name                               Version  Commit Hash  
-paasta-container-platform-release  1.0      5425be0+  
+paasta-container-platform          1.0      5425be0+  
 
 (*) Currently deployed
 (+) Uncommitted changes
