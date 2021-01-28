@@ -134,7 +134,7 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
-- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.14.1 이다.
+- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.14.2 이다.
 ```
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
@@ -156,7 +156,12 @@ $ sudo apt-get install -y python3-pip
 
 - Kubespray 설치경로 이동, pip를 이용하여 Kubespray 설치에 필요한 Python Package 설치를 진행한다.
 ```
-$ cd paas-ta-container-platform-deployment/standalone
+# AWS 환경 설치 시
+$ cd paas-ta-container-platform-deployment/standalone/aws
+
+# Openstack 환경 설치 시
+$ cd paas-ta-container-platform-deployment/standalone/openstack
+
 $ sudo pip3 install -r requirements.txt
 ```
 
@@ -223,6 +228,14 @@ $ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_N
 
 # ${IPS[@]}는 변수가 아니라 명령어의 일부분이므로 주의
 $ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+```
+
+- Openstack 환경에 설치 시 추가적인 환경변수 설정이 필요하며 설정 파일을 다운로드 받아 자동으로 환경변수 등록이 가능하다.
+```
+# Openstack UI 로그인 > 프로젝트 선택 > API 액세스 메뉴 선택 > OpenStack RC File 다운로드 클릭
+# 스크립트 파일 실행 후 Openstack 계정 패스워드 입력
+$ source {OPENSTACK_PROJECT_NAME}-openrc.sh
+Please enter your OpenStack Password for project admin as user admin: {패스워드 입력}
 ```
 
 - Ansible playbook으로 Kubespray 배포를 진행한다. playbook은 root로 실행하도록 옵션을 지정한다. (--become-user=root)
