@@ -265,21 +265,7 @@ $ cd ~/workspace/paasta/release/service
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition http://45.248.73.44/index.php/s/QyJ38DeSH8P6igW/download
 $ ls ~/workspace/paasta/release/service
-  paasta-container-platform-1.0.tgz
-
-# 릴리즈 파일 업로드
-$ bosh -e micro-bosh upload-release paasta-container-platform-1.0.tgz
-```
-- 업로드 된 Release 확인
-> $ bosh -e micro-bosh releases
-```
-Name                               Version  Commit Hash  
-paasta-container-platform          1.0      5425be0+  
-
-(*) Currently deployed
-(+) Uncommitted changes
-
-1 releases
+  paasta-container-platform-1.0.tgz  
 ```
 
 - 서비스를 설치한다.
