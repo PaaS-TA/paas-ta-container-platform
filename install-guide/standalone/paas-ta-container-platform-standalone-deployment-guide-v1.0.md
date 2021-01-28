@@ -262,6 +262,13 @@ calico_mtu: 1450 > calico_mtu: 1400
 $ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
 ```
 
+- Kubespray 설치 완료 후 Cluster 사용을 위하여 다음 과정을 실행한다.
+```
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
 <br>
 
 ### <div id='2.7'> 2.7. Kubespray 설치 확인
