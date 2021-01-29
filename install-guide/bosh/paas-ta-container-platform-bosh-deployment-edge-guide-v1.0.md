@@ -18,12 +18,13 @@
     3.1. [kubernetes Cluster 설정](#3.1)  
     3.2. [Container Platform 이미지 업로드](#3.2)  
     3.3. [Secret 생성](#3.3)  
-    3.4. [Deployment 배포](#3.4)  
-    3.4.1. [paas-ta-container-platform-common-api 배포](#3.4.1)  
-    3.4.2. [paas-ta-container-platform-api 배포](#3.4.2)    
-    3.4.3. [paas-ta-container-platform-webuser 배포](#3.4.3)    
-    3.4.4. [paas-ta-container-platform-webadmin 배포](#3.4.4)    
-    3.4.5. [배포 확인](#3.4.5)    
+    3.4. [Taint 해제](#3.4) 
+    3.5. [Deployment 배포](#3.5)
+    3.5.1. [paas-ta-container-platform-common-api 배포](#3.5.1)  
+    3.5.2. [paas-ta-container-platform-api 배포](#3.5.2)    
+    3.5.3. [paas-ta-container-platform-webuser 배포](#3.5.3)    
+    3.5.4. [paas-ta-container-platform-webadmin 배포](#3.5.4)    
+    3.5.5. [배포 확인](#3.4.5)    
 
 4. [CVE 조치사항 적용](#4)     
 
@@ -350,9 +351,17 @@ Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 s
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.4'>3.4. Deployment 배포
+### <div id='3.4'>3.4. Taint 해제
+노드의 Taint 설정을 해제한다.
+```
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
+node/ip-10-0-0-251 untainted
+error: taint "node-role.kubernetes.io/master" not found
+```
 
-#### <div id='3.4.1'>3.4.1. paas-ta-container-platform-common-api 배포
+### <div id='3.5'>3.5. Deployment 배포
+
+#### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
 
 + Container Platform yaml 파일 
 ```
@@ -433,7 +442,7 @@ spec:
     app: common-api
   type: NodePort
 ```
-#### <div id='3.4.2'>3.4.2. paas-ta-container-platform-api 배포
+#### <div id='3.5.2'>3.5.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -503,7 +512,7 @@ spec:
     app: api
   type: NodePort
 ```
-#### <div id='3.4.3'>3.4.3. paas-ta-container-platform-webuser 배포
+#### <div id='3.5.3'>3.5.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -573,7 +582,7 @@ spec:
     app: webuser
   type: NodePort
 ```
-#### <div id='3.4.4'>3.4.4. paas-ta-container-platform-webadmin 배포
+#### <div id='3.5.4'>3.5.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -654,7 +663,7 @@ deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 ```
 
-#### <div id='3.4.5'>3.4.5. 배포 확인
+#### <div id='3.5.5'>3.5.5. 배포 확인
 배포된 Deployment, Pod, Service를 확인한다.
 
 ```
