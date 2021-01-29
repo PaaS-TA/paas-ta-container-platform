@@ -17,13 +17,14 @@
 3. [Container Platform 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
     3.2. [Container Platform 이미지 업로드](#3.2)  
-    3.3. [Secret 생성](#3.3)  
-    3.4. [Deployment 배포](#3.4)  
-    3.4.1. [paas-ta-container-platform-common-api 배포](#3.4.1)  
-    3.4.2. [paas-ta-container-platform-api 배포](#3.4.2)    
-    3.4.3. [paas-ta-container-platform-webuser 배포](#3.4.3)    
-    3.4.4. [paas-ta-container-platform-webadmin 배포](#3.4.4)    
-    3.4.5. [배포 확인](#3.4.5)    
+    3.3. [Secret 생성](#3.3)
+    3.4. [Temp Namespace 생성](#3.4)  
+    3.5. [Deployment 배포](#3.5)  
+    3.5.1. [paas-ta-container-platform-common-api 배포](#3.5.1)  
+    3.5.2. [paas-ta-container-platform-api 배포](#3.5.2)    
+    3.5.3. [paas-ta-container-platform-webuser 배포](#3.5.3)    
+    3.5.4. [paas-ta-container-platform-webadmin 배포](#3.5.4)    
+    3.5.5. [배포 확인](#3.5.5)    
 
 4. [CVE 조치사항 적용](#4)     
 
@@ -349,9 +350,17 @@ Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 s
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.4'>3.4. Deployment 배포
+### <div id='3.4'>3.4. Temp Namespace 생성
+컨테이너 플랫폼 배포 전 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 이용된다.
 
-#### <div id='3.4.1'>3.4.1. paas-ta-container-platform-common-api 배포
+- Temp Namespace를 생성한다.
+```
+$ kubectl create namespace paas-ta-container-platform-temp-namespace
+```
+
+### <div id='3.5'>3.5. Deployment 배포
+
+#### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
 
 + Container Platform yaml 파일 
 ```
@@ -418,7 +427,7 @@ spec:
   type: NodePort
 
 ```
-#### <div id='3.4.2'>3.4.2. paas-ta-container-platform-api 배포
+#### <div id='3.5.2'>3.5.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -473,7 +482,7 @@ spec:
     app: api
   type: NodePort
 ```
-#### <div id='3.4.3'>3.4.3. paas-ta-container-platform-webuser 배포
+#### <div id='3.5.3'>3.5.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -529,7 +538,7 @@ spec:
   type: NodePort
 
 ```
-#### <div id='3.4.4'>3.4.4. paas-ta-container-platform-webadmin 배포
+#### <div id='3.5.4'>3.5.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -595,7 +604,7 @@ deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 ```
 
-#### <div id='3.4.5'>3.4.5. 배포 확인
+#### <div id='3.5.5'>3.5.5. 배포 확인
 배포된 Deployment, Pod, Service를 확인한다.
 
 ```
@@ -641,7 +650,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
 ### <div id='5.1'/>5.1. Container Platform 운영자 포털 회원가입 
-운영자 포털에 접속을 위해서 Kubespray 설치 가이드의 [4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.3)이 사전에 진행 되어야 한다. 
+운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어있는지 확인한다.
 > $ kubectl get namespace 
 ```
 NAME                                        STATUS   AGE
@@ -649,7 +658,6 @@ default                                     Active   5d19h
 kube-node-lease                             Active   5d19h
 kube-public                                 Active   5d19h
 kube-system                                 Active   5d19h
-kubeedge                                    Active   5d19h
 paas-ta-container-platform-temp-namespace   Active   4d
 ```
 - Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 Container Platform 운영자 포털에 회원가입을 한다.
