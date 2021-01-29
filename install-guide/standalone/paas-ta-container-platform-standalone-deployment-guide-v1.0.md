@@ -252,7 +252,7 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
         TX packets 323884  bytes 191720735 (191.7 MB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-$ vi ~/paas-ta-container-platform-deployment/standalone/inventory/mycluster/group_vars/k8s-cluster/k8s-net-calico.yml
+$ vi ~/paas-ta-container-platform-deployment/standalone/openstack/inventory/mycluster/group_vars/k8s-cluster/k8s-net-calico.yml
 
 calico_mtu: 1450 > calico_mtu: 1400
 ```
