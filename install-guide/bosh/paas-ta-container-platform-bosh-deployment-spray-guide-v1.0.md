@@ -17,7 +17,7 @@
 3. [Container Platform 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
     3.2. [Container Platform 이미지 업로드](#3.2)  
-    3.3. [Secret 생성](#3.3)
+    3.3. [Secret 생성](#3.3)  
     3.4. [Temp Namespace 생성](#3.4)  
     3.5. [Deployment 배포](#3.5)  
     3.5.1. [paas-ta-container-platform-common-api 배포](#3.5.1)  
