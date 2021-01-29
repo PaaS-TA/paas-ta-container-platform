@@ -18,13 +18,14 @@
     3.1. [kubernetes Cluster 설정](#3.1)  
     3.2. [Container Platform 이미지 업로드](#3.2)  
     3.3. [Secret 생성](#3.3)  
-    3.4. [Taint 해제](#3.4) 
-    3.5. [Deployment 배포](#3.5)
-    3.5.1. [paas-ta-container-platform-common-api 배포](#3.5.1)  
-    3.5.2. [paas-ta-container-platform-api 배포](#3.5.2)    
-    3.5.3. [paas-ta-container-platform-webuser 배포](#3.5.3)    
-    3.5.4. [paas-ta-container-platform-webadmin 배포](#3.5.4)    
-    3.5.5. [배포 확인](#3.4.5)    
+    3.4. [Temp Namespace](#3.4) 
+    3.5. [Taint 해제](#3.5)
+    3.6. [Deployment 배포](#3.6)
+    3.6.1. [paas-ta-container-platform-common-api 배포](#3.6.1)  
+    3.6.2. [paas-ta-container-platform-api 배포](#3.6.2)    
+    3.6.3. [paas-ta-container-platform-webuser 배포](#3.6.3)    
+    3.6.4. [paas-ta-container-platform-webadmin 배포](#3.6.4)    
+    3.6.5. [배포 확인](#3.6.5)    
 
 4. [CVE 조치사항 적용](#4)     
 
@@ -351,7 +352,15 @@ Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 s
 $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
 ```
 
-### <div id='3.4'>3.4. Taint 해제
+### <div id='3.4'>3.4. Temp Namespace 생성
+컨테이너 플랫폼 배포 전 최초 Temp Namespace 생성이 필요하다.<br> 해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 이용된다.
+
+- Temp Namespace를 생성한다.
+```
+$ kubectl create namespace paas-ta-container-platform-temp-namespace
+```
+
+### <div id='3.5'>3.5. Taint 해제
 노드의 Taint 설정을 해제한다.
 ```
 $ kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -359,9 +368,9 @@ node/ip-10-0-0-251 untainted
 error: taint "node-role.kubernetes.io/master" not found
 ```
 
-### <div id='3.5'>3.5. Deployment 배포
+### <div id='3.6'>3.6. Deployment 배포
 
-#### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
+#### <div id='3.6.1'>3.6.1. paas-ta-container-platform-common-api 배포
 
 + Container Platform yaml 파일 
 ```
@@ -442,7 +451,7 @@ spec:
     app: common-api
   type: NodePort
 ```
-#### <div id='3.5.2'>3.5.2. paas-ta-container-platform-api 배포
+#### <div id='3.6.2'>3.6.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
 
@@ -512,7 +521,7 @@ spec:
     app: api
   type: NodePort
 ```
-#### <div id='3.5.3'>3.5.3. paas-ta-container-platform-webuser 배포
+#### <div id='3.6.3'>3.6.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
 
@@ -582,7 +591,7 @@ spec:
     app: webuser
   type: NodePort
 ```
-#### <div id='3.5.4'>3.5.4. paas-ta-container-platform-webadmin 배포
+#### <div id='3.6.4'>3.6.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
 
@@ -663,7 +672,7 @@ deployment.apps/webadmin-deployment created
 service/webadmin-deployment created
 ```
 
-#### <div id='3.5.5'>3.5.5. 배포 확인
+#### <div id='3.6.5'>3.6.5. 배포 확인
 배포된 Deployment, Pod, Service를 확인한다.
 
 ```
@@ -722,8 +731,8 @@ paas-ta-container-platform-temp-namespace   Active   4d
 - Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
 
 ![image 005]
->{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.4.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
+>{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
+>{API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
 >{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4)을 입력한다.
 ```
 #ex)
