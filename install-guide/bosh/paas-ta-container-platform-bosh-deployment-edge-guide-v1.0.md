@@ -11,14 +11,14 @@
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
-    2.5. [Release  설치](#2.5)  
-    2.6. [Release  설치 확인](#2.6)
+    2.5. [Release 설치](#2.5)  
+    2.6. [Release 설치 확인](#2.6)
 
 3. [Container Platform 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
     3.2. [Container Platform 이미지 업로드](#3.2)  
     3.3. [Secret 생성](#3.3)  
-    3.4. [Temp Namespace](#3.4)   
+    3.4. [Temp Namespace 생성](#3.4)   
     3.5. [Taint 해제](#3.5)  
     3.6. [Deployment 배포](#3.6)  
     3.6.1. [paas-ta-container-platform-common-api 배포](#3.6.1)    
@@ -717,7 +717,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
 ### <div id='5.1'/>5.1. Container Platform 운영자 포털 회원가입 
-운영자 포털에 접속을 위해서 Kubeedge 설치 가이드의 [4.3. 컨테이너 플랫폼 Temp Namespace 생성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4.3) 이 사전에 진행 되어야 한다. 
+운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어있는지 확인한다.
 > $ kubectl get namespace 
 ```
 NAME                                        STATUS   AGE
@@ -725,7 +725,6 @@ default                                     Active   5d19h
 kube-node-lease                             Active   5d19h
 kube-public                                 Active   5d19h
 kube-system                                 Active   5d19h
-kubeedge                                    Active   5d19h
 paas-ta-container-platform-temp-namespace   Active   4d
 ```
 - Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
