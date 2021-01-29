@@ -351,7 +351,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 ```
 
 ### <div id='3.4'>3.4. Temp Namespace 생성
-컨테이너 플랫폼 배포 전 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 이용된다.
+컨테이너 플랫폼 배포 전 최초 Temp Namespace 생성이 필요하다.<br> 해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 이용된다.
 
 - Temp Namespace를 생성한다.
 ```
