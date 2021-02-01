@@ -263,7 +263,7 @@ $ mkdir -p ~/workspace/paasta/release/service
 $ cd ~/workspace/paasta/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/QyJ38DeSH8P6igW/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download
 $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz  
 ```
