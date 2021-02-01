@@ -752,24 +752,50 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 006]
 
 ### <div id='5.3'/>5.3. Container Platform 사용자 포털 회원가입
-- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다. 
+- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용 가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다.(User에게 해당 Namespace에 대해 사용자 또는 이용자 권한을 할당 해야 한다.) 
 
 ![image 007]
 
 ### <div id='5.4'/>5.4. Container Platform 운영자 포털 User Namespace/Role 할당
--  Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼 선택 > 해당 Namespace 관리자로 지정할 User를 선택, Resource Quotas, Limit Ranges를 할당 > 저장버튼을 선택한다.
+## 1) Namespace 관리자 지정
+- Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼
 
 ![image 008]
+![image 009]
+
+- 해당 Namespace 관리자로 지정할 User를 선택, Resource Quotas, Limit Ranges를 할당 > 저장버튼
+
+![image 010]
+
+- [참고] 운용자 포털 :: Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
+![image 011]
+
+- [참고] 사용자 포털 :: Namespace 관리자로 할당 받은 User는 해당 Namesapce 이용자에게 Role을 할당할 수 있다.
+
+![image 012]
+![image 013]
+![image 014]
+
+## 2) Namespace 이용자 지정 
+- Managements 메뉴 > Users를 선택 > User탭 선택 > Namespace 이용자로 지정할 User를 선택 > 수정버튼
+
+![image 015]
+![image 016]
+
+- Namespaces/Roles 선택 > 수정버튼
+
+![image 017]
+![image 018]
 
 ### <div id='5.5'/>5.5. Container Platform 사용자 포털 로그인
 - 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 Container Platform 사용자 포털에 로그인 한다.
 
-![image 009]
+![image 019]
 
 ### <div id='5.6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
-- 포털 사용방법은 포털 사용가이드를 참고 한다.  
-사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
-운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md 
+- 포털 사용방법은 포털 사용가이드를 참고 한다.      
+  + 사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
+  + 운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
 
 ----
 [image 001]:images/cp-001.png
@@ -778,3 +804,13 @@ paas-ta-container-platform-temp-namespace   Active   4d
 [image 007]:images/cp-007.png
 [image 008]:images/cp-008.png
 [image 009]:images/cp-009.png
+[image 010]:images/cp-010.png
+[image 011]:images/cp-011.png
+[image 012]:images/cp-012.png
+[image 013]:images/cp-013.png
+[image 014]:images/cp-014.png
+[image 015]:images/cp-015.png
+[image 016]:images/cp-016.png
+[image 017]:images/cp-017.png
+[image 018]:images/cp-018.png
+[image 019]:images/cp-019.png
