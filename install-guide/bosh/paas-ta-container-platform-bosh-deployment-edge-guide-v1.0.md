@@ -736,14 +736,14 @@ paas-ta-container-platform-temp-namespace   Active   4d
 - Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
 
 ![image 005]
->{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
->{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)을 입력한다.
+>{Kubernetes Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
+>{Kubernetes Cluster API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
+>{Kubernetes Cluster Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)을 입력한다.
 ```
 #ex)
-#{Cluster Name} : cp-cluster-new
-#{API URL} :  https://xxx.xxx.xxx.xxx:6443
-#{Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+#{Kubernetes Cluster Name} : cp-cluster-new
+#{Kubernetes Cluster API URL} :  https://xxx.xxx.xxx.xxx:6443
+#{Kubernetes Cluster Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
 
 ```
 ### <div id='5.2'/>5.2. Container Platform 운영자 포털 로그인
