@@ -310,7 +310,7 @@ Private Repository에 이미지 등록을 위해 Container Platform 이미지 �
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + Container Platform 이미지 파일 다운로드 :  
-   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/eLGFTmr2RgrEPws/download)  
+   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/ookBqYzCYH94GjG/download)  
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
@@ -318,7 +318,7 @@ $ mkdir -p ~/workspace/paasta/container-platform
 $ cd ~/workspace/paasta/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/eLGFTmr2RgrEPws/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/ookBqYzCYH94GjG/download
 
 $ ls ~/workspace/paasta/container-platform
   cp-standalone-images.tar
@@ -361,11 +361,17 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 ### <div id='3.5'>3.5. Taint 해제
-노드의 Taint 설정을 해제한다.
+노드의 Taint 설정을 해제한다.(이미 kubeEdge설치에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)를 했으면 안해도 된다.)
 ```
 $ kubectl taint nodes --all node-role.kubernetes.io/master-
+
+# Taint 설정 해제를 처음 시도하는 경우
 node/ip-10-0-0-251 untainted
 error: taint "node-role.kubernetes.io/master" not found
+
+# Tain 설정 해제를 이미 시도 한 경우
+taint "node-role.kubernetes.io/master" not found
+taint "node-role.kubernetes.io/master" not found
 ```
 
 ### <div id='3.6'>3.6. Deployment 배포

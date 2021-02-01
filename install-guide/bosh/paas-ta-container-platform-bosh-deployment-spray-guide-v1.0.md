@@ -308,7 +308,7 @@ Private Repository에 이미지 등록을 위해 Container Platform 이미지 �
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + Container Platform 이미지 파일 다운로드 :  
-   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/eLGFTmr2RgrEPws/download)  
+   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/ookBqYzCYH94GjG/download)  
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
@@ -316,7 +316,7 @@ $ mkdir -p ~/workspace/paasta/container-platform
 $ cd ~/workspace/paasta/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/eLGFTmr2RgrEPws/download
+$ wget --content-disposition http://45.248.73.44/index.php/s/ookBqYzCYH94GjG/download
 
 $ ls ~/workspace/paasta/container-platform
   cp-standalone-images.tar

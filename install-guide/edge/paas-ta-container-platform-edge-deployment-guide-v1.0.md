@@ -437,69 +437,7 @@ kube-scheduler-ip-10-0-0-18            1/1     Running   0          58m
 
 <br>
 
-## <div id='3'> 3. KubeEdge Reset (참고)
-Cloud Side, Edge Side에서 KubeEdge를 중지합니다. 필수구성요소는 삭제하지 않습니다.
-
-- Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제합니다.
-```
-# keadm reset --kube-config=$HOME/.kube/config
-```
-
-- Edge Side에서 edgecore를 중지합니다.
-```
-# keadm reset
-```
-
-<br>
-
-## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
-
-### <div id='4.1'> 4.1. Cluster Role 운영자 생성 및 Token 획득
-Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
-
-- Service Account를 생성한다.
-```
-# {SERVICE_ACCOUNT} : Service Account 명
-$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(eg. kubectl create serviceaccount k8sadmin -n kube-system)
-```
-
-- Cluster Role을 생성한 Service Account에 바인딩한다.
-```
-$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
-```
-
-- 생성한 Service Account의 Token을 획득한다.
-```
-# {SECRET_NAME} : Mountable secrets 값 확인
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
-
-$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-### <div id='4.2'> 4.2. Namespace 사용자 Token 획득
-포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
-
-- Namespace 사용자의 Token을 획득한다.
-```
-# {SECRET_NAME} : Mountable secrets 값 확인
-# {NAMESPACE} : Namespace 명
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
-
-$ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-### <div id='4.3'> 4.3. 컨테이너 플랫폼 Temp Namespace 생성
-컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 포털 내 사용자 계정 관리를 위해 이용된다.
-
-- Temp Namespace를 생성한다.
-```
-$ kubectl create namespace paas-ta-container-platform-temp-namespace
-```
-
-<br>
-
-## <div id='5'> 5. Kubernates Monitoring 도구 (Metrics-server) 배포 
+## <div id='3'> 3. Kubernates Monitoring 도구 (Metrics-server) 배포 
 배포된 Resource의 CPU/Memory 사용량 등을 확인하기 위해서는 Metric-server 배포가 필요하며, 컨테이너 플랫폼 사용자포탈에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.  
 또한 KubeEdge에서 Metrics-Server 배포 시 2.8. kubectl logs 기능 활성화 가 필수적으로 진행되어야 한다.
 
@@ -517,6 +455,7 @@ $ vi components.yaml
 # spec.template.spec 하위에 추가
 # {CLOUD_SIDE_HOSTNAME} : 실제 Cloud Side Hostname
 
+    spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -528,11 +467,27 @@ $ vi components.yaml
                 - {CLOUD_SIDE_HOSTNAME}
       hostNetwork: true
 
-# args에 추가
+# spec.template.spec.containers 하위 - args:에 추가
 
+      containers:
       - args:
         - --v=2
         - --kubelet-insecure-tls
+
+# spec.template.spec 하위에 추가    
+
+      tolerations:
+      - key: "node-role.kubernetes.io"
+        operator: "Equal"
+        value: "master"
+        effect: "NoSchedule"    
+```
+
+- 노드의 Taint 설정을 해제한다.
+```
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
+node/ip-10-0-0-251 untainted
+error: taint "node-role.kubernetes.io/master" not found
 ```
 
 - Metrics-Server를 배포한다.
@@ -560,6 +515,69 @@ kube-proxy-nntnh                        1m           10Mi
 kube-scheduler-ip-10-0-0-234            3m           11Mi
 metrics-server-68cb9f9b79-xvkks         3m           12Mi
 ```
+
+<br>
+
+## <div id='4'> 4. KubeEdge Reset (참고)
+Cloud Side, Edge Side에서 KubeEdge를 중지합니다. 필수구성요소는 삭제하지 않습니다.
+
+- Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제합니다.
+```
+# keadm reset --kube-config=$HOME/.kube/config
+```
+
+- Edge Side에서 edgecore를 중지합니다.
+```
+# keadm reset
+```
+
+<br>
+
+## <div id='5'> 5. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
+
+### <div id='5.1'> 5.1. Cluster Role 운영자 생성 및 Token 획득
+Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
+
+- Service Account를 생성한다.
+```
+# {SERVICE_ACCOUNT} : Service Account 명
+$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(eg. kubectl create serviceaccount k8sadmin -n kube-system)
+```
+
+- Cluster Role을 생성한 Service Account에 바인딩한다.
+```
+$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
+```
+
+- 생성한 Service Account의 Token을 획득한다.
+```
+# {SECRET_NAME} : Mountable secrets 값 확인
+$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
+
+$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
+
+### <div id='5.2'> 5.2. Namespace 사용자 Token 획득
+포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
+
+- Namespace 사용자의 Token을 획득한다.
+```
+# {SECRET_NAME} : Mountable secrets 값 확인
+# {NAMESPACE} : Namespace 명
+$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
+
+$ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
+
+### <div id='5.3'> 5.3. 컨테이너 플랫폼 Temp Namespace 생성
+컨테이너 플랫폼 배포 시 최초 Temp Namespace 생성이 필요하다. 해당 Temp Namespace는 포털 내 사용자 계정 관리를 위해 이용된다.
+
+- Temp Namespace를 생성한다.
+```
+$ kubectl create namespace paas-ta-container-platform-temp-namespace
+```
+
 
 <br>
 
