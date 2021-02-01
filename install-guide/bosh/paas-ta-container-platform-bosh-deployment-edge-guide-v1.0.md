@@ -361,7 +361,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 ### <div id='3.5'>3.5. Taint 해제
-노드의 Taint 설정을 해제한다.(이미 kubeEdge설치에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)를 했으면 안해도 된다.)
+노드의 Taint 설정을 해제한다.(이미 KubeEdge 설치 가이드에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#3)를 했으면 안해도 된다.)
 ```
 $ kubectl taint nodes --all node-role.kubernetes.io/master-
 
@@ -738,7 +738,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 005]
 >{Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
 >{API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
->{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4)을 입력한다.
+>{Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)을 입력한다.
 ```
 #ex)
 #{Cluster Name} : cp-cluster-new
