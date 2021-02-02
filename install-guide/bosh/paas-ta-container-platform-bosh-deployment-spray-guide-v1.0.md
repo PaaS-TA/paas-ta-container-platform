@@ -29,11 +29,11 @@
 
 4. [CVE 조치사항 적용](#4)     
 
-5. [단독 배포후 컨테이너 플랫폼 운영자/사용자 회원가입](#5)      
+5. [컨테이너 플랫폼 운영자/사용자 포털 회원가입](#5)      
     5.1. [컨테이너 플랫폼 운영자 포털 회원가입](#5.1)      
     5.2. [컨테이너 플랫폼 운영자 포털 로그인](#5.2)      
     5.3. [컨테이너 플랫폼 사용자 포털 회원가입](#5.3)      
-    5.4. [컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당](#5.4)      
+    5.4. [컨테이너 플랫폼 사용자 Namespace/Role 할당](#5.4)      
     5.5. [컨테이너 플랫폼 사용자 포털 로그인](#5.5)      
     5.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.6)    
 
@@ -655,11 +655,11 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
  $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
-## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
+## <div id='5'>5. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
 
 컨테이너플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
 
-### <div id='5.1'/>5.1. Container Platform 운영자 포털 회원가입 
+### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
 > $ kubectl get namespace 
 ```
@@ -671,7 +671,7 @@ kube-system                                 Active   5d19h
 paas-ta-container-platform-temp-namespace   Active   4d
 ```
 
-Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 한다.
+Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
 > Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다.  
@@ -689,34 +689,34 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 ![image 006]
 
 ### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자 포털 회원가입
-- 등록할 사용자 계정정보(사용자 ID, Password, E-mail)를 입력 후 [Register] 버튼을 클릭하여  컨테이너 플랫폼 사용자 포털에 회원가입한다. <br> 사용자 포털 회원가입 후 즉시 이용은 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
+- 등록할 사용자 계정정보(사용자 ID, Password, E-mail)를 입력 후 [Register] 버튼을 클릭하여  컨테이너 플랫폼 사용자 포털에 회원가입한다. <br> 사용자 포털은 회원가입 후 즉시 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
 
 ![image 007]
 
-### <div id='5.4'/>5.4. 컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당
+### <div id='5.4'/>5.4. 컨테이너 플랫폼 사용자 Namespace/Role 할당
 ## 1) Namespace 관리자 지정
 - Clusters 메뉴 > Namespaces 선택 > 할당 하고자하는 Namespace 명 선택 > 하단 [수정]버튼 클릭
 
 ![image 008]
 ![image 009]
 
-- 해당 Namespace의 관리자로 지정할 User 선택 후 저장버튼 클릭 
+- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭 
 - 해당 Namespace의 Resource Quotas, Limit Ranges 수정 가능
 
 ![image 010]
 
-- [참고] 운영자 포털 :: Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
+- [참고] Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
 ![image 011]
 
 ## 2) Namespace 사용자 지정 
 
 ### 운영자 포털
-- Managements 메뉴 > Users 선택 > User 탭 선택 > User ID 선택 > 하단 [수정]버튼 클릭
-
+- Managements 메뉴 > Users 선택 > User 탭 선택 > 사용자 ID 선택 > 하단 [수정]버튼 클릭
 ![image 015]
 ![image 016]
 
-- Namespaces/Roles 선택 > 수정버튼
+- Namespaces/Roles 선택 > [수정]버튼 클릭
+
 해당 사용자가 이용할 Namespace와 Role을 지정할 수 있다.
 ![image 017]
 ![image 018]
@@ -731,13 +731,13 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 ![image 014]
 
 
-### <div id='5.5'/>5.5.  컨테이너 플랫폼 사용자 포털 로그인
-- 사용자 ID와 비밀번호를 입력후 [로그인] 버튼을 클릭하여 Container Platform 사용자 포털에 로그인 한다.
+### <div id='5.5'/>5.5. 컨테이너 플랫폼 사용자 포털 로그인
+- 사용자 ID와 비밀번호를 입력후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![image 019]
 
-### <div id='5.6'/>5.6.  컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
-- 포털 사용방법은 포털 사용가이드를 참고 한다.  
+### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
+- 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고 한다.  
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
   + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
 
