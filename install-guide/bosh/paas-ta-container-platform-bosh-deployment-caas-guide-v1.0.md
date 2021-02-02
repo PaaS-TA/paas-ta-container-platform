@@ -23,7 +23,7 @@
 4. [Container 서비스 브로커](#4)  
  4.1. [Container 서비스 브로커 등록](#4.1)  
  4.2. [Container 서비스 UAA Client 등록](#4.2)   
- 4.3. [PaaS-TA 포탈에서 Container 서비스 조회 설정](#4.3)      
+ 4.3. [PaaS-TA 포털에서 Container 서비스 조회 설정](#4.3)      
 
 5. [Jenkins 서비스 브로커(Optional)](#5)   
  5.1. [Kubernetes Cluster 설정](#5.1)   
@@ -42,9 +42,9 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. 
-PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하며 본 문서는 Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 Container 서비스를 배포하는 내용이다.
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. <br>
+PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 Container 서비스를 배포하는 내용이다.
 
 ![image 001]
 
@@ -89,7 +89,7 @@ $ cd ~/workspace/paasta/deployment/
 # Deployment 다운로드
 $ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
-# bosh 배포 경로로 이동
+# Bosh 배포 경로로 이동
 $ cd paas-ta-container-platform-deployment/bosh/
 ```
 
@@ -253,7 +253,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 
 ### <div id='2.5'>2.5. 서비스 설치
 
-- 서비스 설치에 필요한 릴리스 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
+- 서비스 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
   [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download)  
        
@@ -362,7 +362,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 
 ### <div id='3.4'>3.4. Deployment 배포
-PaaS-TA 사용자포탈에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
+PaaS-TA 사용자포털에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
 
 - Container Platform yaml 파일 경로이동
 ```
@@ -660,7 +660,7 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 ```
 
 ## <div id='4'>4. Container 서비스 브로커
-Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포탈을 통해 서비스를 신청하여 사용할 수 있다.
+Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
 
 ### <div id='4.1'>4.1. Container 서비스 브로커 등록
 
@@ -784,11 +784,11 @@ caasclient
 
 ```  
 
-### <div id='4.3'>4.3. PaaS-TA 포탈에서 Container 서비스 조회 설정
+### <div id='4.3'>4.3. PaaS-TA 포털에서 Container 서비스 조회 설정
 
- 해당 설정은 PaaS-TA 포탈에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
+ 해당 설정은 PaaS-TA 포털에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
-  1. PaaS-TA Admin 포탈에 접속한다.
+  1. PaaS-TA Admin 포털에 접속한다.
 
   ![image 002]
 
@@ -846,7 +846,7 @@ ex)
 
 ![image 003]
 
-[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스항목을 Container_service로 변경 후 저장한다.
+[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스 항목을 Container_service로 변경 후 저장한다.
 
 ![image 004]
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
@@ -865,7 +865,7 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포탈에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
+> PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
 
 - Container Platform yaml 파일 경로이동
 ```

@@ -45,7 +45,9 @@ PaaS-TA 6.0 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAproxy, Private Registry)환경으로 구성되어 있다. Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
+Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
 
 ![image 001]
 
@@ -438,7 +440,7 @@ kube-scheduler-ip-10-0-0-18            1/1     Running   0          58m
 <br>
 
 ## <div id='3'> 3. Kubernates Monitoring 도구 (Metrics-server) 배포 
-배포된 Resource의 CPU/Memory 사용량 등을 확인하기 위해서는 Metric-server 배포가 필요하며, 컨테이너 플랫폼 사용자포탈에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.  
+배포된 Resource의 CPU/Memory 사용량 등을 확인하기 위해서는 Metric-server 배포가 필요하며, 컨테이너 플랫폼 사용자포털에서도 정상적인 운용을 위해서는 필수적으로 배포되어야 한다.  
 또한 KubeEdge에서 Metrics-Server 배포 시 2.8. kubectl logs 기능 활성화 가 필수적으로 진행되어야 한다.
 
 - Metrics-Server 배포를 위한 yaml 파일을 다운받는다.
@@ -519,14 +521,14 @@ metrics-server-68cb9f9b79-xvkks         3m           12Mi
 <br>
 
 ## <div id='4'> 4. KubeEdge Reset (참고)
-Cloud Side, Edge Side에서 KubeEdge를 중지합니다. 필수구성요소는 삭제하지 않습니다.
+Cloud Side, Edge Side에서 KubeEdge를 중지한다. 필수구성요소는 삭제하지 않는다.
 
-- Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제합니다.
+- Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제한다.
 ```
 # keadm reset --kube-config=$HOME/.kube/config
 ```
 
-- Edge Side에서 edgecore를 중지합니다.
+- Edge Side에서 edgecore를 중지한다.
 ```
 # keadm reset
 ```
