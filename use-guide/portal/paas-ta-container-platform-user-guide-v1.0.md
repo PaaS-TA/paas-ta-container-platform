@@ -3,12 +3,12 @@
 1. [문서 개요](#1)
     * [1.1. 목적](#1-1)
     * [1.2. 범위](#1-2)
-2. [Container Platform 접속](#2)
-    * [2.1. Container Platform 사용자 포털 회원가입](#2-1)
-    * [2.2. Container Platform 사용자 포털 로그인](#2-2)    
-3. [Container Platform 사용자 메뉴얼](#3)
-    * [3.1. Container Platform 사용자 메뉴 구성](#3-1)
-    * [3.2. Container Platform 사용자 메뉴 설명](#3-2)
+2. [컨테이너 플랫폼 접속](#2)
+    * [2.1. 컨테이너 플랫폼 사용자 포털 회원가입](#2-1)
+    * [2.2. 컨테이너 플랫폼 사용자 포털 로그인](#2-2)    
+3. [컨테이너 플랫폼 사용자 메뉴얼](#3)
+    * [3.1. 컨테이너 플랫폼 사용자 메뉴 구성](#3-1)
+    * [3.2. 컨테이너 플랫폼 사용자 메뉴 설명](#3-2)
     * [3.2.1. Intro](#3-2-1)
     * [3.2.1.1. Overview](#3-2-1-1)
     * [3.2.1.2. Access](#3-2-1-2)
@@ -62,35 +62,35 @@
 # <div id='1'/> 1. 문서 개요
 
 ## <div id='1-1'/> 1.1. 목적
-본 문서는 Container Platform을 사용할 사용자의 사용 방법에 대해 기술하였다.
+본 문서는 컨테이너 플랫폼을 사용할 사용자의 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 Container Platform을 사용할 사용자의 사용 방법에 대해 작성되었다.
+본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼을 사용할 사용자의 사용 방법에 대해 작성되었다.
 
-# <div id='2'/> 2. Container Platform 접속
+# <div id='2'/> 2. 컨테이너 플랫폼 접속
 
-### <div id='2-1'/> 2.1. Container Platform 사용자 포털 회원가입
-1. Container Platform 사용자 포털에 접속하여 "사용자 등록" 버튼을 클릭한다.
+### <div id='2-1'/> 2.1. 컨테이너 플랫폼 사용자 포털 회원가입
+1. 컨테이너 플랫폼 사용자 포털에 접속하여 "사용자 등록" 버튼을 클릭한다.
 
 ![IMG_001]
 
-2. 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다.
+2. 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입을 한다.
 
 ![IMG_002]
 
-### <div id='2-2'/> 2.2. Container Platform 사용자 포털 로그인
-3. 사용할 이메일 계정과 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 Container Platform 사용자 포털에 로그인 한다.
+### <div id='2-2'/> 2.2. 컨테이너 플랫폼 사용자 포털 로그인
+3. 사용할 이메일 계정과 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![IMG_003]
 
-## <div id='3'/> 3. Container Platform 사용자 메뉴얼
+## <div id='3'/> 3. 컨테이너 플랫폼 사용자 메뉴얼
 
 
-## <div id='3-1'/> 3.1. Container Platform 사용자 메뉴 구성
+## <div id='3-1'/> 3.1. 컨테이너 플랫폼 사용자 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
-| Intro | Overview | Container Platform 대시보드 |
-|| Access | Container Platform CLI 사용을 위한 환경 설정 정보 관리 |
+| Intro | Overview | 컨테이너 플랫폼 대시보드 |
+|| Access | 컨테이너 플랫폼 CLI 사용을 위한 환경 설정 정보 관리 |
 || Private Registry | Private Registry 를 Container 상에 배포 및 사용하기 위한 설정 정보 관리 |
 | Workloads | Overview | Workloads 대시보드 |
 || Deployments | Deployments 정보 관리 |
@@ -102,8 +102,8 @@
 | Roles | Roles | Role 조회 |
 
 
-## <div id='3-2'/> 3.2. Container Platform 사용자 메뉴 설명
-본 장에서는 Container Platform의 메뉴에 대한 설명을 기술한다.
+## <div id='3-2'/> 3.2. 컨테이너 플랫폼 사용자 메뉴 설명
+본 장에서는 컨테이너 플랫폼의 메뉴에 대한 설명을 기술한다.
 
 ### <div id='3-2-1'/> 3.2.1. Intro
 
@@ -116,7 +116,7 @@
 
 
 #### <div id='3-2-1-2'/> 3.2.1.2. Access
-- Container Platform의 CLI 사용을 위한 환경 설정 정보를 조회한다.
+- 컨테이너 플랫폼의 CLI 사용을 위한 환경 설정 정보를 조회한다.
 
 1. Intro의 Access 탭을 클릭하여 Access 페이지로 이동한다.
 
@@ -168,18 +168,18 @@
 | CLUSTER_ADMIN | cluster-admin | User삭제, Role변경 |
 | NAMESPACE_ADMIN | paas-ta-container-platform-admin-role | Role변경 |
 | USER | paas-ta-container-platform-init-role | 조회만 가능 |
-- 본 장에서는 Container Platform을 사용하는 사용자들의 정보 조회 수정 및 삭제, Role 정보 조회 및 변경에 대한 설명을 기술한다.
+- 본 장에서는 컨테이너 플랫폼을 사용하는 사용자들의 정보 조회 수정 및 삭제, Role 정보 조회 및 변경에 대한 설명을 기술한다.
 - Role 변경은 cluster-admin Role을 가진 CLUSTER_ADMIN과 paas-ta-container-platform-admin-role Role을 가진 NAMESPACE_ADMIN 둘다 가능하다.
 - User 삭제는 cluster-admin Role을 가진 CLUSTER_ADMIN만이 가능하다.
 
 
 #### <div id='3-2-2-1'/> 3.2.2.1. My info 수정
-1. Container Platform을 사용하는 User의 정보를 수정한다.
+1. 컨테이너 플랫폼을 사용하는 User의 정보를 수정한다.
 
 ![IMG_016]
 
 #### <div id='3-2-2-2'/> 3.2.2.2. User 목록 조회
-1. Container Platform을 사용하는 User 목록을 조회한다.
+1. 컨테이너 플랫폼을 사용하는 User 목록을 조회한다.
 
 ![IMG_017]
 
@@ -198,7 +198,7 @@
 ### <div id='3-2-3'/> 3.2.3. Roles
 #### <div id='3-2-3-1'/> 3.2.3.1. Role 목록 조회
 
-1. Container Platform 사용 가능한 권한을 조회한다.
+1. 컨테이너 플랫폼 사용 가능한 권한을 조회한다.
 
 ![IMG_022]
 
