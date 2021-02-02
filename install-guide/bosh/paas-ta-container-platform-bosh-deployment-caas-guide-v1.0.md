@@ -6,7 +6,7 @@
  1.3. [시스템 구성도](#1.3)  
  1.4. [참고자료](#1.4)  
 
-2. [Container 서비스 설치](#2)  
+2. [컨테이너 서비스 설치](#2)  
  2.1. [Prerequisite](#2.1)  
  2.2. [Stemcell 확인](#2.2)  
  2.3. [Deployment 다운로드](#2.3)  
@@ -15,16 +15,16 @@
  2.6. [서비스 설치 확인](#2.6)  
  2.7. [CVE/CCE 진단항목 적용 ](#2.7)  
 
-3. [Kubernetes Container 서비스 배포](#3)   
+3. [Kubernetes 컨테이너 서비스 배포](#3)   
  3.1. [Kubernetes Cluster 설정](#3.1)   
- 3.2. [Container 서비스 이미지 업로드](#3.2)   
+ 3.2. [컨테이너 서비스 이미지 업로드](#3.2)   
  3.3. [Secret 생성](#3.3)  
  3.4. [Deployment 배포](#3.4)  
 
-4. [Container 서비스 브로커](#4)  
- 4.1. [Container 서비스 브로커 등록](#4.1)  
- 4.2. [Container 서비스 UAA Client 등록](#4.2)   
- 4.3. [PaaS-TA 포털에서 Container 서비스 조회 설정](#4.3)      
+4. [컨테이너 서비스 브로커](#4)  
+ 4.1. [컨테이너 서비스 브로커 등록](#4.1)  
+ 4.2. [컨테이너 서비스 UAA Client 등록](#4.2)   
+ 4.3. [PaaS-TA 포털에서 컨테이너 서비스 조회 설정](#4.3)      
 
 5. [Jenkins 서비스 브로커(Optional)](#5)   
  5.1. [Kubernetes Cluster 설정](#5.1)   
@@ -35,7 +35,7 @@
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(Container 서비스 설치 가이드)는 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스 등록 방법을 기술하였다.
+본 문서(컨테이너 서비스 설치 가이드)는 Kubernetes를 사용하기 위해 Bosh 기반 Release의 설치 및 서비스 등록 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
@@ -44,8 +44,8 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다.  <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 Container 서비스를 배포하는 내용이다.
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다.  <br>
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
 
 ![image 001]
 
@@ -53,7 +53,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database,
 > http://bosh.io/docs
 > http://docs.cloudfoundry.storage
 
-## <div id='2'>2. Container 서비스 설치
+## <div id='2'>2. 컨테이너 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
@@ -80,7 +80,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -302,11 +302,11 @@ Succeeded
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.  
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
-## <div id='3'>3. Kubernetes Container 서비스 배포
-kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+## <div id='3'>3. Kubernetes 컨테이너 서비스 배포
+kubernetes에서 PaaS-TA용 컨테이너 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
-> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
+> 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 
 ```
 $ sudo vi /etc/docker/daemon.json
@@ -318,11 +318,11 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='3.2'>3.2. Container 서비스 이미지 업로드
-Private Repository에 이미지 등록을 위해 Container 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+### <div id='3.2'>3.2. 컨테이너 서비스 이미지 업로드
+Private Repository에 이미지 등록을 위해 컨테이너 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
-+ Container 서비스 이미지 파일 다운로드 :  
++ 컨테이너 서비스 이미지 파일 다운로드 :  
    [cp-caas-images.tar](http://45.248.73.44/index.php/s/Dakicxt9jBkX56A/download)  
 
 ```
@@ -367,9 +367,9 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 
 ### <div id='3.4'>3.4. Deployment 배포
-PaaS-TA 사용자포털에서 Container 서비스를 추가하기 전 Kubernetes에 아래의 Container Service Deployment가 미리 배포되어 있어야 한다.
+PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kubernetes에 아래의 컨테이너 서비스 Deployment가 미리 배포되어 있어야 한다.
 
-- Container Platform yaml 파일 경로이동
+- 컨테이너 플랫폼 yaml 파일 경로이동
 ```
 $ cd ~/workspace/paasta/container-platform/container-service-yaml
 $ ls ~/workspace/paasta/container-platform/container-service-yaml
@@ -664,10 +664,10 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 
 ```
 
-## <div id='4'>4. Container 서비스 브로커
-Container 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 Container 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
+## <div id='4'>4. 컨테이너 서비스 브로커
+컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
 
-### <div id='4.1'>4.1. Container 서비스 브로커 등록
+### <div id='4.1'>4.1. 컨테이너 서비스 브로커 등록
 
 서비스 브로커 등록 시 개방형 클러스터 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어 있어야 한다.
 
@@ -681,15 +681,15 @@ Getting service brokers as admin...
 name                               url
 mysql-service-broker               http://10.0.121.71:8080
  ```
-  - Container 서비스 브로커를 등록한다.
+  - 컨테이너 서비스 브로커를 등록한다.
   > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Container 서비스 브로커 NodePort
+  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 컨테이너 서비스 브로커 NodePort
    ```
   $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
    ```
- - 등록된 Container 서비스 브로커를 확인한다.
+ - 등록된 컨테이너 서비스 브로커를 확인한다.
   ```
   $ cf service-brokers
 Getting service brokers as admin...
@@ -735,7 +735,7 @@ broker: mysql-service-broker
    Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
-### <div id='4.2'> 4.2. Container 서비스 UAA Client 등록
+### <div id='4.2'> 4.2. 컨테이너 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
 - uaac server의 endpoint를 설정한다.
@@ -760,22 +760,22 @@ Target: https://uaa.<DOMAIN>
 Context: admin, from client admin
 ```
 
-- Container 서비스 계정 생성을 한다.
+- 컨테이너 서비스 계정 생성을 한다.
 
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {http://<Kubernetes Master Node의 Public IP>:32091} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   - <CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
   - <CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
-  - <Container 서비스 URI> : 성공적으로 리다이렉션 할 Container 서비스 접근 URI (http://<Kubernetes Master Node의 Public IP>:<Container 서비스 Dashboard의 NodePort>)  
+  - <컨테이너 서비스 URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI (http://<Kubernetes Master Node의 Public IP>:<컨테이너 서비스 Dashboard의 NodePort>)  
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
   - <자동승인권한> : 사용자 승인이 필요하지 않은 권한 목록
 
 ```  
-# e.g. Container 서비스 계정 생성
+# e.g. 컨테이너 서비스 계정 생성
 $ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
 
-# e.g. Container 서비스 계정 생성 확인
+# e.g. 컨테이너 서비스 계정 생성 확인
 $ uaac clients
 caasclient
     scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
@@ -789,9 +789,9 @@ caasclient
 
 ```  
 
-### <div id='4.3'>4.3. PaaS-TA 포털에서 Container 서비스 조회 설정
+### <div id='4.3'>4.3. PaaS-TA 포털에서 컨테이너 서비스 조회 설정
 
- 해당 설정은 PaaS-TA 포털에 Container 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
+ 해당 설정은 PaaS-TA 포털에 컨테이너 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
   1. PaaS-TA Admin 포털에 접속한다.
 
@@ -858,7 +858,7 @@ ex)
 해당 설정은 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='5.1'>5.1. Kubernetes Cluster 설정
-> Container 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
+> 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 ```
 $ sudo vi /etc/docker/daemon.json
 {
@@ -872,7 +872,7 @@ $ sudo systemctl restart docker
 ### <div id='5.2'>5.2. Deployment 배포
 > PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
 
-- Container Platform yaml 파일 경로이동
+- 컨테이너 플랫폼 yaml 파일 경로이동
 ```
 $ cd ~/workspace/paasta/container-platform/container-service-yaml
 $ ls ~/workspace/paasta/container-platform/container-service-yaml

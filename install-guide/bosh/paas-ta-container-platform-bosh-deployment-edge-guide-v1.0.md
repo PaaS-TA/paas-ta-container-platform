@@ -6,7 +6,7 @@
     1.3. [시스템 구성도](#1.3)  
     1.4. [참고자료](#1.4)  
 
-2. [Container Platform 설치](#2)  
+2. [컨테이너 플랫폼 설치](#2)  
     2.1. [Prerequisite](#2.1)  
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
@@ -15,9 +15,9 @@
     2.6. [Release 설치 확인](#2.6)  
     2.7. [CVE/CCE 진단항목 적용 ](#2.7)     
 
-3. [Container Platform 배포](#3)  
+3. [컨테이너 플랫폼 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
-    3.2. [Container Platform 이미지 업로드](#3.2)  
+    3.2. [컨테이너 플랫폼 이미지 업로드](#3.2)  
     3.3. [Secret 생성](#3.3)  
     3.4. [Temp Namespace 생성](#3.4)   
     3.5. [Taint 해제](#3.5)  
@@ -30,18 +30,18 @@
 
 4. [CVE 조치사항 적용](#4)     
 
-5. [단독 배포후 Container Platform 운영자/사용자 회원가입](#5)      
-    5.1. [Container Platform 운영자 포털 회원가입](#5.1)      
-    5.2. [Container Platform 운영자 포털 로그인](#5.2)      
-    5.3. [Container Platform 사용자 포털 회원가입](#5.3)      
-    5.4. [Container Platform 운영자 포털 User Namespace/Role 할당](#5.4)      
-    5.5. [Container Platform 사용자 포털 로그인](#5.5)      
-    5.6. [Container Platform 사용자/운영자 포털 사용 가이드](#5.6)  
+5. [단독 배포후 컨테이너 플랫폼 운영자/사용자 회원가입](#5)      
+    5.1. [컨테이너 플랫폼 운영자 포털 회원가입](#5.1)      
+    5.2. [컨테이너 플랫폼 운영자 포털 로그인](#5.2)      
+    5.3. [컨테이너 플랫폼 사용자 포털 회원가입](#5.3)      
+    5.4. [컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당](#5.4)      
+    5.5. [컨테이너 플랫폼 사용자 포털 로그인](#5.5)      
+    5.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.6)  
 
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(Container 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 방법을 기술하였다.
+본 문서(컨테이너 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
@@ -50,8 +50,8 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
-Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 Container Platform을 배포하는 내용이다.
+Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
 
 ![image 001]
 
@@ -59,7 +59,7 @@ Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEd
 > http://bosh.io/docs
 > http://docs.cloudfoundry.storage
 
-## <div id='2'>2. Container Platform 설치
+## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다. 
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
@@ -84,7 +84,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- Container Platform Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -298,8 +298,8 @@ Succeeded
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 
-## <div id='3'>3. Container Platform 배포
-3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+## <div id='3'>3. 컨테이너 플랫폼 배포
+3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. kubernetes Cluster 설정
 > 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
@@ -313,11 +313,11 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl restart docker
 ```
 
-### <div id='3.2'>3.2. Container Platform 이미지 업로드
-Private Repository에 이미지 등록을 위해 Container Platform 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
+Private Repository에 이미지 등록을 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
-+ Container Platform 이미지 파일 다운로드 :  
++ 컨테이너 플랫폼 이미지 파일 다운로드 :  
    [cp-standalone-images.tar](http://45.248.73.44/index.php/s/ookBqYzCYH94GjG/download)  
 
 ```
@@ -386,9 +386,9 @@ taint "node-role.kubernetes.io/master" not found
 
 #### <div id='3.6.1'>3.6.1. paas-ta-container-platform-common-api 배포
 
-+ Container Platform yaml 파일 
++ 컨테이너 플랫폼 yaml 파일 
 ```
-# Container Platform yaml 파일 경로이동
+# 컨테이너 플랫폼 yaml 파일 경로이동
 $ cd ~/workspace/paasta/container-platform/container-platform-edge-yaml
 $ ls ~/workspace/paasta/container-platform/container-platform-edge-yaml
   paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
@@ -729,8 +729,8 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
  $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
-## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입
-### <div id='5.1'/>5.1. Container Platform 운영자 포털 회원가입 
+## <div id='5'>5. 단독 배포후 컨테이너 플랫폼 운영자/사용자 회원가입
+### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입 
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
 > $ kubectl get namespace 
 ```
@@ -754,17 +754,17 @@ paas-ta-container-platform-temp-namespace   Active   4d
 #{Kubernetes Cluster Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
 
 ```
-### <div id='5.2'/>5.2. Container Platform 운영자 포털 로그인
-- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 Container Platform 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자 포털로 이동하여 회원가입을 진행한다.
+### <div id='5.2'/>5.2. 컨테이너 플랫폼 운영자 포털 로그인
+- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자 포털로 이동하여 회원가입을 진행한다.
 
 ![image 006]
 
-### <div id='5.3'/>5.3. Container Platform 사용자 포털 회원가입
-- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용 가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다.(User에게 해당 Namespace에 대해 관리자 또는 사용자 권한을 할당 해야 한다.) 
+### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자 포털 회원가입
+- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용 가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다.(User에게 해당 Namespace에 대해 관리자 또는 사용자 권한을 할당 해야 한다.) 
 
 ![image 007]
 
-### <div id='5.4'/>5.4. Container Platform 운영자 포털 User Namespace/Role 할당
+### <div id='5.4'/>5.4. 컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당
 ## 1) Namespace 관리자 지정
 - Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼
 
@@ -795,12 +795,12 @@ paas-ta-container-platform-temp-namespace   Active   4d
 ![image 017]
 ![image 018]
 
-### <div id='5.5'/>5.5. Container Platform 사용자 포털 로그인
-- 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 Container Platform 사용자 포털에 로그인 한다.
+### <div id='5.5'/>5.5. 컨테이너 플랫폼 사용자 포털 로그인
+- 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![image 019]
 
-### <div id='5.6'/>5.6. Container Platform 사용자/운영자 포털 사용 가이드
+### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 포털 사용방법은 포털 사용가이드를 참고 한다.      
   + 사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
   + 운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
