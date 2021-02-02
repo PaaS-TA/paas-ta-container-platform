@@ -4,8 +4,8 @@
     * [1.1. 목적](#1-1)
     * [1.2. 범위](#1-2)
 2. [Container Platform 접속](#2)
-    * [2.1. PaaS-TA 사용자 포털 회원가입](#2-1)
-    * [2.2. PaaS-TA 사용자 포털 로그인](#2-2)    
+    * [2.1. Container Platform 사용자 포털 회원가입](#2-1)
+    * [2.2. Container Platform 사용자 포털 로그인](#2-2)    
 3. [Container Platform 사용자 메뉴얼](#3)
     * [3.1. Container Platform 사용자 메뉴 구성](#3-1)
     * [3.2. Container Platform 사용자 메뉴 설명](#3-2)
@@ -69,17 +69,17 @@
 
 # <div id='2'/> 2. Container Platform 접속
 
-### <div id='2-1'/> 2.1. PaaS-TA 사용자 포털 회원가입
-1. PaaS-TA 사용자 포털에 접속하여 "사용자 등록" 버튼을 클릭한다.
+### <div id='2-1'/> 2.1. Container Platform 사용자 포털 회원가입
+1. Container Platform 사용자 포털에 접속하여 "사용자 등록" 버튼을 클릭한다.
 
 ![IMG_001]
 
-2. 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 사용자 포털에 회원가입을 한다.
+2. 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 Container Platform 사용자 포털에 회원가입을 한다.
 
 ![IMG_002]
 
-### <div id='2-2'/> 2.2. PaaS-TA 사용자 포털 로그인
-3. 사용할 이메일 계정과 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 PaaS-TA 사용자 포털에 로그인 한다.
+### <div id='2-2'/> 2.2. Container Platform 사용자 포털 로그인
+3. 사용할 이메일 계정과 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 Container Platform 사용자 포털에 로그인 한다.
 
 ![IMG_003]
 
@@ -103,7 +103,7 @@
 
 
 ## <div id='3-2'/> 3.2. Container Platform 사용자 메뉴 설명
-본 장에서는 Container Platform의 5개 메뉴에 대한 설명을 기술한다.
+본 장에서는 Container Platform의 메뉴에 대한 설명을 기술한다.
 
 ### <div id='3-2-1'/> 3.2.1. Intro
 
@@ -163,7 +163,7 @@
 ![IMG_015]
 
 ### <div id='3-2-2'/> 3.2.2. Users
-| <center>사용자 유형</center> | <center>Role</center> | <center>역할</center> |
+| <center>사용자 유형</center> | <center>Role</center> | <center>기능</center> |
 | :--- | :--- | :--- |
 | CLUSTER_ADMIN | cluster-admin | User삭제, Role변경 |
 | NAMESPACE_ADMIN | paas-ta-container-platform-admin-role | Role변경 |
