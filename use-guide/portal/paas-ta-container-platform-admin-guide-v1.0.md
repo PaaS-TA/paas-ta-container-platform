@@ -131,7 +131,7 @@
 ## <div id='3-1'/> 3.1. 컨테이너 플랫폼 운영자포털 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
-|| Overview | Container Platform 대시보드 |
+|| Overview | 컨테이너 플랫폼 대시보드 |
 | Clusters | Namespaces | Namespaces 정보 관리 |
 || Nodes | Nodes 정보 관리 |
 | Workloads | Deployments | Deployments 정보 관리 |

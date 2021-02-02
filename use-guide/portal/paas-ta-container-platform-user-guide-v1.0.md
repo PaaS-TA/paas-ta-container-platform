@@ -91,7 +91,7 @@
 | :--- | :--- | :--- |
 | Intro | Overview | 컨테이너 플랫폼 대시보드 |
 || Access | 컨테이너 플랫폼 CLI 사용을 위한 환경 설정 정보 관리 |
-|| Private Registry | Private Registry 를 Container 상에 배포 및 사용하기 위한 설정 정보 관리 |
+|| Private Registry | Private Registry 를 컨테이너 상에 배포 및 사용하기 위한 설정 정보 관리 |
 | Workloads | Overview | Workloads 대시보드 |
 || Deployments | Deployments 정보 관리 |
 || Pods | Pods 정보 관리 |
@@ -156,7 +156,7 @@
 ![IMG_014]
 
 #### <div id='3-2-1-5'/> 3.2.1.5. Private Registry
-- Private Registry 를 Container 상에 배포 및 사용하기 위한 설정 정보를 조회한다.
+- Private Registry 를 컨테이너 상에 배포 및 사용하기 위한 설정 정보를 조회한다.
 
 1. Intro의 Private Registry 탭을 클릭하여 Private Registry 페이지로 이동한다.
 
