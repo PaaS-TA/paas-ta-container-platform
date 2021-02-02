@@ -657,7 +657,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='5'>5. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
 
-컨테이너플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
+컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
 
 ### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
