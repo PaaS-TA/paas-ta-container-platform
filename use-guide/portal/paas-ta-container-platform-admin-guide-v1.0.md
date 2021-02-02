@@ -229,7 +229,7 @@
 ![IMG_024]
 
 ### <div id='3-2-3'/> 3.2.3. Workloads 메뉴
-#### <div id='3-2-3-1'/> 3.2.3.1 Deployment
+#### <div id='3-2-3-1'/> 3.2.3.1 Deployments
 ##### <div id='3-2-3-1-1'/> 3.2.3.1.1. Deployment 목록 조회
 1. Workloads의 Deployments를 클릭하여 Deployment 목록 페이지로 이동한다.
 
@@ -399,7 +399,7 @@
 #### Persistent Volume 상세 페이지
 ![IMG_058]
 
-##### <div id='3-2-5-1-3'/> 3.2.5.1.3. Persistent Volumee 생성
+##### <div id='3-2-5-1-3'/> 3.2.5.1.3. Persistent Volume 생성
 1. Persistent Volume 목록에서 생성 버튼을 클릭하여 Persistent Volume 생성 팝업창이 뜬다.
 
 #### Persistent Volume 목록 페이지
@@ -438,7 +438,7 @@
 #### Persistent Volume Claim 상세 페이지
 ![IMG_066]
 
-##### <div id='3-2-5-2-3'/> 3.2.5.2.3. Persistent Volumee Claim 생성
+##### <div id='3-2-5-2-3'/> 3.2.5.2.3. Persistent Volume Claim 생성
 1. Persistent Volume Claim 목록에서 생성 버튼을 클릭하여 Persistent Volume Claim 생성 팝업창이 뜬다.
 
 #### Persistent Volume Claim 목록 페이지
