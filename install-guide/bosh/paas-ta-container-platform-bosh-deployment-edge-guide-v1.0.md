@@ -12,8 +12,8 @@
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
     2.5. [Release 설치](#2.5)  
-    2.6. [Release 설치 확인](#2.6)
-    2.7. [CVE/CCE 진단항목 적용 ](#2.7)   
+    2.6. [Release 설치 확인](#2.6)  
+    2.7. [CVE/CCE 진단항목 적용 ](#2.7)     
 
 3. [Container Platform 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
@@ -294,8 +294,8 @@ Succeeded
 ```
 
 ### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
-배포된 Kubernetes Cluster, BOSH Inception 환경에 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.
-[CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
+배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
+- [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 
 ## <div id='3'>3. Container Platform 배포
