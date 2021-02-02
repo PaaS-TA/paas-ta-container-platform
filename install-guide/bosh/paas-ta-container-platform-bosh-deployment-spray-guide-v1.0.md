@@ -681,7 +681,7 @@ paas-ta-container-platform-temp-namespace   Active   4d
 
 ```
 ### <div id='5.2'/>5.2. Container Platform 운영자 포털 로그인
-- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 Container Platform 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자포털로 이동하여 회원가입을 진행한다.
+- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 Container Platform 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자 포털로 이동하여 회원가입을 진행한다.
 
 ![image 006]
 
@@ -704,14 +704,14 @@ paas-ta-container-platform-temp-namespace   Active   4d
 - [참고] 운용자 포털 :: Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
 ![image 011]
 
-- [참고] 사용자 포털 :: Namespace 관리자로 할당 받은 User는 해당 Namesapce 이용자에게 Role을 할당할 수 있다.
+- [참고] 사용자 포털 :: Namespace 관리자로 할당 받은 User는 해당 Namesapce 사용자에게 Role을 할당할 수 있다.
 
 ![image 012]
 ![image 013]
 ![image 014]
 
 ## 2) Namespace 사용자 지정 
-- Managements 메뉴 > Users를 선택 > User탭 선택 > Namespace 이용자로 지정할 User를 선택 > 수정버튼
+- Managements 메뉴 > Users를 선택 > User탭 선택 > Namespace 사용자로 지정할 User를 선택 > 수정버튼
 
 ![image 015]
 ![image 016]
