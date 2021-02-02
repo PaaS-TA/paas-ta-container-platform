@@ -3,12 +3,12 @@
 1. [문서 개요](#1)
     * [1.1. 목적](#1-1)
     * [1.2. 범위](#1-2)
-2. [Container Platform 접속](#2)
-    * [2.1. PaaS-TA 운영자 포털 회원가입](#2-1)
-    * [2.2. PaaS-TA 운영자 포털 로그인](#2-2)    
-3. [Container Platform 운영자 메뉴얼](#3)
-    * [3.1. Container Platform 운영자 메뉴 구성](#3-1)
-    * [3.2. Container Platform 운영자 메뉴 설명](#3-2)
+2. [컨테이너 플랫폼 운영자포털 접속](#2)
+    * [2.1. 컨테이너 플랫폼 운영자포털 회원가입](#2-1)
+    * [2.2. 컨테이너 플랫폼 운영자포털 로그인](#2-2)    
+3. [컨테이너 플랫폼 운영자포털 메뉴얼](#3)
+    * [3.1. 컨테이너 플랫폼 운영자포털 메뉴 구성](#3-1)
+    * [3.2. 컨테이너 플랫폼 운영자포털 메뉴 설명](#3-2)
     * [3.2.1. Overview](#3-2-1)
     * [3.2.1.1. Overview 목록 조회](#3-2-1-1)
     * [3.2.1.2. Overview Namespace 변경](#3-2-1-2)
@@ -69,12 +69,14 @@
     * [3.2.5.3.5. Storage Class 삭제](#3-2-5-3-5)
     * [3.2.6. Managements 메뉴](#3-2-6)
     * [3.2.6.1. Users](#3-2-6-1)
-    * [3.2.6.1.1. User 목록 조회](#3-2-6-1-1)
-    * [3.2.6.1.2. User 상세 조회](#3-2-6-1-2)
-    * [3.2.6.1.3. User 생성](#3-2-6-1-3)
-    * [3.2.6.1.4. User 수정](#3-2-6-1-4)
-    * [3.2.6.1.5. User 삭제](#3-2-6-1-5)
-    * [3.2.6.2. Roles](#3-2-6-2)
+    * [3.2.6.1.1. 클러스터 관리자 조회](#3-2-6-1-1)  
+    * [3.2.6.1.2. 클러스터 관리자 상세 조회 ](#3-2-6-1-2)  
+    * [3.2.6.1.3. 일반 사용자 목록 조회](#3-2-6-1-3)  
+    * [3.2.6.1.4. 일반 사용자 상세 조회](#3-2-6-1-4)  
+    * [3.2.6.1.5. User 생성](#3-2-6-1-5)  
+    * [3.2.6.1.6. User 수정](#3-2-6-1-6)  
+    * [3.2.6.1.7. User 삭제](#3-2-6-1-7)  
+    * [3.2.6.2. Roles](#3-2-6-2)  
     * [3.2.6.2.1. Role 목록 조회](#3-2-6-2-1)
     * [3.2.6.2.2. Role 상세 조회](#3-2-6-2-2)
     * [3.2.6.2.3. Role 생성](#3-2-6-2-3)
@@ -86,12 +88,12 @@
     * [3.2.6.3.3. Resource Quota 생성](#3-2-6-3-3)
     * [3.2.6.3.4. Resource Quota 수정](#3-2-6-3-4)
     * [3.2.6.3.5. Resource Quota 삭제](#3-2-6-3-5)
-    * [3.2.6.4. Limit Rangs](#3-2-6-4)
-    * [3.2.6.4.1. Limit Rang 목록 조회](#3-2-6-4-1)
-    * [3.2.6.4.2. Limit Rang 상세 조회](#3-2-6-4-2)
-    * [3.2.6.4.3. Limit Rang 생성](#3-2-6-4-3)
-    * [3.2.6.4.4. Limit Rang 수정](#3-2-6-4-4)
-    * [3.2.6.4.5. Limit Rang 삭제](#3-2-6-4-5)
+    * [3.2.6.4. Limit Ranges](#3-2-6-4)
+    * [3.2.6.4.1. Limit Range 목록 조회](#3-2-6-4-1)
+    * [3.2.6.4.2. Limit Range 상세 조회](#3-2-6-4-2)
+    * [3.2.6.4.3. Limit Range 생성](#3-2-6-4-3)
+    * [3.2.6.4.4. Limit Range 수정](#3-2-6-4-4)
+    * [3.2.6.4.5. Limit Range 삭제](#3-2-6-4-5)
 
 
 
@@ -100,32 +102,33 @@
 # <div id='1'/> 1. 문서 개요
 
 ## <div id='1-1'/> 1.1. 목적
-본 문서는 Container Platform을 사용할 운영자의 사용 방법에 대해 기술하였다.
+본 문서는 컨테이너 플랫폼 운영자포털 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 Container Platform을 사용할 운영자의 사용 방법에 대해 작성되었다.
+본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼 운영자포털 의 사용 방법에 대해 기술하였다.
 
-# <div id='2'/> 2. Container Platform 접속
+# <div id='2'/> 2. 컨테이너 플랫폼 운영자포털 접속
 
-## <div id='2-1'/> 2.1. PaaS-TA 운영자 포털 회원가입
-1. PaaS-TA 운영자 포털에 접속하여 "Register" 버튼을 클릭한다.
+## <div id='2-1'/> 2.1. 컨테이너 플랫폼 운영자포털 회원가입
+1. 컨테이너 플랫폼 운영자포털에 접속하여 "회원가입" 버튼을 클릭한다.
 
 ![IMG_001]
 
-2. Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
+2. Kubernetes Cluster 정보,  생성할 Namespace 명,  User 정보를 입력 후  "회원가입" 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 한다.
+> 아래 이미지는 이해를 돕기위한 예시 정보 이다.
 
 ![IMG_002]
 ![IMG_003]
 
-## <div id='2-2'/> 2.2. PaaS-TA 운영자 포털 로그인
-1. 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 PaaS-TA 운영자 포털에 로그인 한다.
+## <div id='2-2'/> 2.2. 컨테이너 플랫폼 운영자포털 로그인
+1.  사용자 ID와 비밀번호를 입력하고 "로그인" 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 로그인 한다.
 
 ![IMG_004]
 
-# <div id='3'/> 3. Container Platform 운영자 메뉴얼
+# <div id='3'/> 3. 컨테이너 플랫폼 운영자포털 메뉴얼
 
 
-## <div id='3-1'/> 3.1. Container Platform 운영자 메뉴 구성
+## <div id='3-1'/> 3.1. 컨테이너 플랫폼 운영자포털 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
 || Overview | Container Platform 대시보드 |
@@ -144,21 +147,21 @@
 || Limit Ranges | Limit Ranges 정보 관리 |
 
 
-## <div id='3-2'/> 3.2. Container Platform 운영자 메뉴 설명
-본 장에서는 Container Platform의 메뉴에 대한 설명을 기술한다.
+## <div id='3-2'/> 3.2. 컨테이너 플랫폼 운영자포털 메뉴 설명
+본 장에서는 컨테이너 플랫폼 운영자포털의 메뉴에 대한 설명을 기술하였다.
 
 ### <div id='3-2-1'/> 3.2.1. Overview
 #### <div id='3-2-1-1'/> 3.2.1.1. Overview 목록 조회
-- Namespace, Deployment, Pod, User의 생성 개수와 Deployment, Pod, ReplicaSet의 차트를 조회한다.
+- Namespace, Deployment, Pod, User의 개수와 Deployment, Pod, ReplicaSet의 차트를 조회한다.
 
-1. Login 후 첫 화면으로 Overview 페이지로 이동한다.
+1. 로그인 후 첫 화면으로 Overview 페이지로 이동한다.
 
 ![IMG_005]
 
 #### <div id='3-2-1-2'/> 3.2.1.2. Overview Namespace 변경
-- 화면 상단 Select Box를 누르면 전체 Namespace 목록에서 원하는 Namespace를 선택한다.
+- 화면 상단 Select Box를 누른 후 전체 Namespace 목록에서 원하는 Namespace를 선택한다.
 
-1. Select Box에서 Namespace를 선택하면 해당 Namespace에 대한 Overview 페이지로 이동한다.
+1. Select Box에서 Namespace를 선택하면 해당 Namespace에 대한 Overview 정보가 조회된다.
 
 ![IMG_006]
 ![IMG_007]
@@ -184,7 +187,7 @@
 ![IMG_010]
 
 ##### <div id='3-2-2-1-3'/> 3.2.2.1.3. Namespace 생성
-- Namespace 생성 페이지에 Resource Quotas, Limit Ranges를 생성시 선택할 수 있는 Check Box가 있다.
+- Namespace 생성 페이지에서 해당 Namespace의 관리자, Resource Quotas, Limit Ranges를 지정할 수 있다.
 
 1. Namespace 목록에서 생성 버튼을 클릭하여 Namespace 생성 페이지로 이동한다.
 
@@ -199,6 +202,8 @@
 ![IMG_016]
 
 ##### <div id='3-2-2-1-4'/> 3.2.2.1.4. Namespace 수정
+Namespace 수정 페이지에서 해당 Namespace의 관리자, Resource Quotas, Limit Ranges를 수정할 수 있다.
+
 1. Namespace 상세에서 수정 버튼을 클릭하여 Namespace 수정 페이지로 이동한다.
 
 #### Namespace 상세 페이지
@@ -229,7 +234,7 @@
 ![IMG_024]
 
 ### <div id='3-2-3'/> 3.2.3. Workloads 메뉴
-#### <div id='3-2-3-1'/> 3.2.3.1 Deployments
+#### <div id='3-2-3-1'/> 3.2.3.1 Deployment
 ##### <div id='3-2-3-1-1'/> 3.2.3.1.1. Deployment 목록 조회
 1. Workloads의 Deployments를 클릭하여 Deployment 목록 페이지로 이동한다.
 
@@ -242,7 +247,7 @@
 ![IMG_026]
 
 ##### <div id='3-2-3-1-3'/> 3.2.3.1.3. Deployment 생성
-1. Deployment 목록에서 생성 버튼을 클릭하여 Deployment 생성 팝업창이 뜬다.
+1. Deployment 목록에서 생성 버튼을 클릭할 시 Deployment 생성 팝업창이 뜬다.
 
 #### Deployment 목록 페이지
 ![IMG_027]
@@ -251,7 +256,7 @@
 ![IMG_028]
 
 ##### <div id='3-2-3-1-4'/> 3.2.3.1.4. Deployment 수정
-1. Deployment 상세에서 수정 버튼을 클릭하여 Deployment 수정 팝업창이 뜬다.
+1. Deployment 상세에서 수정 버튼을 클릭할 시 Deployment 수정 팝업창이 뜬다.
 
 #### Deployment 상세 페이지
 ![IMG_029]
@@ -260,7 +265,7 @@
 ![IMG_030]
 
 ##### <div id='3-2-3-1-5'/> 3.2.3.1.5. Deployment 삭제
-1. Deployment 상세에서 삭제 버튼을 클릭하여 Deployment 삭제를 한다.
+1. Deployment 상세에서 삭제 버튼을 클릭할 시 Deployment가 삭제된다.
 
 #### Deployment 상세 페이지
 ![IMG_031]
@@ -281,7 +286,7 @@
 ![IMG_034]
 
 ##### <div id='3-2-3-2-3'/> 3.2.3.2.3. Pod 생성
-1. Pod 목록에서 생성 버튼을 클릭하여 Pod 생성 팝업창이 뜬다.
+1. Pod 목록에서 생성 버튼을 클릭할 시 Pod 생성 팝업창이 뜬다.
 
 #### Pod 목록 페이지
 ![IMG_035]
@@ -290,7 +295,7 @@
 ![IMG_036]
 
 ##### <div id='3-2-3-2-4'/> 3.2.3.2.4. Pod 수정
-1. Pod 상세에서 수정 버튼을 클릭하여 Pod 수정 팝업창이 뜬다.
+1. Pod 상세에서 수정 버튼을 클릭할 시 Pod 수정 팝업창이 뜬다.
 
 #### Pod 상세 페이지
 ![IMG_037]
@@ -299,7 +304,7 @@
 ![IMG_038]
 
 ##### <div id='3-2-3-2-5'/> 3.2.3.2.5. Pod 삭제
-1. Pod 상세에서 삭제 버튼을 클릭하여 Pod 삭제를 한다.
+1. Pod 상세에서 삭제 버튼을 클릭할 시 Pod 삭제가 삭제된다.
 
 #### Pod 상세 페이지
 ![IMG_039]
@@ -321,7 +326,7 @@
 ![IMG_042]
 
 ##### <div id='3-2-3-3-3'/> 3.2.3.3.3. Replica Set 생성
-1. Replica Set 목록에서 생성 버튼을 클릭하여 Replica Set 생성 팝업창이 뜬다.
+1. Replica Set 목록에서 생성 버튼을 클릭할 시 Replica Set 생성 팝업창이 뜬다.
 
 #### Replica Set 목록 페이지
 ![IMG_043]
@@ -330,7 +335,7 @@
 ![IMG_044]
 
 ##### <div id='3-2-3-3-4'/> 3.2.3.3.4. Replica Set 수정
-1. Replica Set 상세에서 수정 버튼을 클릭하여 Replica Set 수정 팝업창이 뜬다.
+1. Replica Set 상세에서 수정 버튼을 클릭할 시 Replica Set 수정 팝업창이 뜬다.
 
 #### Replica Set 상세 페이지
 ![IMG_045]
@@ -339,7 +344,7 @@
 ![IMG_046]
 
 ##### <div id='3-2-3-3-5'/> 3.2.3.3.5. Replica Set 삭제
-1. Replica Set 상세에서 삭제 버튼을 클릭하여 Replica Set 삭제를 한다.
+1. Replica Set 상세에서 삭제 버튼을 클릭할 시 Replica Set이 삭제된다.
 
 #### Replica Set 상세 페이지
 ![IMG_047]
@@ -360,7 +365,7 @@
 ![IMG_050]
 
 #### <div id='3-2-4-3'/> 3.2.4.3. Service 생성
-1. Service 목록에서 생성 버튼을 클릭하여 Service 생성 팝업창이 뜬다.
+1. Service 목록에서 생성 버튼을 클릭할 시 Service 생성 팝업창이 뜬다.
 
 #### Service 목록 페이지
 ![IMG_051]
@@ -369,7 +374,7 @@
 ![IMG_052]
 
 #### <div id='3-2-4-4'/> 3.2.4.4. Service 수정
-1. Service 상세에서 수정 버튼을 클릭하여 Service 수정 팝업창이 뜬다.
+1. Service 상세에서 수정 버튼을 클릭할 시 Service 수정 팝업창이 뜬다.
 
 #### Service 상세 페이지
 ![IMG_053]
@@ -379,7 +384,7 @@
 
 #### <div id='3-2-4-5'/> 3.2.4.5. Service 삭제
 
-1. Service 상세에서 삭제 버튼을 클릭하여 Service 삭제를 한다.
+1. Service 상세에서 삭제 버튼을 클릭할 시 Service가 삭제된다.
 
 #### Service 상세 페이지
 ![IMG_055]
@@ -399,8 +404,8 @@
 #### Persistent Volume 상세 페이지
 ![IMG_058]
 
-##### <div id='3-2-5-1-3'/> 3.2.5.1.3. Persistent Volume 생성
-1. Persistent Volume 목록에서 생성 버튼을 클릭하여 Persistent Volume 생성 팝업창이 뜬다.
+##### <div id='3-2-5-1-3'/> 3.2.5.1.3. Persistent Volumee 생성
+1. Persistent Volume 목록에서 생성 버튼을 클릭할 시 Persistent Volume 생성 팝업창이 뜬다.
 
 #### Persistent Volume 목록 페이지
 ![IMG_059]
@@ -410,7 +415,7 @@
 
 
 ##### <div id='3-2-5-1-4'/> 3.2.5.1.4. Persistent Volume 수정
-1. Persistent Volume 상세에서 수정 버튼을 클릭하여 Persistent Volume 수정 팝업창이 뜬다.
+1. Persistent Volume 상세에서 수정 버튼을 클릭할 시 Persistent Volume 수정 팝업창이 뜬다.
 
 #### Persistent Volume 상세 페이지
 ![IMG_061]
@@ -419,7 +424,7 @@
 ![IMG_062]
 
 ##### <div id='3-2-5-1-5'/> 3.2.5.1.5. Persistent Volume 삭제
-1. Persistent Volume 상세에서 삭제 버튼을 클릭하여 Persistent Volume 삭제를 한다.
+1. Persistent Volume 상세에서 삭제 버튼을 클릭 할 시 Persistent Volume가 삭제된다.
 
 #### Persistent Volume 상세 페이지
 ![IMG_063]
@@ -438,8 +443,8 @@
 #### Persistent Volume Claim 상세 페이지
 ![IMG_066]
 
-##### <div id='3-2-5-2-3'/> 3.2.5.2.3. Persistent Volume Claim 생성
-1. Persistent Volume Claim 목록에서 생성 버튼을 클릭하여 Persistent Volume Claim 생성 팝업창이 뜬다.
+##### <div id='3-2-5-2-3'/> 3.2.5.2.3. Persistent Volumee Claim 생성
+1. Persistent Volume Claim 목록에서 생성 버튼을 클릭할 시 Persistent Volume Claim 생성 팝업창이 뜬다.
 
 #### Persistent Volume Claim 목록 페이지
 ![IMG_067]
@@ -448,7 +453,7 @@
 ![IMG_068]
 
 ##### <div id='3-2-5-2-4'/> 3.2.5.2.4. Persistent Volume Claim 수정
-1. Persistent Volume Claim 상세에서 수정 버튼을 클릭하여 Persistent Volume Claim 수정 팝업창이 뜬다.
+1. Persistent Volume Claim 상세에서 수정 버튼을 클릭할 시 Persistent Volume Claim 수정 팝업창이 뜬다.
 
 #### Persistent Volume Claim 상세 페이지
 ![IMG_069]
@@ -457,7 +462,7 @@
 ![IMG_070]
 
 ##### <div id='3-2-5-2-5'/> 3.2.5.2.5. Persistent Volume Claim 삭제
-1. Persistent Volume Claim 상세에서 삭제 버튼을 클릭하여 Persistent Volume Claim 삭제를 한다.
+1. Persistent Volume Claim 상세에서 삭제 버튼을 클릭할 시 Persistent Volume Claim이 삭제된다.
 
 #### Persistent Volume Claim 상세 페이지
 ![IMG_071]
@@ -477,7 +482,7 @@
 ![IMG_074]
 
 ##### <div id='3-2-5-3-3'/> 3.2.5.3.3. Storage Class 생성
-1. Storage Class 목록에서 생성 버튼을 클릭하여 Storage Class 생성 팝업창이 뜬다.
+1. Storage Class 목록에서 생성 버튼을 클릭할 시 Storage Class 생성 팝업창이 뜬다.
 
 #### Storage Class 목록 페이지
 ![IMG_075]
@@ -486,7 +491,7 @@
 ![IMG_076]
 
 ##### <div id='3-2-5-3-4'/> 3.2.5.3.4. Storage Class 수정
-1. Storage Class 상세에서 수정 버튼을 클릭하여 Storage Class 수정 팝업창이 뜬다.
+1. Storage Class 상세에서 수정 버튼을 클릭할 시 Storage Class 수정 팝업창이 뜬다.
 
 #### Storage Class 상세 페이지
 ![IMG_077]
@@ -495,7 +500,7 @@
 ![IMG_078]
 
 ##### <div id='3-2-5-3-5'/> 3.2.5.3.5. Storage Class 삭제
-1. Storage Class 상세에서 삭제 버튼을 클릭하여 Storage Class 삭제를 한다.
+1. Storage Class 상세에서 삭제 버튼을 클릭할 시 Storage Class가 삭제된다.
 
 #### Storage Class 상세 페이지
 ![IMG_079]
@@ -505,22 +510,31 @@
 
 ### <div id='3-2-6'/> 3.2.6. Managements
 #### <div id='3-2-6-1'/> 3.2.6.1. Users
-##### <div id='3-2-6-1-1'/> 3.2.6.1.1. User 목록 조회
-1. Managements 메뉴의 Users를 선택하고 User탭을 클릭하여 User 목록 페이지로 이동한다.
+##### <div id='3-2-6-1-1'/> 3.2.6.1.1. 클러스터 관리자 조회
+1. Managements 메뉴의 Users를 선택하고 Administrator탭을 클릭하여 클러스터 관리자를 조회한다.
 
-![IMG_112]
+![IMG_081]
 
-##### <div id='3-2-6-1-2'/> 3.2.6.1.2. User 상세 조회
-1. User 목록에서 User명을 클릭하여 User 상세 페이지로 이동한다.
+##### <div id='3-2-6-1-2'/> 3.2.6.1.2. 클러스터 관리자 상세 조회
+1.  클러스터 관리자 User ID를 클릭하여 클러스터 관리자 상세 조회 페이지로 이동한다.
 
-#### User 목록 페이지
-![IMG_113]
+#### 클러스터 관리자 상세 조회 페이지
+![IMG_082]
 
-#### User 상세 페이지
-![IMG_114]
+##### <div id='3-2-6-1-3'/> 3.2.6.1.3.  일반 사용자 목록 조회
+1. Managements 메뉴의 Users를 선택하고 User탭을 클릭하여 일반사용자 목록을 조회한다.
 
-##### <div id='3-2-6-1-3'/> 3.2.6.1.3. User 생성
-- User 생성 페이지에 Namespaces, Roles를 선택할 수 있는 Check Box 팝업창이 있다.
+![IMG_083]
+
+##### <div id='3-2-6-1-4'/> 3.2.6.1.4. 일반 사용자 상세 조회
+1.  일반 사용자 User ID를 클릭하여 일반 사용자 상세 조회 페이지로 이동한다.
+
+####  일반 사용자 상세 조회 페이지
+![IMG_084]
+
+
+##### <div id='3-2-6-1-5'/> 3.2.6.1.5. User 생성
+- User 생성 페이지에서 사용자 계정 등록 및 해당 사용자가 이용할 Namespace와 Role을 지정할 수 있다.
 
 1. User 목록에서 생성 버튼을 클릭하여 User 생성 페이지로 이동한다.
 
@@ -532,8 +546,8 @@
 ![IMG_087]
 ![IMG_088]
 
-##### <div id='3-2-6-1-4'/> 3.2.6.1.4. User 수정
-- User 수정 페이지에 Namespaces, Roles를 변경할 수 있는 Check Box 팝업창이 있다.
+##### <div id='3-2-6-1-6'/> 3.2.6.1.6. User 수정
+- User 수정 페이지에서 사용자 계정 수정 및 해당 사용자가 이용할 Namespace와 Role을 수정할 수 있다.
 
 1. User 상세에서 수정 버튼을 클릭하여 User 수정 페이지로 이동한다.
 
@@ -545,8 +559,8 @@
 ![IMG_091]
 ![IMG_092]
 
-##### <div id='3-2-6-1-5'/> 3.2.6.1.5. User 삭제
-1. User 상세에서 삭제 버튼을 클릭하여 User 삭제를 한다.
+##### <div id='3-2-6-1-7'/> 3.2.6.1.7. User 삭제
+1. User 상세에서 삭제 버튼을 클릭할 시 사용자가 삭제된다.
 
 #### User 상세 페이지
 ![IMG_093]
@@ -567,9 +581,7 @@
 ![IMG_096]
 
 ##### <div id='3-2-6-2-3'/> 3.2.6.2.3. Role 생성
-- Role 목록에서 생성 버튼을 클릭하여 Role 생성 팝업창이 뜬다.
-
-1. Role 목록에서 생성 버튼을 클릭하여 Role 생성 페이지로 이동한다.
+1. Role 목록에서 생성 버튼을 클릭할 시 Role 생성 팝업창이 뜬다.
 
 #### Role 목록 페이지
 ![IMG_097]
@@ -578,9 +590,7 @@
 ![IMG_098]
 
 ##### <div id='3-2-6-2-4'/> 3.2.6.2.4. Role 수정
-- Role 수정 페이지에 Resource Quotas, Limit Ranges를 변경할 수 있는 Check Box 팝업창이 있다.
-
-1. Role 상세에서 수정 버튼을 클릭하여 Role 수정 페이지로 이동한다.
+1. Role 상세에서 수정 버튼을 클릭할 시 Role 수정 팝업창이 뜬다.
 
 #### Role 상세 페이지
 ![IMG_099]
@@ -589,7 +599,7 @@
 ![IMG_100]
 
 ##### <div id='3-2-6-2-5'/> 3.2.6.2.5. Role 삭제
-1. Role 상세에서 삭제 버튼을 클릭하여 Role 삭제를 한다.
+1. Role 상세에서 삭제 버튼을 클릭할 시 Role이 삭제된다.
 
 #### Role 상세 페이지
 ![IMG_101]
@@ -600,7 +610,6 @@
 #### <div id='3-2-6-3'/> 3.2.6.3. Resource Quotas
 ##### <div id='3-2-6-3-1'/> 3.2.6.3.1. Resource Quota 목록 조회
 1. Managements 메뉴의 Resource Quotas를 클릭하여 Resource Quota 목록 페이지로 이동한다.
-
 ![IMG_103]
 
 ##### <div id='3-2-6-3-2'/> 3.2.6.3.2. Resource Quota 상세 조회
@@ -610,7 +619,7 @@
 ![IMG_104]
 
 ##### <div id='3-2-6-3-3'/> 3.2.6.3.3. Resource Quota 생성
-1. Resource Quota 목록에서 생성 버튼을 클릭하여 Resource Quota 생성 팝업창이 뜬다.
+1. Resource Quota 목록에서 생성 버튼을 클릭할 시 Resource Quota 생성 팝업창이 뜬다.
 
 #### Resource Quota 목록 페이지
 ![IMG_105]
@@ -619,7 +628,7 @@
 ![IMG_106]
 
 ##### <div id='3-2-6-3-4'/> 3.2.6.3.4. Resource Quota 수정
-1. Resource Quota 상세에서 수정 버튼을 클릭하여 Resource Quota 수정 팝업창이 뜬다.
+1. Resource Quota 상세에서 수정 버튼을 클릭할 시 Resource Quota 수정 팝업창이 뜬다.
 
 #### Resource Quota 상세 페이지
 ![IMG_107]
@@ -628,7 +637,7 @@
 ![IMG_108]
 
 ##### <div id='3-2-6-3-5'/> 3.2.6.3.5. Resource Quota 삭제
-1. Resource Quota 상세에서 삭제 버튼을 클릭하여 Resource Quota 삭제를 한다.
+1. Resource Quota 상세에서 삭제 버튼을 클릭할 시 Resource Quota가 삭제된다.
 
 #### Resource Quota 상세 페이지
 ![IMG_109]
@@ -648,9 +657,7 @@
 ![IMG_112]
 
 ##### <div id='3-2-6-4-3'/> 3.2.6.4.3. Limit Range 생성
-- Limit Range 생성 페이지에 Resource Quotas, Limit Ranges를 선택할 수 있는 Check Box 팝업창이 있다.
-
-1. Limit Range 목록에서 생성 버튼을 클릭하여 Role 생성 페이지로 이동한다.
+1. Limit Range 목록에서 생성 버튼을 클릭할 시 Limit Range 생성 팝업창이 뜬다.
 
 #### Limit Range 목록 페이지
 ![IMG_113]
@@ -659,9 +666,7 @@
 ![IMG_114]
 
 ##### <div id='3-2-6-4-4'/> 3.2.6.4.4. Limit Range 수정
-- Limit Range 수정 페이지에 Resource Quotas, Limit Ranges를 변경할 수 있는 Check Box 팝업창이 있다.
-
-1. Limit Range 상세에서 수정 버튼을 클릭하여 Limit Range 수정 페이지로 이동한다.
+1. Limit Range 상세에서 수정 버튼을 클릭할 시 Limit Range 수정 팝업창이 뜬다.
 
 #### Limit Range 상세 페이지
 ![IMG_115]
@@ -670,7 +675,7 @@
 ![IMG_116]
 
 ##### <div id='3-2-6-4-5'/> 3.2.6.4.5. Limit Range 삭제
-1. Limit Range 상세에서 삭제 버튼을 클릭하여 Limit Range 삭제를 한다.
+1. Limit Range 상세에서 삭제 버튼을 클릭할 시 Limit Range가 삭제된다.
 
 #### Limit Range 상세 페이지
 ![IMG_117]
