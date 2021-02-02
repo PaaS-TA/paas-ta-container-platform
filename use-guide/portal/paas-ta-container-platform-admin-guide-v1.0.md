@@ -560,7 +560,7 @@
 ### <div id='3-2-6'/> 3.2.6. Managements
 #### <div id='3-2-6-1'/> 3.2.6.1. Users
 ##### <div id='3-2-6-1-1'/> 3.2.6.1.1. User 목록 조회
-1. Managements 메뉴의 Users를 클릭하여 User 목록 페이지로 이동한다.
+1. Managements 메뉴의 Users를 선택하고 User탭을 클릭하여 User 목록 페이지로 이동한다.
 
 ![IMG_112]
 
