@@ -105,7 +105,7 @@
 본 문서는 컨테이너 플랫폼 운영자포털 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼 운영자포털 의 사용 방법에 대해 기술하였다.
+본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼 운영자포털의 사용 방법에 대해 기술하였다.
 
 # <div id='2'/> 2. 컨테이너 플랫폼 운영자포털 접속
 
@@ -114,8 +114,8 @@
 
 ![IMG_001]
 
-2. Kubernetes Cluster 정보,  생성할 Namespace 명,  User 정보를 입력 후  "회원가입" 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 한다.
-> 아래 이미지는 이해를 돕기위한 예시 정보 이다.
+2. Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 "회원가입" 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 한다.
+> 아래 이미지는 이해를 돕기위한 예시 정보이다.
 
 ![IMG_002]
 ![IMG_003]
@@ -169,7 +169,7 @@
 #### <div id='3-2-1-3'/> 3.2.1.3. Overview My info 변경
 - 화면 우측상단 톱니바퀴 아이콘을 클릭한다.
 
-1. My info 팝업창에서 Password, E-mail 정보를 수정 한다.
+1. My Info 팝업창에서 클러스터관리자 계정의 Password, E-mail 정보를 수정한다.
 
 ![IMG_008]
 
@@ -424,7 +424,7 @@ Namespace 수정 페이지에서 해당 Namespace의 관리자, Resource Quotas,
 ![IMG_062]
 
 ##### <div id='3-2-5-1-5'/> 3.2.5.1.5. Persistent Volume 삭제
-1. Persistent Volume 상세에서 삭제 버튼을 클릭 할 시 Persistent Volume가 삭제된다.
+1. Persistent Volume 상세에서 삭제 버튼을 클릭 할 시 Persistent Volume이 삭제된다.
 
 #### Persistent Volume 상세 페이지
 ![IMG_063]
