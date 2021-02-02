@@ -13,6 +13,7 @@
     2.4. [Deployment 파일 수정](#2.4)  
     2.5. [Release 설치](#2.5)  
     2.6. [Release 설치 확인](#2.6)
+    2.7. [CVE/CCE 진단항목 적용 ](#2.7)   
 
 3. [Container Platform 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
@@ -291,6 +292,11 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 3 vms
 Succeeded
 ```
+
+### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
+배포된 Kubernetes Cluster, BOSH Inception 환경에 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.
+[CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
+
 
 ## <div id='3'>3. Container Platform 배포
 3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 Container Platform을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.

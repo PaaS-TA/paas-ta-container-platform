@@ -13,6 +13,7 @@
  2.4. [Deployment 파일 수정](#2.4)  
  2.5. [서비스 설치](#2.5)  
  2.6. [서비스 설치 확인](#2.6)
+ 2.7. [CVE/CCE 진단항목 적용 ](#2.7)
 
 3. [Kubernetes Container 서비스 배포](#3)   
  3.1. [Kubernetes Cluster 설정](#3.1)   
@@ -43,8 +44,8 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. <br>
-PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 Container 서비스를 배포하는 내용이다.
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA Container Service를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다.  <br>
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 Container 서비스를 배포하는 내용이다.
 
 ![image 001]
 
@@ -296,6 +297,10 @@ private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7
 
 Succeeded
 ```
+
+### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
+배포된 Kubernetes Cluster, BOSH Inception 환경에 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.
+[CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 ## <div id='3'>3. Kubernetes Container 서비스 배포
 kubernetes에서 PaaS-TA용 Container 서비스를 사용하기 위해서는 Bosh Release 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
