@@ -11,8 +11,8 @@
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)  
-    2.5. [Release  설치](#2.5)  
-    2.6. [Release  설치 확인](#2.6)  
+    2.5. [릴리즈  설치](#2.5)  
+    2.6. [릴리즈  설치 확인](#2.6)  
     2.7. [CVE/CCE 진단항목 적용 ](#2.7)      
 
 3. [컨테이너 플랫폼 배포](#3)  
@@ -39,7 +39,7 @@
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(컨테이너 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 Release 설치 방법을 기술하였다.
+본 문서(컨테이너 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈 설치 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
@@ -48,7 +48,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다. 
 
 ![image 001]
@@ -248,8 +248,8 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-### <div id='2.5'>2.5. Release 설치
-- Release 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 Release 설치 작업 경로로 위치시킨다.  
+### <div id='2.5'>2.5. 릴리즈 설치
+- 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
    [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download)  
    
@@ -264,15 +264,15 @@ $ ls ~/workspace/paasta/release/service
   paasta-container-platform-1.0.tgz
 ```
 
-- Release를 설치한다.
+- 릴리즈를 설치한다.
 ```
 $ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh 
 $ chmod +x *.sh 
 $ ./deploy-{IAAS}.sh
 ```
 
-### <div id='2.6'>2.6. Release 설치 확인
-설치 완료된 Release를 확인한다.
+### <div id='2.6'>2.6. 릴리즈 설치 확인
+설치 완료된 릴리즈를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -296,7 +296,7 @@ Succeeded
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
-3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh Release 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+3.부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh 릴리즈 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. kubernetes Cluster 설정
 > 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
