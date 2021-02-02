@@ -12,7 +12,7 @@
     * [3.2.1. Overview](#3-2-1)
     * [3.2.1.1. Overview 목록 조회](#3-2-1-1)
     * [3.2.1.2. Overview Namespace 변경](#3-2-1-2)
-    * [3.2.1.3. Overview My info 변경](#3-2-1-2)
+    * [3.2.1.3. Overview My info 변경](#3-2-1-3)
     * [3.2.2. Clusters 메뉴](#3-2-2)
     * [3.2.2.1. Namespaces](#3-2-2-1)
     * [3.2.2.1.1. Namespace 목록 조회](#3-2-2-1-1)
