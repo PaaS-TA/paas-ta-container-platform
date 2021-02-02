@@ -707,11 +707,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='4'>4. CVE 조치사항 적용  
 #### TCP timestamp responses 비활성화 설정  
- - 일시 적용  
-```
- $ sudo sysctl -w net.ipv4.tcp_timestamps=0
-```
- - 영구 적용  
+- /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
 ```
  $ sudo vi /etc/sysctl.conf
  ----------------------------------------
@@ -719,6 +715,10 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
  net.ipv4.tcp_timestamps=0
  ----------------------------------------
  $ sudo reboot
+
+ # iptables에 정책 추가
+ $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
+ $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
 ## <div id='5'>5. 단독 배포후 Container Platform 운영자/사용자 회원가입

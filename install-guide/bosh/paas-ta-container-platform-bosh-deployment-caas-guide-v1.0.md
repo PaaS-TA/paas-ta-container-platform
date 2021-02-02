@@ -1033,11 +1033,7 @@ broker: jenkins-service-broker
 
 ## <div id='6'>6. CVE 조치사항 적용  
 #### TCP timestamp responses 비활성화 설정  
- - 일시 적용  
-```
- $ sudo sysctl -w net.ipv4.tcp_timestamps=0
-```
- - 영구 적용  
+- /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
 ```
  $ sudo vi /etc/sysctl.conf
  ----------------------------------------
@@ -1045,6 +1041,10 @@ broker: jenkins-service-broker
  net.ipv4.tcp_timestamps=0
  ----------------------------------------
  $ sudo reboot
+
+ # iptables에 정책 추가
+ $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
+ $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
 ----
