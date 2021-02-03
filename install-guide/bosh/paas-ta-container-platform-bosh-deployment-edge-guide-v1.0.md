@@ -441,7 +441,7 @@ spec:
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}                # (e.g. PaaS-TA@2020)      
       nodeSelector:
-        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 
+        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.) 
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
