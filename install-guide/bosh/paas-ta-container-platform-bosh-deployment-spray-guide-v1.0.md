@@ -296,7 +296,7 @@ Succeeded
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
-3. 컨테이너 플랫폼 배포 항목부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh 릴리즈 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+3.컨테이너 플랫폼 배포 항목부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh 릴리즈 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. kubernetes Cluster 설정
 > 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
