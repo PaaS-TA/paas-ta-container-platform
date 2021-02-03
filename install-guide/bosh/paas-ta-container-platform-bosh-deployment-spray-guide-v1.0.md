@@ -413,6 +413,8 @@ spec:
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)              
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name   
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -464,11 +466,13 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
+          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Worker Node Public IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334"  
+          value: "common-api-deployment.default.svc.cluster.local:3334" 
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}                       # {NODE_HOST_NAME} : K8S Worker Node Host Name       
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -519,11 +523,13 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
+          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Worker Node Public IP
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "api-deployment.default.svc.cluster.local:3333"     
+          value: "api-deployment.default.svc.cluster.local:3333"    
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}                      # {NODE_HOST_NAME} : K8S Worker Node Host Name       
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -573,6 +579,8 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}               # {NODE_HOST_NAME} : K8S Worker Node Host Name    
       imagePullSecrets:
         - name: cp-secret
 ---

@@ -413,6 +413,8 @@ spec:
           value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)          
         - name: MARIADB_PORT
           value: "13306"  
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -464,7 +466,9 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: {K8S_IP}
+          value: {K8S_IP}                         # {K8S_IP} : K8S Worker Node Public IP
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -516,11 +520,13 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}
+          value: {K8S_IP}                         # {K8S_IP} : K8S Worker Node Public IP
         - name: SYSTEM_DOMAIN
           value: {PAASTA_SYSTEM_DOMAIN}
         - name: HAPROXY_IP
           value: {HAProxy_IP}
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -572,7 +578,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}
+          value: {K8S_IP}                    # {K8S_IP} : K8S Worker Node Public IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -593,6 +599,8 @@ spec:
           value: "5001"
         - name: MARIADB_PORT
           value: "13306"
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -908,7 +916,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}
+          value: {K8S_IP}                    # {K8S_IP} : K8S Worker Node Public IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -923,6 +931,8 @@ spec:
           value: "5001"
         - name: MARIADB_PORT
           value: "13306"
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
         - name: cp-secret
 ---
