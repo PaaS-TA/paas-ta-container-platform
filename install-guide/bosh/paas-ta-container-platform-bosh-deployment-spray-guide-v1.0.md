@@ -412,9 +412,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)              
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name   
+          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)                   
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -470,9 +468,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334" 
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}                       # {NODE_HOST_NAME} : K8S Worker Node Host Name       
+          value: "common-api-deployment.default.svc.cluster.local:3334"             
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -527,9 +523,7 @@ spec:
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "api-deployment.default.svc.cluster.local:3333"    
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}                      # {NODE_HOST_NAME} : K8S Worker Node Host Name       
+          value: "api-deployment.default.svc.cluster.local:3333"          
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -578,9 +572,7 @@ spec:
         image: {HAProxy_IP}:5001/container-platform-webadmin:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}               # {NODE_HOST_NAME} : K8S Worker Node Host Name    
+        - containerPort: 8080     
       imagePullSecrets:
         - name: cp-secret
 ---

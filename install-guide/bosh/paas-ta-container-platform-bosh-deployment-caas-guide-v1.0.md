@@ -412,9 +412,7 @@ spec:
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)          
         - name: MARIADB_PORT
-          value: "13306"  
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
+          value: "13306"       
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -466,9 +464,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
+          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP    
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -524,9 +520,7 @@ spec:
         - name: SYSTEM_DOMAIN
           value: {PAASTA_SYSTEM_DOMAIN}
         - name: HAPROXY_IP
-          value: {HAProxy_IP}
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
+          value: {HAProxy_IP}      
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -598,9 +592,7 @@ spec:
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
-          value: "13306"
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
+          value: "13306"       
       imagePullSecrets:
         - name: cp-secret
 ---
@@ -930,9 +922,7 @@ spec:
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
-          value: "13306"
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
+          value: "13306"             
       imagePullSecrets:
         - name: cp-secret
 ---
