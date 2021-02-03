@@ -762,7 +762,11 @@ Context: admin, from client admin
 
 ```  
 # e.g. 컨테이너 서비스 계정 생성
-$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091", "http://xxx.xxx.xxx.xxx:32091/callback" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
+$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091, http://xxx.xxx.xxx.xxx:32091/callback" \
+--scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" \
+--authorized_grant_types "authorization_code , client_credentials , refresh_token" \
+--authorities="uaa.resource" \
+--autoapprove="openid , cloud_controller_service_permissions.read"
 
 # e.g. 컨테이너 서비스 계정 생성 확인
 $ uaac clients
