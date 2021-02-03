@@ -31,27 +31,19 @@
   + [사용자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
 
 ## 프로젝트
-#### paas-ta-container-platform
-- API 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-api/tree/dev
-- Common API 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-common-api/tree/dev
-- Webuser 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-webuser/tree/dev
-- Webadmin 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-webadmin/tree/dev
+### PaaS-TA 컨테이너 플랫폼
+- [API 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-api)  
+- [COMMON API 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-common-api)
+- [WEB ADMIN 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-webadmin)
+- [WEB USER 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-webuser)
+ 
 
-#### CaaS
-- API 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-api
-- Common API 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-common-api
-- Dashboard 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-dashboard
-- Service-Broker 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-service-broker
-- Jenkins-Broker 개발 소스 파일
-  + https://github.com/PaaS-TA/paas-ta-container-platform-caas-jenkins-broker
+### PaaS-TA 컨테이너 서비스
+- [API 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-caas-api)
+- [COMMON API 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-caas-common-api)
+- [DASHBOARD 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-caas-dashboard)
+- [CONTAINER SERVICE BROKER 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-caas-service-broker)
+- [JENKINS SERVICE BROKER 개발 소스 파일](https://github.com/PaaS-TA/paas-ta-container-platform-caas-jenkins-broker)
 
   
 ## 라이선스
