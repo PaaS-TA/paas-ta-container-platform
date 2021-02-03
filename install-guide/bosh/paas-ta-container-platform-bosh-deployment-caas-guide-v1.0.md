@@ -697,12 +697,12 @@ No service brokers found
 > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 컨테이너 서비스 브로커 NodePort
 
 ```
-  $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
+$ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
 ```
 
 - 등록된 컨테이너 서비스 브로커를 확인한다.
 ```
-  $ cf service-brokers
+$ cf service-brokers
 Getting service brokers as admin...
 
 name                       url
