@@ -437,7 +437,7 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30333"    
+          value: "{MASTER_NODE_PUBLIC_IP}:30333"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
@@ -449,6 +449,8 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}        # Worker Node Host Name   
 ---
 apiVersion: v1
 kind: Service
@@ -519,6 +521,8 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}        # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -579,7 +583,7 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"                              # {K8S_IP} : K8S Master Node PUBLIC IP(=Cloud_SIDE_PUBLIC_IP)
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30334"         
+          value: "{MASTER_NODE_PUBLIC_IP}:30334"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP   
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"            
       tolerations:
@@ -589,6 +593,8 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}           # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -652,6 +658,8 @@ spec:
         effect: "NoSchedule"  
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service

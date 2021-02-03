@@ -416,6 +416,8 @@ spec:
           value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)                   
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name   
 ---
 apiVersion: v1
 kind: Service
@@ -472,6 +474,8 @@ spec:
           value: "common-api-deployment.default.svc.cluster.local:3334"             
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -527,6 +531,8 @@ spec:
           value: "api-deployment.default.svc.cluster.local:3333"          
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -576,6 +582,8 @@ spec:
         - containerPort: 8080     
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service

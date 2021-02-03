@@ -416,6 +416,8 @@ spec:
           value: "13306"       
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
@@ -468,6 +470,8 @@ spec:
           value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP    
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
@@ -524,6 +528,8 @@ spec:
           value: {HAProxy_IP}      
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -593,9 +599,13 @@ spec:
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
-          value: "13306"       
+          value: "13306"    
+        - name: NODE_IP
+          value: {NODE_IP}                   # Worker Node IP       
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
@@ -929,9 +939,13 @@ spec:
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
-          value: "13306"             
+          value: "13306"
+        - name: NODE_IP
+          vlaue: {NODE_IP}                   # Worker Node IP                   
       imagePullSecrets:
         - name: cp-secret
+      nodeSelector:
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
