@@ -768,6 +768,7 @@ $ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.
 --authorities="uaa.resource" \
 --autoapprove="openid , cloud_controller_service_permissions.read"
 
+
 # e.g. 컨테이너 서비스 계정 생성 확인
 $ uaac clients
   
@@ -784,11 +785,11 @@ $ uaac clients
 ```  
 
 -  uaac caasclient의 redirect_uri가  잘못 등록되어있다면 uaac client update를 통해 uri를 수정해야한다.
-> $ uaac client update caasclient --redirect_uri  "{컨테이너 서비스 DashBoard URI}", "{컨테이너 서비스 DashBoard URI}/callback"
+> $ uaac client update caasclient --redirect_uri "{컨테이너 서비스 DashBoard URI}, {컨테이너 서비스 DashBoard URI}/callback"
 
 ```
-#  e.g. caasclient redirect_uri update
-$ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091", "http://xxx.xxx.xxx.xxx:32091/callback"
+# e.g. caasclient redirect_uri update
+$ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, http://xxx.xxx.xxx.xxx:32091/callback"
 ```
 
 
