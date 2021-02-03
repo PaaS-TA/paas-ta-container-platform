@@ -73,7 +73,7 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 |---|---|
 |KubeEdge|v1.4.0|
 |Kubernetes Native|v1.18.6|
-|Docker|v19.03.12|
+|Docker|v20.10.2|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
