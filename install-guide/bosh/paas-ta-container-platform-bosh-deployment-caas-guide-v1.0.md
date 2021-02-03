@@ -673,25 +673,27 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 
 - 서비스 브로커 목록을 확인한다.
 
- ```
+```
 $ cf service-brokers
 Getting service brokers as admin...
 
 name   url
 No service brokers found
 
- ```
+```
 
 - 컨테이너 서비스 브로커를 등록한다.
-  > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
-  > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
-  > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-  > - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 컨테이너 서비스 브로커 NodePort
-   ```
+> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
+> - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
+> - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
+> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 컨테이너 서비스 브로커 NodePort
+
+```
   $ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
-   ```
- - 등록된 컨테이너 서비스 브로커를 확인한다.
-  ```
+```
+
+- 등록된 컨테이너 서비스 브로커를 확인한다.
+```
   $ cf service-brokers
 Getting service brokers as admin...
 
