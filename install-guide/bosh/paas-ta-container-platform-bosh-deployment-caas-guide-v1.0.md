@@ -302,12 +302,13 @@ Succeeded
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
 
 ## <div id='3'>3. Kubernetes 컨테이너 서비스 배포
-kubernetes에서 PaaS-TA용 컨테이너 서비스를 사용하기 위해서는 Bosh 릴리즈 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+3.Kubernetes 컨테이너 서비스 배포 항목 내용은 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 서비스를 사용하기 위해서는 Bosh 릴리즈 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
 
 ### <div id='3.1'>3.1. K8s Cluster 설정
 > 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 
 ```
+# Master Node, Worker Node 모두 설정 필요
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
