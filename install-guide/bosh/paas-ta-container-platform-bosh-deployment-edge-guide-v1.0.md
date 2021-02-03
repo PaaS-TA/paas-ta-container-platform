@@ -439,9 +439,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}                # (e.g. PaaS-TA@2020)      
-      nodeSelector:
-        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.) 
+          value: {MARIADB_USER_PASSWORD}                # (e.g. PaaS-TA@2020)              
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
@@ -511,9 +509,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30334"        
-      nodeSelector:
-        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.)
+          value: "{MASTER_NODE_PUBLIC_IP}:30334"                
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
@@ -583,9 +579,7 @@ spec:
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30334"         
         - name: CONTAINER_PLATFORM_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30333"    
-      nodeSelector:
-        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}     # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.)
+          value: "{MASTER_NODE_PUBLIC_IP}:30333"            
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
@@ -648,9 +642,7 @@ spec:
         image: {HAProxy_IP}:5001/container-platform-webadmin:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
-      nodeSelector:
-        kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.)
+        - containerPort: 8080   
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"
