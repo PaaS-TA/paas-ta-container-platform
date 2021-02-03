@@ -435,7 +435,7 @@ spec:
         - name: HAPROXY_IP
           value: "{HAProxy_IP}"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "{WORKER_NODE_PUBLIC_IP}:30333"        # {WORKER_NODE_PUBLIC_IP} : EDGE_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}:30333"    
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
@@ -511,7 +511,7 @@ spec:
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{WORKER_NODE_PUBLIC_IP}:30334"        # {WORKER_NODE_PUBLIC_IP} : EDGE_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}:30334"        
       nodeSelector:
         kubernetes.io/hostname: {EDGE_SIDE_HOSTNAME}    # {EDGE_SIDE_HOSTNAME} : Edge Side Hostname(Edge에서는 Worker Node를 Edge Side라 칭한다.)
       tolerations:
@@ -581,7 +581,7 @@ spec:
         - name: K8S_IP
           value: "{K8S_IP}"                              # {K8S_IP} : K8S Worker Node PUBLIC IP(=EDGE_SIDE_PUBLIC_IP)
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{WORKER_NODE_PUBLIC_IP}:30334"         # {WORKER_NODE_PUBLIC_IP} : EDGE_SIDE_PUBLIC_IP
+          value: "{MASTER_NODE_PUBLIC_IP}:30334"         
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"    
       nodeSelector:
