@@ -724,7 +724,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 <hr>
 
 ### 사용자 포털 
-Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경 및 해당 Namespace 미사용인 사용자에게 접근 권한을 할당할 수 있다.
+Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경 및 해당 Namespace를 미사용하는 사용자에게 접근 권한을 할당할 수 있다.
 
 ![image 012]
 ![image 013]
@@ -737,7 +737,7 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 ![image 019]
 
 ### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
-- 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고 한다.  
+- 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
   + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
 
