@@ -6,9 +6,9 @@
 2. [컨테이너 플랫폼 접속](#2)
     * [2.1. 컨테이너 플랫폼 사용자 포털 회원가입](#2-1)
     * [2.2. 컨테이너 플랫폼 사용자 포털 로그인](#2-2)    
-3. [컨테이너 플랫폼 사용자 메뉴얼](#3)
-    * [3.1. 컨테이너 플랫폼 사용자 메뉴 구성](#3-1)
-    * [3.2. 컨테이너 플랫폼 사용자 메뉴 설명](#3-2)
+3. [컨테이너 플랫폼 사용자 포털 메뉴얼](#3)
+    * [3.1. 컨테이너 플랫폼 사용자 포털 메뉴 구성](#3-1)
+    * [3.2. 컨테이너 플랫폼 사용자 포털 메뉴 설명](#3-2)
     * [3.2.1. Intro](#3-2-1)
     * [3.2.1.1. Overview](#3-2-1-1)
     * [3.2.1.2. Access](#3-2-1-2)
@@ -62,10 +62,10 @@
 # <div id='1'/> 1. 문서 개요
 
 ## <div id='1-1'/> 1.1. 목적
-본 문서는 컨테이너 플랫폼을 사용할 사용자의 사용 방법에 대해 기술하였다.
+본 문서는 컨테이너 플랫폼 사용자포털 사용 방법에 대해 기술하였다.
 
 ## <div id='1-2'/> 1.2. 범위
-본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼을 사용할 사용자의 사용 방법에 대해 작성되었다.
+본 문서는 Windows 환경을 기준으로 컨테이너 플랫폼 사용자포털의 사용 방법에 대해 기술하였다.
 
 # <div id='2'/> 2. 컨테이너 플랫폼 접속
 
@@ -74,36 +74,36 @@
 
 ![IMG_001]
 
-2. 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입을 한다.
+2. 생성할 사용자 아이디, 비밀번호, 이메일 계정을 입력하고 "Register" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입을 한다.
 
 ![IMG_002]
 
 ### <div id='2-2'/> 2.2. 컨테이너 플랫폼 사용자 포털 로그인
-3. 사용할 이메일 계정과 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
+1. 사용자 아이디와 비밀번호를 입력하고 "로그인" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![IMG_003]
 
-## <div id='3'/> 3. 컨테이너 플랫폼 사용자 메뉴얼
+## <div id='3'/> 3. 컨테이너 플랫폼 사용자 포털 메뉴얼
 
 
-## <div id='3-1'/> 3.1. 컨테이너 플랫폼 사용자 메뉴 구성
+## <div id='3-1'/> 3.1. 컨테이너 플랫폼 사용자 포털 메뉴 구성
 | <center>메뉴</center> | <center>분류</center> | <center>설명</center> |
 | :--- | :--- | :--- |
-| Intro | Overview | 컨테이너 플랫폼 대시보드 |
-|| Access | 컨테이너 플랫폼 CLI 사용을 위한 환경 설정 정보 관리 |
+| Intro | Overview | 컨테이너 플랫폼 사용자 포털 대시보드 |
+|| Access | 컨테이너 플랫폼 사용자 포털 CLI 사용을 위한 환경 설정 정보 관리 |
 || Private Registry | Private Registry 를 컨테이너 상에 배포 및 사용하기 위한 설정 정보 관리 |
 | Workloads | Overview | Workloads 대시보드 |
 || Deployments | Deployments 정보 관리 |
 || Pods | Pods 정보 관리 |
 || Replica Sets | Replica Sets 정보 관리 |
-| Services | Services | Services 대시보드 |
-| Storages | Storages | Storages 대시보드 |
+| Services | Services | Services 정보 관리 |
+| Storages | Persistent Volume Claims | Persistent Volume Claims 정보 관리 |
 | Users | Users | 사용자 관리 |
 | Roles | Roles | Role 조회 |
 
 
-## <div id='3-2'/> 3.2. 컨테이너 플랫폼 사용자 메뉴 설명
-본 장에서는 컨테이너 플랫폼의 메뉴에 대한 설명을 기술한다.
+## <div id='3-2'/> 3.2. 컨테이너 플랫폼 사용자 포털 메뉴 설명
+본 장에서는 컨테이너 플랫폼 사용자 포털의 메뉴에 대한 설명을 기술한다.
 
 ### <div id='3-2-1'/> 3.2.1. Intro
 
@@ -163,18 +163,19 @@
 ![IMG_015]
 
 ### <div id='3-2-2'/> 3.2.2. Users
-| <center>사용자 유형</center> | <center>Role</center> | <center>기능</center> |
-| :--- | :--- | :--- |
-| CLUSTER_ADMIN | cluster-admin | User삭제, Role변경 |
-| NAMESPACE_ADMIN | paas-ta-container-platform-admin-role | Role변경 |
-| USER | paas-ta-container-platform-init-role | 조회만 가능 |
-- 본 장에서는 컨테이너 플랫폼을 사용하는 사용자들의 정보 조회 수정 및 삭제, Role 정보 조회 및 변경에 대한 설명을 기술한다.
-- Role 변경은 cluster-admin Role을 가진 CLUSTER_ADMIN과 paas-ta-container-platform-admin-role Role을 가진 NAMESPACE_ADMIN 둘다 가능하다.
-- User 삭제는 cluster-admin Role을 가진 CLUSTER_ADMIN만이 가능하다.
+-  사용자 포털을 이용하는 사용자 계정 정보와 Role을 관리한다.
 
+| <center>사용자 유형</center> | <center>기능</center> |
+| :--- | :--- |
+| Cluster 관리자 | 운영자 포털 접근, 사용자 계정 생성, 수정, 삭제, 사용자 Namespace/Role 할당  |
+| Namespace 관리자 |사용자 포털 접근, 사용자 Namespace/Role 할당  |
+| 일반 사용자 | 사용자 포털 접근|
+
+- Cluster 관리자는 사용자 계정 생성, 수정, 삭제 및 사용자에게 Namespace/Role을 할당 할 수 있다. 해당 작업은 운영자포털에서 가능하다.
+- Namespace 관리자는 본인이 관리하는 Namespace 사용자의 Role 변경 및 해당 Namespace를 미사용하는 사용자에게 접근 권한을 할당할 수 있다.
 
 #### <div id='3-2-2-1'/> 3.2.2.1. My info 수정
-1. 컨테이너 플랫폼을 사용하는 User의 정보를 수정한다.
+1. 컨테이너 플랫폼을 이용하는 User의 정보를 수정한다.
 
 ![IMG_016]
 
@@ -185,7 +186,7 @@
 
 
 #### <div id='3-2-2-3'/> 3.2.2.3. User Role 변경
-1. User Role 변경은 paas-ta-container-platform-admin-role을 가진 User만 변경이 가능하다.
+1. 사용자의 Role 변경은 Namespace 관리자만 수행 가능하다.
 
 #### User 목록 페이지
 ![IMG_018]
@@ -198,7 +199,7 @@
 ### <div id='3-2-3'/> 3.2.3. Roles
 #### <div id='3-2-3-1'/> 3.2.3.1. Role 목록 조회
 
-1. 컨테이너 플랫폼 사용 가능한 권한을 조회한다.
+1.  Role 목록을 조회한다.
 
 ![IMG_022]
 
@@ -444,7 +445,7 @@
 ![IMG_092]
 
 #### <div id='3-2-6-2'/> 3.2.6.2. Persistent Volume Claim 상세 조회
-- Storage 상세 페이지는 Details, Events, YAML 탭으로 구성된다.
+- Persistent Volume Claim 상세 페이지는 Details, Events, YAML 탭으로 구성된다.
 
 1. Persistent Volume Claim 목록에서 Persistent Volume Claim 명을 클릭하여 Persistent Volume Claim 상세 페이지로 이동한다.
 
@@ -600,4 +601,3 @@
 [IMG_105]:../images/container-platform/user-portal/cp-105.png
 [IMG_106]:../images/container-platform/user-portal/cp-106.png
 [IMG_107]:../images/container-platform/user-portal/cp-107.png
-
