@@ -84,7 +84,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/dev
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -92,7 +92,7 @@ $ mkdir -p ~/workspace/paasta/deployment/
 $ cd ~/workspace/paasta/deployment/
 
 # Deployment 다운로드
-$ git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -164,7 +164,7 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
-  IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4.1)
+  IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#4.1)
 
 ```
 # INCEPTION OS USER NAME
@@ -295,7 +295,7 @@ Succeeded
 
 ### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
-- [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/check-guide/paas-ta-container-platform-check-guide.md)
+- [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
@@ -371,7 +371,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 ### <div id='3.5'>3.5. Taint 해제
-노드의 Taint 설정을 해제한다.(이미 KubeEdge 설치 가이드에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#3)를 했으면 안해도 된다.)
+노드의 Taint 설정을 해제한다.(이미 KubeEdge 설치 가이드에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#3)를 했으면 안해도 된다.)
 ```
 $ kubectl taint nodes --all node-role.kubernetes.io/master-
 
@@ -750,9 +750,9 @@ paas-ta-container-platform-temp-namespace   Active   4d
 Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
-> Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다.  
-> Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {K8S_IP} 값을 입력한다.  
-> Kubernetes Cluster Token : <br> Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 참고한다.
+> Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다.  
+> Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {K8S_IP} 값을 입력한다.  
+> Kubernetes Cluster Token : <br> Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 참고한다.
 ```
 # ex) 이해를 돕기 위한 예시 정보 
 # {Kubernetes Cluster Name} : cp-cluster
@@ -814,8 +814,8 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 
 ### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
-  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
+  + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
+  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
 
 
 ----

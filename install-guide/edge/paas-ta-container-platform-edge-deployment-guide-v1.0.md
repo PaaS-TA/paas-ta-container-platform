@@ -279,7 +279,7 @@ KubeEdge 설치를 위한 keadm 설치를 진행한다. keadm 실행 시 Super U
 ```
 $ sudo su -
 
-# git clone -b dev --single-branch https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+# git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
 # cd paas-ta-container-platform-deployment/edge
 
