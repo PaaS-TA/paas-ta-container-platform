@@ -30,13 +30,13 @@
 
 4. [CVE 조치사항 적용](#4)     
 
-5. [단독 배포후 컨테이너 플랫폼 운영자/사용자 회원가입](#5)      
+5. [컨테이너 플랫폼 운영자/사용자 포털 회원가입](#5)      
     5.1. [컨테이너 플랫폼 운영자 포털 회원가입](#5.1)      
     5.2. [컨테이너 플랫폼 운영자 포털 로그인](#5.2)      
     5.3. [컨테이너 플랫폼 사용자 포털 회원가입](#5.3)      
-    5.4. [컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당](#5.4)      
+    5.4. [컨테이너 플랫폼 사용자 Namespace/Role 할당](#5.4)      
     5.5. [컨테이너 플랫폼 사용자 포털 로그인](#5.5)      
-    5.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.6)  
+    5.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.6)   
 
 
 ## <div id='1'>1. 문서 개요
@@ -729,8 +729,11 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
  $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
-## <div id='5'>5. 단독 배포후 컨테이너 플랫폼 운영자/사용자 회원가입
-### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입 
+## <div id='5'>5. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
+
+컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
+
+### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
 > $ kubectl get namespace 
 ```
@@ -741,69 +744,77 @@ kube-public                                 Active   5d19h
 kube-system                                 Active   5d19h
 paas-ta-container-platform-temp-namespace   Active   4d
 ```
-- Kubernetes Cluster 정보, Namespace, User 정보를 입력하고, "Register" 버튼을 클릭하여 PaaS-TA 운영자 포털에 회원가입을 한다.
+
+Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
->{Kubernetes Cluster Name} : [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME}을 입력한다.  
->{Kubernetes Cluster API URL} : https://{MASTER_NODE_PUBLIC_IP}:6443 을 입력한다. [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}을 입력한다.   
->{Kubernetes Cluster Token} : Kubeedge 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)을 입력한다.
+> Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다.  
+> Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {K8S_IP} 값을 입력한다.  
+> Kubernetes Cluster Token : <br> Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 참고한다.
 ```
-#ex)
-#{Kubernetes Cluster Name} : cp-cluster-new
-#{Kubernetes Cluster API URL} :  https://xxx.xxx.xxx.xxx:6443
-#{Kubernetes Cluster Token} : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
-
+# ex) 이해를 돕기 위한 예시 정보 
+# {Kubernetes Cluster Name} : cp-cluster
+# {Kubernetes Cluster API URL} : https://xxx.xxx.xxx.xxx:6443
+# {Kubernetes Cluster Token} : qY3k2xaZpNbw3AJxxxxx......
 ```
 ### <div id='5.2'/>5.2. 컨테이너 플랫폼 운영자 포털 로그인
-- 사용할 ID와 비밀번호를 입력하고, "Login" 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 여기까지 진행 후 사용자 포털로 이동하여 회원가입을 진행한다.
+- 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 
 
 ![image 006]
 
 ### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자 포털 회원가입
-- 생성할 아이디, 비밀번호, 이메일 계정을 입력하고, "Register" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입을 한다. 사용자 포털은 회원가입 후 바로 이용 가능한게 아니라 운영자로부터 Namespace와 Role을 할당 받아야한다. 사용자 회원가입을 진행 후 다시 운영자 포털로 이동하여 사용자에게 Namespace와 Role을 할당한다.(User에게 해당 Namespace에 대해 관리자 또는 사용자 권한을 할당 해야 한다.) 
+- 등록할 사용자 계정정보(사용자 ID, Password, E-mail)를 입력 후 [Register] 버튼을 클릭하여  컨테이너 플랫폼 사용자 포털에 회원가입한다. <br> 사용자 포털은 회원가입 후 즉시 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
 
 ![image 007]
 
-### <div id='5.4'/>5.4. 컨테이너 플랫폼 운영자 포털 User Namespace/Role 할당
+### <div id='5.4'/>5.4. 컨테이너 플랫폼 사용자 Namespace/Role 할당
 ## 1) Namespace 관리자 지정
-- Clusters 메뉴 > Namespaces를 선택 > 할당 하고자하는 Namespace 목록 선택 > 수정버튼
+- Clusters 메뉴 > Namespaces 선택 > 할당 하고자하는 Namespace 명 선택 > 하단 [수정]버튼 클릭
 
 ![image 008]
 ![image 009]
 
-- 해당 Namespace 관리자로 지정할 User를 선택, Resource Quotas, Limit Ranges를 할당 > 저장버튼
+- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭 
+- 해당 Namespace의 Resource Quotas, Limit Ranges 수정 가능
 
 ![image 010]
 
-- [참고] 운용자 포털 :: Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
+- [참고] Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
 ![image 011]
 
-- [참고] 사용자 포털 :: Namespace 관리자로 할당 받은 User는 해당 Namesapce 사용자에게 Role을 할당할 수 있다.
+## 2) Namespace 사용자 지정 
+
+### 운영자 포털
+- Managements 메뉴 > Users 선택 > User 탭 선택 > 사용자 ID 선택 > 하단 [수정]버튼 클릭
+![image 015]
+![image 016]
+
+- Namespaces/Roles 선택 > [수정]버튼 클릭
+
+해당 사용자가 이용할 Namespace와 Role을 지정할 수 있다.
+![image 017]
+![image 018]
+
+<hr>
+
+### 사용자 포털 
+Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경 및 해당 Namespace를 미사용하는 사용자에게 접근 권한을 할당할 수 있다.
 
 ![image 012]
 ![image 013]
 ![image 014]
 
-## 2) Namespace 사용자 지정 
-- Managements 메뉴 > Users를 선택 > User탭 선택 > Namespace 사용자로 지정할 User를 선택 > 수정버튼
-
-![image 015]
-![image 016]
-
-- Namespaces/Roles 선택 > 수정버튼
-
-![image 017]
-![image 018]
 
 ### <div id='5.5'/>5.5. 컨테이너 플랫폼 사용자 포털 로그인
-- 사용할 아이디와 비밀번호를 입력하고, "로그인" 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
+- 사용자 ID와 비밀번호를 입력후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![image 019]
 
 ### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
-- 포털 사용방법은 포털 사용가이드를 참고 한다.      
-  + 사용자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md  
-  + 운영자 포털 :: https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md
+- 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
+  + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
+  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
+
 
 ----
 [image 001]:images/cp-001.png
@@ -822,3 +833,4 @@ paas-ta-container-platform-temp-namespace   Active   4d
 [image 017]:images/cp-017.png
 [image 018]:images/cp-018.png
 [image 019]:images/cp-019.png
+
