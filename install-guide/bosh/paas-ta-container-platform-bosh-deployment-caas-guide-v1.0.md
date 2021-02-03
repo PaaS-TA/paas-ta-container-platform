@@ -865,6 +865,7 @@ ex)
 ### <div id='5.1'>5.1. Kubernetes Cluster 설정
 > 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
 ```
+# Master Node, Worker Node 모두 설정 필요
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
