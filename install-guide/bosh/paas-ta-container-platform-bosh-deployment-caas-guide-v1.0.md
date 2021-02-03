@@ -466,7 +466,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # {K8S_IP} : K8S Worker Node Public IP
+          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP
       nodeSelector:
         kubernetes.io/hostname: {NODE_HOST_NAME}  # {NODE_HOST_NAME} : K8S Worker Node Host Name     
       imagePullSecrets:
@@ -520,7 +520,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # {K8S_IP} : K8S Worker Node Public IP
+          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP
         - name: SYSTEM_DOMAIN
           value: {PAASTA_SYSTEM_DOMAIN}
         - name: HAPROXY_IP
@@ -578,7 +578,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                    # {K8S_IP} : K8S Worker Node Public IP
+          value: {K8S_IP}                    # {K8S_IP} : K8S Master Node Public IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -916,7 +916,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                    # {K8S_IP} : K8S Worker Node Public IP
+          value: {K8S_IP}                    # {K8S_IP} : K8S Master Node Public IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER

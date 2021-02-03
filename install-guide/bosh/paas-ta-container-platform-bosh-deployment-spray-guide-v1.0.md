@@ -466,7 +466,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Worker Node Public IP
+          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
@@ -523,7 +523,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Worker Node Public IP
+          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
