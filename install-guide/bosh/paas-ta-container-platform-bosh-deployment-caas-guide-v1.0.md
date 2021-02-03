@@ -44,8 +44,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다.  <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
 
 ![image 001]
 
@@ -665,7 +664,7 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 ```
 
 ## <div id='4'>4. 컨테이너 서비스 브로커
-컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 K8s와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
+컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 Kubernetes와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
 
 ### <div id='4.1'>4.1. 컨테이너 서비스 브로커 등록
 
@@ -738,8 +737,7 @@ broker: mysql-service-broker
 ### <div id='4.2'> 4.2. 컨테이너 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
-- uaac server의 endpoint를 설정한다.
-
+- uaac의 endpoint를 설정하고 uaac 로그인을 실행한다.
 ```
 # endpoint 설정
 $ uaac target https://uaa.<DOMAIN> --skip-ssl-validation
@@ -749,11 +747,7 @@ $ uaac target
 Target: https://uaa.<DOMAIN>
 Context: uaa_admin, from client uaa_admin
 
-```
-
-- uaac 로그인을 한다.
-
-```
+# uaac 로그인
 $ uaac token client get <UAA_ADMIN_CLIENT_ID> -s <UAA_ADMIN_CLIENT_SECRET>
 Successfully fetched token via client credentials grant.
 Target: https://uaa.<DOMAIN>
