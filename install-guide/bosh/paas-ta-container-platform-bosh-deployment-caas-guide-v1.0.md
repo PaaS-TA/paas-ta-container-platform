@@ -677,10 +677,12 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 $ cf service-brokers
 Getting service brokers as admin...
 
-name                               url
-mysql-service-broker               http://10.0.121.71:8080
+name   url
+No service brokers found
+
  ```
-  - 컨테이너 서비스 브로커를 등록한다.
+
+- 컨테이너 서비스 브로커를 등록한다.
   > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
   > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
   > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
@@ -695,8 +697,8 @@ Getting service brokers as admin...
 
 name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:31888
-mysql-service-broker       http://10.0.121.71:8080
 ```
+
 - 접근 가능한 서비스 목록을 확인한다.
 ```
 $ cf service-access
@@ -706,18 +708,15 @@ broker: container-service-broker
    container-service   Advanced   none      
    container-service   Micro      none      
    container-service   Small      none      
-
-broker: mysql-service-broker
-   service    plan                 access   orgs
-   Mysql-DB   Mysql-Plan1-10con    all      
-   Mysql-DB   Mysql-Plan2-100con   all
 ```
+
  - 특정 조직에 해당 서비스 접근 허용을 할당한다.
 ```
 $ cf enable-service-access container-service
 Enabling access to all plans of service container-service for all orgs as admin...
 OK
 ```
+
 - 접근 가능한 서비스 목록을 확인한다.
 ```
 $ cf service-access
@@ -727,11 +726,6 @@ broker: container-service-broker
    container-service   Advanced   all      
    container-service   Micro      all      
    container-service   Small      all      
-
-broker: mysql-service-broker
-   service    plan                 access   orgs
-   Mysql-DB   Mysql-Plan1-10con    all      
-   Mysql-DB   Mysql-Plan2-100con   all    
 ```
 
 ### <div id='4.2'> 4.2. 컨테이너 서비스 UAA Client 등록
@@ -756,10 +750,9 @@ Context: admin, from client admin
 
 - 컨테이너 서비스 계정 생성을 한다.
 
-> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {http://<Kubernetes Master Node의 Public IP>:32091} --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
-  - <CF_UAA_CLIENT_ID> : uaac 클라이언트 id  
-  - <CF_UAA_CLIENT_SECRET> : uaac 클라이언트 secret  
-  - <컨테이너 서비스 URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI (http://<Kubernetes Master Node의 Public IP>:<컨테이너 서비스 Dashboard의 NodePort>)  
+> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 DashBoard URI}, {컨테이너 서비스 DashBoard URI}/callback --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
+  - <클라이언트 비밀번호> : uaac 클라이언트 secret  
+  - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI      (http://<Kubernetes Master Node의 Public IP>:<컨테이너 서비스 Dashboard의 NodePort>)
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
@@ -767,21 +760,31 @@ Context: admin, from client admin
 
 ```  
 # e.g. 컨테이너 서비스 계정 생성
-$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
+$ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.xxx:32091", "http://xxx.xxx.xxx.xxx:32091/callback" --scope "cloud_controller_service_permissions.read , openid , cloud_controller.read , cloud_controller.write , cloud_controller.admin" --authorized_grant_types "authorization_code , client_credentials , refresh_token" --authorities="uaa.resource" --autoapprove="openid , cloud_controller_service_permissions.read"
 
 # e.g. 컨테이너 서비스 계정 생성 확인
 $ uaac clients
-caasclient
-    scope: cloud_controller.read cloud_controller.write cloud_controller_service_permissions.read openid cloud_controller.admin
+  
+  caasclient
+    scope: cloud_controller.read cloud_controller.write
+    cloud_controller_service_permissions.read openid cloud_controller.admin
     resource_ids: none
     authorized_grant_types: refresh_token client_credentials authorization_code
-    redirect_uri: http://xxx.xxx.xxx.xxx:32091
+    redirect_uri: http://xxx.xxx.xxx.xxx:32091/callback http://xxx.xxx.xxx.xxx:32091
     autoapprove: cloud_controller_service_permissions.read openid
     authorities: uaa.resource
     name: caasclient
-    lastmodified: 1592962300888
-
+    lastmodified: 1612173849506
 ```  
+
+-  uaac caasclient의 redirect_uri가  잘못 등록되어있다면 uaac client update를 통해 uri를 수정해야한다.
+> $ uaac client update caasclient --redirect_uri  "{컨테이너 서비스 DashBoard URI}", "{컨테이너 서비스 DashBoard URI}/callback"
+
+```
+#  e.g. caasclient redirect_uri update
+$ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091", "http://xxx.xxx.xxx.xxx:32091/callback"
+```
+
 
 ### <div id='4.3'>4.3. PaaS-TA 포털에서 컨테이너 서비스 조회 설정
 
