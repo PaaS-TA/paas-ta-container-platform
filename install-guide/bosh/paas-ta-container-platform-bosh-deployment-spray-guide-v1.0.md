@@ -54,8 +54,8 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 ![image 001]
 
 ### <div id='1.4'>1.4. 참고 자료
-> http://bosh.io/docs
-> http://docs.cloudfoundry.storage
+> http://bosh.io/docs  
+> https://docs.cloudfoundry.org
 
 ## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
