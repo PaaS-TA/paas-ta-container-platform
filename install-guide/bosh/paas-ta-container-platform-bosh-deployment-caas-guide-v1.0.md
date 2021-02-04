@@ -62,9 +62,9 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
-- [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
+- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/v5.5.0/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
+- [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
+- [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
@@ -374,7 +374,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 ### <div id='3.4'>3.4. Deployment 배포
 PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kubernetes에 아래의 컨테이너 서비스 Deployment가 미리 배포되어 있어야 한다.
-또한 컨테이너 서비스는 모두 동일한 Worker Node에 배포되어야한다. 아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
+아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
 
 ```
 # {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
@@ -426,11 +426,11 @@ spec:
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)          
         - name: MARIADB_PORT
-          value: "13306"       
+          value: "13306"  
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name
 ---
 apiVersion: v1
 kind: Service
@@ -448,6 +448,7 @@ spec:
   selector:
     app: service-common-api
   type: NodePort
+
 ```
 
 #### <div id='3.4.2'>3.4.2. container-service-api 배포
@@ -480,11 +481,11 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # Master Node IP    
+          value: {K8S_IP}                          # Master Node IP 
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME}   # Worker Node Host Name 
 ---
 apiVersion: v1
 kind: Service
@@ -502,6 +503,7 @@ spec:
   selector:
     app: service-api
   type: NodePort
+
 ```
 
 #### <div id='3.4.3'>3.4.3. container-service-dashboard 배포
@@ -534,15 +536,15 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # Master Node IP
+          value: {K8S_IP}                            # Master Node IP
         - name: SYSTEM_DOMAIN
           value: {PAASTA_SYSTEM_DOMAIN}
         - name: HAPROXY_IP
-          value: {HAProxy_IP}      
+          value: {HAProxy_IP}
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name    
+        kubernetes.io/hostname: {NODE_HOST_NAME}     # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
@@ -560,6 +562,7 @@ spec:
   selector:
     app: service-dashboard
   type: NodePort
+
 ```
 
 #### <div id='3.4.4'>3.4.4.  container-service-broker 배포
@@ -592,7 +595,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                    # Master Node IP    
+          value: {K8S_IP}                    # Master Node IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -612,13 +615,13 @@ spec:
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
-          value: "13306"    
+          value: "13306"
         - name: NODE_IP
-          value: {NODE_IP}                   # Worker Node IP       
+          value: {NODE_IP}                   # Worker Node IP   
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}    # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name     
 ---
 apiVersion: v1
 kind: Service
@@ -636,6 +639,7 @@ spec:
   selector:
     app: service-broker
   type: NodePort
+
 ```
 
 ```
@@ -962,11 +966,11 @@ spec:
         - name: MARIADB_PORT
           value: "13306"
         - name: NODE_IP
-          value: {NODE_IP}                   # Worker Node IP                   
+          value: {NODE_IP}                   # Worker Node IP         
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME}    # Worker Node Host Name
 ---
 apiVersion: v1
 kind: Service
@@ -984,6 +988,7 @@ spec:
   selector:
     app: jenkins-broker
   type: NodePort
+
 ```
 
 ```
