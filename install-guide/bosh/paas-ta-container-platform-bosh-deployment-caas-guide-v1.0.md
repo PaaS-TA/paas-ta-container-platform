@@ -20,6 +20,11 @@
  3.2. [컨테이너 서비스 이미지 업로드](#3.2)   
  3.3. [Secret 생성](#3.3)  
  3.4. [Deployment 배포](#3.4)  
+ 3.4.1. [container-service-common-api 배포](#3.4.1)   
+ 3.4.2. [container-service-api 배포](#3.4.2)   
+ 3.4.3. [container-service-dashboard 배포](#3.4.3)   
+ 3.4.4. [container-service-broker 배포](#3.4.4)   
+ 
 
 4. [컨테이너 서비스 브로커](#4)  
  4.1. [컨테이너 서비스 브로커 등록](#4.1)  
@@ -29,6 +34,7 @@
 5. [Jenkins 서비스 브로커(Optional)](#5)   
  5.1. [Kubernetes Cluster 설정](#5.1)   
  5.2. [Deployment 배포](#5.2)  
+ 5.2.1. [container-jenkins-broker 배포](#5.2.1)    
  5.3. [Jenkins 서비스 브로커 등록](#5.3)   
 
 6. [CVE 조치사항 적용](#6)     
@@ -377,7 +383,7 @@ $ ls ~/workspace/paasta/container-platform/container-service-yaml
   container-service-api.yml     container-service-common-api.yml
 ```
 
-- container-service-common-api 배포
+#### <div id='3.4.1'>3.4.1. container-service-common-api 배포
 
 > $ vi container-service-common-api.yml
 
@@ -437,7 +443,7 @@ spec:
   type: NodePort
 ```
 
-- container-service-api 배포
+#### <div id='3.4.2'>3.4.2. container-service-api 배포
 
 > $ vi container-service-api.yml
 
@@ -491,7 +497,7 @@ spec:
   type: NodePort
 ```
 
-- container-service-dashboard 배포
+#### <div id='3.4.3'>3.4.3. container-service-dashboard 배포
 
 > $ vi container-service-dashboard.yml
 
@@ -549,7 +555,7 @@ spec:
   type: NodePort
 ```
 
-- container-service-broker 배포
+#### <div id='3.4.4'>3.4.4.  container-service-broker 배포
 
 > $ vi container-service-broker.yml
 
@@ -895,7 +901,7 @@ $ ls ~/workspace/paasta/container-platform/container-service-yaml
   container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
   container-service-api.yml     container-service-common-api.yml
 ```
--  container-jenkins-broker 배포
+#### <div id='5.2.1'>5.2.1. container-jenkins-broker 배포
 
 > $ vi container-jenkins-broker.yml
 
