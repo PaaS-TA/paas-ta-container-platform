@@ -164,7 +164,7 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
-  IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)
+  IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 5.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)
 
 ```
 # INCEPTION OS USER NAME
@@ -752,7 +752,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 ![image 005]
 > Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다.  
 > Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {K8S_IP} 값을 입력한다.  
-> Kubernetes Cluster Token : <br> KubeEdge 설치 가이드의 [5. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5)을 참고한다.
+> Kubernetes Cluster Token : <br> KubeEdge 설치 가이드의 [5.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)을 참고한다.
 ```
 # ex) 이해를 돕기 위한 예시 정보 
 # {Kubernetes Cluster Name} : cp-cluster
