@@ -20,15 +20,15 @@
   2.14 [default bridge를 통한 컨테이너 간 네티워크 트래픽 제한](#2.14)       
 
 3. [CVE 진단항목](#3)  
-  3.1 [TCP timestamp responses 비활성화 설정](#3.1)        
-  3.2 [Docker 취약사항 대체용 Kubernetes 취약점 조치](#3.2)  
-  3.2.1 [API서버 인증제어](#3.2.1) 
-  3.2.2 [API서버 권한제어](#3.2.2) 
-  3.2.3 [Controller Manager 인증제어](#3.2.3) 
-  3.2.4 [Kubelet 인증 제어](#3.2.4) 
-  3.2.5 [Kubelet 권한 제어](#3.2.5) 
-  3.2.6 [Container에 대한 보안 프로필 적용](#3.2.6) 
-  3.3 [DOCKER_CONTENT_TRUST 값 설정](#3.3)
+  3.1 [TCP timestamp responses 비활성화 설정](#3.1)          
+  3.2 [Docker 취약사항 대체용 Kubernetes 취약점 조치](#3.2)    
+  3.2.1 [API서버 인증제어](#3.2.1)   
+  3.2.2 [API서버 권한제어](#3.2.2)   
+  3.2.3 [Controller Manager 인증제어](#3.2.3)   
+  3.2.4 [Kubelet 인증 제어](#3.2.4)   
+  3.2.5 [Kubelet 권한 제어](#3.2.5)   
+  3.2.6 [Container에 대한 보안 프로필 적용](#3.2.6)   
+  3.3 [DOCKER_CONTENT_TRUST 값 설정](#3.3)  
 
 ## <div id='1'/>1. 문서 개요
 ### <div id='1.1'/>1.1. 목적
