@@ -49,7 +49,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다. 
 
 ![image 001]
 
@@ -59,7 +59,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다.
+본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다. 
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
@@ -163,7 +163,7 @@ Succeeded
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
   IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
-
+  
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -252,7 +252,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 - 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
    [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download)  
-
+   
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta/release/service
@@ -266,8 +266,8 @@ $ ls ~/workspace/paasta/release/service
 
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh
-$ chmod +x *.sh
+$ cd ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh 
+$ chmod +x *.sh 
 $ ./deploy-{IAAS}.sh
 ```
 
@@ -291,7 +291,7 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-### <div id='2.7'>2.7. CVE/CCE 진단항목 적용
+### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
@@ -314,7 +314,7 @@ $ sudo systemctl restart docker
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
 Private Repository에 이미지 등록을 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
-
+ 
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
    [cp-standalone-images.tar](http://45.248.73.44/index.php/s/xNangTrpKa6tM5H/download)  
 
@@ -330,24 +330,24 @@ $ ls ~/workspace/paasta/container-platform
   cp-standalone-images.tar
 
 # 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-standalone-images.tar
+$ tar -xvf cp-standalone-images.tar 
 $ cd ~/workspace/paasta/container-platform/container-platform-image
 $ ls ~/workspace/paasta/container-platform/container-platform-image
   container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
   container-platform-common-api.tar.gz  container-platform-webuser.tar.gz  
  ```
-
+ 
  + Private Repository에 이미지를 업로드한다.
  ```
  $ chmod +x *.sh  
- $ ./image-upload-standalone.sh {HAProxy_IP}:5001
+ $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
  ```
-
+ 
  + Private Repository에 업로드 된 이미지 목록을 확인한다.
-
+ 
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
-
+ 
 {"repositories":["container-platform-api","container-platform-common-api","container-platform-webadmin","container-platform-webuser"]}
 ```
 
@@ -370,7 +370,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 
 #### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
 
-+ 컨테이너 플랫폼 yaml 파일
++ 컨테이너 플랫폼 yaml 파일 
 ```
 # 컨테이너 플랫폼 yaml 파일 경로이동
 $ cd ~/workspace/paasta/container-platform/container-platform-standalone-yaml
@@ -670,7 +670,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
-> $ kubectl get namespace
+> $ kubectl get namespace 
 ```
 NAME                                        STATUS   AGE
 default                                     Active   5d19h
@@ -687,13 +687,13 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 > Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#3.5.2)에서 작성하여 배포한 {K8S_IP} 값을 입력한다.  
 > Kubernetes Cluster Token : <br> Kubespray 설치 가이드의 [4. 컨테이너 플랫폼 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4)을 참고한다.
 ```
-# ex) 이해를 돕기 위한 예시 정보
+# ex) 이해를 돕기 위한 예시 정보 
 # {Kubernetes Cluster Name} : cp-cluster
 # {Kubernetes Cluster API URL} : https://xxx.xxx.xxx.xxx:6443
 # {Kubernetes Cluster Token} : qY3k2xaZpNbw3AJxxxxx......
 ```
 ### <div id='5.2'/>5.2. 컨테이너 플랫폼 운영자 포털 로그인
-- 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다.
+- 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 
 
 ![image 006]
 
@@ -709,7 +709,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 ![image 008]
 ![image 009]
 
-- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭
+- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭 
 - 해당 Namespace의 Resource Quotas, Limit Ranges 수정 가능
 
 ![image 010]
@@ -717,7 +717,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 - [참고] Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
 ![image 011]
 
-## 2) Namespace 사용자 지정
+## 2) Namespace 사용자 지정 
 
 ### 운영자 포털
 - Managements 메뉴 > Users 선택 > User 탭 선택 > 사용자 ID 선택 > 하단 [수정]버튼 클릭
@@ -732,7 +732,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 
 <hr>
 
-### 사용자 포털
+### 사용자 포털 
 Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경 및 해당 Namespace를 미사용하는 사용자에게 접근 권한을 할당할 수 있다.
 
 ![image 012]
@@ -748,7 +748,7 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 ### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
-  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
+  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
 
 
 ----
