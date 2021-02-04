@@ -449,8 +449,6 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}        # Worker Node Host Name   
 ---
 apiVersion: v1
 kind: Service
@@ -521,8 +519,6 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}        # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -593,8 +589,6 @@ spec:
         effect: "NoSchedule"    
       imagePullSecrets:
         - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}           # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -658,8 +652,6 @@ spec:
         effect: "NoSchedule"  
       imagePullSecrets:
         - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
