@@ -161,7 +161,7 @@ Succeeded
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 
-> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
+> IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
   IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
 
 ```
@@ -467,7 +467,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP    
+          value: {K8S_IP}                         # Master Node IP    
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
@@ -521,7 +521,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                         # {K8S_IP} : K8S Master Node Public IP
+          value: {K8S_IP}                         # Master Node IP
         - name: SYSTEM_DOMAIN
           value: {PAASTA_SYSTEM_DOMAIN}
         - name: HAPROXY_IP
@@ -579,7 +579,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                    # {K8S_IP} : K8S Master Node Public IP
+          value: {K8S_IP}                    # Master Node IP    
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -605,7 +605,7 @@ spec:
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME}    # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
@@ -694,13 +694,13 @@ No service brokers found
 ```
 
 - 컨테이너 서비스 브로커를 등록한다.
-> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31888
+> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{Worker Node IP}:31888
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 컨테이너 서비스 브로커 NodePort
+> - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 브로커 NodePort
 
 ```
-$ cf create-service-broker container-service-broker admin cloudfoundry http://{K8S_IP}:31888
+$ cf create-service-broker container-service-broker admin cloudfoundry http://{Worker Node IP}:31888
 ```
 
 - 등록된 컨테이너 서비스 브로커를 확인한다.
@@ -765,7 +765,7 @@ Context: admin, from client admin
 
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 DashBoard URI}, {컨테이너 서비스 DashBoard URI}/callback --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   - <클라이언트 비밀번호> : uaac 클라이언트 secret  
-  - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI      (http://<Kubernetes Master Node의 Public IP>:<컨테이너 서비스 Dashboard의 NodePort>)
+  - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (http://<Worker Node IP>:<컨테이너 서비스 Dashboard의 NodePort>)
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
@@ -925,7 +925,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: {K8S_IP}                    # {K8S_IP} : K8S Master Node Public IP
+          value: {K8S_IP}                    # Master Node IP
         - name: K8S_PORT
           value: "6443"
         - name: K8S_AUTH_BEARER
@@ -941,7 +941,7 @@ spec:
         - name: MARIADB_PORT
           value: "13306"
         - name: NODE_IP
-          vlaue: {NODE_IP}                   # Worker Node IP                   
+          value: {NODE_IP}                   # Worker Node IP                   
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
@@ -1005,12 +1005,12 @@ name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:31888
 ```
  - Jenkins 서비스 브로커를 등록한다.
-> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{K8S_IP}:31787
+> $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{Worker Node IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
-> - 서비스팩 URL : Kubernetes Master Node Public IP 와 배포된 Jenkins 서비스 브로커 NodePort
+> - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 Jenkins 서비스 브로커 NodePort
  ```
-$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{K8S_IP}:31787
+$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{Worker Node IP}:31787
  ```
   - 등록된 Jenkins 서비스 브로커를 확인한다.
  ```

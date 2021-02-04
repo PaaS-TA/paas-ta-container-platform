@@ -161,7 +161,7 @@ Succeeded
 > $ vi ~/workspace/paasta/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 
-> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
+> IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
   IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
   
 ```
@@ -411,13 +411,13 @@ spec:
         - name: CONTAINER_PLATFORM_API_URL
           value: "api-deployment.default.svc.cluster.local:3333"  
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}                # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)                   
+          value: {MARIADB_USER_PASSWORD}          # (e.g. PaaS-TA@2020)                   
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name   
+        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name   
 ---
 apiVersion: v1
 kind: Service
@@ -467,7 +467,7 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
+          value: "{K8S_IP}"                              # Master Node IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
@@ -475,7 +475,7 @@ spec:
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name    
+        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -524,7 +524,7 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                           # {K8S_IP} : K8S Master Node Public IP
+          value: "{K8S_IP}"                                # Master Node IP  
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
@@ -532,7 +532,7 @@ spec:
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name    
+        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
 ---
 apiVersion: v1
 kind: Service
@@ -583,7 +583,7 @@ spec:
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name  
 ---
 apiVersion: v1
 kind: Service
