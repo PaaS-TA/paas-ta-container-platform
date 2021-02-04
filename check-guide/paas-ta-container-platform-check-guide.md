@@ -20,10 +20,18 @@
   2.14 [default bridge를 통한 컨테이너 간 네티워크 트래픽 제한](#2.14)       
 
 3. [CVE 진단항목](#3)  
-  3.1 [TCP timestamp responses 비활성화 설정](#3.1)      
+  3.1 [TCP timestamp responses 비활성화 설정](#3.1)        
+  3.2 [Docker 취약사항 대체용 Kubernetes 취약점 조치](#3.2)  
+  3.2.1 [API서버 인증제어](#3.2.1) 
+  3.2.2 [API서버 권한제어](#3.2.2) 
+  3.2.3 [Controller Manager 인증제어](#3.2.3) 
+  3.2.4 [Kubelet 인증 제어](#3.2.4) 
+  3.2.5 [Kubelet 권한 제어](#3.2.5) 
+  3.2.6 [Container에 대한 보안 프로필 적용](#3.2.6) 
+  3.3 [DOCKER_CONTENT_TRUST 값 설정](#3.3)
 
 ## <div id='1'/>1. 문서 개요
-### <div id='1.1'/>1.1. 목적 
+### <div id='1.1'/>1.1. 목적
 본 문서는 CVE, CCE 취약점에 대한 기술적 보안 가이드를 제공한다. 각각은 항목설명, 조치대상, 진단방법, 조치방법으로 구성되어있다. 본 가이드를 활용하여 취약점 내용에 관련해 보안조치를 취할 수 있다.
 
 ### <div id='1.2'/>1.2. 유의사항
@@ -35,7 +43,7 @@
 ##  <div id='2'/>2. CCE 진단항목
 ### <div id='2.1'/>2.1. root 계정 원격 접속 제한
 
-- 항목 설명 
+- 항목 설명
   + 각종 공격(무작위 대입 공격, 사전 대입 공격 등)을 통해 root 원격 접속 차단이 적용되지 않은 시스템의 root 계정 정보를 비인가자가 획득할 경우 시스템 계정 정보 유출, 파일 및 디렉터리 변조 등의 행위 침해사고가 발생할 수 있다.
 
 - 조치대상
@@ -45,7 +53,7 @@
 | Cluster | Master | O |
 || Worker | O |
 | Bosh | MariaDB | X |
-|| HAproxy | X |
+|| HAProxy | X |
 || Private-image-repository | X |
 
 - 진단방법
@@ -63,24 +71,24 @@
 #PermitRootLogin prohibit-password
 
 [조치]
-PermitRootLogin no 
+PermitRootLogin no
 ```
 ---
 
 ### <div id='2.2'/>2.2. 패스워드 복잡성 설정
 
-- 항목 설명 
+- 항목 설명
   + 패스워드 복잡성 설정이 되어 있지 않은 사용자 계정 패스워드 존재 시 비인가자가 각종 공격(무작위 대입 공격, 사전 대입 공격 등)을 통해 취약한 패스워드가 설정된 사용자 계정의 패스워드를 획득하여 획득한 사용자 계정 정보를 통해 해당 사용자 계정의 시스템에 접근할 수 있는 위험이 존재한다.
 
 - 조치대상
- 
+
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
 | :--- | :--- | :---: |
 | Cluster | Master | O |
 || Worker | O |
 | Bosh | MariaDB | X |
 || HAProxy | X |
-|| Private-image-repository | X | 
+|| Private-image-repository | X |
 
 - 진단방법
   + /etc/pam.d/common-password 파일 설정 내용 확인
@@ -94,16 +102,16 @@ PermitRootLogin no
 # vi /etc/pam.d/common-password
 
 [현황]
-password	requisite			pam_deny.so
+password  requisite     pam_deny.so
 
 [조치]
-password	requisite			pam_pwquality.so enforce_for_root retry=3 minlen=8 dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1
+password  requisite     pam_pwquality.so enforce_for_root retry=3 minlen=8 dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1
 ```
 ---
 
 ### <div id='2.3'/>2.3. 계정 잠금 임계값 설정
 
-- 항목 설명 
+- 항목 설명
   + 로그인 실패 임계값이 설정되어 있지 않을 경우 반복되는 로그인 시도에 대한 차단이 이루어지지 않아 각종 공격(무작위 대입 공격, 사전 대입 공격, 추측 공격 등)에 취약하여 비인가자에게 사용자 계정 패스워드를 유출 당할 수 있다.
 
 - 조치대상
@@ -135,9 +143,9 @@ auth    required                        pam_tally2.so deny=5 no_magic_root
 ```
 ---
 
-### <div id='2.4'/>2.4. 파일 및 디렉터리 소유자 설정 
+### <div id='2.4'/>2.4. 파일 및 디렉터리 소유자 설정
 
-- 항목 설명 
+- 항목 설명
   + 삭제된 소유자의 UID와 동일한 사용자가 해당 파일, 디렉터리에 접근 가능하여 사용자 정보 등 중요 정보가 노출될 위험이 있다.
 
 - 조치대상
@@ -158,43 +166,37 @@ auth    required                        pam_tally2.so deny=5 no_magic_root
 
 - 조치방법
   + 소유자가 존재하지 않는 파일이나 디렉터리가 불필요한 경우 rm 명령으로 삭제
+  + 필요한 경우 chown 명령으로 소유자 및 그룹 변경 
 ```
+## 양호: 소유자나 그룹이 존재하지 않는 파일 및 디렉터리가 없는 경우
+## 취약: 소유자나 그룹이 존재하지 않는 파일 및 디렉터리가 있는 경우
+
+소유자가 존재하지 않는 파일이나 디렉터리가 불필요한 경우 rm 명령으로 삭제
 # rm <file name>
 # rm -rf <directory name>
 
-[현황]
-ex) 검색시 나온 파일 또는 디렉터리
-find: ‘/proc/11145/task/11145/fd/6’: No such file or directory
-find: ‘/proc/11145/task/11145/fdinfo/6’: No such file or directory
-find: ‘/proc/11145/fd/5’: No such file or directory
-find: ‘/proc/11145/fdinfo/5’: No such file or directory
-
-[조치]
-ex) 검색시 나온 파일 또는 디렉터리 삭제
-# rm -rf /proc/11145/task/11145/fd/6
-# rm -rf /proc/11145/task/11145/fdinfo/6
-# rm -rf /proc/11145/fd/5
-# rm -rf /proc/11145/fdinfo/5
+필요한 경우 chown 명령으로 소유자 및 그룹 변경 
+# chown <user name> <file name>
 ```
 ---
 
 ### <div id='2.5'/>2.5. /etc/shadow 파일 소유자 및 권한 설정
 
-- 항목 설명 
+- 항목 설명
   + 해당 파일에 대한 권한 관리가 이루어지지 않을 시 ID 및 패스워드 정보가 외부로 노출될 수 있다.
 
 - 조치대상
-  
+
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
 | :--- | :--- | :---: |
 | Cluster | Master | O |
 || Worker | O |
 | Bosh | MariaDB | X |
 || HAProxy | X |
-|| Private-image-repository | X | 
+|| Private-image-repository | X |
 
 - 진단방법
-  + /etc/shadow 파일의 퍼미션과 소유자를 확인 
+  + /etc/shadow 파일의 퍼미션과 소유자를 확인
 ```
 # ls -l /etc/shadow
 ```
@@ -202,9 +204,6 @@ ex) 검색시 나온 파일 또는 디렉터리 삭제
 - 조치방법
   + /etc/shadow 파일의 소유자 및 권한 변경 (소유자 root, 권한 400)
 ```
-# chown root /etc/shadow
-# chmod 400 /etc/shadow
-
 [현황]
 ex) 검색시 나온 파일
 -rw-r----- 1 root shadow 863 Jan 28 06:18 /etc/shadow
@@ -219,7 +218,7 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 
 ### <div id='2.6'/>2.6. SUID, SGID, Sticky bit 설정 파일 점검
 
-- 항목 설명 
+- 항목 설명
   + SUID, SGID 파일의 접근권한이 적절하지 않을 경우 SUID, SGID 설정된 파일로 특정 명령어를 실행하여 root 권한 획득 및 정상 서비스 장애를 발생시킬 수 있다.
 
 - 조치대상
@@ -230,10 +229,10 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 || Worker | O |
 | Bosh | MariaDB | X |
 || HAProxy | X |
-|| Private-image-repository | X |	  
+|| Private-image-repository | X |   
 
 - 진단방법
-  + 아래 명령어를 통해 SUID와 SGID 파일을 검색하여 주요 파일의 권한을 확인 
+  + 아래 명령어를 통해 SUID와 SGID 파일을 검색하여 주요 파일의 권한을 확인
 ```
 # find / -user root -type f \( -perm -04000 -o -perm -02000 \) -xdev -exec ls -al {} \;
 ```
@@ -241,15 +240,15 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 - 조치방법
   + SUID, SGID 설정 제거
 ```
-#chmod -s /usr/bin/newgrp
-#chmod -s /sbin/unix_chkpwd
-#chmod -s /usr/bin/at
+# chmod -s /usr/bin/newgrp
+# chmod -s /sbin/unix_chkpwd
+# chmod -s /usr/bin/at
 ```
 ---
 
 ### <div id='2.7'/>2.7. world writable 파일 점검
 
-- 항목 설명 
+- 항목 설명
   + 시스템 파일과 같은 중요 파일에 world writable 설정이 될 경우, 악의적인 사용자가 해당 파일을 마음대로 파일을 덧붙이거나 지울 수 있게 되어 시스템의 무단 접근 및 시스템 장애를 유발할 수 있다.
 
 - 조치대상
@@ -263,8 +262,9 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 || Private-image-repository | O |
 
 - 진단방법
-  + world writable 파일 존재 여부 확인 
+  + world writable 파일 존재 여부 확인
 ```
+# 참고: 아래 명령어로 진단시 너무 많은 항목이 나오기 때문에 cce진단 적용시 문제가 되는 항목들만 조치를 취하는 방법을 적용한다. 
 # find / -type f -perm -2 -exec ls -l {} \;
 ```
 
@@ -273,6 +273,7 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 ```
 # chmod o-w <file name>
 
+1) kubernetes master, kubernetes worker에서 cce진단 적용시 문제가 되는 항목들
 [현황]
   4039      4 drwxrwxrwt  10 root     root         4096 Jan 29 06:15 /tmp
 256007      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.Test-unix
@@ -284,32 +285,36 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
  67674      4 drwxrwxrwt   5 root     root         4096 Jan 28 04:52 /var/tmp
 256028      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /var/tmp/cloud-init
 
-[조치 : kubernetes master, kubernetes worker]
-#chmod o-w 
-#chmod o-w /tmp
-#chmod o-w /tmp/.Test-unix
-#chmod o-w /tmp/.XIM-unix
-#chmod o-w /tmp/.X11-unix
-#chmod o-w /tmp/.ICE-unix
-#chmod o-w /tmp/.font-unix
-#chmod o-w /var/crash
-#chmod o-w /var/tmp
-#chmod o-w /var/tmp/cloud-init
+[조치]
+# chmod o-w /tmp/.Test-unix
+# chmod o-w /tmp/.XIM-unix
+# chmod o-w /tmp/.X11-unix
+# chmod o-w /tmp/.ICE-unix
+# chmod o-w /tmp/.font-unix
+# chmod o-w /var/crash
+# chmod o-w /var/tmp
+# chmod o-w /var/tmp/cloud-init
 
-[조치 : maradb, haproxy, private-image-repository]
-# Iception환경 Instance VM 접근 방법
-ex) {Instance VM name} : maradb (위 세가지 vm 입력)
-$ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
+2) mariadb, haproxy, private-image-repository에서 cce진단 적용시 문제가 되는 항목들
+[현황]
+ 4039      4 drwxrwxrwt  10 root     root         4096 Jan 29 06:15 /tmp
+67674      4 drwxrwxrwt   5 root     root         4096 Jan 28 04:52 /var/tmp
 
-#chmod o-w /tmp
-#chmod o-w /var/tmp
+[조치]
+# BOSH Iception환경 Instance VM 접근 방법
+ex) {Instance VM Name} : mariadb (위 세가지 vm 입력)
+$ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM Name}
+
+# chmod o-w /tmp
+# chmod o-w /var/tmp
 ```
 ---
 
 ### <div id='2.8'/>2.8. Docker daemon audit 설정
+- 2.8. Docker daemon audit 설정부터 2.13. /etc/default/docker audit 설정 항목까지는 동일한 파일 audit.rules를 수정하므로 ## Add at the bottom 부분의 설정을 하위에 계속 추가 적용하면 된다. 
 
-- 항목 설명 
-  + Docker 데몬은 root 권한으로 실행 되기 때문에 그 활동과 용도를 감사하여야한다. 
+- 항목 설명
+  + Docker 데몬은 root 권한으로 실행 되기 때문에 그 활동과 용도를 감사하여야한다.
 
 - 조치대상
 
@@ -322,7 +327,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |
 
 - 진단방법
-  + 명령어를 통해 /usr/bin/docker 감사 설정 확인 
+  + 명령어를 통해 /usr/bin/docker 감사 설정 확인
 ```
 # auditctl -l | grep /usr/bin/docker
 ```
@@ -347,7 +352,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.9'/>2.9. /usr/lib/docker audit 설정
 
-- 항목 설명 
+- 항목 설명
   + /var/lib/docker 디렉터리는 컨테이너에 대한 모든 정보를 보유하고 있는 디렉터리이므로 감사 설정을 하여야 한다.
 
 - 조치대상
@@ -361,7 +366,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |
 
 - 진단방법
-  + 명령어를 통해 /var/lib/docker 감사 설정 확인 
+  + 명령어를 통해 /var/lib/docker 감사 설정 확인
 ```
 # auditctl -l | grep /var/lib/docker
 ```
@@ -386,9 +391,9 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.10'/>2.10. /etc/docker audit 설정
 
-- 항목 설명 
+- 항목 설명
   + /etc/docker 디렉터리는 Docker 데몬과 Docker 클라이언트 간의 TLS 통신에 사용되는 다양한 인증서와 키를 보유하고 있으므로 감사 설정을 하여야 한다.
-  
+
 - 조치대상
 
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
@@ -400,7 +405,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |
 
 - 진단방법
-  + 명령어를 통해 /etc/docker 감사 설정 확인 
+  + 명령어를 통해 /etc/docker 감사 설정 확인
 ```
 # auditctl -l | grep /etc/docker
 ```
@@ -425,7 +430,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.11'/>2.11. docker.service audit 설정
 
-- 항목 설명 
+- 항목 설명
   + 데몬 매개변수가 관리자에 의해 변경된 경우 docker.service 파일이 존재한다. docker.service 파일은 Docker 데몬을 위한 다양한 파라미터를 보유하고 있으므로 감사 설정을 하여야 한다.
 
 - 조치대상
@@ -439,11 +444,11 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |
 
 - 진단방법
-  + docker.service 파일의 경로 확인 
+  + docker.service 파일의 경로 확인
 ```
 # systemctl show -p FragmentPath docker.service
 ```
-  + 명령어를 통해 docker.service 감사 설정 확인 
+  + 명령어를 통해 docker.service 감사 설정 확인
 ```
 # auditctl -l | grep /lib/systemd/system/docker.service
 ```
@@ -468,7 +473,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.12'/>2.12. docker.socket audit 설정
 
-- 항목 설명 
+- 항목 설명
   + docker.socket 파일은 Docker 데몬 소켓을 위한 다양한 파라미터를 보유하고 있으므로 감사 설정을 하여야 한다.
 
 - 조치대상
@@ -482,11 +487,11 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |  
 
 - 진단방법
-  + docker.socket 파일의 경로 확인 
+  + docker.socket 파일의 경로 확인
 ```
 # systemctl show -p FragmentPath docker.socket
 ```
-  + 명령어를 통해 docker.socket  감사 설정 확인 
+  + 명령어를 통해 docker.socket  감사 설정 확인
 ```
 # auditctl -l | grep /lib/systemd/system/docker.socket
 ```
@@ -511,7 +516,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.13'/>2.13. /etc/default/docker audit 설정
 
-- 항목 설명 
+- 항목 설명
   + /etc/default/docker 파일은 Docekr 데몬을 위한 다양한 파라미터를 보유하고 있으므로 감사 설정을 하여야 한다.
 
 - 조치대상
@@ -525,7 +530,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Private-image-repository | X |
 
 - 진단방법
-  + 명령어를 통해 /etc/default/docker 감사 설정 확인 
+  + 명령어를 통해 /etc/default/docker 감사 설정 확인
 ```
 # auditctl -l | grep /etc/default/docker
 ```
@@ -550,7 +555,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 
 ### <div id='2.14'/>2.14. default bridge를 통한 컨테이너 간 네티워크 트래픽 제한
 
-- 항목 설명 
+- 항목 설명
   + Default Network Bridge의 동일한 호스트에서 컨테이너 간의 네트워크 통신은 제한되지 않는다. 따라서 각 컨테이너는 호스트의 네트워크를 통해 다른 컨테이너 네트워크 패킷을 모두 볼 수 있다. 이로 인해 의도하지 않거나 원하지 않는 정보가 다른 컨테이너에 공개될 수 있으므로 Default Network Bridge에서 컨테이너 간 통신을 제한하여야 한다.
 
 - 조치대상
@@ -561,19 +566,19 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM name}
 || Worker | O |
 | Bosh | MariaDB | X |
 || HAProxy | X |
-|| Private-image-repository | X |	  
+|| Private-image-repository | X |   
 
 - 진단방법
-  + 아래 명령을 통해 컨테이너 간 제한 옵션이 적용되어 있는지 확인 
+  + 아래 명령을 통해 컨테이너 간 제한 옵션이 적용되어 있는지 확인
 ```
-$ docker network ls --quiet | xargs docker network inspect --format "{{ .Name}}: {{Options }}"
+$ docker network ls --quiet | xargs docker network inspect --format "{{ .Name}}: {{.Options }}"
 ```
 
 - 조치방법
-  + --icc=false 옵션 추가 
+  + --icc=false 옵션 추가
 ```
 # vi /etc/systemd/system/docker.service.d/docker-options.conf
-(변경)    --iptables=true 
+(변경)    --iptables=true
 (추가)    --icc=false
 
 [Service]
@@ -584,16 +589,17 @@ Environment="DOCKER_OPTS= --iptables=true \
 --data-root=/var/lib/docker \
 --log-opt max-size=50m --log-opt max-file=5 \
 
-# 도커 daemon reload 및 재시작 
+# 도커 daemon reload 및 재시작
 # systemctl daemon-reload
 # systemctl restart docker
 ```
+
 <br>
 
 ##  <div id='3'/>3. CVE 진단항목
-### <div id='3.1'/>TCP timestamp responses 비활성화 설정
+### <div id='3.1'/> 3.1. TCP timestamp responses 비활성화 설정
 
-- 항목 설명 
+- 항목 설명
   + TCP 타임스탬프 응답을 사용하면 원격 호스트 가동 시간의 근사치를 계산하고 향후 공격 시 도움을 줄 수 있다. 또한, 일부 운영 체제의 경우 해당 TCP 타임스탬프의 동작을 바탕으로 핑거프린팅될 수 있다.
 
 - 조치대상
@@ -615,9 +621,189 @@ Environment="DOCKER_OPTS= --iptables=true \
  net.ipv4.tcp_timestamps=0
  ----------------------------------------
  $ sudo reboot
- 
+
  #  iptables에 정책 추가
  $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
  $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
----
+
+<br>
+
+### <div id='3.2'/> 3.2. Docker 취약사항 대체용 Kubernetes 취약점 조치
+- 조치대상
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+
+#### <div id='3.2.1'/>3.2.1. API서버 인증제어
+- 항목 설명
+  + API Server는 Kubernetes 요소들의 허브로 HTTP, HTTPS 기반의 REST API를 제공 한다. 다른 모든 구성요소를 상호 작용할 수 있도록 연결하는 역할을 한다.
+  + API Server에 대한 인증제어를 검증한다. 
+
+- docker 점검 대상 항목
+  + 도커 클라이언트 인증 활성화
+  + 추가 권한 획득으로부터 컨테이너 제한
+  + root가 아닌 user로 컨테이너 실행
+
+- 조치방법
+  + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
+```
+ $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
+
+ ## 비인증 접근 차단
+ ----------------------------------------
+ --anonymous-auth=false
+ --insecure-allow-any-token=true 제거
+ --insecure-bind-address=X.X.X.X 제거
+ --insecure-port=0
+ ----------------------------------------
+
+ ## 취약한 방식의 인증 방식 사용 제거
+ ----------------------------------------
+ --basic-auth-file={filename} 제거
+ --token-auth-file={filename} 제거
+ ----------------------------------------
+```
+
+#### <div id='3.2.2'/>3.2.2. API서버 권한제어
+- 항목 설명
+  + Kubernetes는 API Server를 통해 정책에 따라 요청에 대한 승인을 수행한다.
+  + API서버 권한제어를 검증한다.
+
+- docker 점검 대상 항목
+  + 도커 클라이언트 인증 활성화
+  + 추가 권한 획득으로부터 컨테이너 제한
+  + root가 아닌 user로 컨테이너 실행
+
+- 조치방법
+  + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
+```
+ $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
+
+ ## Node 권한, 역할 기반 엑세스 제어 (RBAC) 사용
+ ----------------------------------------
+ --authorization-mode=Node,RBAC
+ ----------------------------------------
+```
+
+#### <div id='3.2.3'/>3.2.3. Controller Manager 인증제어
+- 항목 설명
+  + Kubernetes에서 Controller는 API Server를 통해 클러스터의 공유 상태를 감시한다.(현재 상태를 원하는 상태로 이동하려고 변경하는 제어 루프)
+  + Controller Manger 인증제어를 검증한다.
+
+- docker 점검 대상 항목
+  + 도커 클라이언트 인증 활성화
+  + 추가 권한 획득으로부터 컨테이너 제한
+  + root가 아닌 user로 컨테이너 실행
+
+- 조치방법
+  + /etc/kubernetes/manifests/kube-controller-manager.yaml 파일 수정
+```
+ $ sudo vi /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+ ## 각 컨트롤러에 대한 개별 서비스 계정 자격 증명
+ ----------------------------------------
+ --use-service-account-credentials=true
+ ----------------------------------------
+ 
+ ## 컨트롤러 계정 자격증명에 사용되는 인증서 관리
+ ----------------------------------------
+ --service-account-private-key-file=/etc/kubernetes/ssl/sa.key
+ ----------------------------------------
+```
+
+#### <div id='3.2.4'/>3.2.4. Kubelet 인증 제어
+- 항목 설명
+  + Kubelet은 Kubernetes 각 노드에서 실행되는 에이전트이다. Pod에 대해 정의된 YAML 또는 JSON 현태의 PodSpec에 따라 컨테이너를 실행하고 관리한다.
+  + Kubelet 인증 제어를 검증한다.
+
+- docker 점검 대상 항목
+  + 도커 클라이언트 인증 활성화
+  + 추가 권한 획득으로부터 컨테이너 제한
+  + root가 아닌 user로 컨테이너 실행
+
+- 조치방법
+  + /var/lib/kubelet/config.yaml 파일 수정
+```
+ $ sudo vi /var/lib/kubelet/config.yaml
+
+ ## Kubelet 인증 제어
+ ----------------------------------------
+ authentication:
+    anonymous:
+        enabled: false
+ 
+ readOUnlyPort: 0
+ ----------------------------------------
+```
+
+#### <div id='3.2.5'/>3.2.5. Kubelet 권한 제어
+- 항목 설명
+  + Kubelet은 기본적으로 Kubernetes Master의 API Server에서 전달되는 요청에 대해 권한 검사 없이 모두 허용한다. 
+  + 설정 변경을 통해 권한 검증을 수행한다.
+
+- docker 점검 대상 항목
+  + 도커 클라이언트 인증 활성화
+  + 추가 권한 획득으로부터 컨테이너 제한
+  + root가 아닌 user로 컨테이너 실행
+
+
+- 조치방법
+  + /var/lib/kubelet/config.yaml 파일 수정
+```
+ $ sudo vi /var/lib/kubelet/config.yaml
+
+ ## Kubelet 인증 제어
+ ----------------------------------------
+ authorization:
+     mode: Webhook
+ ----------------------------------------
+```
+
+#### <div id='3.2.6'/>3.2.6. Container에 대한 보안 프로필 적용
+- 항목 설명
+  + AppArmor는 LSM(Linux Security Module)을 사용해 만든 SELinux 대안 프레임워크
+  + 호스트 운영체제에서 실행되는 프로세스의 기능을 제한하는데 사용할 수 있는 Linux 커널 보안 모듈
+  + 각 프로세스는 자체 보안 프로필을 가질 수 있으며 네트워크 액세스, 파일 읽기/쓰기/실행 권한과 같은 특정 기능을 허용하거나 허용하지 않음
+  + Ubuntu 7.10 이후 기본적으로 Ubuntu에 포함된 중요한 보안 기능이며 컨테이너 실행 시 docker-default AppArmor 보안 프로필을 자동으로 적용
+
+- docker 점검 대상 항목
+  + 컨테이너 SELinux 보안 옵션 설정
+
+```
+ ## AppArmor 상태 확인
+ $ sudo apparmor_status
+
+ ## docker-default 보안 프로필 테스트
+ $ kubectl  exec –it nginx-xxxxx -- /bin/bash
+ $ cat proc/sysrq-trigger
+```
+
+### <div id='3.3'/>3.3. DOCKER_CONTENT_TRUST 값 설정
+
+- 항목 설명
+  + Docker의 이미지 변조 제어를 한다. 
+
+- 조치대상
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+| Bosh | MariaDB | X |
+|| HAProxy | X |
+|| Private-image-repository | X |
+
+- 조치방법
+  + /etc/bash.bashrc 파일 설정 변경 및 적용
+  + DOCKER_CONTENT_TRUST항목을 1로 지정한다.
+```
+# vi /etc/bash.bashrc
+----------------------------------------
+## Add at the bottom
+export DOCKER_CONTENT_TRUST=1
+----------------------------------------
+# source /etc/bash.bashrc
+```
