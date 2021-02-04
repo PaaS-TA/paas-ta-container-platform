@@ -368,8 +368,6 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 
 ### <div id='3.5'>3.5. Deployment 배포
 
-#### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
-
 + 컨테이너 플랫폼 yaml 파일 
 ```
 # 컨테이너 플랫폼 yaml 파일 경로이동
@@ -378,6 +376,8 @@ $ ls ~/workspace/paasta/container-platform/container-platform-standalone-yaml
   paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
   paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
 ```
+
+#### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
