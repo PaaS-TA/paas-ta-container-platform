@@ -704,9 +704,9 @@ No service brokers found
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 브로커 NodePort
-
+>   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
 ```
-$ cf create-service-broker container-service-broker admin cloudfoundry http://{Worker Node IP}:31888
+$ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31888
 ```
 
 - 등록된 컨테이너 서비스 브로커를 확인한다.
@@ -769,9 +769,10 @@ Context: admin, from client admin
 
 - 컨테이너 서비스 계정 생성을 한다.
 
-> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri {컨테이너 서비스 DashBoard URI}, {컨테이너 서비스 DashBoard URI}/callback --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
+> $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri  "http://{Worker Node IP}:32091, http://{Worker Node IP}:32091/callback" --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   - <클라이언트 비밀번호> : uaac 클라이언트 secret  
-  - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (http://<Worker Node IP>:<컨테이너 서비스 Dashboard의 NodePort>)
+  - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (Kubernetes   Worker Node IP 와 배포된 컨테이너 서비스 대시보드 NodePort)
+    +  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
@@ -802,7 +803,7 @@ $ uaac clients
 ```  
 
 -  uaac caasclient의 redirect_uri가  잘못 등록되어있다면 uaac client update를 통해 uri를 수정해야한다.
-> $ uaac client update caasclient --redirect_uri "{컨테이너 서비스 DashBoard URI}, {컨테이너 서비스 DashBoard URI}/callback"
+> $ uaac client update caasclient --redirect_uri "{http://{Worker Node IP}:32091}, {http://{Worker Node IP}:32091}/callback"
 
 ```
 # e.g. caasclient redirect_uri update
@@ -1015,8 +1016,10 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 Jenkins 서비스 브로커 NodePort
- ```
-$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://{Worker Node IP}:31787
+>   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+
+```
+$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31787
  ```
   - 등록된 Jenkins 서비스 브로커를 확인한다.
  ```
