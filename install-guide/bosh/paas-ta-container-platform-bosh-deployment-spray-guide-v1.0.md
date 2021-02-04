@@ -82,7 +82,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -367,6 +367,13 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 ### <div id='3.5'>3.5. Deployment 배포
+컨테이너 플랫폼은 모두 동일한 Worker Node에 배포되어야한다. 아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
+
+```
+# {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
+   nodeSelector:
+     kubernetes.io/hostname: {NODE_HOST_NAME}
+```
 
 + 컨테이너 플랫폼 yaml 파일 
 ```
