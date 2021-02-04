@@ -65,7 +65,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
-- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
+- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
