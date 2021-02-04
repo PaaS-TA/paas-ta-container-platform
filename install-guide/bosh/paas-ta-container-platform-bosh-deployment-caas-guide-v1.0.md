@@ -374,6 +374,13 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 ### <div id='3.4'>3.4. Deployment 배포
 PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kubernetes에 아래의 컨테이너 서비스 Deployment가 미리 배포되어 있어야 한다.
+또한 컨테이너 서비스는 모두 동일한 Worker Node에 배포되어야한다. 아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
+
+```
+# {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
+   nodeSelector:
+     kubernetes.io/hostname: {NODE_HOST_NAME}
+```
 
 - 컨테이너 플랫폼 yaml 파일 경로이동
 ```
@@ -893,7 +900,14 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='5.2'>5.2. Deployment 배포
-> PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
+PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
+또한 Jenkins 서비스는 위 컨테이너 서비스(3.4. Deployment 배포)의 nodeSelector.kubernetes.io/hostname 에 설정한 Worker Node의 Host Name과 동일한 값으로 설정한다.
+
+```
+# {NODE_HOST_NAME} 값 컨테이너 서비스와 동일한 Worker Node의 Host Name으로 설정 
+   nodeSelector:
+     kubernetes.io/hostname: {NODE_HOST_NAME}
+```
 
 - 컨테이너 플랫폼 yaml 파일 경로이동
 ```
