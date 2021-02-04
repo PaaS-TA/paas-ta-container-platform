@@ -61,7 +61,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다. 
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
+- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
@@ -367,7 +367,7 @@ $ kubectl create namespace paas-ta-container-platform-temp-namespace
 ```
 
 ### <div id='3.5'>3.5. Deployment 배포
-컨테이너 플랫폼은 모두 동일한 Worker Node에 배포되어야한다. 아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
+아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
 
 ```
 # {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
@@ -418,13 +418,13 @@ spec:
         - name: CONTAINER_PLATFORM_API_URL
           value: "api-deployment.default.svc.cluster.local:3333"  
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}                # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}          # (e.g. PaaS-TA@2020)                   
+          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)              
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name   
+        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name      
 ---
 apiVersion: v1
 kind: Service
@@ -442,8 +442,8 @@ spec:
   selector:
     app: common-api
   type: NodePort
-
 ```
+
 #### <div id='3.5.2'>3.5.2. paas-ta-container-platform-api 배포
 
 > vi paas-ta-container-platform-api.yml
@@ -474,15 +474,15 @@ spec:
         - containerPort: 3333
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                              # Master Node IP
+          value: "{K8S_IP}"                                            # Master Node IP
         - name: CLUSTER_NAME
           value: "{CLUSTER_NAME}"
         - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "common-api-deployment.default.svc.cluster.local:3334"             
+          value: "common-api-deployment.default.svc.cluster.local:3334"  
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
+        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name
 ---
 apiVersion: v1
 kind: Service
@@ -501,6 +501,7 @@ spec:
     app: api
   type: NodePort
 ```
+
 #### <div id='3.5.3'>3.5.3. paas-ta-container-platform-webuser 배포
 
 > vi paas-ta-container-platform-webuser.yml
@@ -531,15 +532,15 @@ spec:
         - containerPort: 8091
         env:
         - name: K8S_IP
-          value: "{K8S_IP}"                                # Master Node IP  
+          value: "{K8S_IP}"                                            # Master Node IP
         - name: CONTAINER_PLATFORM_COMMON_API_URL
           value: "common-api-deployment.default.svc.cluster.local:3334"
         - name: CONTAINER_PLATFORM_API_URL
-          value: "api-deployment.default.svc.cluster.local:3333"          
+          value: "api-deployment.default.svc.cluster.local:3333"     
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name    
+        kubernetes.io/hostname: {NODE_HOST_NAME}                        # Worker Node Host Name 
 ---
 apiVersion: v1
 kind: Service
@@ -557,8 +558,8 @@ spec:
   selector:
     app: webuser
   type: NodePort
-
 ```
+
 #### <div id='3.5.4'>3.5.4. paas-ta-container-platform-webadmin 배포
 
 > vi paas-ta-container-platform-webadmin.yml
@@ -586,11 +587,11 @@ spec:
         image: {HAProxy_IP}:5001/container-platform-webadmin:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080     
+        - containerPort: 8080
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}          # Worker Node Host Name  
+        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name
 ---
 apiVersion: v1
 kind: Service
@@ -608,6 +609,7 @@ spec:
   selector:
     app: webadmin
   type: NodePort
+
 ```
 ```
 $ kubectl apply -f paas-ta-container-platform-common-api.yml
