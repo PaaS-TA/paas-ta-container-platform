@@ -667,6 +667,7 @@ Environment="DOCKER_OPTS= --iptables=true \
  --token-auth-file={filename} 제거
  ----------------------------------------
 ```
+![image](https://user-images.githubusercontent.com/67575226/106992759-966a6600-67bc-11eb-8d7a-e8a218613d70.png)
 
 #### <div id='3.2.2'/>3.2.2. API서버 권한제어
 - 항목 설명
@@ -688,6 +689,7 @@ Environment="DOCKER_OPTS= --iptables=true \
  --authorization-mode=Node,RBAC
  ----------------------------------------
 ```
+![image](https://user-images.githubusercontent.com/67575226/106992884-d03b6c80-67bc-11eb-9a76-b09b17fe57c9.png)
 
 #### <div id='3.2.3'/>3.2.3. Controller Manager 인증제어
 - 항목 설명
@@ -714,7 +716,7 @@ Environment="DOCKER_OPTS= --iptables=true \
  --service-account-private-key-file=/etc/kubernetes/ssl/sa.key
  ----------------------------------------
 ```
-
+![image](https://user-images.githubusercontent.com/67575226/106992932-f103c200-67bc-11eb-9b19-8b2ae91bacec.png)
 #### <div id='3.2.4'/>3.2.4. Kubelet 인증 제어
 - 항목 설명
   + Kubelet은 Kubernetes 각 노드에서 실행되는 에이전트이다. Pod에 대해 정의된 YAML 또는 JSON 현태의 PodSpec에 따라 컨테이너를 실행하고 관리한다.
@@ -739,7 +741,7 @@ Environment="DOCKER_OPTS= --iptables=true \
  readOUnlyPort: 0
  ----------------------------------------
 ```
-
+![image](https://user-images.githubusercontent.com/67575226/106992965-05e05580-67bd-11eb-8749-acb298c60a78.png)
 #### <div id='3.2.5'/>3.2.5. Kubelet 권한 제어
 - 항목 설명
   + Kubelet은 기본적으로 Kubernetes Master의 API Server에서 전달되는 요청에 대해 권한 검사 없이 모두 허용한다. 
@@ -762,7 +764,7 @@ Environment="DOCKER_OPTS= --iptables=true \
      mode: Webhook
  ----------------------------------------
 ```
-
+![image](https://user-images.githubusercontent.com/67575226/106993012-1d1f4300-67bd-11eb-8beb-a0ee6f53579f.png)
 #### <div id='3.2.6'/>3.2.6. Container에 대한 보안 프로필 적용
 - 항목 설명
   + AppArmor는 LSM(Linux Security Module)을 사용해 만든 SELinux 대안 프레임워크
@@ -781,6 +783,8 @@ Environment="DOCKER_OPTS= --iptables=true \
  $ kubectl  exec –it nginx-xxxxx -- /bin/bash
  $ cat proc/sysrq-trigger
 ```
+![image](https://user-images.githubusercontent.com/67575226/106980702-03bdcd00-67a4-11eb-89d8-376e4a5a1bd1.png)
+![image](https://user-images.githubusercontent.com/67575226/106980792-2a7c0380-67a4-11eb-8aca-bb79604a18de.png)
 
 ### <div id='3.3'/>3.3. DOCKER_CONTENT_TRUST 값 설정
 
