@@ -715,7 +715,7 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
 
-컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
+컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선 진행되어야 한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
 
 > - 컨테이너 플랫폼 운영자포털 접속 URI :: http://{MASTER_NODE_PUBLIC_IP}:32080 <br>
 {MASTER_NODE_PUBLIC_IP} : 
