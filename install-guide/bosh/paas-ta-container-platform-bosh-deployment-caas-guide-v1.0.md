@@ -36,8 +36,7 @@
  5.2. [Deployment 배포](#5.2)  
  5.2.1. [container-jenkins-broker 배포](#5.2.1)    
  5.3. [Jenkins 서비스 브로커 등록](#5.3)   
-
-6. [CVE 조치사항 적용](#6)     
+    
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -1082,22 +1081,6 @@ broker: container-service-broker
 broker: jenkins-service-broker
   service                     plan                     access   orgs
   container-jenkins-service   jenkins_20GB             all      
-```
-
-## <div id='6'>6. CVE 조치사항 적용  
-#### TCP timestamp responses 비활성화 설정  
-- /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
-```
- $ sudo vi /etc/sysctl.conf
- ----------------------------------------
- ## Add at the bottom
- net.ipv4.tcp_timestamps=0
- ----------------------------------------
- $ sudo reboot
-
- # iptables에 정책 추가
- $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
- $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
 
 ----

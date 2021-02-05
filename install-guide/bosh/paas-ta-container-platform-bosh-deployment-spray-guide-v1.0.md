@@ -27,15 +27,13 @@
     3.5.4. [paas-ta-container-platform-webadmin 배포](#3.5.4)    
     3.5.5. [배포 확인](#3.5.5)    
 
-4. [CVE 조치사항 적용](#4)     
-
-5. [컨테이너 플랫폼 운영자/사용자 포털 회원가입](#5)      
-    5.1. [컨테이너 플랫폼 운영자 포털 회원가입](#5.1)      
-    5.2. [컨테이너 플랫폼 운영자 포털 로그인](#5.2)      
-    5.3. [컨테이너 플랫폼 사용자 포털 회원가입](#5.3)      
-    5.4. [컨테이너 플랫폼 사용자 Namespace/Role 할당](#5.4)      
-    5.5. [컨테이너 플랫폼 사용자 포털 로그인](#5.5)      
-    5.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.6)    
+4. [컨테이너 플랫폼 운영자/사용자 포털 회원가입](#4)      
+    4.1. [컨테이너 플랫폼 운영자 포털 회원가입](#4.1)      
+    4.2. [컨테이너 플랫폼 운영자 포털 로그인](#4.2)      
+    4.3. [컨테이너 플랫폼 사용자 포털 회원가입](#4.3)      
+    4.4. [컨테이너 플랫폼 사용자 Namespace/Role 할당](#4.4)      
+    4.5. [컨테이너 플랫폼 사용자 포털 로그인](#4.5)      
+    4.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#4.6)    
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -656,28 +654,11 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 ```
 
-
-## <div id='4'>4. CVE 조치사항 적용  
-#### TCP timestamp responses 비활성화 설정  
-- /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
-```
- $ sudo vi /etc/sysctl.conf
- ----------------------------------------
- ## Add at the bottom
- net.ipv4.tcp_timestamps=0
- ----------------------------------------
- $ sudo reboot
-
- # iptables에 정책 추가
- $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
- $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
-```
-
-## <div id='5'>5. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
+## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
 
 컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선진행되어야한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
 
-### <div id='5.1'/>5.1. 컨테이너 플랫폼 운영자 포털 회원가입
+### <div id='4.1'/>4.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
 > $ kubectl get namespace 
 ```
@@ -701,17 +682,17 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 # {Kubernetes Cluster API URL} : https://xxx.xxx.xxx.xxx:6443
 # {Kubernetes Cluster Token} : qY3k2xaZpNbw3AJxxxxx......
 ```
-### <div id='5.2'/>5.2. 컨테이너 플랫폼 운영자 포털 로그인
+### <div id='4.2'/>4.2. 컨테이너 플랫폼 운영자 포털 로그인
 - 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 
 
 ![image 006]
 
-### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자 포털 회원가입
+### <div id='4.3'/>4.3. 컨테이너 플랫폼 사용자 포털 회원가입
 - 등록할 사용자 계정정보(사용자 ID, Password, E-mail)를 입력 후 [Register] 버튼을 클릭하여  컨테이너 플랫폼 사용자 포털에 회원가입한다. <br> 사용자 포털은 회원가입 후 즉시 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
 
 ![image 007]
 
-### <div id='5.4'/>5.4. 컨테이너 플랫폼 사용자 Namespace/Role 할당
+### <div id='4.4'/>4.4. 컨테이너 플랫폼 사용자 Namespace/Role 할당
 ## 1) Namespace 관리자 지정
 - Clusters 메뉴 > Namespaces 선택 > 할당 하고자하는 Namespace 명 선택 > 하단 [수정]버튼 클릭
 
@@ -749,12 +730,12 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 ![image 014]
 
 
-### <div id='5.5'/>5.5. 컨테이너 플랫폼 사용자 포털 로그인
+### <div id='4.5'/>4.5. 컨테이너 플랫폼 사용자 포털 로그인
 - 사용자 ID와 비밀번호를 입력후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![image 019]
 
-### <div id='5.6'/>5.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
+### <div id='4.6'/>4.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
   + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
