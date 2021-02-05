@@ -60,7 +60,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 ## <div id='2'>2. 컨테이너 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
-- [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide-5.0-Ravioli/blob/working-5.1/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
+- [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/v5.5.0/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
 - [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
