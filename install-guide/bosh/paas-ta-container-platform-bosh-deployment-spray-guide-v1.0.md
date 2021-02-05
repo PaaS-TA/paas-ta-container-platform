@@ -418,7 +418,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)              
+          value: {MARIADB_USER_PASSWORD}                   
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:

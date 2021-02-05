@@ -423,7 +423,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)          
+          value: {MARIADB_USER_PASSWORD}               
         - name: MARIADB_PORT
           value: "13306"  
       imagePullSecrets:
@@ -604,7 +604,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)    
+          value: {MARIADB_USER_PASSWORD}         
         - name: COMMON_API_ID
           value: admin
         - name: COMMON_API_PASSWORD
@@ -959,7 +959,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # (e.g. PaaS-TA@2020)    
+          value: {MARIADB_USER_PASSWORD}         
         - name: REGISTRY_PORT
           value: "5001"
         - name: MARIADB_PORT
