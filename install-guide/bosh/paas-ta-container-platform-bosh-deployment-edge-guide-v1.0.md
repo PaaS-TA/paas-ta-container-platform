@@ -719,10 +719,10 @@ webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TC
 
 > - 컨테이너 플랫폼 운영자포털 접속 URI :: http://{MASTER_NODE_PUBLIC_IP}:32080 <br>
 {MASTER_NODE_PUBLIC_IP} : 
-[paas-ta-container-platform-webadmin.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.4)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다. <br><br>
+[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다. <br><br>
 > - 컨테이너 플랫폼 사용자포털 접속 URI :: http://{MASTER_NODE_PUBLIC_IP}:32091 <br>
 {MASTER_NODE_PUBLIC_IP} : 
-[paas-ta-container-platform-webuser.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.3)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다.
+[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다.
 
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
