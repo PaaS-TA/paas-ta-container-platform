@@ -703,10 +703,7 @@ service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888
 ```
 $ cf service-brokers
 Getting service brokers as admin...
-
-name   url
 No service brokers found
-
 ```
 
 - 컨테이너 서비스 브로커를 등록한다.
