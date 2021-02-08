@@ -251,7 +251,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ### <div id='2.5'>2.5. 릴리즈 설치
 - 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download)
+  [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download)
   
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
@@ -259,7 +259,7 @@ $ mkdir -p ~/workspace/paasta-5.5.0/release/service
 $ cd ~/workspace/paasta-5.5.0/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/zYjJg9yffxwSbFT/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download
 $ ls ~/workspace/paasta-5.5.0/release/service
   paasta-container-platform-1.0.tgz
 ```
@@ -318,7 +318,7 @@ Private Repository에 이미지 등록을 위해 컨테이너 플랫폼 이미�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
-   [cp-standalone-images.tar](http://45.248.73.44/index.php/s/QZXmkJz582QxsMd/download)  
+   [cp-standalone-images.tar](https://nextcloud.paas-ta.org/index.php/s/QZXmkJz582QxsMd/download)  
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
@@ -326,7 +326,7 @@ $ mkdir -p ~/workspace/paasta-5.5.0/container-platform
 $ cd ~/workspace/paasta-5.5.0/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition http://45.248.73.44/index.php/s/QZXmkJz582QxsMd/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/QZXmkJz582QxsMd/download
 
 $ ls ~/workspace/paasta-5.5.0/container-platform
   cp-standalone-images.tar
