@@ -822,10 +822,10 @@ $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, ht
 
 해당 설정은 PaaS-TA 포털에 컨테이너 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
-1. PaaS-TA Admin 포털에 접속한다.
+1.PaaS-TA Admin 포털에 접속한다.
 ![image 002]
   
-2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 페이지를 접속, 인프라 설정을 클릭 후 CaaS서비스 정보를 입력한다.
+2.왼쪽 네비게이션 바에서 [설정]-[설정정보] 페이지를 접속, 인프라 설정을 클릭 후 CaaS서비스 정보를 입력한다.
 ![image 003] 
   
  
@@ -851,16 +851,16 @@ private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7
 
 ```
 ex)
-- CaaS_Api_Uri : http://<container_service_haproxy_IP>
+- CaaS_Api_Uri : http://<paasta_container_platform_haproxy_IP>
 - CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
 ```
 ![image 004] 
 
 
-3. [운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택한다.
+3.[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택한다.
 ![image 005]
 
-4. 서비스 항목을 'container-service' 로 선택, 공개 항목을 'Y' 로 체크 후 저장한다.
+4.서비스 항목을 'container-service' 로 선택, 공개 항목을 'Y' 로 체크 후 저장한다.
 ![image 006]
 
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
