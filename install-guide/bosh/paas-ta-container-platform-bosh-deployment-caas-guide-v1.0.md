@@ -820,39 +820,24 @@ $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, ht
 
 ### <div id='4.3'>4.3. PaaS-TA 포털에서 컨테이너 서비스 조회 설정
 
- 해당 설정은 PaaS-TA 포털에 컨테이너 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
+해당 설정은 PaaS-TA 포털에 컨테이너 서비스 상의 자원들을 간략하게 조회하기 위한 설정이다.
 
-  1. PaaS-TA Admin 포털에 접속한다.
-
-  ![image 002]
-
-  2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 를 클릭한 후 나타나는 페이지의 오른쪽 상단 [인프라 등록] 버튼을 클릭하여 해당 정보들을 입력한다.
-   - 해당 정보를 입력하기 위해 필요한 값들을 찾는다.
-   > $ bosh -e micro-bosh -d portal-api vms
-    > haproxy의 IP를 찾아 Portal_Api_Uri에 입력한다.
-
+1. PaaS-TA Admin 포털에 접속한다.
+![image 002]
+  
+2. 왼쪽 네비게이션 바에서 [설정]-[설정정보] 페이지를 접속, 인프라 설정을 클릭 후 CaaS서비스 정보를 입력한다.
+![image 003] 
+  
+ 
+- 해당 정보를 입력하기 위해 필요한 값을 찾는다.
+> - CaaS_Api_Uri : <br>$ bosh -e micro-bosh -d paasta-container-platform vms <br>
+       haproxy의 공인 IP를 찾아 CaaS_Api_Uri에 입력한다. <br><br>
+> - CaaS_Authorization : <br> Basic YWRtaW46UGFhUy1UQQ==
+ 
+ 
 ```
-Deployment 'paasta-portal-api'
+$ bosh -e micro-bosh -d paasta-container-platform vms
 
-Instance                                                          Process State  AZ  IPs            VM CID               VM Type        Active
-binary_storage/acfc944b-19b9-487e-a447-c42cb2342f62               running        z6  10.0.201.122   i-0af1de35c9669d11a  portal_small   true
-haproxy/8518a6c5-6ede-409d-8e51-39e8d2ecb39b                      running        z7  10.0.0.122     i-05613be8862607959  small          true
-                                                                                     52.78.144.229
-mariadb/d32412d3-ea66-42af-a714-9ce2af4416a5                      running        z6  10.0.201.121   i-0e6971c85e17575a5  portal_small   true
-paas-ta-portal-api/992a0ca4-7857-4bc7-9e57-edc1d1ad643e           running        z6  10.0.201.125   i-0b2b78182049beec2  portal_medium  true
-paas-ta-portal-common-api/895ffa41-b401-4abb-8316-ae3bc42b3e57    running        z6  10.0.201.126   i-0fa5873ed9092a4f8  portal_small   true
-paas-ta-portal-gateway/107836f5-e07d-446f-bc24-d727a388e16a       running        z6  10.0.201.123   i-067c248baed2d807a  portal_small   true
-paas-ta-portal-log-api/301d0a23-eccc-4565-9ff6-8dac9b113440       running        z6  10.0.201.128   i-045efbc8cd9f32dfd  portal_small   true
-paas-ta-portal-registration/d70189cc-aacb-43da-876f-7fe551797792  running        z6  10.0.201.124   i-0e07cb4f02250316d  portal_small   true
-paas-ta-portal-storage-api/20170f06-6b5b-4421-8238-9cac7a276618   running        z6  10.0.201.127   i-0b0ab24792fd3aa4d  portal_small   true
-
-9 vms
-```
-
-  > $ bosh -e micro-bosh -d paasta-container-platform vms
-    > haproxy의 IP를 찾아 CaaS_Api_Uri에 입력한다.
-
-```
 Deployment 'paasta-container-platform'
 
 Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
@@ -862,27 +847,22 @@ mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5
 private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
 
 3 vms
-
 ```
 
 ```
 ex)
-- NAME : PaaS-TA 5.0 (Openstack)
-- Portal_Api_Uri : http://<portal_haproxy_IP>:2225
-- UAA_Uri : https://api.<CF DOMAIN>
-- Authorization : Basic YWRtaW46b3BlbnBhYXN0YQ==
-- 설명 : PaaS-TA 5.0 install infra
 - CaaS_Api_Uri : http://<container_service_haproxy_IP>
 - CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
 ```
+![image 004] 
 
 
+3. [운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택한다.
+![image 005]
 
-![image 003]
+4. 서비스 항목을 'container-service' 로 선택, 공개 항목을 'Y' 로 체크 후 저장한다.
+![image 006]
 
-[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택 > 서비스 항목을 Container_service로 변경 후 저장한다.
-
-![image 004]
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
 해당 설정은 jenkins 서비스를 이용하기 위한 설정이다.
 
@@ -1083,5 +1063,7 @@ broker: jenkins-service-broker
 ----
 [image 001]:images/cp-001.png
 [image 002]:images/cp-002.png
-[image 003]:images/cp-003.png
-[image 004]:images/cp-004.png
+[image 003]:images/cp-020.png
+[image 004]:images/cp-021.png
+[image 005]:images/cp-022.png
+[image 006]:images/cp-023.png
