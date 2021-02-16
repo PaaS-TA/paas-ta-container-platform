@@ -84,15 +84,15 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> [https://github.com/PaaS-TA/paas-ta-container-platform-deployment](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/v5.5.1)
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
-$ mkdir -p ~/workspace/paasta-5.5.0/deployment/
-$ cd ~/workspace/paasta-5.5.0/deployment/
+$ mkdir -p ~/workspace/paasta-5.5.1/deployment/
+$ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v5.5.1
 
 # Bosh 배포 경로로 이동
 $ cd paas-ta-container-platform-deployment/bosh/
@@ -163,7 +163,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
@@ -235,7 +235,7 @@ private_image_repository_persistent_disk_type: "10GB"                           
 
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
+> $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
 (e.g. {IAAS} :: aws)
 
 ```    
@@ -264,18 +264,18 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
        
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.0/release/service
-$ cd ~/workspace/paasta-5.5.0/release/service
+$ mkdir -p ~/workspace/paasta-5.5.1/release/service
+$ cd ~/workspace/paasta-5.5.1/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download
-$ ls ~/workspace/paasta-5.5.0/release/service
+$ ls ~/workspace/paasta-5.5.1/release/service
   paasta-container-platform-1.0.tgz  
 ```
 
 - 서비스를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh
 $ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
@@ -332,19 +332,19 @@ Private Repository에 이미지 등록을 위해 컨테이너 서비스 이미�
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.0/container-platform
-$ cd ~/workspace/paasta-5.5.0/container-platform
+$ mkdir -p ~/workspace/paasta-5.5.1/container-platform
+$ cd ~/workspace/paasta-5.5.1/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/YGXAwbPonXD9tPk/download
 
-$ ls ~/workspace/paasta-5.5.0/container-platform
+$ ls ~/workspace/paasta-5.5.1/container-platform
   cp-caas-images.tar
 
 # 이미지 다운로드 파일 압축 해제
 $ tar -xvf cp-caas-images.tar
-$ cd ~/workspace/paasta-5.5.0/container-platform/container-service-image
-$ ls ~/workspace/paasta-5.5.0/container-platform/container-service-image
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-image
+$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-image
   container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz  paasta-jenkins.tar.gz
   container-service-api.tar.gz     container-service-common-api.tar.gz  image_upload_caas.sh 
  ```
@@ -383,8 +383,8 @@ PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kuberne
 
 - 컨테이너 플랫폼 yaml 파일 경로이동
 ```
-$ cd ~/workspace/paasta-5.5.0/container-platform/container-service-yaml
-$ ls ~/workspace/paasta-5.5.0/container-platform/container-service-yaml
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
+$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
   container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
   container-service-api.yml     container-service-common-api.yml
 ```
@@ -891,8 +891,8 @@ PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes�
 
 - 컨테이너 플랫폼 yaml 파일 경로이동
 ```
-$ cd ~/workspace/paasta-5.5.0/container-platform/container-service-yaml
-$ ls ~/workspace/paasta-5.5.0/container-platform/container-service-yaml
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
+$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
   container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
   container-service-api.yml     container-service-common-api.yml
 ```

@@ -82,15 +82,15 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> [https://github.com/PaaS-TA/paas-ta-container-platform-deployment](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/v5.5.1)
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
-$ mkdir -p ~/workspace/paasta-5.5.0/deployment/
-$ cd ~/workspace/paasta-5.5.0/deployment/
+$ mkdir -p ~/workspace/paasta-5.5.1/deployment/
+$ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v5.5.1
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -158,7 +158,7 @@ Succeeded
 > 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
+> $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
@@ -229,7 +229,7 @@ private_image_repository_root_directory: "/var/vcap/data/private-image-repositor
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
-> $ vi ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
+> $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 
 ```    
 #!/bin/bash
@@ -243,7 +243,7 @@ export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environm
 bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
     -l manifests/paasta-container-service-vars-{IAAS}.yml \
     -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
-    -o manifests/ops-files/misc/first-time-deploy.yml \   
+    -o manifests/ops-files/misc/first-time-deploy.yml \
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
@@ -255,18 +255,18 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
   
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.0/release/service
-$ cd ~/workspace/paasta-5.5.0/release/service
+$ mkdir -p ~/workspace/paasta-5.5.1/release/service
+$ cd ~/workspace/paasta-5.5.1/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download
-$ ls ~/workspace/paasta-5.5.0/release/service
+$ ls ~/workspace/paasta-5.5.1/release/service
   paasta-container-platform-1.0.tgz
 ```
 
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.0/deployment/paas-ta-container-platform-deployment/bosh  
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh  
 $ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
@@ -322,19 +322,19 @@ Private Repository에 이미지 등록을 위해 컨테이너 플랫폼 이미�
 
 ```
 # 이미지 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.0/container-platform
-$ cd ~/workspace/paasta-5.5.0/container-platform
+$ mkdir -p ~/workspace/paasta-5.5.1/container-platform
+$ cd ~/workspace/paasta-5.5.1/container-platform
 
 # 이미지 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/QZXmkJz582QxsMd/download
 
-$ ls ~/workspace/paasta-5.5.0/container-platform
+$ ls ~/workspace/paasta-5.5.1/container-platform
   cp-standalone-images.tar
 
 # 이미지 다운로드 파일 압축 해제
 $ tar -xvf cp-standalone-images.tar 
-$ cd ~/workspace/paasta-5.5.0/container-platform/container-platform-image
-$ ls ~/workspace/paasta-5.5.0/container-platform/container-platform-image
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-image
+$ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-image
   container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
   container-platform-common-api.tar.gz  container-platform-webuser.tar.gz   
  ```
@@ -389,8 +389,8 @@ taint "node-role.kubernetes.io/master" not found
 + 컨테이너 플랫폼 yaml 파일 
 ```
 # 컨테이너 플랫폼 yaml 파일 경로이동
-$ cd ~/workspace/paasta-5.5.0/container-platform/container-platform-edge-yaml
-$ ls ~/workspace/paasta-5.5.0/container-platform/container-platform-edge-yaml
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
+$ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
   paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
   paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
 ```
