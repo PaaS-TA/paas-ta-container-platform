@@ -711,7 +711,7 @@ No service brokers found
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 브로커 NodePort
->   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+>   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
 ```
 $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31888
 ```
@@ -779,7 +779,7 @@ Context: admin, from client admin
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri  "http://{Worker Node IP}:32091, http://{Worker Node IP}:32091/callback" --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   - <클라이언트 비밀번호> : uaac 클라이언트 secret  
   - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (Kubernetes   Worker Node IP 와 배포된 컨테이너 서비스 대시보드 NodePort)
-    +  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+    +  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
@@ -830,28 +830,16 @@ $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, ht
   
  
 - 해당 정보를 입력하기 위해 필요한 값을 찾는다.
-> - CaaS_Api_Uri : <br>$ bosh -e micro-bosh -d paasta-container-platform vms <br>
-       haproxy의 공인 IP를 찾아 CaaS_Api_Uri에 입력한다. <br><br>
+> - CaaS_Api_Uri : <br> http://{Worker Node IP}:30333 <br>
+                   -  Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 Api NodePort <br>
+                   -  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+                   <br><br>
 > - CaaS_Authorization : <br> Basic YWRtaW46UGFhUy1UQQ==
  
- 
-```
-$ bosh -e micro-bosh -d paasta-container-platform vms
-
-Deployment 'paasta-container-platform'
-
-Instance                                                       Process State  AZ  IPs           VM CID               VM Type  Active
-haproxy/cbd5d103-765d-47e0-ac5b-233a21108c77                   running        z7  10.0.0.122    i-0f49ce7431aaa2901  small    true
-                                                                                  15.164.15.53
-mariadb/448be54d-f2ff-4fc9-8bf1-621eda8e2577                   running        z5  10.0.161.121  i-09b27b184b7aea066  small    true
-private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7  10.0.0.123    i-02ff1da176d1d0a16  small    true
-
-3 vms
-```
 
 ```
 ex)
-- CaaS_Api_Uri : http://<paasta_container_platform_haproxy_IP>
+- CaaS_Api_Uri : http://{Worker Node IP}:30333
 - CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
 ```
 ![image 004] 
@@ -1011,7 +999,7 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 Jenkins 서비스 브로커 NodePort
->   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#344--container-service-broker-%EB%B0%B0%ED%8F%AC)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+>   + Worker Node IP : [container-jenkins-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#5.2.1)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
 
 ```
 $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31787
