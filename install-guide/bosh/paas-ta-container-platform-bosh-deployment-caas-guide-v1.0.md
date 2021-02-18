@@ -390,7 +390,7 @@ $ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
 ```
 <br>
 
-> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
+> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
 > - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
 > - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
 
