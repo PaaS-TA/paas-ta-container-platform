@@ -439,7 +439,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}                            
+          value: {MARIADB_USER_PASSWORD}                # paasta-container-service-vars-{IAAS}.yml의 mariadb_admin_user_password와 동일한 값 입력(2.4. Deployment 파일 수정 참고)            
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"

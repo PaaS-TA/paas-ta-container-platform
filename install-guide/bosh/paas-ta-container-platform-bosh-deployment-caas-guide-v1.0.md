@@ -373,7 +373,7 @@ $ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5
 
 ### <div id='3.4'>3.4. Deployment 배포
 PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kubernetes에 아래의 컨테이너 서비스 Deployment가 미리 배포되어 있어야 한다.
-아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다.
+아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다. Worker Node가 여러개인 경우 그중 한 Worker Node의 Host Name으로 설정한다. ex) 1번째 Worker Node의 Host Name     
 
 ```
 # {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
@@ -423,7 +423,7 @@ spec:
         - name: MARIADB_USER_ID
           value: {MARIADB_USER_ID}           # (e.g. cp-admin)
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}               
+          value: {MARIADB_USER_PASSWORD}     # paasta-container-service-vars-{IAAS}.yml의 mariadb_admin_user_password와 동일한 값 입력(2.4. Deployment 파일 수정 참고)                          
         - name: MARIADB_PORT
           value: "13306"  
       imagePullSecrets:
