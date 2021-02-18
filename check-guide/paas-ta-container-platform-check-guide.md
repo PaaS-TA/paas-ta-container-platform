@@ -738,7 +738,7 @@ Environment="DOCKER_OPTS= --iptables=true \
     anonymous:
         enabled: false
  
- readOUnlyPort: 0
+ readOnlyPort: 0
  ----------------------------------------
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106992965-05e05580-67bd-11eb-8749-acb298c60a78.png)
