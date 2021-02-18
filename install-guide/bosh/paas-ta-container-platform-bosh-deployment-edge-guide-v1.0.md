@@ -384,16 +384,20 @@ taint "node-role.kubernetes.io/master" not found
 
 ### <div id='3.6'>3.6. Deployment 배포
 
-#### <div id='3.6.1'>3.6.1. paas-ta-container-platform-common-api 배포
-
-+ 컨테이너 플랫폼 yaml 파일 
++ 컨테이너 플랫폼 yaml 파일 경로이동
 ```
-# 컨테이너 플랫폼 yaml 파일 경로이동
 $ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
 $ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
   paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
   paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
 ```
+
+> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#2.4)
+> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
+> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+
+
+#### <div id='3.6.1'>3.6.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
 
@@ -437,9 +441,9 @@ spec:
         - name: CONTAINER_PLATFORM_API_URL
           value: "{MASTER_NODE_PUBLIC_IP}:30333"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}                      # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}                      
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}                # paasta-container-service-vars-{IAAS}.yml의 mariadb_admin_user_password와 동일한 값 입력(2.4. Deployment 파일 수정 참고)            
+          value: {MARIADB_USER_PASSWORD}                           
       tolerations:
       - key: "node-role.kubernetes.io"
         operator: "Equal"

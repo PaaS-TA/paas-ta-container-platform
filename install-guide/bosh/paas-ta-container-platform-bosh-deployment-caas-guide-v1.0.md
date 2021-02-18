@@ -388,6 +388,12 @@ $ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
   container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
   container-service-api.yml     container-service-common-api.yml
 ```
+<br>
+
+> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
+> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
+> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+
 
 #### <div id='3.4.1'>3.4.1. container-service-common-api 배포
 
@@ -421,9 +427,9 @@ spec:
         - name: HAPROXY_IP
           value: {HAProxy_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}           
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # paasta-container-service-vars-{IAAS}.yml의 mariadb_admin_user_password와 동일한 값 입력(2.4. Deployment 파일 수정 참고)                          
+          value: {MARIADB_USER_PASSWORD}                              
         - name: MARIADB_PORT
           value: "13306"  
       imagePullSecrets:
@@ -602,7 +608,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}           
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}         
         - name: COMMON_API_ID
@@ -884,6 +890,13 @@ $ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
   container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
   container-service-api.yml     container-service-common-api.yml
 ```
+
+<br>
+
+> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
+> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
+> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+
 #### <div id='5.2.1'>5.2.1. container-jenkins-broker 배포
 
 > $ vi container-jenkins-broker.yml
@@ -922,7 +935,7 @@ spec:
         - name: HAPROXY_IP
           value: {HAPROXY_IP}
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}          
         - name: MARIADB_USER_PASSWORD
           value: {MARIADB_USER_PASSWORD}         
         - name: REGISTRY_PORT

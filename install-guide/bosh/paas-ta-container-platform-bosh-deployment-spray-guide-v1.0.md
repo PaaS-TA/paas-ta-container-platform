@@ -382,6 +382,11 @@ $ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-standalone-y
   paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
 ```
 
+> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.0.md#2.4)
+> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
+> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+
+
 #### <div id='3.5.1'>3.5.1. paas-ta-container-platform-common-api 배포
 
 > vi paas-ta-container-platform-common-api.yml
@@ -416,9 +421,9 @@ spec:
         - name: CONTAINER_PLATFORM_API_URL
           value: "api-deployment.default.svc.cluster.local:3333"  
         - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           # (e.g. cp-admin)
+          value: {MARIADB_USER_ID}           
         - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}     # paasta-container-service-vars-{IAAS}.yml의 mariadb_admin_user_password와 동일한 값 입력(2.4. Deployment 파일 수정 참고)           
+          value: {MARIADB_USER_PASSWORD}              
       imagePullSecrets:
         - name: cp-secret
       nodeSelector:
