@@ -991,8 +991,8 @@ jenkins-broker-deployment-7f84f69cf8-wgzbv       1/1     Running   0          2m
 
 #Service 배포 정상 확인
 $ kubectl get svc
-NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-jenkins-broker-deployment       NodePort    10.233.9.92     <none>        8787:31787/TCP   2m49s
+NAME                            TYPE        CLUSTER-IP          EXTERNAL-IP   PORT(S)          AGE
+jenkins-broker-deployment       NodePort    xxx.xxx.xxx.xxx     <none>        8787:31787/TCP   2m49s
 
 ```
 
