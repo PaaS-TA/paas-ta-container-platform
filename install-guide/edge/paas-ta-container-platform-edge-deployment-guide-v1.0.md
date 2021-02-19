@@ -538,7 +538,7 @@ Cloud Side, Edge Side에서 KubeEdge를 중지한다. 필수구성요소는 삭�
 ## <div id='5'> 5. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
 ### <div id='5.1'> 5.1. Cluster Role 운영자 생성 및 Token 획득
-Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
+KubeEdge 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
 
 - Service Account를 생성한다.
 ```
