@@ -18,17 +18,19 @@
   2.12 [docker.socket audit 설정](#2.12)    
   2.13 [/etc/default/docker audit 설정](#2.13)    
   2.14 [default bridge를 통한 컨테이너 간 네티워크 트래픽 제한](#2.14)       
+  2.15 [DOCKER_CONTENT_TRUST 값 설정](#2.15)      
 
-3. [CVE 진단항목](#3)  
-  3.1 [TCP timestamp responses 비활성화 설정](#3.1)          
-  3.2 [Docker 취약사항 대체용 Kubernetes 취약점 조치](#3.2)    
-  3.2.1 [API서버 인증제어](#3.2.1)   
-  3.2.2 [API서버 권한제어](#3.2.2)   
-  3.2.3 [Controller Manager 인증제어](#3.2.3)   
-  3.2.4 [Kubelet 인증 제어](#3.2.4)   
-  3.2.5 [Kubelet 권한 제어](#3.2.5)   
-  3.2.6 [Container에 대한 보안 프로필 적용](#3.2.6)   
-  3.3 [DOCKER_CONTENT_TRUST 값 설정](#3.3)  
+3. [CCE 진단항목(Docker 취약사항 대체용 Kubernetes 취약점 조치)](#3)      
+  3.1 [API서버 인증제어](#3.1)   
+  3.2 [API서버 권한제어](#3.2)   
+  3.3 [Controller Manager 인증제어](#3.3)   
+  3.4 [Kubelet 인증 제어](#3.4)   
+  3.5 [Kubelet 권한 제어](#3.5)   
+  3.6 [Container에 대한 보안 프로필 적용](#3.6)       
+
+4. [CVE 진단항목](#4)  
+  4.1 [TCP timestamp responses 비활성화 설정](#4.1)          
+  
 
 ## <div id='1'/>1. 문서 개요
 ### <div id='1.1'/>1.1. 목적
@@ -594,14 +596,12 @@ Environment="DOCKER_OPTS= --iptables=true \
 # systemctl daemon-reload
 # systemctl restart docker
 ```
+---
 
-<br>
-
-##  <div id='3'/>3. CVE 진단항목
-### <div id='3.1'/> 3.1. TCP timestamp responses 비활성화 설정
+### <div id='2.15'/>2.15. DOCKER_CONTENT_TRUST 값 설정
 
 - 항목 설명
-  + TCP 타임스탬프 응답을 사용하면 원격 호스트 가동 시간의 근사치를 계산하고 향후 공격 시 도움을 줄 수 있다. 또한, 일부 운영 체제의 경우 해당 TCP 타임스탬프의 동작을 바탕으로 핑거프린팅될 수 있다.
+  + Docker의 이미지 변조 제어를 한다. 
 
 - 조치대상
 
@@ -614,23 +614,20 @@ Environment="DOCKER_OPTS= --iptables=true \
 || Private-image-repository | X |
 
 - 조치방법
-  + /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
+  + /etc/bash.bashrc 파일 설정 변경 및 적용
+  + DOCKER_CONTENT_TRUST항목을 1로 지정한다.
 ```
- $ sudo vi /etc/sysctl.conf
- ----------------------------------------
- ## Add at the bottom
- net.ipv4.tcp_timestamps=0
- ----------------------------------------
- $ sudo reboot
-
- #  iptables에 정책 추가
- $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
- $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
+# vi /etc/bash.bashrc
+----------------------------------------
+## Add at the bottom
+export DOCKER_CONTENT_TRUST=1
+----------------------------------------
+# source /etc/bash.bashrc
 ```
 
 <br>
 
-### <div id='3.2'/> 3.2. Docker 취약사항 대체용 Kubernetes 취약점 조치
+### <div id='3'/> 3. CCE 진단항목(Docker 취약사항 대체용 Kubernetes 취약점 조치)
 - 조치대상
 
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
@@ -638,7 +635,7 @@ Environment="DOCKER_OPTS= --iptables=true \
 | Cluster | Master | O |
 || Worker | O |
 
-#### <div id='3.2.1'/>3.2.1. API서버 인증제어
+#### <div id='3.1'/>3.1. API서버 인증제어
 - 항목 설명
   + API Server는 Kubernetes 요소들의 허브로 HTTP, HTTPS 기반의 REST API를 제공 한다. 다른 모든 구성요소를 상호 작용할 수 있도록 연결하는 역할을 한다.
   + API Server에 대한 인증제어를 검증한다. 
@@ -669,7 +666,7 @@ Environment="DOCKER_OPTS= --iptables=true \
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106992759-966a6600-67bc-11eb-8d7a-e8a218613d70.png)
 
-#### <div id='3.2.2'/>3.2.2. API서버 권한제어
+#### <div id='3.2'/>3.2. API서버 권한제어
 - 항목 설명
   + Kubernetes는 API Server를 통해 정책에 따라 요청에 대한 승인을 수행한다.
   + API서버 권한제어를 검증한다.
@@ -691,7 +688,7 @@ Environment="DOCKER_OPTS= --iptables=true \
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106992884-d03b6c80-67bc-11eb-9a76-b09b17fe57c9.png)
 
-#### <div id='3.2.3'/>3.2.3. Controller Manager 인증제어
+#### <div id='3.3'/>3.3. Controller Manager 인증제어
 - 항목 설명
   + Kubernetes에서 Controller는 API Server를 통해 클러스터의 공유 상태를 감시한다.(현재 상태를 원하는 상태로 이동하려고 변경하는 제어 루프)
   + Controller Manger 인증제어를 검증한다.
@@ -717,7 +714,8 @@ Environment="DOCKER_OPTS= --iptables=true \
  ----------------------------------------
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106992932-f103c200-67bc-11eb-9b19-8b2ae91bacec.png)
-#### <div id='3.2.4'/>3.2.4. Kubelet 인증 제어
+
+#### <div id='3.4'/>3.4. Kubelet 인증 제어
 - 항목 설명
   + Kubelet은 Kubernetes 각 노드에서 실행되는 에이전트이다. Pod에 대해 정의된 YAML 또는 JSON 현태의 PodSpec에 따라 컨테이너를 실행하고 관리한다.
   + Kubelet 인증 제어를 검증한다.
@@ -742,7 +740,8 @@ Environment="DOCKER_OPTS= --iptables=true \
  ----------------------------------------
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106992965-05e05580-67bd-11eb-8749-acb298c60a78.png)
-#### <div id='3.2.5'/>3.2.5. Kubelet 권한 제어
+
+#### <div id='3.5'/>3.5. Kubelet 권한 제어
 - 항목 설명
   + Kubelet은 기본적으로 Kubernetes Master의 API Server에서 전달되는 요청에 대해 권한 검사 없이 모두 허용한다. 
   + 설정 변경을 통해 권한 검증을 수행한다.
@@ -765,7 +764,8 @@ Environment="DOCKER_OPTS= --iptables=true \
  ----------------------------------------
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106993012-1d1f4300-67bd-11eb-8beb-a0ee6f53579f.png)
-#### <div id='3.2.6'/>3.2.6. Container에 대한 보안 프로필 적용
+
+#### <div id='3.6'/>3.6. Container에 대한 보안 프로필 적용
 - 항목 설명
   + AppArmor는 LSM(Linux Security Module)을 사용해 만든 SELinux 대안 프레임워크
   + 호스트 운영체제에서 실행되는 프로세스의 기능을 제한하는데 사용할 수 있는 Linux 커널 보안 모듈
@@ -786,10 +786,13 @@ Environment="DOCKER_OPTS= --iptables=true \
 ![image](https://user-images.githubusercontent.com/67575226/106980702-03bdcd00-67a4-11eb-89d8-376e4a5a1bd1.png)
 ![image](https://user-images.githubusercontent.com/67575226/106980792-2a7c0380-67a4-11eb-8aca-bb79604a18de.png)
 
-### <div id='3.3'/>3.3. DOCKER_CONTENT_TRUST 값 설정
+<br>
+
+##  <div id='4'/>4. CVE 진단항목
+### <div id='4.1'/> 4.1. TCP timestamp responses 비활성화 설정
 
 - 항목 설명
-  + Docker의 이미지 변조 제어를 한다. 
+  + TCP 타임스탬프 응답을 사용하면 원격 호스트 가동 시간의 근사치를 계산하고 향후 공격 시 도움을 줄 수 있다. 또한, 일부 운영 체제의 경우 해당 TCP 타임스탬프의 동작을 바탕으로 핑거프린팅될 수 있다.
 
 - 조치대상
 
@@ -802,13 +805,16 @@ Environment="DOCKER_OPTS= --iptables=true \
 || Private-image-repository | X |
 
 - 조치방법
-  + /etc/bash.bashrc 파일 설정 변경 및 적용
-  + DOCKER_CONTENT_TRUST항목을 1로 지정한다.
+  + /etc/sysctl.conf 파일 설정 변경, iptables에 정책 추가
 ```
-# vi /etc/bash.bashrc
-----------------------------------------
-## Add at the bottom
-export DOCKER_CONTENT_TRUST=1
-----------------------------------------
-# source /etc/bash.bashrc
+ $ sudo vi /etc/sysctl.conf
+ ----------------------------------------
+ ## Add at the bottom
+ net.ipv4.tcp_timestamps=0
+ ----------------------------------------
+ $ sudo reboot
+
+ #  iptables에 정책 추가
+ $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
+ $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
