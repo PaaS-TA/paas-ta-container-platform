@@ -630,10 +630,10 @@ export DOCKER_CONTENT_TRUST=1
 ### <div id='3'/> 3. CCE 진단항목(Docker 취약사항 대체용 Kubernetes 취약점 조치)
 - 조치대상
 
-| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> | <center>적용 범위</center>
 | :--- | :--- | :---: |
-| Cluster | Master | O |
-|| Worker | O |
+| Cluster | Master | O | O |
+|| Worker | X | O |
 
 #### <div id='3.1'/>3.1. API서버 인증제어
 - 항목 설명
@@ -646,6 +646,7 @@ export DOCKER_CONTENT_TRUST=1
   + root가 아닌 user로 컨테이너 실행
 
 - 조치방법
+  + kube-apiserver.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -677,6 +678,7 @@ export DOCKER_CONTENT_TRUST=1
   + root가 아닌 user로 컨테이너 실행
 
 - 조치방법
+  + kube-apiserver.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
@@ -699,6 +701,7 @@ export DOCKER_CONTENT_TRUST=1
   + root가 아닌 user로 컨테이너 실행
 
 - 조치방법
+  + kube-controller-manager.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /etc/kubernetes/manifests/kube-controller-manager.yaml 파일 수정
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-controller-manager.yaml
@@ -726,6 +729,7 @@ export DOCKER_CONTENT_TRUST=1
   + root가 아닌 user로 컨테이너 실행
 
 - 조치방법
+  + config.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /var/lib/kubelet/config.yaml 파일 수정
 ```
  $ sudo vi /var/lib/kubelet/config.yaml
@@ -753,6 +757,7 @@ export DOCKER_CONTENT_TRUST=1
 
 
 - 조치방법
+  + config.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /var/lib/kubelet/config.yaml 파일 수정
 ```
  $ sudo vi /var/lib/kubelet/config.yaml
