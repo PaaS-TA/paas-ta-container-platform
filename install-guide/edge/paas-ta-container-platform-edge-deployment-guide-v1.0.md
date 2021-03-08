@@ -121,6 +121,14 @@ $ sudo add-apt-repository \
 - 설치 가능한 Docker 버전 정보를 확인한다.
 ```
 $ apt-cache madison docker-ce
+ docker-ce | 5:20.10.5~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:20.10.4~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:20.10.3~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:20.10.2~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:20.10.1~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:20.10.0~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:19.03.15~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:19.03.14~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
  docker-ce | 5:19.03.13~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
  docker-ce | 5:19.03.12~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
  docker-ce | 5:19.03.11~3-0~ubuntu-bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
@@ -154,7 +162,7 @@ $ apt-cache madison docker-ce
 
 - Docker 설치를 진행한다.
 ```
-# {VERSION_STRING} : Version 정보. (ex : 5:19.03.12~3-0~ubuntu-bionic)
+# {VERSION_STRING} : Version 정보. (ex : 5:20.10.2~3-0~ubuntu-bionic)
 $ sudo apt-get install -y docker-ce={VERSION_STRING} docker-ce-cli={VERSION_STRING} containerd.io
 ```
 
