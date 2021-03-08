@@ -631,7 +631,7 @@ export DOCKER_CONTENT_TRUST=1
 - 조치대상
 
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> | <center>적용 범위</center> |
-| :--- | :--- | :---: |
+| :--- | :--- | :---: | :---: |
 | Cluster | Master | O | O |
 || Worker | X | O |
 
