@@ -17,8 +17,9 @@
   2.11 [docker.service audit 설정](#2.11)    
   2.12 [docker.socket audit 설정](#2.12)    
   2.13 [/etc/default/docker audit 설정](#2.13)    
-  2.14 [default bridge를 통한 컨테이너 간 네티워크 트래픽 제한](#2.14)       
-  2.15 [DOCKER_CONTENT_TRUST 값 설정](#2.15)      
+  2.14 [default bridge를 통한 컨테이너 간 네티워크 트래픽 제한](#2.14)         
+  2.15 [DOCKER_CONTENT_TRUST 값 설정](#2.15)     
+  2.16 [패스워드 최대 사용 기간 설정](#2.16)   
 
 3. [CCE 진단항목(Docker 취약사항 대체용 Kubernetes 취약점 조치)](#3)      
   3.1 [API서버 인증제어](#3.1)   
@@ -625,6 +626,63 @@ export DOCKER_CONTENT_TRUST=1
 # source /etc/bash.bashrc
 ```
 
+### <div id='2.16'/>2.16. 패스워드 최대 사용 기간 설정
+
+- 항목 설명
+  + 패스워드 최대 사용기간을 설정하지 않은 경우 비인가자의 각종 공격(무작위 대입 공격, 사전 대입 공격 등)을 시도할 수 있는 기간 제한이 없으므로 공격자 입장에서는 장기적인 공격을 시행할 수 있어 시행한 기간에 비례하여 사용자 패스워드가 유출될 수 있는 확률이 증가한다.
+
+- 조치대상
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+| Bosh | MariaDB | X |
+|| HAProxy | X |
+|| Private-image-repository | X |
+
+- 진단방법
+  + /etc/login.defs 파일에서 패스워드 최대 사용 기간의 설정 값 확인  
+  + 각 계정별 설정 값 확인
+```
+# cat /etc/login.defs | grep PASS_MAX_DAYS
+
+## <계정명> : ex) root, ubuntu
+# chage -l <계정명>
+```
+
+- 조치방법  
+  + /etc/login.defs 파일 설정 변경 
+  + 각 계정별 설정 변경
+```
+1) /etc/login.defs 파일 설정 변경 
+# vim /etc/login.defs
+
+[현황]
+PASS_MAX_DAYS     99999
+
+[조치]
+PASS_MAX_DAYS     90
+--------------------------
+2) 각 계정별 설정 변경
+## <계정명> : ex) root, ubuntu
+# chage -M 90 <계정명> 
+
+[현황]
+root
+Maximum number of days between password change          : 99999
+
+ubuntu
+Maximum number of days between password change          : 99999
+
+[조치]
+root
+Maximum number of days between password change          : 90
+
+ubuntu
+Maximum number of days between password change          : 90
+```
+
 <br>
 
 ### <div id='3'/> 3. CCE 진단항목(Docker 취약사항 대체용 Kubernetes 취약점 조치)
@@ -646,8 +704,9 @@ export DOCKER_CONTENT_TRUST=1
   + root가 아닌 user로 컨테이너 실행
 
 - 조치방법
-  + kube-apiserver.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
-  + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
+  + kube-apiserver.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.  
+  + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정  
+  + 파일 내에 아래 항목이 존재하면 설정 값 변경, 존재하지 않으면 설정 값 추가
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 
@@ -680,6 +739,7 @@ export DOCKER_CONTENT_TRUST=1
 - 조치방법
   + kube-apiserver.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /etc/kubernetes/manifests/kube-apiserver.yaml 파일 수정
+  + 파일 내에 아래 항목이 존재하면 설정 값 변경, 존재하지 않으면 설정 값 추가
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 
@@ -703,6 +763,7 @@ export DOCKER_CONTENT_TRUST=1
 - 조치방법
   + kube-controller-manager.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /etc/kubernetes/manifests/kube-controller-manager.yaml 파일 수정
+  + 파일 내에 아래 항목이 존재하면 설정 값 변경, 존재하지 않으면 설정 값 추가
 ```
  $ sudo vi /etc/kubernetes/manifests/kube-controller-manager.yaml
 
@@ -731,6 +792,7 @@ export DOCKER_CONTENT_TRUST=1
 - 조치방법
   + config.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /var/lib/kubelet/config.yaml 파일 수정
+  + 파일 내에 아래 항목이 존재하면 설정 값 변경, 존재하지 않으면 설정 값 추가
 ```
  $ sudo vi /var/lib/kubelet/config.yaml
 
@@ -759,6 +821,7 @@ export DOCKER_CONTENT_TRUST=1
 - 조치방법
   + config.yaml 파일은 Master에만 있기 때문에 Master에 CCE진단 적용을 하면 전체 Cluster에 보안점검이 적용 된다.
   + /var/lib/kubelet/config.yaml 파일 수정
+  + 파일 내에 아래 항목이 존재하면 설정 값 변경, 존재하지 않으면 설정 값 추가
 ```
  $ sudo vi /var/lib/kubelet/config.yaml
 
