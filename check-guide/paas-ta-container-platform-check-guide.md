@@ -566,8 +566,8 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM Name}
 
 | <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
 | :--- | :--- | :---: |
-| Cluster | Master | O |
-|| Worker | O |
+| Cluster | Master(Cloudcore) | O |
+|| Worker(EdgeCore) | O |
 | Bosh | MariaDB | X |
 || HAProxy | X |
 || Private-image-repository | X |   
@@ -578,7 +578,7 @@ $ bosh -e <bosh_name> -d paasta-container-platform ssh {Instance VM Name}
 $ docker network ls --quiet | xargs docker network inspect --format "{{ .Name}}: {{.Options }}"
 ```
 
-- 조치방법
+- 조치방법 (단독 배포)
   + --icc=false 옵션 추가
 ```
 # vi /etc/systemd/system/docker.service.d/docker-options.conf
@@ -592,6 +592,19 @@ Environment="DOCKER_OPTS= --iptables=true \
  \
 --data-root=/var/lib/docker \
 --log-opt max-size=50m --log-opt max-file=5 \
+
+# 도커 daemon reload 및 재시작
+# systemctl daemon-reload
+# systemctl restart docker
+```
+
+- 조치방법 (Edge 배포)
+  + "icc":false 추가
+```
+# vi /etc/docker/daemon.json
+{
+        "icc":false
+}
 
 # 도커 daemon reload 및 재시작
 # systemctl daemon-reload
