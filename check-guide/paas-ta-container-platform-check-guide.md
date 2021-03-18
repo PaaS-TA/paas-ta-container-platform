@@ -27,7 +27,8 @@
   3.3 [Controller Manager 인증제어](#3.3)   
   3.4 [Kubelet 인증 제어](#3.4)   
   3.5 [Kubelet 권한 제어](#3.5)   
-  3.6 [Container에 대한 보안 프로필 적용](#3.6)       
+  3.6 [Container에 대한 보안 프로필 적용](#3.6)
+  3.7 [도커의 default bridge docker0 사용 제한](#3.7)  
 
 4. [CVE 진단항목](#4)  
   4.1 [TCP timestamp responses 비활성화 설정](#4.1)          
@@ -866,6 +867,66 @@ Maximum number of days between password change          : 90
 ```
 ![image](https://user-images.githubusercontent.com/67575226/106980702-03bdcd00-67a4-11eb-89d8-376e4a5a1bd1.png)
 ![image](https://user-images.githubusercontent.com/67575226/106980792-2a7c0380-67a4-11eb-8aca-bb79604a18de.png)
+
+#### <div id='3.7'/>3.7. 도커의 default bridge docker0 사용 제한
+- 항목 설명
+  + Docker는 브리지 모드에서 생성된 가상 인터페이스를 docker0라는 공통 브리지에 연결
+  + 이 네트워크 모델은 필터링이 적용되지 않기 때문에 ARP Spoofing 및 MAC Fooling 등의 공격에 취약
+
+```
+ ## brctl 설치 
+ $ sudo apt install bridge-utils
+
+ $ brctl show
+ bridge name            bridge id                STP enabled        interfaces
+ docker0                8000.024282e2a076        no
+
+ ## Calico CNI Plugin 사용, Pod 배포 시 calixxxxxxxxxx 로 interface가 할당된다.
+ $ ifconfig
+ cali3ac876a583a: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 133680  bytes 11057977 (11.0 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 140796  bytes 50714234 (50.7 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+ cali9cf2cacc98e: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 94527  bytes 8035447 (8.0 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 113394  bytes 102260306 (102.2 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+ ...생략...
+ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 02:42:61:c1:df:0b  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+ ...생략...
+
+ ## docker0 Bridge Network 삭제
+ $ sudo vi /etc/docker/daemon.json
+ {
+        "bridge": "none"
+ }
+
+ ## 도커 daemon reload 및 재시작
+ $ sudo systemctl daemon-reload
+ $ sudo systemctl restart docker
+
+ ## 도커 network 확인
+ $ sudo docker network ls
+ NETWORK ID     NAME      DRIVER    SCOPE
+ ec24cb1c3ae4   host      host      local
+ 58219ab61fba   none      null      local
+```
+![image](https://user-images.githubusercontent.com/67575226/106980702-03bdcd00-67a4-11eb-89d8-376e4a5a1bd1.png)
+![image](https://user-images.githubusercontent.com/67575226/106980792-2a7c0380-67a4-11eb-8aca-bb79604a18de.png)
+
 
 <br>
 
