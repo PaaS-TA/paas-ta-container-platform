@@ -27,7 +27,7 @@
   3.3 [Controller Manager 인증제어](#3.3)   
   3.4 [Kubelet 인증 제어](#3.4)   
   3.5 [Kubelet 권한 제어](#3.5)   
-  3.6 [Container에 대한 보안 프로필 적용](#3.6)
+  3.6 [Container에 대한 보안 프로필 적용](#3.6)    
   3.7 [도커의 default bridge docker0 사용 제한](#3.7)  
 
 4. [CVE 진단항목](#4)  
