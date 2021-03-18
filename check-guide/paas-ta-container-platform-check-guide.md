@@ -703,43 +703,55 @@ Maximum number of days between password change          : 90
   + 이 네트워크 모델은 필터링이 적용되지 않기 때문에 ARP Spoofing 및 MAC Flooding 등의 공격에 취약
 
 - 조치방법  
+  + Docker0 Bridge Network가 설정된 상태에서 리소스 배포 후 docker0 bridge에 연결이 된다면 docker0 bridge를 삭제하고 운영하는 것을 권장
+
+1. Docker0 Bridge Network가 사용 되고 있는 상태(삭제 전 예시)
 ```
-## brctl 설치 (bridge 사용 확인을 위해 bridge-utils 패키지 설치)
+## bridge 사용 확인을 위해 bridge-utils 패키지 설치
 $ sudo apt install bridge-utils
-```
-  + 1) Docker0 Bridge Network가 사용 되고 있는 상태(삭제 전 예시)
-```
-## Network Brdige 확인
+
+## Network Brdige 확인 
+$ brctl show
+bridge name            bridge id                STP enabled        interfaces
+docker0                8000.024282e2a076        no
+
+## Pod 배포
+$ kubectl apply -f {POD_YAML_FILE}
+$ kubectl get pods
+NAME                                   READY   STATUS    RESTARTS   AGE
+nginx-559d75d76b-d6p84                 1/1     Running   0          11m
+
+## Pod를 배포 하여도 interfaces를 보면 docker0 bridge에 아무것도 붙지 않는 것을 확인 할 수 있다.
 $ brctl show
 bridge name            bridge id                STP enabled        interfaces
 docker0                8000.024282e2a076        no
 
 ## Calico CNI Plugin 사용, Pod 배포 시 calixxxxxxxxxx 로 interface가 할당된다.
-## docker0 network bridge가 사용 되고 있다.
+## docker0 network bridge가 사용 되고 있는 것을 확인할 수 있다.
 $ ifconfig
-cali3ac876a583a: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
-       ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
-       RX packets 133680  bytes 11057977 (11.0 MB)
-       RX errors 0  dropped 0  overruns 0  frame 0
-       TX packets 140796  bytes 50714234 (50.7 MB)
-       TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+cali57a63d8e86c: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 960  bytes 81389 (81.3 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1035  bytes 536155 (536.1 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-cali9cf2cacc98e: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
-       ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
-       RX packets 94527  bytes 8035447 (8.0 MB)
-       RX errors 0  dropped 0  overruns 0  frame 0
-       TX packets 113394  bytes 102260306 (102.2 MB)
-       TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+cali76e9dbd11dd: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 1858  bytes 159032 (159.0 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1899  bytes 291632 (291.6 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ...생략...
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
-       inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-       ether 02:42:61:c1:df:0b  txqueuelen 0  (Ethernet)
-       RX packets 0  bytes 0 (0.0 B)
-       RX errors 0  dropped 0  overruns 0  frame 0
-       TX packets 0  bytes 0 (0.0 B)
-       TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 02:42:25:66:af:b5  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ...생략...
 
 ## 도커 network 확인
@@ -749,7 +761,7 @@ NETWORK ID     NAME      DRIVER    SCOPE
 ec24cb1c3ae4   host      host      local
 58219ab61fba   none      null      local
 ```
-  + 2) Docker0 Bridge Network 삭제 (삭제 후 예시)
+2. Docker0 Bridge Network 삭제 (삭제 후 예시)
 ```
 ##  Docker0 Bridge Network 를 삭제하기 위한 네트워크 설정
 $ sudo vi /etc/docker/daemon.json
@@ -761,27 +773,38 @@ $ sudo vi /etc/docker/daemon.json
 $ sudo systemctl daemon-reload
 $ sudo systemctl restart docker
 
-## Network Brdige 확인
+## Network Brdige 확인 
+$ brctl show
+bridge name            bridge id                STP enabled        interfaces
+
+## Pod 배포
+$ kubectl apply -f {POD_YAML_FILE}
+$ kubectl get pods
+NAME                                   READY   STATUS    RESTARTS   AGE
+nginx-559d75d76b-d6p84                 1/1     Running   0          13m
+nginx2-559d75d76b-t24tg                1/1     Running   0          15s
+
+## Pod 배포 후 Network Brdige 재확인 
 $ brctl show
 bridge name            bridge id                STP enabled        interfaces
 
 ## docker0 bridge가 사라진 것을 볼 수 있다.
 $ ifconfig
-cali3ac876a583a: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
-       ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
-       RX packets 133680  bytes 11057977 (11.0 MB)
-       RX errors 0  dropped 0  overruns 0  frame 0
-       TX packets 140796  bytes 50714234 (50.7 MB)
-       TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+cali57a63d8e86c: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 203  bytes 19527 (19.5 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 244  bytes 245060 (245.0 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-cali9cf2cacc98e: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-       inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
-       ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
-       RX packets 94527  bytes 8035447 (8.0 MB)
-       RX errors 0  dropped 0  overruns 0  frame 0
-       TX packets 113394  bytes 102260306 (102.2 MB)
-       TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+cali76e9dbd11dd: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::ecee:eeff:feee:eeee  prefixlen 64  scopeid 0x20<link>
+        ether ee:ee:ee:ee:ee:ee  txqueuelen 0  (Ethernet)
+        RX packets 263  bytes 26006 (26.0 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 264  bytes 92832 (92.8 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ...생략...
 
 ## 도커 network 확인
