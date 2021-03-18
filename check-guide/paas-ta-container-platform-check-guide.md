@@ -703,7 +703,8 @@ Maximum number of days between password change          : 90
   + 이 네트워크 모델은 필터링이 적용되지 않기 때문에 ARP Spoofing 및 MAC Flooding 등의 공격에 취약
 
 - 조치방법  
-  + Docker0 Bridge Network가 설정된 상태에서 리소스 배포 후 docker0 bridge에 연결이 된다면 docker0 bridge를 삭제하고 운영하는 것을 권장
+  + kubernetes는 CNI를 이용한 network ovelay를 통해 pod간 네트워킹을 구성하기에 docker0 bridge는 사용되지 않음. (1번 사항 참조) 
+  + 운영사항을 고려한 brigde제거 방법 (2번 사항 참조)  
 
 1. Docker0 Bridge Network가 사용 되고 있는 상태(삭제 전 예시)
 ```
