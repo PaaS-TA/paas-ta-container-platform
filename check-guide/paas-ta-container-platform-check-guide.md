@@ -924,9 +924,6 @@ Maximum number of days between password change          : 90
  ec24cb1c3ae4   host      host      local
  58219ab61fba   none      null      local
 ```
-![image](https://user-images.githubusercontent.com/67575226/106980702-03bdcd00-67a4-11eb-89d8-376e4a5a1bd1.png)
-![image](https://user-images.githubusercontent.com/67575226/106980792-2a7c0380-67a4-11eb-8aca-bb79604a18de.png)
-
 
 <br>
 
