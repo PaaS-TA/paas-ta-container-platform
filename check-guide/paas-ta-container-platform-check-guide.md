@@ -873,6 +873,8 @@ Maximum number of days between password change          : 90
   + Docker는 브리지 모드에서 생성된 가상 인터페이스를 docker0라는 공통 브리지에 연결
   + 이 네트워크 모델은 필터링이 적용되지 않기 때문에 ARP Spoofing 및 MAC Fooling 등의 공격에 취약
 
+- 조치방법
+  + brctl 설치하여 docker0 Bridge Network 삭제를 한다.
 ```
  ## brctl 설치 
  $ sudo apt install bridge-utils
