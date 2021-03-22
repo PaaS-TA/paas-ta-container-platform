@@ -10,10 +10,11 @@
     2.1. [Prerequisite](#2.1)  
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
-    2.4. [Deployment 파일 수정](#2.4)  
-    2.5. [릴리즈 설치](#2.5)  
-    2.6. [릴리즈 설치 확인](#2.6)  
-    2.7. [CVE/CCE 진단항목 적용 ](#2.7)     
+    2.4. [Deployment 파일 수정](#2.4)    
+    2.5. [릴리즈 설치](#2.5)    
+    2.6. [릴리즈 설치 - 다운로드 된 릴리즈 파일 이용 방식](#2.6)    
+    2.7. [릴리즈 설치 확인](#2.7)    
+    2.8. [CVE/CCE 진단항목 적용 ](#2.8)       
 
 3. [컨테이너 플랫폼 배포](#3)  
     3.1. [kubernetes Cluster 설정](#3.1)  
@@ -228,7 +229,10 @@ private_image_repository_port: 5001                                             
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
+
+### <div id='2.5'>2.5. 릴리즈 설치
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
+  (추가) -o manifests/ops-files/use-compiled-releases.yml \
 > $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 
 ```    
@@ -242,13 +246,21 @@ export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environm
 # DEPLOY
 bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
     -l manifests/paasta-container-service-vars-{IAAS}.yml \
+    -o manifests/ops-files/use-compiled-releases.yml \
     -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
     -o manifests/ops-files/misc/first-time-deploy.yml \
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-### <div id='2.5'>2.5. 릴리즈 설치
+- 릴리즈를 설치한다.
+```
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh  
+$ chmod +x *.sh
+$ ./deploy-{IAAS}.sh
+```
+
+### <div id='2.6'>2.6. 릴리즈 설치 - 다운로드 된 릴리즈 파일 이용 방식
 - 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
   [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download)
@@ -263,7 +275,28 @@ $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yff
 $ ls ~/workspace/paasta-5.5.1/release/service
   paasta-container-platform-1.0.tgz
 ```
+- 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
+  (추가) -o manifests/ops-files/use-offline-releases.yml \
+> $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 
+```    
+#!/bin/bash
+
+# SET VARIABLES
+export CONTAINER_DEPLOYMENT_NAME='paasta-container-platform'   # deployment name
+export CONTAINER_BOSH2_NAME="<BOSH_NAME>"                     # bosh name (e.g. micro-bosh)
+export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environment --json) --path=/Tables/0/Rows/0/uuid`
+
+# DEPLOY
+bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
+    -l manifests/paasta-container-service-vars-{IAAS}.yml \
+    -o manifests/ops-files/use-offline-releases.yml \
+    -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
+    -o manifests/ops-files/misc/first-time-deploy.yml \
+    -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
+    -v director_name=${CONTAINER_BOSH2_NAME} \
+    -v director_uuid=${CONTAINER_BOSH2_UUID}
+```
 - 릴리즈를 설치한다.
 ```
 $ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh  
@@ -271,7 +304,7 @@ $ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
 
-### <div id='2.6'>2.6. 릴리즈 설치 확인
+### <div id='2.7'>2.7. 릴리즈 설치 확인
 설치 완료된 릴리즈를 확인한다.
 > $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
@@ -291,7 +324,7 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-### <div id='2.7'>2.7. CVE/CCE 진단항목 적용 
+### <div id='2.8'>2.8. CVE/CCE 진단항목 적용 
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
