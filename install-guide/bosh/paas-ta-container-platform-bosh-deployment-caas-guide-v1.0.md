@@ -237,7 +237,7 @@ private_image_repository_persistent_disk_type: "10GB"                           
 ```
 
 ### <div id='2.5'>2.5. 서비스 설치
-- 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
+- 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.  
   (추가) -o manifests/ops-files/use-compiled-releases.yml \
 > $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
 (e.g. {IAAS} :: aws)
@@ -283,7 +283,7 @@ $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yff
 $ ls ~/workspace/paasta-5.5.1/release/service
   paasta-container-platform-1.0.tgz  
 ```
-- 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.
+- 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.  
   (추가) -o manifests/ops-files/use-offline-releases.yml \
 > $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
 (e.g. {IAAS} :: aws)
