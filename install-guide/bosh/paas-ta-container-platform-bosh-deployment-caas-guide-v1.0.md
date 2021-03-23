@@ -93,7 +93,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1/deployment/
 $ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v5.5.1
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.2
 
 # Bosh 배포 경로로 이동
 $ cd paas-ta-container-platform-deployment/bosh/
