@@ -279,17 +279,20 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 
 1) kubernetes master, kubernetes worker에서 cce진단 적용시 문제가 되는 항목들
 [현황]
-  4039      4 drwxrwxrwt  10 root     root         4096 Jan 29 06:15 /tmp
-256007      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.Test-unix
-256005      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.XIM-unix
-256003      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.X11-unix
-256004      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.ICE-unix
-256006      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /tmp/.font-unix
- 67692      4 drwxrwxrwt   2 root     root         4096 Oct 26 17:27 /var/crash
- 67674      4 drwxrwxrwt   5 root     root         4096 Jan 28 04:52 /var/tmp
-256028      4 drwxrwxrwt   2 root     root         4096 Jan 28 04:51 /var/tmp/cloud-init
+  4039   4 drwxrwxrwt 10 root root 4096 Jan 5 07:46 /tmp
+  256009 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/systemd-private-aae1da4e104642589da1b983608b0bee-systemd-timesyncd.service-0nl8Q4/tmp
+  256007 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/.Test-unix
+  256005 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/.XIM-unix
+  256003 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/.X11-unix
+  256004 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/.ICE-unix
+  256006 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /tmp/.font-unix
+  67692  4 drwxrwxrwt 2 root root 4096 Oct 26 17:27 /var/crash
+  67674  4 drwxrwxrwt 5 root root 4096 Jan 2 13:01  /var/tmp
+  256061 4 drwxrwxrwt 2 root root 4096 Jan 2 12:25  /var/tmp/systemd-private-aae1da4e104642589da1b983608b0bee-systemd-timesyncd.service-jeqO9z/tmp
+  256028 4 drwxrwxrwt 2 root root 4096 Jan 2 12:26 /var/tmp/cloud-init
 
 [조치]
+# chmod o-w /tmp
 # chmod o-w /tmp/.Test-unix
 # chmod o-w /tmp/.XIM-unix
 # chmod o-w /tmp/.X11-unix
@@ -298,6 +301,7 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 # chmod o-w /var/crash
 # chmod o-w /var/tmp
 # chmod o-w /var/tmp/cloud-init
+# chmod o-w /var/tmp/systemd*
 -------------------------------------------------------------------------------------------
 
 2) mariadb, haproxy, private-image-repository에서 cce진단 적용시 문제가 되는 항목들
