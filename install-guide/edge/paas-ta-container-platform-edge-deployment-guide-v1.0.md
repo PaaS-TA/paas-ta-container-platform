@@ -69,7 +69,7 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 
 |주요 소프트웨어|Version|
 |---|---|
-|KubeEdge|v1.4.0|
+|KubeEdge|v1.6.1|
 |Kubernetes Native|v1.18.6|
 |Docker|v20.10.2|
 
@@ -85,9 +85,28 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 ### <div id='2.2'> 2.2. Kubernetes Native Cluster 배포
 KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되어있어야 하며, 배포 이후 Edge 영역에 Edge Node를 배포하여야 한다.
 
-- Cloud 영역에 Kubernetes Cluster 배포를 진행한다. Cluster 배포는 Kubespray를 통해 진행한다.
+- Cloud 영역에 Kubernetes Cluster 배포를 진행한다. Cluster 배포는 Kubespray를 통해 진행하며, 배포과정에서 Edge Node에 CNI를 배포하기 위해 아래와 같이 Kubespray 일부 설정 변경이 필요하다.
 
 > https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md
+
+- inventory.ini 파일 내 calico-rr 항목을 삭제한다.
+```
+$ vi inventory/mycluster/inventory.ini
+
+...
+[calico-rr] (삭제)
+...
+calico-rr (삭제)
+```
+
+- CNI Plugin을 calico에서 flannel로 변경한다.
+```
+$ vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+...
+kube_network_plugin: flannel (수정)
+...
+```
 
 <br>
 
@@ -115,12 +134,27 @@ Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진�
 ```
 # {MASTER_PUB_IP} : Master Node Public IP
 # {MASTER_PRIV_IP} : Master Node Private IP
-# keadm init --advertise-address={MASTER_PUB_IP} --master=https://{MASTER_PRIV_IP}:6443 --kubeedge-version 1.4.0
+# keadm init --advertise-address={MASTER_PUB_IP} --master=https://{MASTER_PRIV_IP}:6443 --kubeedge-version 1.6.1
 ```
 
 - Edge 영역에 EdgeCore를 설치하기 위한 Token값을 가져온다.
 ```
 # keadm gettoken
+```
+
+- CloudCore dynamicController를 활성화한다.
+```
+# vi /etc/kubeedge/config/cloudcore.yaml
+
+...
+dynamicController:
+  enable: true (추가)
+...
+```
+
+- CloudCore 서비스를 재시작한다.
+```
+# pkill cloudcore ; nohup /usr/local/bin/cloudcore > /var/log/kubeedge/cloudcore.log 2>&1 &
 ```
 
 <br>
@@ -204,30 +238,27 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 # apt-get install -y docker-ce={VERSION_STRING} docker-ce-cli={VERSION_STRING} containerd.io
 ```
 
+- CNI 바이너리를 다운로드 한다.
+```
+# wget "https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz"
+
+# mkdir -p /opt/cni/bin
+
+# tar xf cni-plugins-linux-amd64-v0.9.1.tgz -C /opt/cni/bin
+```
+
 - keadm join 명령으로 Edge Node에 EdgeCore 설치를 진행한다.
 ```
 # {MASTER_PUB_IP} : Master Node Public IP
 # {INTERFACE_NAME} : 실제 Edge Node에서 사용중인 인터페이스 이름 (ex: ens5)
 # {GET_TOKEN} : Cloud 영역에서 CloudCore 설치 이후 호출한 Token 값
 
-# keadm join --cloudcore-ipport={MASTER_PUB_IP}:10000 --interfacename={INTERFACE_NAME} --token={GET_TOKEN} --kubeedge-version 1.4.0
+# keadm join --cloudcore-ipport={MASTER_PUB_IP}:10000 --token={GET_TOKEN} --kubeedge-version 1.6.1
 ```
 
-- KubeEdge에서는 본 설치 가이드 작성 시점에 CNI를 지원하지 않으므로 Edge Node에 CNI Plugin Pod가 배포되지 않도록 조치가 필요하다.
-
+- Master Node에서 Kubespray를 통해 배포된 Flannel CNI가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
-# Edge Node CNI Plugin Error 상태 확인
-
-# kubectl get pods -n kube-system | grep calico
-calico-kube-controllers-6d654c9787-x7bs9   1/1     Running      0          28m
-calico-node-h52gg                          1/1     Running      0          29m
-calico-node-mjpc4                          1/1     Running      0          29m
-calico-node-mlsc8                          0/1     Init:Error   11         17m
-```
-
-- Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
-```
-# kubectl edit daemonsets.apps calico-node -n kube-system
+# kubectl edit ds kube-flannel -n kube-system
 ```
 
 - spec.template.spec 경로에 아래 내용을 추가한다.
@@ -241,6 +272,61 @@ calico-node-mlsc8                          0/1     Init:Error   11         17m
                 operator: DoesNotExist
 ```
 
+- Master Node에서 Edge Node에 배포할 Fannel CNI DaemonSet을 신규로 배포한다.
+```
+# kubectl get ds kube-flannel -n kube-system -o yaml > edge-flannel.yaml
+
+# vi edge-flannel.yaml
+
+...
+  labels:
+    k8s-app: flannel-edge (수정)
+    tier: node
+...
+  name: kube-flannel-edge (수정)
+...
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: flannel-edge (수정)
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: flannel-edge (수정)
+        tier: node
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/agent (추가)
+                operator: Exists (추가)
+              - key: node-role.kubernetes.io/edge (삭제)
+                operator: DoesNotExist (삭제)
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      containers:
+      - command:
+        - /opt/bin/flanneld
+        - --ip-masq
+        - --kube-subnet-mgr
+        - --kube-api-url=http://127.0.0.1:10550 (추가)
+...
+        name: kube-flannel-edge (수정)
+...
+
+# kubectl apply -f edge-flannel.yaml
+```
+
 - KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress를 지원하지 않으므로 Edge Node에 Ingress Controller가 배포되지 않도록 조치가 필요하다.
 
 ```
@@ -252,7 +338,7 @@ ingress-nginx-controller-nfckc   1/1     Running   0          64m
 ingress-nginx-controller-z7bxk   0/1     Error     18         53m
 ```
 
-- Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+- Master Node에서 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit daemonsets.apps ingress-nginx-controller -n ingress-nginx
 ```
@@ -268,10 +354,37 @@ ingress-nginx-controller-z7bxk   0/1     Error     18         53m
                 operator: DoesNotExist
 ```
 
+- EdgeCore 설정을 수정한다.
+```
+# vi /etc/kubeedge/config/edgecore.yaml
+
+modules:
+...
+  edgeMesh:
+    enable: false (수정)
+...
+  edged:
+...
+    networkPluginName: cni (추가)
+    clusterDNS: "10.233.0.3" (수정)
+    clusterDomain: "cluster.local" (수정)
+...
+  metaManager:
+...
+    mataServer:
+      enable: true (추가)
+...
+```
+
+- EdgeCore 서비스를 재시작한다.
+```
+# service edgecore restart
+```
+
 <br>
 
 ### <div id='2.6'> 2.6. kubectl logs 기능 활성화
-KubeEdge v1.4.0 에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.
+KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.  
 
 - Master Node에서 kubernetes ca.crt 및 ca.key 파일을 확인한다.
 ```
