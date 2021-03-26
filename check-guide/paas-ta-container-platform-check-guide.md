@@ -298,10 +298,11 @@ ex) 검색시 나온 파일의 소유자 및 권한 변경
 # chmod o-w /tmp/.X11-unix
 # chmod o-w /tmp/.ICE-unix
 # chmod o-w /tmp/.font-unix
+# chmod o-w /tmp/systemd*/tmp
 # chmod o-w /var/crash
 # chmod o-w /var/tmp
 # chmod o-w /var/tmp/cloud-init
-# chmod o-w /var/tmp/systemd*
+# chmod o-w /var/tmp/systemd*/tmp
 -------------------------------------------------------------------------------------------
 
 2) mariadb, haproxy, private-image-repository에서 cce진단 적용시 문제가 되는 항목들
