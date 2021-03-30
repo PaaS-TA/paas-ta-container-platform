@@ -132,8 +132,9 @@ Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진�
 
 - keadm init 명령으로 Cloud 영역의 Master Node에 CloudCore 설치를 진행한다.
 ```
-# {MASTER_PUB_IP} : Master Node Public IP
-# {MASTER_PRIV_IP} : Master Node Private IP
+## {MASTER_PUB_IP} : Master Node Public IP
+## {MASTER_PRIV_IP} : Master Node Private IP
+
 # keadm init --advertise-address={MASTER_PUB_IP} --master=https://{MASTER_PRIV_IP}:6443 --kubeedge-version 1.6.1
 ```
 
@@ -233,7 +234,7 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 
 - Docker 설치를 진행한다.
 ```
-# {VERSION_STRING} : Version 정보. (ex : 5:20.10.2~3-0~ubuntu-bionic)
+## {VERSION_STRING} : Version 정보. (ex : 5:20.10.2~3-0~ubuntu-bionic)
 
 # apt-get install -y docker-ce={VERSION_STRING} docker-ce-cli={VERSION_STRING} containerd.io
 ```
@@ -249,9 +250,9 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 
 - keadm join 명령으로 Edge Node에 EdgeCore 설치를 진행한다.
 ```
-# {MASTER_PUB_IP} : Master Node Public IP
-# {INTERFACE_NAME} : 실제 Edge Node에서 사용중인 인터페이스 이름 (ex: ens5)
-# {GET_TOKEN} : Cloud 영역에서 CloudCore 설치 이후 호출한 Token 값
+## {MASTER_PUB_IP} : Master Node Public IP
+## {INTERFACE_NAME} : 실제 Edge Node에서 사용중인 인터페이스 이름 (ex: ens5)
+## {GET_TOKEN} : Cloud 영역에서 CloudCore 설치 이후 호출한 Token 값
 
 # keadm join --cloudcore-ipport={MASTER_PUB_IP}:10000 --token={GET_TOKEN} --kubeedge-version 1.6.1
 ```
@@ -330,7 +331,8 @@ spec:
 - KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress를 지원하지 않으므로 Edge Node에 Ingress Controller가 배포되지 않도록 조치가 필요하다.
 
 ```
-# Ingress Controller Error 상태 확인
+## Ingress Controller Error 상태 확인
+
 # kubectl get pods -n ingress-nginx
 NAME                             READY   STATUS    RESTARTS   AGE
 ingress-nginx-controller-drq98   1/1     Running   0          64m
@@ -393,7 +395,8 @@ KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 �
 
 - Master Node에서 CLOUDCOREIPS 환경변수 설정 및 확인을 진행한다. (HA Cluster 구성 시 VIP 설정)
 ```
-# {MASTER_PUB_IP} : Master Node Public IP
+## {MASTER_PUB_IP} : Master Node Public IP
+
 # export CLOUDCOREIPS="{MASTER_PUB_IP}"
 
 # echo $CLOUDCOREIPS
@@ -439,7 +442,7 @@ cloudStream:
 ```
 
 ```
-# {MASTER_PUB_IP} : Master Node Public IP
+## {MASTER_PUB_IP} : Master Node Public IP
 
 edgeStream:
   enable: true
@@ -527,8 +530,8 @@ nodelocaldns-pg8md                         1/1     Running   0          66m
 ```
 
 ```
-# spec.template.spec 하위에 추가
-# {MASTER_NODE_HOSTNAME} : 실제 Master Node Hostname
+## spec.template.spec 하위에 추가
+## {MASTER_NODE_HOSTNAME} : 실제 Master Node Hostname
 
     spec:
       affinity:
@@ -542,14 +545,14 @@ nodelocaldns-pg8md                         1/1     Running   0          66m
                 - {MASTER_NODE_HOSTNAME}
       hostNetwork: true
 
-# spec.template.spec.containers 하위 - args:에 추가
+## spec.template.spec.containers 하위 - args:에 추가
 
       containers:
       - args:
         - --v=2
         - --kubelet-insecure-tls
 
-# spec.template.spec 하위에 추가    
+## spec.template.spec 하위에 추가    
 
       tolerations:
       - key: "node-role.kubernetes.io"
@@ -623,7 +626,8 @@ KubeEdge 설치 이후에 Cluster Role을 가진 운영자의 Service Account를
 
 - Service Account를 생성한다.
 ```
-# {SERVICE_ACCOUNT} : Service Account 명
+## {SERVICE_ACCOUNT} : Service Account 명
+
 $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
 (eg. kubectl create serviceaccount k8sadmin -n kube-system)
 ```
@@ -635,7 +639,8 @@ $ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admi
 
 - 생성한 Service Account의 Token을 획득한다.
 ```
-# {SECRET_NAME} : Mountable secrets 값 확인
+## {SECRET_NAME} : Mountable secrets 값 확인
+
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
 
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
@@ -646,8 +651,9 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 
 - Namespace 사용자의 Token을 획득한다.
 ```
-# {SECRET_NAME} : Mountable secrets 값 확인
-# {NAMESPACE} : Namespace 명
+## {SECRET_NAME} : Mountable secrets 값 확인
+## {NAMESPACE} : Namespace 명
+
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "

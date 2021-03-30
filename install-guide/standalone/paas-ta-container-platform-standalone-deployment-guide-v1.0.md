@@ -42,9 +42,9 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br> 
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다. 
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
 
 ![image 001]
 
@@ -114,7 +114,8 @@ The key's randomart image is:
 
 - 사용할 Master, Worker Node에 공개키를 복사한다.
 ```
-# 출력된 공개키 복사
+## 출력된 공개키 복사
+
 $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbbm8OzCYjGPFNexrxU2OyfHAUzLhs+ovXafX0RG5bvm44B04LH01maV8j32Vkag0DtNEiA96WjR9wpTeqfZy0Qwko9+TJOfK7lVT7+GCPm112pzU/t3i9oaptFdalGLYC+ib2+ViibkV0rZ8ds/zz/i0uzXDqvYl1HYfc7kA1CtinAimxV2FU/7WDTIj5HAfPnhyXPf+k1d3hPJEZ+T3qUmLnVpIXS2AHETPz29mu/I8EWUfc8/OVFJqS8RAyGghfnbFPrVEL3+jp/K6nwfX9nnpJWXvMtYenKwHI+mY8iuEYr ubuntu@ip-10-0-0-34
 ```
@@ -123,7 +124,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbb
 ```
 $ vi .ssh/authorized_keys
 
-#ex)
+ex)
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDU+CSWd/bC4IfC+cuRDDJwAfjiPXAZAYFc7S8B8rUqAcuCPZUcbSZu5BIEAxZC+DCtpAJmtCGl/w7Gp1Wwij6hm/WlYeWapoqTe1yeLA/k0YhY0kQWuobfGlo9w7gxFKY8Aqtft+lRLhxteYc+/XxENFoq+eVFbX9jAOBbhM73K1oiV2YZcNAriLXixFYYVTmOPnJYUabJLi7E5ZEo3RaQ7Wol2fPPKQyvblwl9T5AoKF+/haWifeNEDHsd4XW9lveIRMsY3x7zUsnCtxzAlQKsw/eogKpyCc6E1GhmSTNy+K5fzhLgBJvl3J8t/+MKf8UGJA11pAn1L0vt56dTOdj aws-paasta-kube-key
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbbm8OzCYjGPFNexrxU2OyfHAUzLhs+ovXafX0RG5bvm44B04LH01maV8j32Vkag0DtNEiA96WjR9wpTeqfZy0Qwko9+TJOfK7lVT7+GCPm112pzU/t3i9oaptFdalGLYC+ib2+ViibkV0rZ8ds/zz/i0uzXDqvYl1HYfc7kA1CtinAimxV2FU/7WDTIj5HAfPnhyXPf+k1d3hPJEZ+T3qUmLnVpIXS2AHETPz29mu/I8EWUfc8/OVFJqS8RAyGghfnbFPrVEL3+jp/
 ```
@@ -158,12 +159,18 @@ $ sudo apt-get install -y python3-pip
 
 - Kubespray 설치경로 이동, pip를 이용하여 Kubespray 설치에 필요한 Python Package 설치를 진행한다.
 ```
-# AWS 환경 설치 시
+## AWS 환경 설치 시
+
 $ cd paas-ta-container-platform-deployment/standalone/aws
+```
 
-# Openstack 환경 설치 시
+```
+## Openstack 환경 설치 시
+
 $ cd paas-ta-container-platform-deployment/standalone/openstack
+```
 
+```
 $ sudo pip3 install -r requirements.txt
 ```
 
@@ -180,17 +187,33 @@ $ vi inventory/mycluster/inventory.ini
 ```
 
 ```
-# inventory.ini
-# {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname ($ hostname 명령어를 입력시 나오는 이름) 
-# {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+## {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname
 
-# ex)
-# ip-10-0-0-1xx ansible_host=10.0.0.1xx ip=10.0.0.1xx etcd_member_name=etcd1
-# ip-10-0-0-2xx ansible_host=10.0.0.2xx ip=10.0.0.2xx
+ex)
+$ hostname
+paasta-cp-kubespray-master
+```
 
+```
+## {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+
+ex)
+$ ifconfig
+ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 10.0.0.109  netmask 255.255.255.0  broadcast 10.0.0.255
+        inet6 fe80::b4:95ff:fe80:f56e  prefixlen 64  scopeid 0x20<link>
+        ether 02:b4:95:80:f5:6e  txqueuelen 1000  (Ethernet)
+        RX packets 65520893  bytes 67774122613 (67.7 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 49370008  bytes 67899804965 (67.8 GB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+...
+```
+
+```
 [all]
 {MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
-{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성 
+{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
 {WORKER_HOST_NAME2} ansible_host={WORKER_NODE_IP2} ip={WORKER_NODE_IP2}
 {WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3} ip={WORKER_NODE_IP3}
 
@@ -213,6 +236,16 @@ kube-node
 calico-rr
 ```
 
+```
+ex)
+paasta-cp-kubespray-master  ansible_host=10.0.0.1xx ip=10.0.0.1xx etcd_member_name=etcd1
+paasta-cp-kubespray-worker  ansible_host=10.0.0.2xx ip=10.0.0.2xx
+...
+[kube-master]
+paasta-cp-kubespray-master
+...
+```
+
 <br>
 
 ### <div id='2.6'> 2.6. Kubespray 설치
@@ -220,29 +253,33 @@ Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
 
 - 인벤토리 빌더로 Ansible 인벤토리 파일을 업데이트한다.
 ```
-# {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
-# {WORKER_NODE_IP}는 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
-
-# ex)
-# declare -a IPS=(10.0.0.1x 10.0.0.2x 10.0.0.3x 10.0.0.4x)
+## {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
+## {WORKER_NODE_IP}는 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
 
 $ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_NODE_IP3})
 
-# ${IPS[@]}는 변수가 아니라 명령어의 일부분이므로 주의
+ex)
+declare -a IPS=(10.0.0.1x 10.0.0.2x 10.0.0.3x 10.0.0.4x)
+```
+
+```
+## ${IPS[@]}는 변수가 아니라 명령어의 일부분이므로 주의
+
 $ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 ```
 
 - Openstack 환경에 설치 시 추가적인 환경변수 설정이 필요하며 설정 파일을 다운로드 받아 자동으로 환경변수 등록이 가능하다.
 ```
-# Openstack UI 로그인 > 프로젝트 선택 > API 액세스 메뉴 선택 > OpenStack RC File 다운로드 클릭
-# 스크립트 파일 실행 후 Openstack 계정 패스워드 입력
+## Openstack UI 로그인 > 프로젝트 선택 > API 액세스 메뉴 선택 > OpenStack RC File 다운로드 클릭
+## 스크립트 파일 실행 후 Openstack 계정 패스워드 입력
+
 $ source {OPENSTACK_PROJECT_NAME}-openrc.sh
 Please enter your OpenStack Password for project admin as user admin: {패스워드 입력}
 ```
 
 - Openstack 네트워크 인터페이스의 MTU값이 기본값 1450이 아닐 경우 CNI Plugin MTU 설정 변경이 필요하다.
 ```
-# MTU 확인 (ex mtu 1400)
+## MTU 확인 (ex mtu 1400)
 
 $ ifconfig
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
@@ -253,7 +290,9 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
         RX errors 0  dropped 0  overruns 0  frame 0
         TX packets 323884  bytes 191720735 (191.7 MB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
 
+```
 $ vi ~/paas-ta-container-platform-deployment/standalone/openstack/inventory/mycluster/group_vars/k8s-cluster/k8s-net-calico.yml
 
 calico_mtu: 1450 > calico_mtu: 1400
@@ -330,7 +369,8 @@ Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account�
 
 - Service Account를 생성한다.
 ```
-# {SERVICE_ACCOUNT} : 생성할 Service Account 명
+## {SERVICE_ACCOUNT} : 생성할 Service Account 명
+
 $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
 (ex. kubectl create serviceaccount k8sadmin -n kube-system)
 ```
@@ -342,7 +382,8 @@ $ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admi
 
 - 생성한 Service Account의 Token을 획득한다.
 ```
-# {SECRET_NAME} : Mountable secrets 값 확인
+## {SECRET_NAME} : Mountable secrets 값 확인
+
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
 
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
@@ -353,8 +394,9 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 
 - Namespace 사용자의 Token을 획득한다.
 ```
-# {SECRET_NAME} : Mountable secrets 값 확인
-# {NAMESPACE} : Namespace 명
+## {SECRET_NAME} : Mountable secrets 값 확인
+## {NAMESPACE} : Namespace 명
+
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
