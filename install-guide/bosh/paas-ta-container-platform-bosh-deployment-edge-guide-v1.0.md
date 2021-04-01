@@ -11,23 +11,18 @@
     2.2. [Stemcell 확인](#2.2)  
     2.3. [Deployment 다운로드](#2.3)  
     2.4. [Deployment 파일 수정](#2.4)    
-    2.5. [릴리즈 설치](#2.5)    
+    2.5. [릴리즈 설치](#2.5)      
     2.6. [릴리즈 설치 - 다운로드 된 릴리즈 파일 이용 방식](#2.6)    
-    2.7. [릴리즈 설치 확인](#2.7)    
-    2.8. [CVE/CCE 진단항목 적용 ](#2.8)       
+    2.7. [릴리즈 설치 확인](#2.7)      
+    2.8. [CVE/CCE 진단항목 적용 ](#2.8)          
 
 3. [컨테이너 플랫폼 배포](#3)  
-    3.1. [kubernetes Cluster 설정](#3.1)  
+    3.1. [Docker insecure-registry 설정](#3.1)  
     3.2. [컨테이너 플랫폼 이미지 업로드](#3.2)  
-    3.3. [Secret 생성](#3.3)  
-    3.4. [Temp Namespace 생성](#3.4)   
-    3.5. [Taint 해제](#3.5)  
-    3.6. [Deployment 배포](#3.6)  
-    3.6.1. [paas-ta-container-platform-common-api 배포](#3.6.1)    
-    3.6.2. [paas-ta-container-platform-api 배포](#3.6.2)    
-    3.6.3. [paas-ta-container-platform-webuser 배포](#3.6.3)    
-    3.6.4. [paas-ta-container-platform-webadmin 배포](#3.6.4)    
-    3.6.5. [배포 확인](#3.6.5)    
+    3.3. [컨테이너 플랫폼 배포](#3.3)   
+    3.3.1. [컨테이너 플랫폼 배포 YAML 내 환경변수 정의](#3.3.1)  
+    3.3.2. [컨테이너 플랫폼 리소스 배포](#3.3.2)    
+    3.3.3. [(참고) 컨테이너 플랫폼 리소스 삭제](#3.3.3)    
 
 4. [컨테이너 플랫폼 운영자/사용자 포털 회원가입](#4)      
     4.1. [컨테이너 플랫폼 운영자 포털 회원가입](#4.1)      
@@ -35,12 +30,11 @@
     4.3. [컨테이너 플랫폼 사용자 포털 회원가입](#4.3)      
     4.4. [컨테이너 플랫폼 사용자 Namespace/Role 할당](#4.4)      
     4.5. [컨테이너 플랫폼 사용자 포털 로그인](#4.5)      
-    4.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#4.6)   
-
+    4.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#4.6)    
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(컨테이너 서비스 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈 설치 방법을 기술하였다.
+본 문서(컨테이너 플랫폼 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈 설치 방법을 기술하였다.
 
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
@@ -48,15 +42,16 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
-Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH 릴리즈로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
+Kubespray를 통해 Cloud 영역에 Kubernetes Cluster를 구성하고 이후 Edge 영역에 추가로 Edge Node를 배포한다. BOSH 릴리즈로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Edge Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 플랫폼을 배포하는 내용이다. 
 
 ![image 001]
 
 ### <div id='1.4'>1.4. 참고 자료
-> http://bosh.io/docs   
+> http://bosh.io/docs  
 > https://docs.cloudfoundry.org
+
+<br>
 
 ## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
@@ -66,7 +61,7 @@ Kubeadm를 통해 Kubernetes Cluster를 설치하고 Kubernetes 환경에 KubeEd
 
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
-- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다. 
+- Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
 Using environment '10.0.1.6' as client 'admin'
@@ -91,7 +86,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1/deployment/
 $ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.2
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.3
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -162,9 +157,9 @@ Succeeded
 > $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
 
-> IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
+> IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
   IPS - k8s_auth_bearer : [Kubeedge 설치 가이드 - 5.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)
-
+  
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -215,7 +210,7 @@ mariadb_port: "13306"                                                           
 mariadb_azs: [z5]                                                                   # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                                # mariadb persistent disk type
 mariadb_admin_user_id: "cp-admin"                                                   # mariadb admin user name (e.g. cp-admin)
-mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. PaaS-TA@2020)
+mariadb_admin_user_password: "Paasta!2021"                                          # mariadb admin user password (e.g. Paasta!2021)
 mariadb_role_set_administrator_code_name: "Administrator"                           # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                       # administrator role's code (e.g. RS0001)
 mariadb_role_set_regular_user_code_name: "Regular User"                             # regular user role's code name (e.g. Regular User)
@@ -223,14 +218,14 @@ mariadb_role_set_regular_user_code: "RS0002"                                    
 mariadb_role_set_init_user_code_name: "Init User"                                   # init user role's code name (e.g. Init User)
 mariadb_role_set_init_user_code: "RS0003"                                           # init user role's code (e.g. RS0003)
 
-# PRIVATE IMAGE REPOSITORY
+#PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                   # private image repository azs
 private_image_repository_port: 5001                                                  # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
 
-### <div id='2.5'>2.5. 릴리즈 설치
+### <div id='2.5'>2.5. 릴리즈 설치  
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.  
   (추가) -o manifests/ops-files/use-compiled-releases.yml \
 > $ vi ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
@@ -255,16 +250,15 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh  
-$ chmod +x *.sh
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh 
+$ chmod +x *.sh 
 $ ./deploy-{IAAS}.sh
 ```
 
 ### <div id='2.6'>2.6. 릴리즈 설치 - 다운로드 된 릴리즈 파일 이용 방식
 - 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download)
-  
+   [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download)     
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta-5.5.1/release/service
@@ -299,8 +293,8 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh  
-$ chmod +x *.sh
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh 
+$ chmod +x *.sh 
 $ ./deploy-{IAAS}.sh
 ```
 
@@ -328,15 +322,17 @@ Succeeded
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
+<br>
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
-3.컨테이너 플랫폼 배포 항목부터는 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 플랫폼을 사용하기 위해서는 Bosh 릴리즈 배포 후 Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+해당 항목부터는 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 플랫폼을 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
 
-### <div id='3.1'>3.1. kubernetes Cluster 설정
-> 단독배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
-
+### <div id='3.1'>3.1. Docker insecure-registry 설정 
+Kubernetes Master Node, Worker Node 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
+Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 Docker를 재시작한다.<br>
+>  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다. 
 ```
-# Master Node, Worker Node 모두 설정 필요
+# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요 
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
@@ -347,438 +343,240 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
-Private Repository에 이미지 등록을 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
-   [cp-standalone-images.tar](https://nextcloud.paas-ta.org/index.php/s/f2B6YeiXAe3QpYw/download)  
+   [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download)  
 
 ```
-# 이미지 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.1/container-platform
-$ cd ~/workspace/paasta-5.5.1/container-platform
+# 이미지 파일 다운로드 경로 생성
+$ mkdir -p ~/workspace/paasta-5.5.1
+$ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/f2B6YeiXAe3QpYw/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download
 
-$ ls ~/workspace/paasta-5.5.1/container-platform
-  cp-standalone-images.tar
+$ ls ~/workspace/paasta-5.5.1
+  container-platform-standalone-image.tar
 
-# 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-standalone-images.tar 
-$ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-image
-$ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-image
-  container-platform-api.tar.gz         container-platform-webadmin.tar.gz  image-upload-standalone.sh
-  container-platform-common-api.tar.gz  container-platform-webuser.tar.gz   
+# 이미지 파일 압축 해제
+$ tar -xvf container-platform-standalone-image.tar
+```
+
+- 이미지 파일 디렉토리 구성
+
+```
+$ cd ~/workspace/paasta-5.5.1/container-platform
+
+├── container-platform-image                            # 컨테이너 플랫폼 이미지 파일 위치
+│   ├── container-platform-api.tar.gz
+│   ├── container-platform-common-api.tar.gz
+│   ├── container-platform-webadmin.tar.gz
+│   └── container-platform-webuser.tar.gz
+├── container-platform-script                           # 컨테이너 플랫폼 배포 관련 스크립트 파일 위치
+│   ├── container-platform-deploy.sh                    
+│   ├── container-platform-vars.yaml                    
+│   ├── image-upload-standalone.sh                      
+│   └── remove-container-platform-resource.sh           
+├── container-platform-yaml                             # 컨테이너 플랫폼 배포 YAML 파일 위치
+│   ├── paas-ta-container-platform-api.yaml
+│   ├── paas-ta-container-platform-common-api.yaml
+│   ├── paas-ta-container-platform-secret.yaml
+│   ├── paas-ta-container-platform-temp-namespace.yaml
+│   ├── paas-ta-container-platform-webadmin.yaml
+│   └── paas-ta-container-platform-webuser.yaml
+└── redis                                               # 컨테이너 플랫폼 사용자 세션관리를 위한 Redis 배포 YAML 파일 위치
+    ├── kustomization.yaml
+    ├── redis-config
+    └── redis-deployment.yaml
+```
+
+#### Private Repository 이미지 업로드
+
+ + Private Repository에 이미지를 업로드하는 스크립트를 실행한다. <br> 
+   스크립트 실행 후 Private Repository에 이미지가 정상적으로 업로드 되었는지 확인한다.
  ```
- 
- + Private Repository에 이미지를 업로드한다.
- ```
+ $ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-script
  $ chmod +x *.sh  
  $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
+
+'''
+
+*** List of uploaded images in the repository! ***
+
+{"repositories":["container-platform-api","container-platform-common-api","container-platform-webadmin","container-platform-webuser"]}
  ```
  
- + Private Repository에 업로드 된 이미지 목록을 확인한다.
- 
+ > * Private Repository에 업로드 된 이미지 목록 확인 명령어
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
+ ```
+
+
+### <div id='3.3'>3.3. 컨테이너 플랫폼 배포
+
+#### <div id='3.3.1'>3.3.1. 컨테이너 플랫폼 배포 YAML 내 환경변수 정의
+컨테이너 플랫폼을 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.<br>
+또한 Cloud 영역의 Woker Node에 컨테이너 플랫폼을 배포하기 위해 환경변수 K8S_WORKER_NODE_IP, K8S_WORKER_NODE_HOSTNAME 값은 Cloud 영역의 Worker Node로 값을 설정한다. 
+                                                                                                    
+```
+$ vi container-platform-vars.yaml
+ ```
+
+```                                                     
+# COMMON ENV VARIABLE
+HAPROXY_IP="xxx.xx.xx.xxx"                              # deployment 'paasta-container-platform' haproxy public ip
+K8S_MASTER_NODE_IP="xxx.xx.xx.xxx"                      # kubernetes master node public ip
+K8S_WORKER_NODE_IP="xxx.xx.xx.xxx"                      # kubernetes worker node public ip
+K8S_WORKER_NODE_HOSTNAME="{k8s worker node hostname}"   # kubernetes worker node host name (run 'hostname' command in worker node)
+CP_CLUSTER_NAME="{cluster name}"                        # cluster name to use on the container platform portal
+MARIADB_USER_ID="{mariadb admin user id}"               # mariadb admin user id (e.g. cp-admin)
+MARIADB_USER_PASSWORD="{mariadb admin user password}"   # mariadb admin user password (e.g. Paasta!2021)
+```
+
+> - HAPROXY_IP :<br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
+> - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
+> - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>   
+>   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br>
+>   + Cloud 영역의 worker node로 설정 (Edge 영역의 edge node 제외) <br><br>
+> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력 
+>   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
+> - CP_CLUSTER_NAME :<br>컨테이너 플랫폼에서 사용할 클러스터 명으로 원하는 값 입력<br>
+>   + 배포 후 운영자 포털 접속 및 회원가입 시 해당 클러스터 명 입력 필요 <br><br>
+> - MARIADB_USER_ID :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br><br>
+> - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
+>   +  Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](#2.4)
+
  
-{"repositories":["container-platform-api","container-platform-common-api","container-platform-webadmin","container-platform-webuser"]}
-```
-
-
-### <div id='3.3'>3.3. Secret 생성
-Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
-```
-$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
-```
-
-### <div id='3.4'>3.4. Temp Namespace 생성
-컨테이너 플랫폼 배포 전 최초 Temp Namespace 생성이 필요하다.<br> 해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 이용된다.
-
-- Temp Namespace를 생성한다.
-```
-$ kubectl create namespace paas-ta-container-platform-temp-namespace
-```
-
-### <div id='3.5'>3.5. Taint 해제
-노드의 Taint 설정을 해제한다.(이미 KubeEdge 설치 가이드에서 [Taint 설정 해제](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#3)를 했으면 안해도 된다.)
-```
-$ kubectl taint nodes --all node-role.kubernetes.io/master-
-
-# Taint 설정 해제를 처음 시도하는 경우
-node/ip-10-0-0-251 untainted
-error: taint "node-role.kubernetes.io/master" not found
-
-# Tain 설정 해제를 이미 시도 한 경우
-taint "node-role.kubernetes.io/master" not found
-taint "node-role.kubernetes.io/master" not found
-```
-
-### <div id='3.6'>3.6. Deployment 배포
-
-+ 컨테이너 플랫폼 yaml 파일 경로이동
-```
-$ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
-$ ls ~/workspace/paasta-5.5.1/container-platform/container-platform-edge-yaml
-  paas-ta-container-platform-api.yml         paas-ta-container-platform-webadmin.yml
-  paas-ta-container-platform-common-api.yml  paas-ta-container-platform-webuser.yml
-```
-
-> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#2.4)
-> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
-> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
-
-
-#### <div id='3.6.1'>3.6.1. paas-ta-container-platform-common-api 배포
-
-> vi paas-ta-container-platform-common-api.yml
+#### <div id='3.3.2'>3.3.2. 컨테이너 플랫폼 리소스 배포 
+컨테이너 플랫폼 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: common-api-deployment
-  labels:
-    app: common-api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: common-api
-  template:
-    metadata:
-      labels:
-        app: common-api
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
-      hostNetwork: true
-      containers:
-      - name: common-api
-        image: {HAProxy_IP}:5001/container-platform-common-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3334
-        env:
-        - name: HAPROXY_IP
-          value: "{HAProxy_IP}"
-        - name: CONTAINER_PLATFORM_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30333"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP 
-        - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}                      
-        - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}                           
-      tolerations:
-      - key: "node-role.kubernetes.io"
-        operator: "Equal"
-        value: "master"
-        effect: "NoSchedule"    
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: common-api-deployment
-  labels:
-    app: common-api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30334
-    port: 3334
-    protocol: TCP
-    targetPort: 3334
-  selector:
-    app: common-api
-  type: NodePort
-```
-#### <div id='3.6.2'>3.6.2. paas-ta-container-platform-api 배포
-
-> vi paas-ta-container-platform-api.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: api-deployment
-  labels:
-    app: api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: api
-  template:
-    metadata:
-      labels:
-        app: api
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)        
-      hostNetwork: true
-      containers:
-      - name: api
-        image: {HAProxy_IP}:5001/container-platform-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3333
-        env:
-        - name: K8S_IP
-          value: "{MASTER_NODE_PUBLIC_IP}"              # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP
-        - name: CLUSTER_NAME
-          value: "{CLUSTER_NAME}"
-        - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30334"                
-      tolerations:
-      - key: "node-role.kubernetes.io"
-        operator: "Equal"
-        value: "master"
-        effect: "NoSchedule"    
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-deployment
-  labels:
-    app: api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30333
-    port: 3333
-    protocol: TCP
-    targetPort: 3333
-  selector:
-    app: api
-  type: NodePort
-```
-#### <div id='3.6.3'>3.6.3. paas-ta-container-platform-webuser 배포
-
-> vi paas-ta-container-platform-webuser.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: webuser-deployment
-  labels:
-    app: webuser
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: webuser
-  template:
-    metadata:
-      labels:
-        app: webuser
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
-      hostNetwork: true
-      containers:
-      - name: webuser
-        image: {HAProxy_IP}:5001/container-platform-webuser:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8091
-        env:
-        - name: K8S_IP
-          value: "{K8S_IP}"                              # {K8S_IP} : K8S Master Node PUBLIC IP(=Cloud_SIDE_PUBLIC_IP)
-        - name: CONTAINER_PLATFORM_COMMON_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30334"        # {MASTER_NODE_PUBLIC_IP} : CLOUD_SIDE_PUBLIC_IP   
-        - name: CONTAINER_PLATFORM_API_URL
-          value: "{MASTER_NODE_PUBLIC_IP}:30333"            
-      tolerations:
-      - key: "node-role.kubernetes.io"
-        operator: "Equal"
-        value: "master"
-        effect: "NoSchedule"    
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webuser-deployment
-  labels:
-    app: webuser
-  namespace: default
-spec:
-  ports:
-  - nodePort: 32091
-    port: 8091
-    protocol: TCP
-    targetPort: 8091
-  selector:
-    app: webuser
-  type: NodePort
-```
-#### <div id='3.6.4'>3.6.4. paas-ta-container-platform-webadmin 배포
-
-> vi paas-ta-container-platform-webadmin.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: webadmin-deployment
-  labels:
-    app: webadmin
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: webadmin
-  template:
-    metadata:
-      labels:
-        app: webadmin
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - {CLOUD_SIDE_HOSTNAME}                 # {CLOUD_SIDE_HOSTNAME} : Cloud Side Hostname(Edge에서는 Master Node를 Cloud Side라 칭한다.)
-      hostNetwork: true
-      containers:
-      - name: webadmin
-        image: {HAProxy_IP}:5001/container-platform-webadmin:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8080   
-      tolerations:
-      - key: "node-role.kubernetes.io"
-        operator: "Equal"
-        value: "master"
-        effect: "NoSchedule"  
-      imagePullSecrets:
-        - name: cp-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webadmin-deployment
-  labels:
-    app: webadmin
-  namespace: default
-spec:
-  ports:
-  - nodePort: 32080
-    port: 8080
-    protocol: TCP
-    targetPort: 8080
-  selector:
-    app: webadmin
-  type: NodePort
-```
-```
-$ kubectl apply -f paas-ta-container-platform-common-api.yml
-deployment.apps/common-api-deployment created
-service/common-api-deployment created
-
-$ kubectl apply -f paas-ta-container-platform-api.yml
-deployment.apps/api-deployment created
-service/api-deployment created
-
-$ kubectl apply -f paas-ta-container-platform-webuser.yml
-deployment.apps/webuser-deployment created
-service/webuser-deployment created
-
-$ kubectl apply -f paas-ta-container-platform-webadmin.yml
-deployment.apps/webadmin-deployment created
-service/webadmin-deployment created
+$ ./container-platform-deploy.sh
 ```
 
-#### <div id='3.6.5'>3.6.5. 배포 확인
-배포된 Deployment, Pod, Service를 확인한다.
+컨테이너 플랫폼 리소스가 정상적으로 배포되었는지 확인한다.<br>
+리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다.
 
 ```
-$ kubectl get deployments
-NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
-api-deployment          1/1     1            1           59s
-common-api-deployment   1/1     1            1           77s
-webadmin-deployment     1/1     1            1           29s
-webuser-deployment      1/1     1            1           42s
+*** Deployed Container Platform Resource List ***
 
-$ kubectl get pods
-NAME                                     READY   STATUS    RESTARTS   AGE
-api-deployment-5fc8bcbdbf-qb6pr          1/1     Running   0          74s
-common-api-deployment-68dd87f5ff-2plnn   1/1     Running   0          92s
-webadmin-deployment-54cd8b8687-mgznp     1/1     Running   0          44s
-webuser-deployment-7ddd64b5b9-c74mx      1/1     Running   0          57s
+NAME                                         READY   STATUS    RESTARTS   AGE
+pod/api-deployment-657d86878f-8lrvb          1/1     Running   0          4m8s
+pod/common-api-deployment-5579496679-27pj4   1/1     Running   0          4m8s
+pod/redis-deployment-5bdcc468f4-9v4lp        1/1     Running   0          4m7s
+pod/webadmin-deployment-d8d559b6c-ntthd      1/1     Running   0          4m7s
+pod/webuser-deployment-64fdd9dd56-ch496      1/1     Running   0          4m7s
 
-$ kubectl get svc
-NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-api-deployment          NodePort    xxx.xxx.xxx.xxx  <none>        3333:30333/TCP   103s
-common-api-deployment   NodePort    xxx.xxx.xxx.xxx  <none>        3334:30334/TCP   2m1s
-webadmin-deployment     NodePort    xxx.xxx.xxx.xxx  <none>        8080:32080/TCP   73s
-webuser-deployment      NodePort    xxx.xxx.xxx.xxx  <none>        8091:32091/TCP   86s
+NAME                            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/api-deployment          NodePort    10.233.21.136   <none>        3333:30333/TCP   4m8s
+service/common-api-deployment   NodePort    10.233.37.90    <none>        3334:30334/TCP   4m8s
+service/kubernetes              ClusterIP   10.233.0.1      <none>        443/TCP          5d23h
+service/redis-deployment        NodePort    10.233.27.120   <none>        6379:32079/TCP   4m7s
+service/webadmin-deployment     NodePort    10.233.36.158   <none>        8080:32080/TCP   4m7s
+service/webuser-deployment      NodePort    10.233.12.9     <none>        8091:32091/TCP   4m7s
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/api-deployment          1/1     1            1           4m8s
+deployment.apps/common-api-deployment   1/1     1            1           4m8s
+deployment.apps/redis-deployment        1/1     1            1           4m7s
+deployment.apps/webadmin-deployment     1/1     1            1           4m7s
+deployment.apps/webuser-deployment      1/1     1            1           4m7s
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/api-deployment-657d86878f          1         1         1       4m8s
+replicaset.apps/common-api-deployment-5579496679   1         1         1       4m8s
+replicaset.apps/redis-deployment-5bdcc468f4        1         1         1       4m7s
+replicaset.apps/webadmin-deployment-d8d559b6c      1         1         1       4m7s
+replicaset.apps/webuser-deployment-64fdd9dd56      1         1         1       4m7s
+
+NAME                                        STATUS   AGE
+paas-ta-container-platform-temp-namespace   Active   4m8s
+
+NAME        TYPE                             DATA   AGE
+cp-secret   kubernetes.io/dockerconfigjson   1      4m8s
+
+NAME                         DATA   AGE
+cp-redis-config-bbdk5h2k6b   1      4m7s
+```
+##### 배포된 리소스 조회 명령어
+ 
+ >  + Deployment, ReplicaSet, Pod, Service 조회 
+ ```
+ $ kubectl get all
+ ```
+ > + Namespace 조회 
+ ```
+ $ kubectl get namespace paas-ta-container-platform-temp-namespace
+ ```
+ > +  Secret 조회
+ ```
+ $ kubectl get secret cp-secret
+ ```
+ > + ConfigMap 조회
+ ```
+ $ kubectl get configmap -l app=cp-redis-config
+ ```
+ 
+<br>
+
+#### <div id='3.3.3'>3.3.3. (참고) 컨테이너 플랫폼 리소스 삭제
+배포된 컨테이너 플랫폼 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
+:loudspeaker: (주의) 컨테이너 플랫폼이 운영되는 상태에서 해당 스크립트 실행 시, 운영에 필요한 리소스가 모두 삭제되므로 주의가 필요하다. <br>
+또한 Kubernetes Cluster 환경에 배포된 컨테이너 플랫폼 리소스가 삭제되며, BOSH Inception에 배포된 Deployment 'paasta-container-platform'에는 영향이 가지 않는다. <br>
 
 ```
+$ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-script
+$ ./remove-container-platform-resource.sh
+Are you sure you want to delete the deployed container platform resource? <y/n> y
+
+deployment.apps "api-deployment" deleted
+service "api-deployment" deleted
+deployment.apps "common-api-deployment" deleted
+service "common-api-deployment" deleted
+secret "cp-secret" deleted
+namespace "paas-ta-container-platform-temp-namespace" deleted
+deployment.apps "webadmin-deployment" deleted
+service "webadmin-deployment" deleted
+deployment.apps "webuser-deployment" deleted
+service "webuser-deployment" deleted
+configmap "cp-redis-config-bbdk5h2k6b" deleted
+service "redis-deployment" deleted
+deployment.apps "redis-deployment" deleted
+```
+
+<br>
 
 ## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
 
 컨테이너 플랫폼 최초 배포의 경우 운영자 포털 회원가입을 통해 Kubernetes Cluster 정보 등록이 선 진행되어야 한다. 따라서 운영자포털 회원가입 완료 후 사용자 포털 회원가입을 진행하도록 한다.
 
-> - 컨테이너 플랫폼 운영자포털 접속 URI :: http://{MASTER_NODE_PUBLIC_IP}:32080 <br>
-{MASTER_NODE_PUBLIC_IP} : 
-[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다. <br><br>
-> - 컨테이너 플랫폼 사용자포털 접속 URI :: http://{MASTER_NODE_PUBLIC_IP}:32091 <br>
-{MASTER_NODE_PUBLIC_IP} : 
-[paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP}를 대입한다.
+> - 컨테이너 플랫폼 운영자포털 접속 URI :: http://{K8S_WORKER_NODE_IP}:32080 <br>
+> - 컨테이너 플랫폼 사용자포털 접속 URI :: http://{K8S_WORKER_NODE_IP}:32091 <br>
+>   + {K8S_WORKER_NODE_IP} : [container-platform-variable-replace.sh](#3.3.1)에 설정한 변수 'K8S_WORKER_NODE_IP' 값을 대입한다.
 
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 운영자 포털 회원가입
-운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.
-> $ kubectl get namespace 
+운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.<br>
+해당 Temp Namespace는 컨테이너 플랫폼 내 사용자 계정 관리를 위해 사용된다.
+
+> $ kubectl get namespace paas-ta-container-platform-temp-namespace
 ```
 NAME                                        STATUS   AGE
-default                                     Active   5d19h
-kube-node-lease                             Active   5d19h
-kube-public                                 Active   5d19h
-kube-system                                 Active   5d19h
-paas-ta-container-platform-temp-namespace   Active   4d
+paas-ta-container-platform-temp-namespace   Active   74m
 ```
 
 Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
-> - Kubernetes Cluster Name : <br> [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {CLUSTER_NAME} 값을 입력한다. <br><br> 
-> - Kubernetes Cluster API URL : <br> https://{K8S_IP}:6443 을 입력한다. {K8S_IP}는 [paas-ta-container-platform-api.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md#3.6.2)에서 작성하여 배포한 {MASTER_NODE_PUBLIC_IP} 값을 입력한다. <br><br> 
-> - Kubernetes Cluster Token : <br> KubeEdge 설치 가이드의 [5.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)을 참고한다.
+> - Kubernetes Cluster Name : <br> [container-platform-variable-replace.sh](#3.3.1)에 설정한 변수 'CP_CLUSTER_NAME' 값을 입력한다. <br><br> 
+> - Kubernetes Cluster API URL : <br> https://{K8S_MASTER_NODE_IP}:6443 을 입력한다. <br>{K8S_MASTER_NODE_IP}는 [container-platform-variable-replace.sh](#3.3.1)에 설정한 
+변수 'K8S_MASTER_NODE_IP' 값을 입력한다. <br><br> 
+> - Kubernetes Cluster Token : <br> KubeEdge 설치 가이드의 [5.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.0.md#5.1)을 참고한다. <br><br>
+> - Namespace : <br> 신규로 생성할 Namespace 명을 입력한다.<br> 회원가입 완료 후 해당 Namespace에 kubernetes에서 제공하는 ClusterRole 'cluster-admin' 과 운영자 계정이 바인딩된다.
+
+<br>
+
 ```
 # ex) 이해를 돕기 위한 예시 정보 
 # {Kubernetes Cluster Name} : cp-cluster
@@ -861,4 +659,3 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 [image 017]:images/cp-017.png
 [image 018]:images/cp-018.png
 [image 019]:images/cp-019.png
-
