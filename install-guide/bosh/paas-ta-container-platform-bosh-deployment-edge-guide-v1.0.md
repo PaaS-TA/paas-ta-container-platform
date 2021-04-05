@@ -43,7 +43,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespray를 통해 Cloud 영역에 Kubernetes Cluster를 구성하고 이후 Edge 영역에 추가로 Edge Node를 배포한다. BOSH 릴리즈로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Edge Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 플랫폼을 배포하는 내용이다. 
+Kubespray를 통해 Cloud 영역에 Kubernetes Cluster를 구성하고 이후 Edge 영역에 추가로 Edge Node를 배포한다. BOSH 릴리즈로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. 총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, Edge Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 플랫폼을 배포하는 내용이다. 
 
 ![image 001]
 
@@ -78,7 +78,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> [https://github.com/PaaS-TA/paas-ta-container-platform-deployment](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/v5.5.1)
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -347,7 +347,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
-   [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download)  
+   [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
@@ -355,7 +355,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-platform-standalone-image.tar
@@ -375,10 +375,10 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 │   ├── container-platform-webadmin.tar.gz
 │   └── container-platform-webuser.tar.gz
 ├── container-platform-script                           # 컨테이너 플랫폼 배포 관련 스크립트 파일 위치
-│   ├── container-platform-deploy.sh                    
-│   ├── container-platform-vars.yaml                    
-│   ├── image-upload-standalone.sh                      
-│   └── remove-container-platform-resource.sh           
+│   ├── container-platform-deploy.sh
+│   ├── container-platform-vars.sh
+│   ├── image-upload-standalone.sh
+│   └── remove-container-platform-resource.sh
 ├── container-platform-yaml                             # 컨테이너 플랫폼 배포 YAML 파일 위치
 │   ├── paas-ta-container-platform-api.yaml
 │   ├── paas-ta-container-platform-common-api.yaml
@@ -421,7 +421,7 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 또한 Cloud 영역의 Woker Node에 컨테이너 플랫폼을 배포하기 위해 환경변수 K8S_WORKER_NODE_IP, K8S_WORKER_NODE_HOSTNAME 값은 Cloud 영역의 Worker Node로 값을 설정한다. 
                                                                                                     
 ```
-$ vi container-platform-vars.yaml
+$ vi container-platform-vars.sh
  ```
 
 ```                                                     
@@ -437,9 +437,9 @@ MARIADB_USER_PASSWORD="{mariadb admin user password}"   # mariadb admin user pas
 
 > - HAPROXY_IP :<br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
 > - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
-> - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>   
+> - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>
 >   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br>
->   + Cloud 영역의 worker node로 설정 (Edge 영역의 edge node 제외) <br><br>
+>   + Cloud 영역의 worker node로 설정 (Edge 영역의 edge node 제외) <br><br>   
 > - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력 
 >   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
 > - CP_CLUSTER_NAME :<br>컨테이너 플랫폼에서 사용할 클러스터 명으로 원하는 값 입력<br>
