@@ -80,6 +80,34 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 - control-plane 노드로 사용하는 머신에 2 개 이상의 CPU
 - 클러스터의 모든 시스템 간의 완전한 네트워크 연결
 
+
+#### 방화벽 정보
+- Master Node
+
+| <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
+| :---: | :---: | :---: | :---: | :--- |  
+| TCP | 6443 ||| kubernetes API Server |  
+| TCP | 2379-2380 ||| etcd server client API |  
+| TCP | 10250 ||| Kubelet API |  
+| TCP | 10251 ||| kube-scheduler |  
+| TCP | 10252 ||| kube-controller-manager |  
+| TCP | 10255 ||| Read-Only Kubelet API |  
+| UDP | 8285 | Worker Nodes || flannel overlay network |  
+| UDP | 8472 | Worker Nodes || flannel overlay network |  
+| TCP | 179 | Worker Nodes || Calio BGP network |  
+
+---
+- Worker Node
+
+| <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
+| :---: | :---: | :---: | :---: | :--- |  
+| TCP | 10250 ||| Kubelet API |  
+| TCP | 10255 ||| Read-Only Kubelet API |  
+| TCP | 30000-32767 ||| NodePort Services |  
+| UDP | 8285 | Worker Nodes || flannel overlay network |  
+| UDP | 8472 | Worker Nodes || flannel overlay network |  
+| TCP | 179 | Worker Nodes || Calio BGP network | 
+
 <br>
 
 ### <div id='2.2'> 2.2. SSH Key 생성 및 배포

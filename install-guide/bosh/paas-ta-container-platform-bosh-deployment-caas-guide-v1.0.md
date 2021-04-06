@@ -66,6 +66,35 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 - [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
 - [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
 
+#### 방화벽 정보
+- Master Node
+
+| <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
+| :---: | :---: | :---: | :---: | :--- |  
+| TCP | 6443 ||| kubernetes API Server |  
+| TCP | 2379-2380 ||| etcd server client API |  
+| TCP | 10250 ||| Kubelet API |  
+| TCP | 10251 ||| kube-scheduler |  
+| TCP | 10252 ||| kube-controller-manager |  
+| TCP | 10255 ||| Read-Only Kubelet API |  
+| UDP | 8285 | Worker Nodes || flannel overlay network |  
+| UDP | 8472 | Worker Nodes || flannel overlay network |  
+| TCP | 179 | Worker Nodes || Calio BGP network |  
+
+---
+- Worker Node
+
+| <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
+| :---: | :---: | :---: | :---: | :--- |  
+| TCP | 10250 ||| Kubelet API |  
+| TCP | 10255 ||| Read-Only Kubelet API |  
+| TCP | 30000-32767 ||| NodePort Services |  
+| UDP | 8285 | Worker Nodes || flannel overlay network |  
+| UDP | 8472 | Worker Nodes || flannel overlay network |  
+| TCP | 179 | Worker Nodes || Calio BGP network |  
+
+<br>
+
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
 - Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.  
