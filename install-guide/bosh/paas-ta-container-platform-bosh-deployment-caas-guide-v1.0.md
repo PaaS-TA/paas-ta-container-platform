@@ -14,29 +14,24 @@
  2.5. [서비스 설치](#2.5)    
  2.6. [서비스 설치 - 다운로드 된 릴리즈 파일 이용 방식](#2.6)   
  2.7. [서비스 설치 확인](#2.7)    
- 2.8. [CVE/CCE 진단항목 적용 ](#2.8)    
+ 2.8. [CVE/CCE 진단항목 적용](#2.8)    
 
-3. [Kubernetes 컨테이너 서비스 배포](#3)   
- 3.1. [Kubernetes Cluster 설정](#3.1)   
- 3.2. [컨테이너 서비스 이미지 업로드](#3.2)   
- 3.3. [Secret 생성](#3.3)  
- 3.4. [Deployment 배포](#3.4)  
- 3.4.1. [container-service-common-api 배포](#3.4.1)   
- 3.4.2. [container-service-api 배포](#3.4.2)   
- 3.4.3. [container-service-dashboard 배포](#3.4.3)   
- 3.4.4. [container-service-broker 배포](#3.4.4)   
+3. [컨테이너 서비스 배포](#3)  
+ 3.1. [Docker insecure-registry 설정](#3.1)  
+ 3.2. [컨테이너 서비스 이미지 업로드](#3.2)  
+ 3.3. [컨테이너 서비스 배포](#3.3)   
+ 3.3.1. [컨테이너 서비스 배포 YAML 내 환경변수 정의](#3.3.1)  
+ 3.3.2. [컨테이너 서비스 리소스 배포](#3.3.2)    
  
-
 4. [컨테이너 서비스 브로커](#4)  
  4.1. [컨테이너 서비스 브로커 등록](#4.1)  
  4.2. [컨테이너 서비스 UAA Client 등록](#4.2)   
  4.3. [PaaS-TA 포털에서 컨테이너 서비스 조회 설정](#4.3)      
 
 5. [Jenkins 서비스 브로커(Optional)](#5)   
- 5.1. [Kubernetes Cluster 설정](#5.1)   
- 5.2. [Deployment 배포](#5.2)  
- 5.2.1. [container-jenkins-broker 배포](#5.2.1)    
- 5.3. [Jenkins 서비스 브로커 등록](#5.3)   
+ 5.1. [Jenkins 서비스 브로커 배포](#5.1)   
+ 5.2. [Jenkins 서비스 브로커 등록](#5.2)  
+ 5.3. [PaaS-TA 포털에서 Jenkins 서비스 조회 설정](#5.3)   
     
 
 ## <div id='1'>1. 문서 개요
@@ -50,13 +45,15 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
 
 ![image 001]
 
 ### <div id='1.4'>1.4. 참고 자료
 > http://bosh.io/docs  
 > https://docs.cloudfoundry.org
+
+<br>
 
 ## <div id='2'>2. 컨테이너 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
@@ -114,18 +111,14 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> [https://github.com/PaaS-TA/paas-ta-container-platform-deployment](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/v5.5.1)
-
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
 $ mkdir -p ~/workspace/paasta-5.5.1/deployment/
 $ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.2
-
-# Bosh 배포 경로로 이동
-$ cd paas-ta-container-platform-deployment/bosh/
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.3
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
@@ -199,6 +192,8 @@ Succeeded
 > IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
   IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
 
+
+#### paasta-container-service-vars-{IAAS}.yml
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -249,7 +244,7 @@ mariadb_port: "13306"                                                           
 mariadb_azs: [z5]                                                                   # mariadb azs
 mariadb_persistent_disk_type: "10GB"                                                # mariadb persistent disk type
 mariadb_admin_user_id: "cp-admin"                                                   # mariadb admin user name (e.g. cp-admin)
-mariadb_admin_user_password: "PaaS-TA@2020"                                         # mariadb admin user password (e.g. PaaS-TA@2020)
+mariadb_admin_user_password: "Paasta!2021"                                          # mariadb admin user password (e.g. Paasta!2021)
 mariadb_role_set_administrator_code_name: "Administrator"                           # administrator role's code name (e.g. Administrator)
 mariadb_role_set_administrator_code: "RS0001"                                       # administrator role's code (e.g. RS0001)
 mariadb_role_set_regular_user_code_name: "Regular User"                             # regular user role's code name (e.g. Regular User)
@@ -257,12 +252,11 @@ mariadb_role_set_regular_user_code: "RS0002"                                    
 mariadb_role_set_init_user_code_name: "Init User"                                   # init user role's code name (e.g. Init User)
 mariadb_role_set_init_user_code: "RS0003"                                           # init user role's code (e.g. RS0003)
 
-# PRIVATE IMAGE REPOSITORY
+#PRIVATE IMAGE REPOSITORY
 private_image_repository_azs: [z7]                                                   # private image repository azs
 private_image_repository_port: 5001                                                  # private image repository port (e.g. 5001)-- Do Not Use "5000"
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
-
 ```
 
 ### <div id='2.5'>2.5. 서비스 설치
@@ -368,14 +362,17 @@ Succeeded
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.  
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
-## <div id='3'>3. Kubernetes 컨테이너 서비스 배포
-3.Kubernetes 컨테이너 서비스 배포 항목 내용은 Master Node에서 진행을 하면 된다. kubernetes에서 PaaS-TA용 컨테이너 서비스를 사용하기 위해서는 Bosh 릴리즈 배포 후 Private Repository에 등록된 이미지를 Kubernetes에 배포하여 사용하여야 한다.
+<br>
 
-### <div id='3.1'>3.1. K8s Cluster 설정
-> 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
+## <div id='3'>3. 컨테이너 서비스 배포
+해당 [3.컨테이너 서비스 배포](#3) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 서비스를 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
 
+### <div id='3.1'>3.1. Docker insecure-registry 설정 
+Kubernetes Master Node, Worker Node 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
+Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 Docker를 재시작한다.<br>
+>  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다. 
 ```
-# Master Node, Worker Node 모두 설정 필요
+# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요 
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
@@ -386,380 +383,178 @@ $ sudo systemctl restart docker
 ```
 
 ### <div id='3.2'>3.2. 컨테이너 서비스 이미지 업로드
-Private Repository에 이미지 등록을 위해 컨테이너 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
+Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 서비스 이미지 파일 다운로드 :  
-   [cp-caas-images.tar](https://nextcloud.paas-ta.org/index.php/s/TEGY4TCWCmr8APC/download)  
+   [container-service-image.tar]()  
 
 ```
-# 이미지 다운로드 파일 위치 경로 생성
-$ mkdir -p ~/workspace/paasta-5.5.1/container-platform
-$ cd ~/workspace/paasta-5.5.1/container-platform
+# 이미지 파일 다운로드 경로 생성
+$ mkdir -p ~/workspace/paasta-5.5.1
+$ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/TEGY4TCWCmr8APC/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download
 
-$ ls ~/workspace/paasta-5.5.1/container-platform
-  cp-caas-images.tar
+$ ls ~/workspace/paasta-5.5.1
+  container-service-image.tar
 
-# 이미지 다운로드 파일 압축 해제
-$ tar -xvf cp-caas-images.tar
-$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-image
-$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-image
-  container-jenkins-broker.tar.gz  container-service-broker.tar.gz      container-service-dashboard.tar.gz  paasta-jenkins.tar.gz
-  container-service-api.tar.gz     container-service-common-api.tar.gz  image_upload_caas.sh 
+# 이미지 파일 압축 해제
+$ tar -xvf container-service-image.tar
+```
+
+- 이미지 파일 디렉토리 구성
+
+```
+$ cd ~/workspace/paasta-5.5.1/container-service
+
+├── container-service-yaml                         # 컨테이너 서비스 배포 YAML 파일 위치        
+│   ├── container-service-api.yaml
+│   ├── container-service-broker.yaml
+│   ├── container-service-common-api.yaml
+│   ├── container-service-dashboard.yaml
+│   └── container-service-secret.yaml
+├── jenkins-service-yaml                           # Jenkins 서비스 브로커 배포 YAML 파일 위치
+│   └── container-jenkins-broker.yaml
+├── service-image                                  # 컨테이너 및 Jenkins 서비스 관련 이미지 파일 위치
+│   ├── container-jenkins-broker.tar.gz
+│   ├── container-service-api.tar.gz
+│   ├── container-service-broker.tar.gz
+│   ├── container-service-common-api.tar.gz
+│   ├── container-service-dashboard.tar.gz
+│   └── paasta-jenkins.tar.gz
+└── service-script                                 # 컨테이너 및 Jenkins 서비스 배포 관련 스크립트 파일 위치
+    ├── container-service-deploy.sh
+    ├── container-service-vars.sh
+    ├── image-upload-caas.sh
+    ├── jenkins-service-deploy.sh
+    ├── remove-container-service-resource.sh
+    └── remove-jenkins-service-resource.sh
+```
+
+#### Private Repository 이미지 업로드 및 Secret 생성
+
+ + Private Repository에 이미지를 업로드하고, 해당 Repository의 인증에 사용되는 Secret을 생성하는 스크립트를 실행한다. <br>
+   스크립트 실행 후 Secret 생성과 Private Repository에 이미지 업로드가 정상적으로 되었는지 확인한다.
  ```
- 
- + Private Repository에 이미지를 업로드한다.
- ```
+ $ cd ~/workspace/paasta-5.5.1/container-service/service-script
  $ chmod +x *.sh  
- $ ./image_upload_caas.sh {HAProxy_IP}:5001 
+ $ ./image-upload-caas.sh {HAProxy_IP}:5001 
+
+'''
+
+*** Create secret to pull an image from a repository! ***
+
+secret/cp-secret created
+
+NAME        TYPE                             DATA   AGE
+cp-secret   kubernetes.io/dockerconfigjson   1      0s
+
+
+*** List of uploaded images in the repository! ***
+
+{"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]}
  ```
  
- + Private Repository에 업로드 된 이미지 목록을 확인한다.
+ > * Secret 조회
+ ```
+ $ kubectl get secret cp-secret
+ ```
  
+ > * Private Repository에 업로드 된 이미지 목록 확인 명령어
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
- 
- {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]} 
-```
+ ```
 
-
-### <div id='3.3'>3.3. Secret 생성
-Private Repository에 등록된 이미지를 활용하기 위해 Kubernetes에 secret을 생성한다.
-```
-$ kubectl create secret docker-registry cp-secret --docker-server={HAProxy_IP}:5001 --docker-username=admin --docker-password=admin --namespace=default
-```
-
-
-### <div id='3.4'>3.4. Deployment 배포
-PaaS-TA 사용자포털에서 컨테이너 서비스를 추가하기 전 Kubernetes에 아래의 컨테이너 서비스 Deployment가 미리 배포되어 있어야 한다.
-아래 4개의 yaml 내 nodeSelector.kubernetes.io/hostname 값은 동일한 Worker Node의 Host Name으로 설정한다. Worker Node가 여러개인 경우 그중 한 Worker Node의 Host Name으로 설정한다. ex) 1번째 Worker Node의 Host Name     
-
-```
-# {NODE_HOST_NAME} 값 동일한 Worker Node의 Host Name으로 설정 
-   nodeSelector:
-     kubernetes.io/hostname: {NODE_HOST_NAME}
-```
-
-- 컨테이너 플랫폼 yaml 파일 경로이동
-```
-$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
-$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
-  container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
-  container-service-api.yml     container-service-common-api.yml
-```
 <br>
 
-> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
-> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
-> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+### <div id='3.3'>3.3. 컨테이너 서비스 배포
 
+#### <div id='3.3.1'>3.3.1. 컨테이너 서비스 배포 YAML 내 환경변수 정의
+컨테이너 서비스를 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다. 
+                                                                                                    
+```
+$ vi container-service-vars.sh
+ ```
 
-#### <div id='3.4.1'>3.4.1. container-service-common-api 배포
+```                                                     
+# COMMON ENV VARIABLE
 
-> $ vi container-service-common-api.yml
+PAASTA_SYSTEM_DOMAIN="xxx.xx.xx.xxx.xip.io"             # PaaS-TA System Domain
+HAPROXY_IP="xxx.xx.xx.xxx"                              # Deployment 'paasta-container-platform' haproxy public ip
+K8S_MASTER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes master node public ip
+K8S_WORKER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes worker node public ip
+K8S_WORKER_NODE_HOSTNAME="{k8s worker node hostname}"   # Kubernetes worker node host name (run 'hostname' command in worker node)
+K8S_AUTH_BEARER_TOKEN="{k8s bearer token}"              # Kubernetes bearer token
+MARIADB_USER_ID="{mariadb admin user id}"               # Mariadb admin user id (e.g. cp-admin)
+MARIADB_USER_PASSWORD="{mariadb admin user password}"   # Mariadb admin user password (e.g. Paasta!2021)
+```
+> - PAASTA_SYSTEM_DOMAIN :<br> PaaS-TA System Domain 입력<br><br> 
+> - HAPROXY_IP :<br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
+> - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
+> - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>
+>   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br><br>
+> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력 
+>   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
+> - K8S_AUTH_BEARER_TOKEN :<br>kubernetes bearer token 입력 <br>
+>   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br><br>
+> - MARIADB_USER_ID :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br>
+>   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_id' 값 입력 <br><br>
+> - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
+>   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
+
+ 
+#### <div id='3.3.2'>3.3.2. 컨테이너 서비스 리소스 배포 
+컨테이너 서비스 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: service-common-api-deployment
-  labels:
-    app: service-common-api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: service-common-api
-  template:
-    metadata:
-      labels:
-        app: service-common-api
-    spec:
-      containers:
-      - name: service-common-api
-        image: {HAProxy_IP}:5001/container-service-common-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3334
-        env:
-        - name: HAPROXY_IP
-          value: {HAProxy_IP}
-        - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           
-        - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}                              
-        - name: MARIADB_PORT
-          value: "13306"  
-      imagePullSecrets:
-        - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME} # Worker Node Host Name
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-common-api-deployment
-  labels:
-    app: service-common-api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30334
-    port: 3334
-    protocol: TCP
-    targetPort: 3334
-  selector:
-    app: service-common-api
-  type: NodePort
-
+$ ./container-service-deploy.sh
 ```
 
-#### <div id='3.4.2'>3.4.2. container-service-api 배포
-
-> $ vi container-service-api.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: service-api-deployment
-  labels:
-    app: service-api
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: service-api
-  template:
-    metadata:
-      labels:
-        app: service-api
-    spec:
-      containers:
-      - name: service-api
-        image: {HAProxy_IP}:5001/container-service-api:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3333
-        env:
-        - name: K8S_IP
-          value: {K8S_IP}                          # Master Node IP 
-      imagePullSecrets:
-        - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}   # Worker Node Host Name 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-api-deployment
-  labels:
-    app: service-api
-  namespace: default
-spec:
-  ports:
-  - nodePort: 30333
-    port: 3333
-    protocol: TCP
-    targetPort: 3333
-  selector:
-    app: service-api
-  type: NodePort
+리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다. <br>
+스크립트 실행 후 아래 명령어를 통해 리소스가 정상적으로 배포되었는지 다시 한번 확인한다.
 
 ```
+*** Deployed Container Service Resource List ***
 
-#### <div id='3.4.3'>3.4.3. container-service-dashboard 배포
+NAME                                                READY   STATUS    RESTARTS   AGE
+pod/service-api-deployment-6d98766d5c-gh5kl         1/1     Running   0          30s
+pod/service-broker-deployment-5dd6c6bbcb-v9d6n      1/1     Running   0          30s
+pod/service-common-api-deployment-5d786869b-89zmn   1/1     Running   0          30s
+pod/service-dashboard-deployment-974c87585-vmjf4    1/1     Running   0          30s
 
-> $ vi container-service-dashboard.yml
+NAME                                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes                      ClusterIP   10.233.0.1      <none>        443/TCP          10d
+service/service-api-deployment          NodePort    10.233.9.15     <none>        3333:30333/TCP   33s
+service/service-broker-deployment       NodePort    10.233.60.232   <none>        8888:31888/TCP   34s
+service/service-common-api-deployment   NodePort    10.233.4.60     <none>        3334:30334/TCP   33s
+service/service-dashboard-deployment    NodePort    10.233.26.118   <none>        8091:32091/TCP   32s
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: service-dashboard-deployment
-  labels:
-    app: service-dashboard
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: service-dashboard
-  template:
-    metadata:
-      labels:
-        app: service-dashboard
-    spec:
-      containers:
-      - name: service-dashboard
-        image: {HAProxy_IP}:5001/container-service-dashboard:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8091
-        env:
-        - name: K8S_IP
-          value: {K8S_IP}                            # Master Node IP
-        - name: SYSTEM_DOMAIN
-          value: {PAASTA_SYSTEM_DOMAIN}
-        - name: HAPROXY_IP
-          value: {HAProxy_IP}
-      imagePullSecrets:
-        - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}     # Worker Node Host Name  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-dashboard-deployment
-  labels:
-    app: service-dashboard
-  namespace: default
-spec:
-  ports:
-  - nodePort: 32091
-    port: 8091
-    protocol: TCP
-    targetPort: 8091
-  selector:
-    app: service-dashboard
-  type: NodePort
+NAME                                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/service-api-deployment          1/1     1            1           33s
+deployment.apps/service-broker-deployment       1/1     1            1           34s
+deployment.apps/service-common-api-deployment   1/1     1            1           33s
+deployment.apps/service-dashboard-deployment    1/1     1            1           32s
+
+NAME                                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/service-api-deployment-6d98766d5c         1         1         1       30s
+replicaset.apps/service-broker-deployment-5dd6c6bbcb      1         1         1       30s
+replicaset.apps/service-common-api-deployment-5d786869b   1         1         1       30s
+replicaset.apps/service-dashboard-deployment-974c87585    1         1         1       30s
 
 ```
-
-#### <div id='3.4.4'>3.4.4.  container-service-broker 배포
-
-> $ vi container-service-broker.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: service-broker-deployment
-  labels:
-    app: service-broker
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: service-broker
-  template:
-    metadata:
-      labels:
-        app: service-broker
-    spec:
-      containers:
-      - name: service-broker
-        image: {HAPROXY_IP}:5001/container-service-broker:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8091
-        env:
-        - name: K8S_IP
-          value: {K8S_IP}                    # Master Node IP
-        - name: K8S_PORT
-          value: "6443"
-        - name: K8S_AUTH_BEARER
-          value: {K8S_AUTH_BEARER}
-        - name: HAPROXY_IP
-          value: {HAPROXY_IP}
-        - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}           
-        - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}         
-        - name: COMMON_API_ID
-          value: admin
-        - name: COMMON_API_PASSWORD
-          value: PaaS-TA
-        - name: LOGGGING_LEVEL
-          value: INFO
-        - name: REGISTRY_PORT
-          value: "5001"
-        - name: MARIADB_PORT
-          value: "13306"
-        - name: NODE_IP
-          value: {NODE_IP}                   # Worker Node IP   
-      imagePullSecrets:
-        - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}  # Worker Node Host Name     
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-broker-deployment
-  labels:
-    app: service-broker
-  namespace: default
-spec:
-  ports:
-  - nodePort: 31888
-    port: 8888
-    protocol: TCP
-    targetPort: 8888
-  selector:
-    app: service-broker
-  type: NodePort
-
-```
-
-```
-$ kubectl apply -f container-service-common-api.yml
-deployment.apps/service-common-api-deployment created
-service/service-common-api-deployment created
-
-$ kubectl apply -f container-service-api.yml
-deployment.apps/service-api-deployment created
-service/service-api-deployment created
-
-$ kubectl apply -f container-service-dashboard.yml
-deployment.apps/service-dashboard-deployment created
-service/service-dashboard-deployment created
-
-$ kubectl apply -f container-service-broker.yml
-deployment.apps/service-deployment-deployment created
-service/service-deployment-deployment created
-```
-- 배포 확인
-
-배포된 Deployment, Pod, Service를 확인한다.
-
-```
-#Deployment 배포 정상 확인
-$ kubectl get deployments
-NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-service-api-deployment          1/1     1            1           68s
-service-common-api-deployment   1/1     1            1           78s
-service-dashboard-deployment    1/1     1            1           56s
-service-broker-deployment       1/1     1            1           112s
-
-#Pod 배포 정상 확인
-$ kubectl get pods
-NAME                                            READY   STATUS    RESTARTS   AGE
-service-api-deployment-7c556d9c59-ms66r         1/1     Running   0          97s
-service-common-api-deployment-689cdc8df-dxsnb   1/1     Running   0          108s
-service-dashboard-deployment-d4b5fdcdb-nwrgf    1/1     Running   0          85s
-service-broker-deployment-7fb5dd69f6-pdhnq      1/1     Running   0          26h
-
-#Service 배포 정상 확인
-$ kubectl get svc
-NAME                            TYPE        CLUSTER-IP        EXTERNAL-IP   PORT(S)          AGE
-kubernetes                      ClusterIP   xxx.xxx.xxx.xxx   <none>        443/TCP          3d19h
-service-api-deployment          NodePort    xxx.xxx.xxx.xxx   <none>        3333:30333/TCP   117s
-service-common-api-deployment   NodePort    xxx.xxx.xxx.xxx   <none>        3334:30334/TCP   2m8s
-service-dashboard-deployment    NodePort    xxx.xxx.xxx.xxx   <none>        8091:32091/TCP   105s
-service-broker-deployment       NodePort    xxx.xxx.xxx.xxx   <none>        8888:31888/TCP   118s
-
-```
+##### 배포된 리소스 조회 명령어
+ 
+ >  + Deployment, ReplicaSet, Pod, Service 조회 
+ ```
+ $ kubectl get all
+ ```
+ 
+<br>
 
 ## <div id='4'>4. 컨테이너 서비스 브로커
-컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 Kubernetes와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다. PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
+컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 Kubernetes와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다.<br>PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
 
 ### <div id='4.1'>4.1. 컨테이너 서비스 브로커 등록
 
@@ -779,7 +574,7 @@ No service brokers found
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 브로커 NodePort
->   + Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+>   + Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
 ```
 $ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31888
 ```
@@ -794,32 +589,37 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 ```
 
 - 접근 가능한 서비스 목록을 확인한다.
+
 ```
 $ cf service-access
 Getting service access as admin...
+
 broker: container-service-broker
-   service             plan       access   orgs
-   container-service   Advanced   none      
-   container-service   Micro      none      
-   container-service   Small      none      
+   offering            plan       access   orgs
+   container-service   Advenced   none
+   container-service   Micro      none
+   container-service   Small      none
 ```
 
- - 특정 조직에 해당 서비스 접근 허용을 할당한다.
+- 특정 조직에 해당 서비스 접근 허용을 할당한다.
+ 
 ```
 $ cf enable-service-access container-service
-Enabling access to all plans of service container-service for all orgs as admin...
+Enabling access to all plans of service offering container-service for all orgs as admin...
 OK
 ```
 
 - 접근 가능한 서비스 목록을 확인한다.
+
 ```
 $ cf service-access
 Getting service access as admin...
+
 broker: container-service-broker
-   service             plan       access   orgs
-   container-service   Advanced   all      
-   container-service   Micro      all      
-   container-service   Small      all      
+   offering            plan       access   orgs
+   container-service   Advenced   all
+   container-service   Micro      all
+   container-service   Small      all
 ```
 
 ### <div id='4.2'> 4.2. 컨테이너 서비스 UAA Client 등록
@@ -847,7 +647,7 @@ Context: admin, from client admin
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri  "http://{Worker Node IP}:32091, http://{Worker Node IP}:32091/callback" --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
   - <클라이언트 비밀번호> : uaac 클라이언트 secret  
   - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (Kubernetes   Worker Node IP 와 배포된 컨테이너 서비스 대시보드 NodePort)
-    +  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+    +  Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  
   - <권한 타입> : 서비스가 제공하는 API를 사용할 수 있는 권한 목록  
   - <권한 퍼미션> : 클라이언트에 부여 된 권한 목록  
@@ -900,7 +700,7 @@ $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, ht
 - 해당 정보를 입력하기 위해 필요한 값을 찾는다.
 > - CaaS_Api_Uri : <br> http://{Worker Node IP}:30333 <br>
                    -  Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 Api NodePort <br>
-                   -  Worker Node IP : [container-service-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#3.4.4)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+                   -  Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
                    <br><br>
 > - CaaS_Authorization : <br> Basic YWRtaW46UGFhUy1UQQ==
  
@@ -919,146 +719,47 @@ ex)
 4.서비스 항목을 'container-service' 로 선택, 공개 항목을 'Y' 로 체크 후 저장한다.
 ![image 006]
 
-## <div id='5'>5. Jenkins 서비스 브로커(Optional)
-해당 설정은 jenkins 서비스를 이용하기 위한 설정이다.
-
-### <div id='5.1'>5.1. Kubernetes Cluster 설정
-> 컨테이너 서비스 배포용 Kubernetes Master Node, Worker Node에서 daemon.json 에 insecure-registries 로 Private Image Repository URL 설정 후 Docker를 재시작한다.
-```
-# Master Node, Worker Node 모두 설정 필요
-$ sudo vi /etc/docker/daemon.json
-{
-        "insecure-registries": ["{HAProxy_IP}:5001"]
-}
-
-# docker 재시작
-$ sudo systemctl restart docker
-```
-
-### <div id='5.2'>5.2. Deployment 배포
-PaaS-TA 사용자포털에서 Jenkins 서비스를 추가하기 전 Kubernetes에 Jenkins 서비스 Deployment가 미리 배포되어 있어야 한다.
-또한 Jenkins 서비스는 위 컨테이너 서비스(3.4. Deployment 배포)의 nodeSelector.kubernetes.io/hostname 에 설정한 Worker Node의 Host Name과 동일한 값으로 설정한다.
-
-```
-# {NODE_HOST_NAME} 값 컨테이너 서비스와 동일한 Worker Node의 Host Name으로 설정 
-   nodeSelector:
-     kubernetes.io/hostname: {NODE_HOST_NAME}
-```
-
-- 컨테이너 플랫폼 yaml 파일 경로이동
-```
-$ cd ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
-$ ls ~/workspace/paasta-5.5.1/container-platform/container-service-yaml
-  container-jenkins-broker.yml  container-service-broker.yml      container-service-dashboard.yml
-  container-service-api.yml     container-service-common-api.yml
-```
-
 <br>
 
-> Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#2.4)
-> - MARIADB_USER_ID : mariadb_admin_user_id 변수 값 
-> - MARIADB_USER_PASSWORD : mariadb_admin_user_password 변수 값 
+## <div id='5'>5. Jenkins 서비스 브로커(Optional)
+해당 내용은 jenkins 서비스를 이용하기 위한 설정이다.
 
-#### <div id='5.2.1'>5.2.1. container-jenkins-broker 배포
-
-> $ vi container-jenkins-broker.yml
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jenkins-broker-deployment
-  labels:
-    app: jenkins-broker
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: jenkins-broker
-  template:
-    metadata:
-      labels:
-        app: jenkins-broker
-    spec:
-      containers:
-      - name: jenkins-broker
-        image: {HAPROXY_IP}:5001/container-jenkins-broker:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8091
-        env:
-        - name: K8S_IP
-          value: {K8S_IP}                    # Master Node IP
-        - name: K8S_PORT
-          value: "6443"
-        - name: K8S_AUTH_BEARER
-          value: {K8S_AUTH_BEARER}
-        - name: HAPROXY_IP
-          value: {HAPROXY_IP}
-        - name: MARIADB_USER_ID
-          value: {MARIADB_USER_ID}          
-        - name: MARIADB_USER_PASSWORD
-          value: {MARIADB_USER_PASSWORD}         
-        - name: REGISTRY_PORT
-          value: "5001"
-        - name: MARIADB_PORT
-          value: "13306"
-        - name: NODE_IP
-          value: {NODE_IP}                   # Worker Node IP         
-      imagePullSecrets:
-        - name: cp-secret
-      nodeSelector:
-        kubernetes.io/hostname: {NODE_HOST_NAME}    # Worker Node Host Name
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jenkins-broker-deployment
-  labels:
-    app: jenkins-broker
-  namespace: default
-spec:
-  ports:
-  - nodePort: 31787
-    port: 8787
-    protocol: TCP
-    targetPort: 8787
-  selector:
-    app: jenkins-broker
-  type: NodePort
+### <div id='5.1'>5.1. Jenkins 서비스 브로커 배포 
+해당 [5.1. Jenkins 서비스 브로커 배포](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다.<br>
+Jenkins 서비스 브로커 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-
-```
-$ kubectl apply -f container-jenkins-broker.yml
-deployment.apps/jenkins-broker-deployment created
-service/jenkins-broker-deployment created
+$ cd ~/workspace/paasta-5.5.1/container-service/service-script
+$ ./jenkins-service-deploy.sh
 ```
 
-- 배포 확인
-
-배포된 Deployment, Pod, Service를 확인한다.
-
-```
-#Deployment 배포 정상 확인
-$ kubectl get deployments
-NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-jenkins-broker-deployment       1/1     1            1           2m20s
-
-#Pod 배포 정상 확인
-$ kubectl get pods
-NAME                                             READY   STATUS    RESTARTS   AGE
-jenkins-broker-deployment-7f84f69cf8-wgzbv       1/1     Running   0          2m30s
-
-#Service 배포 정상 확인
-$ kubectl get svc
-NAME                            TYPE        CLUSTER-IP          EXTERNAL-IP   PORT(S)          AGE
-jenkins-broker-deployment       NodePort    xxx.xxx.xxx.xxx     <none>        8787:31787/TCP   2m49s
+리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다. <br>
+스크립트 실행 후 아래 명령어를 통해 리소스가 정상적으로 배포되었는지 다시 한번 확인한다.
 
 ```
+*** Deployed jenkins Service Resource List ***
 
-### <div id='5.3'>5.3. Jenkins 서비스 브로커 등록
+NAME                                            READY   STATUS    RESTARTS   AGE
+pod/jenkins-broker-deployment-94555d79f-rb2dl   1/1     Running   0          60s
+
+NAME                                 TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/jenkins-broker-deployment    NodePort   10.233.22.46   <none>        8787:31787/TCP   60s
+
+NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/jenkins-broker-deployment   1/1     1            1           60s
+
+NAME                                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/jenkins-broker-deployment-94555d79f   1         1         1       60s
+```
+##### 배포된 리소스 조회 명령어
+ 
+ >  + Jenkins 서비스 브로커 관련 Deployment, ReplicaSet, Pod, Service 조회 
+ ```
+ $ kubectl get all -l app=jenkins-broker
+ ```
+
+
+### <div id='5.2'>5.2. Jenkins 서비스 브로커 등록
 
 - 브로커 목록을 확인한다.
 
@@ -1069,59 +770,83 @@ Getting service brokers as admin...
 name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:31888
 ```
- - Jenkins 서비스 브로커를 등록한다.
+- Jenkins 서비스 브로커를 등록한다.
+
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{Worker Node IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 Jenkins 서비스 브로커 NodePort
->   + Worker Node IP : [container-jenkins-broker.yml](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.0.md#5.2.1)에서 작성하여 배포한 {NODE_IP} 값을 입력한다.
+>   + Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
 
 ```
 $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31787
- ```
-  - 등록된 Jenkins 서비스 브로커를 확인한다.
- ```
- $ cf service-brokers
+Creating service broker jenkins-service-broker as admin...
+OK
+```
+ 
+- 등록된 Jenkins 서비스 브로커를 확인한다.
+```
+$ cf service-brokers
 Getting service brokers as admin...
 
 name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:31888
 jenkins-service-broker     http://xxx.xxx.xxx.xxx:31787
 ```
+
 - 접근 가능한 서비스 목록을 확인한다.
 ```
 $ cf service-access
 Getting service access as admin...
+
 broker: container-service-broker
-  service             plan       access   orgs
-  container-service   Advanced   all      
-  container-service   Micro      all      
-  container-service   Small      all      
+   offering            plan       access   orgs
+   container-service   Advenced   all
+   container-service   Micro      all
+   container-service   Small      all
 
 broker: jenkins-service-broker
-  service                     plan                        access   orgs
-  container-jenkins-service   jenkins_20GB                none
+   offering                    plan           access   orgs
+   container-jenkins-service   jenkins_20GB   none
 ```
+
 - 특정 조직에 해당 서비스 접근 허용을 할당한다.
+
 ```
 $ cf enable-service-access container-jenkins-service
-Enabling access to all plans of service container-jenkins-service for all orgs as admin...
+Enabling access to all plans of service offering container-jenkins-service for all orgs as admin...
 OK
 ```
+
 - 접근 가능한 서비스 목록을 확인한다.
 ```
 $ cf service-access
 Getting service access as admin...
+
 broker: container-service-broker
-  service             plan       access   orgs
-  container-service   Advanced   all      
-  container-service   Micro      all      
-  container-service   Small      all      
+   offering            plan       access   orgs
+   container-service   Advenced   all
+   container-service   Micro      all
+   container-service   Small      all
 
 broker: jenkins-service-broker
-  service                     plan                     access   orgs
-  container-jenkins-service   jenkins_20GB             all      
+   offering                    plan           access   orgs
+   container-jenkins-service   jenkins_20GB   all
 ```
+
+### <div id='5.3'>5.3. PaaS-TA 포털에서 Jenkins 서비스 조회 설정
+
+1.PaaS-TA Admin 포털에 접속한다.
+![image 002]
+  
+2.[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS Jenkins 서비스를 선택한다.
+![image 007]
+
+3.서비스 항목을 'container-jenkins-service' 로 선택, 공개 항목을 'Y' 로 체크 후 저장한다.
+![image 008]
+
+<br>
+
 
 ----
 [image 001]:images/cp-001.png
@@ -1130,3 +855,5 @@ broker: jenkins-service-broker
 [image 004]:images/cp-021.png
 [image 005]:images/cp-022.png
 [image 006]:images/cp-023.png
+[image 007]:images/cp-024.png
+[image 008]:images/cp-025.png
