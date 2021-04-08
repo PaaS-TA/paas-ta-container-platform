@@ -32,7 +32,11 @@
  5.1. [Jenkins 서비스 브로커 배포](#5.1)   
  5.2. [Jenkins 서비스 브로커 등록](#5.2)  
  5.3. [PaaS-TA 포털에서 Jenkins 서비스 조회 설정](#5.3)   
+
+6. [참고](#6)  
+ 6.1. [Cluster Role 사용자 생성 및 Token 획득](#6.1)   
     
+<br>
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -44,8 +48,9 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 서비스 환경을 배포한다. PaaS-TA 컨테이너 서비스를 통해 Kubernetes Cluster에 배포된 서비스를 등록하여 서비스 포털 환경을 사용한다. 총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하며 본 문서는 BOSH Inception 환경을 구성하기 위한 VM설치와 Kubernetes Cluster에 컨테이너 서비스를 배포하는 내용이다.
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 서비스 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 서비스를 설치하는 내용이다. 
 
 ![image 001]
 
@@ -64,6 +69,8 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 - [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
 
 #### 방화벽 정보
+IaaS Security Group의 열어줘야할 Port를 설정한다.
+
 - Master Node
 
 | <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
@@ -93,7 +100,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 <br>
 
 ### <div id='2.2'>2.2. Stemcell 확인
-Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
+Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
 - Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.  
 > $ bosh -e micro-bosh stemcells
 ```
@@ -190,7 +197,7 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
-  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
+  IPS - k8s_auth_bearer : [[6.1. Cluster Role 사용자 생성 및 Token 획득]](#6.1) 참고하여 Token 값 입력
 
 
 #### paasta-container-service-vars-{IAAS}.yml
@@ -365,7 +372,7 @@ Succeeded
 <br>
 
 ## <div id='3'>3. 컨테이너 서비스 배포
-해당 [3.컨테이너 서비스 배포](#3) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 서비스를 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
+해당 [[3.컨테이너 서비스 배포]](#3) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 서비스를 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
 
 ### <div id='3.1'>3.1. Docker insecure-registry 설정 
 Kubernetes Master Node, Worker Node 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
@@ -387,7 +394,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 서비스 이미지 파일 다운로드 :  
-   [container-service-image.tar]()  
+   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/PeS44dSeQ6snHyS/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
@@ -395,7 +402,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PeS44dSeQ6snHyS/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-service-image.tar
@@ -409,7 +416,7 @@ $ tar -xvf container-service-image.tar
 ```
 $ cd ~/workspace/paasta-5.5.1/container-service
 
-├── container-service-yaml                         # 컨테이너 서비스 배포 YAML 파일 위치        
+├── container-service-yaml                         # 컨테이너 서비스 배포 YAML 파일 위치
 │   ├── container-service-api.yaml
 │   ├── container-service-broker.yaml
 │   ├── container-service-common-api.yaml
@@ -428,9 +435,7 @@ $ cd ~/workspace/paasta-5.5.1/container-service
     ├── container-service-deploy.sh
     ├── container-service-vars.sh
     ├── image-upload-caas.sh
-    ├── jenkins-service-deploy.sh
-    ├── remove-container-service-resource.sh
-    └── remove-jenkins-service-resource.sh
+    └── jenkins-service-deploy.sh
 ```
 
 #### Private Repository 이미지 업로드 및 Secret 생성
@@ -542,7 +547,6 @@ replicaset.apps/service-api-deployment-6d98766d5c         1         1         1 
 replicaset.apps/service-broker-deployment-5dd6c6bbcb      1         1         1       30s
 replicaset.apps/service-common-api-deployment-5d786869b   1         1         1       30s
 replicaset.apps/service-dashboard-deployment-974c87585    1         1         1       30s
-
 ```
 ##### 배포된 리소스 조회 명령어
  
@@ -725,7 +729,7 @@ ex)
 해당 내용은 jenkins 서비스를 이용하기 위한 설정이다.
 
 ### <div id='5.1'>5.1. Jenkins 서비스 브로커 배포 
-해당 [5.1. Jenkins 서비스 브로커 배포](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다.<br>
+해당 [[5.1. Jenkins 서비스 브로커 배포]](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다.<br>
 Jenkins 서비스 브로커 배포를 위한 배포 스크립트를 실행한다.
 
 ```
@@ -847,6 +851,45 @@ broker: jenkins-service-broker
 
 <br>
 
+
+
+## <div id='6'>6. 참고
+
+### <div id='6.1'>6.1. Cluster Role 사용자 생성 및 Token 획득
+Kubernetes에서 Cluster Role을 가진 사용자의 Service Account를 생성하고 해당 Service Account의 Token 값을 획득한다.<br>
+획득한 Token 값은 컨테이너 서비스 설치에 사용된다. 
+
+- Service Account를 생성한다.
+```
+## {SERVICE_ACCOUNT} : 생성할 Service Account 명
+
+$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(ex. kubectl create serviceaccount k8sadmin -n kube-system)
+```
+
+- 생성한 Service Account와 kubernetes에서 제공하는 ClusterRole 'cluster-admin'을 바인딩한다.
+```
+$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
+(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
+```
+
+- Service Account의 Mountable secrets 값을 확인한다.
+```
+$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
+
+...
+
+Mountable secrets:   k8sadmin-token-xxxx
+```
+
+- Service Account의 Token을 획득한다.
+
+```
+## {SECRET_NAME} : Mountable secrets 값 입력
+
+$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
 
 ----
 [image 001]:images/cp-001.png
