@@ -31,7 +31,10 @@
   3.6 [Container에 대한 보안 프로필 적용](#3.6)      
 
 4. [CVE 진단항목](#4)  
-  4.1 [TCP timestamp responses 비활성화 설정](#4.1)          
+  4.1 [TCP timestamp responses 비활성화 설정](#4.1)           
+  4.2 [X.509 인증서의 Subject CN필드가 Entity Name과 불일치](#4.2)         
+  4.3 [신뢰할 수 없는 TLS/SSL server X.509 인증서](#4.3)         
+  4.4 [자체 서명된 TLS/SSL 인증서](#4.4)         
   
 
 ## <div id='1'/>1. 문서 개요
@@ -1023,3 +1026,52 @@ ec24cb1c3ae4   host      host      local
  $ sudo iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
  $ sudo iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 ```
+
+### <div id='4.2'/> 4.2. X.509 인증서의 Subject CN필드가 Entity Name과 불일치
+
+- 항목설명
+  + 인증서를 발급하기 전에 인증 기관은 CA의 CPS (Certification Practice Statement)에 지정된 대로 인증서를 요청하는 엔터티의 ID를 확인해야 한다. 따라서 표준 인증서 유효성 검사 절차에서는 인증서를 제시하는 엔티티의 실제 이름과 일치하는 인증서의 제목 CN 필드가 필요하다.
+
+- 조치대상
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+
+- 조치방법
+  + 인증서 구매 후 Kubernetes에서 secret tls를 추가하여 Ingress에 인증서 적용여부만 결정
+  + Ingress에 적용하는 방법 이외에 인증서를 기존과 같이 WebServer에 포함시키고, 이를 Ingress 뒷 단인 Pod 내부에 두는 방식으로 사용 가능하며, L4Switch&CDN 등 Kubernetes 앞단에 인증서를 적용하여 활용도 가능
+  + 운영환경에 맞춰 인증서 처리 진행
+
+### <div id='4.3'/> 4.3. 신뢰할 수 없는 TLS/SSL server X.509 인증서
+
+- 항목설명
+  + 서버의 TLS/SSL 인증서는 신뢰할 수 없는 인증 기관에서 서명 되었다. 자체 서명된 인증서의 사용은 TLS/SSL 중간자 공격이 발생하고 있음을 나타낼 수 있으므로 권장되지 않는다.
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+
+- 조치방법
+  + 인증서 구매 후 Kubernetes에서 secret tls를 추가하여 Ingress에 인증서 적용여부만 결정
+  + Ingress에 적용하는 방법 이외에 인증서를 기존과 같이 WebServer에 포함시키고, 이를 Ingress 뒷 단인 Pod 내부에 두는 방식으로 사용 가능하며, L4Switch&CDN 등 Kubernetes 앞단에 인증서를 적용하여 활용도 가능
+  + 운영환경에 맞춰 인증서 처리 진행
+
+### <div id='4.4'/> 4.4. 자체 서명된 TLS/SSL 인증서
+
+- 항목설명
+  + 서버의 TLS/SSL 인증서는 자체 서명된다. 특히 TLS/SSL man-in-the-middle 공격은 일반적으로 자체 서명 된 인증서를 사용하여 TLS/SSL 연결을 도청하기 때문에 자체 서명 된 인증서는 기본적으로 신뢰할 수 없다.
+
+| <center>대상 환경</center> | <center>분류</center> | <center>조치 대상</center> |
+| :--- | :--- | :---: |
+| Cluster | Master | O |
+|| Worker | O |
+
+- 조치방법
+  + 인증서 구매 후 Kubernetes에서 secret tls를 추가하여 Ingress에 인증서 적용여부만 결정
+  + Ingress에 적용하는 방법 이외에 인증서를 기존과 같이 WebServer에 포함시키고, 이를 Ingress 뒷 단인 Pod 내부에 두는 방식으로 사용 가능하며, L4Switch&CDN 등 Kubernetes 앞단에 인증서를 적용하여 활용도 가능
+  + 운영환경에 맞춰 인증서 처리 진행
+
+
