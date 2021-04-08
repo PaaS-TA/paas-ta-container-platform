@@ -32,6 +32,12 @@
     4.5. [컨테이너 플랫폼 사용자 포털 로그인](#4.5)      
     4.6. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#4.6)    
 
+5. [컨네이너 플랫폼 참고](#5)       
+    5.1. [Cluster Role 운영자 생성 및 Token 획득](#5.1)  
+    5.2. [kubernetes 리소스 생성 시 주의사항](#5.2)    
+
+<br>
+
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
 본 문서(컨테이너 플랫폼 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈 설치 방법을 기술하였다.
@@ -42,9 +48,9 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다. 
+시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
+Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다. 
 
 ![image 001]
 
@@ -61,6 +67,8 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
 #### 방화벽 정보
+IaaS Security Group의 열어줘야할 Port를 설정한다.
+
 - Master Node
 
 | <center>프로토콜</center> | <center>포트</center> | <center>Source</center> | <center>Destination</center> | <center>비고</center> |  
@@ -90,7 +98,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 <br>
 
 ### <div id='2.2'>2.2. Stemcell 확인
-Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell 이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
+Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
 - Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.
 > $ bosh -e micro-bosh stemcells
 ```
@@ -108,7 +116,7 @@ Succeeded
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
-- 컨테이너 플랫폼 Deployment Git Repository URL : <br> [https://github.com/PaaS-TA/paas-ta-container-platform-deployment](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/v5.5.1)
+- 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
 ```
 # Deployment 다운로드 파일 위치 경로 생성 및 이동
@@ -188,8 +196,9 @@ Succeeded
 (e.g. {IAAS} :: aws)
 
 > IPS - k8s_api_server_ip : Kubernetes Master Node Public IP<br>
-  IPS - k8s_auth_bearer : [Kubespray 설치 가이드 - 4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)
-  
+  IPS - k8s_auth_bearer : [[5.1. Cluster Role 운영자 생성 및 Token 획득]](#5.1) 참고하여 Token 값 입력
+
+#### paasta-container-service-vars-{IAAS}.yml
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -377,7 +386,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
-   [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download)  
+   [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
@@ -385,7 +394,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Tnk5SS57idFPaKF/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-platform-standalone-image.tar
@@ -405,10 +414,10 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 │   ├── container-platform-webadmin.tar.gz
 │   └── container-platform-webuser.tar.gz
 ├── container-platform-script                           # 컨테이너 플랫폼 배포 관련 스크립트 파일 위치
-│   ├── container-platform-deploy.sh                    
-│   ├── container-platform-vars.yaml                    
-│   ├── image-upload-standalone.sh                      
-│   └── remove-container-platform-resource.sh           
+│   ├── container-platform-deploy.sh
+│   ├── container-platform-vars.sh
+│   ├── image-upload-standalone.sh
+│   └── remove-container-platform-resource.sh
 ├── container-platform-yaml                             # 컨테이너 플랫폼 배포 YAML 파일 위치
 │   ├── paas-ta-container-platform-api.yaml
 │   ├── paas-ta-container-platform-common-api.yaml
@@ -450,7 +459,7 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 컨테이너 플랫폼을 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다. 
                                                                                                     
 ```
-$ vi container-platform-vars.yaml
+$ vi container-platform-vars.sh
  ```
 
 ```                                                     
@@ -472,9 +481,10 @@ MARIADB_USER_PASSWORD="{mariadb admin user password}"   # mariadb admin user pas
 >   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
 > - CP_CLUSTER_NAME :<br>컨테이너 플랫폼에서 사용할 클러스터 명으로 원하는 값 입력<br>
 >   + 배포 후 운영자 포털 접속 및 회원가입 시 해당 클러스터 명 입력 필요 <br><br>
-> - MARIADB_USER_ID :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br><br>
+> - MARIADB_USER_ID :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br>
+>   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_id' 값 입력 <br><br>
 > - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
->   +  Deployment yaml 내 MariaDB 정보 - 2.4. Deployment 파일 수정 참고 :: <br> [paasta-container-service-vars-{IAAS}.yml](#2.4)
+>   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
 
  
 #### <div id='3.3.2'>3.3.2. 컨테이너 플랫폼 리소스 배포 
@@ -582,7 +592,7 @@ deployment.apps "redis-deployment" deleted
 
 > - 컨테이너 플랫폼 운영자포털 접속 URI :: http://{K8S_WORKER_NODE_IP}:32080 <br>
 > - 컨테이너 플랫폼 사용자포털 접속 URI :: http://{K8S_WORKER_NODE_IP}:32091 <br>
->   + {K8S_WORKER_NODE_IP} : [container-platform-variable-replace.sh](#3.3.1)에 설정한 변수 'K8S_WORKER_NODE_IP' 값을 대입한다.
+>   + {K8S_WORKER_NODE_IP} : [container-platform-vars.sh](#3.3.1)에 설정한 변수 'K8S_WORKER_NODE_IP' 값을 대입한다.
 
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 운영자 포털 회원가입
 운영자 포털을 접속하기 전 네임스페이스 'paas-ta-container-platform-temp-namespace' 가 정상적으로 생성되어 있는지 확인한다.<br>
@@ -597,11 +607,13 @@ paas-ta-container-platform-temp-namespace   Active   74m
 Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
-> - Kubernetes Cluster Name : <br> [container-platform-variable-replace.sh](#3.3.1)에 설정한 변수 'CP_CLUSTER_NAME' 값을 입력한다. <br><br> 
-> - Kubernetes Cluster API URL : <br> https://{K8S_MASTER_NODE_IP}:6443 을 입력한다. <br>{K8S_MASTER_NODE_IP}는 [container-platform-variable-replace.sh](#3.3.1)에 설정한 
-변수 'K8S_MASTER_NODE_IP' 값을 입력한다. <br><br> 
-> - Kubernetes Cluster Token : <br> Kubespray 설치 가이드의 [4.1. Cluster Role 운영자 생성 및 Token 획득](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.0.md#4.1)을 참고한다. <br><br>
-> - Namespace : <br> 신규로 생성할 Namespace 명을 입력한다.<br> 회원가입 완료 후 해당 Namespace에 kubernetes에서 제공하는 ClusterRole 'cluster-admin' 과 운영자 계정이 바인딩된다.
+> - Kubernetes Cluster Name : <br> [container-platform-vars.sh](#3.3.1)에 설정한 변수 'CP_CLUSTER_NAME' 값을 입력 <br><br> 
+> - Kubernetes Cluster API URL : <br> <b>https://{K8S_MASTER_NODE_IP}:6443</b> 입력 <br>
+>    + {K8S_MASTER_NODE_IP}는 [container-platform-vars.sh](#3.3.1)에 설정한 변수 'K8S_MASTER_NODE_IP' 값을 입력한다. <br><br> 
+> - Kubernetes Cluster Token : <br> [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br>
+>    + (참고) [[5.1. Cluster Role 운영자 생성 및 Token 획득]](#5.1) <br><br>
+> - Namespace : <br> 신규로 생성할 Namespace 명을 입력<br> 
+>    + 회원가입 완료 후 해당 Namespace에 kubernetes에서 제공하는 ClusterRole 'cluster-admin' 과 운영자 계정이 바인딩된다.
 
 <br>
 
@@ -669,6 +681,68 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
   + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
 
+
+<br>
+
+## <div id='5'>5. 컨네이너 플랫폼 참고
+
+### <div id='5.1'>5.1. Cluster Role 운영자 생성 및 Token 획득
+Cluster Role을 가진 운영자의 Service Account를 생성하고 해당 Service Account의 Token 값을 획득한다.<br>
+획득한 Token 값은 컨테이너 플랫폼 배포 및 컨테이너 플랫폼 운영자 포털 회원가입에 사용된다.
+
+- Service Account를 생성한다.
+```
+## {SERVICE_ACCOUNT} : 생성할 Service Account 명
+
+$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(ex. kubectl create serviceaccount k8sadmin -n kube-system)
+```
+
+- 생성한 Service Account와 kubernetes에서 제공하는 ClusterRole 'cluster-admin'을 바인딩한다.
+```
+$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
+(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
+```
+
+- Service Account의 Mountable secrets 값을 확인한다.
+```
+$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
+
+...
+
+Mountable secrets:   k8sadmin-token-xxxx
+```
+
+- Service Account의 Token을 획득한다.
+
+```
+## {SECRET_NAME} : Mountable secrets 값 입력
+
+$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
+```
+<br>
+
+### <div id='5.2'>5.2. kubernetes 리소스 생성 시 주의사항
+
+컨테이너 플랫폼 이용 중 리소스 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
+
+|Resource 명|생성 시 제외해야 할 prefix|
+|---|---|
+|전체 Resource|kube*|
+|Namespace|all|
+||kubernetes-dashboard|
+||paas-ta-container-platform-temp-namespace|
+|Role|paas-ta-container-platform-init-role|
+||paas-ta-container-platform-admin-role|
+|ResourceQuota|paas-ta-container-platform-low-rq|
+||paas-ta-container-platform-medium-rq|
+||paas-ta-container-platform-high-rq|
+|LimitRanges|paas-ta-container-platform-low-limit-range|
+||paas-ta-container-platform-medium-limit-range|
+||paas-ta-container-platform-high-limit-range|
+|Pod|nodes|
+||resources|
 
 ----
 [image 001]:images/cp-001.png
