@@ -301,7 +301,7 @@ $ ./deploy-{IAAS}.sh
 
 - 서비스 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
-  [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download)  
+  [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/ggdZyEKejPSszFj/download)  
        
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
@@ -309,7 +309,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1/release/service
 $ cd ~/workspace/paasta-5.5.1/release/service
 
 # 릴리즈 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/zYjJg9yffxwSbFT/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/ggdZyEKejPSszFj/download
 $ ls ~/workspace/paasta-5.5.1/release/service
   paasta-container-platform-1.0.tgz  
 ```
