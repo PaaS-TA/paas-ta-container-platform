@@ -394,7 +394,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 서비스 이미지 파일 다운로드 :  
-   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/PeS44dSeQ6snHyS/download)  
+   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
@@ -402,7 +402,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/PeS44dSeQ6snHyS/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-service-image.tar
