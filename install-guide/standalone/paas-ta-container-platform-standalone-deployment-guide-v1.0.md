@@ -273,6 +273,17 @@ paasta-cp-kubespray-master
 ...
 ```
 
+- Metrics-server 를 배포할 Master Node의 HostName 정보를 추가한다.
+
+```
+$ vi roles/kubernetes-apps/metrics_server/defaults/main.yml
+```
+
+```
+...
+master_node_hostname: {MASTER_HOST_NAME}
+````
+
 <br>
 
 ### <div id='2.6'> 2.6. Kubespray 설치
