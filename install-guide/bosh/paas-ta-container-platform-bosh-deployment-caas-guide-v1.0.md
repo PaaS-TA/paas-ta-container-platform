@@ -400,7 +400,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/sePzP9PzYWNwgJy/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-service-image.tar
@@ -484,7 +484,7 @@ $ vi container-service-vars.sh
 ```                                                     
 # COMMON ENV VARIABLE
 
-PAASTA_SYSTEM_DOMAIN="xxx.xx.xx.xxx.xip.io"             # PaaS-TA System Domain
+PAASTA_SYSTEM_DOMAIN="xxx.xx.xx.xxx.nip.io"             # PaaS-TA System Domain
 HAPROXY_IP="xxx.xx.xx.xxx"                              # Deployment 'paasta-container-platform' haproxy public ip
 K8S_MASTER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes master node public ip
 K8S_WORKER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes worker node public ip
