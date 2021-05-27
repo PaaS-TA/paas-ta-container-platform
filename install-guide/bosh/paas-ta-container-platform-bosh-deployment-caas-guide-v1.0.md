@@ -281,8 +281,7 @@ export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environm
 
 # DEPLOY
 bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-aws.yml \
-    -l manifests/paasta-container-service-vars-aws.yml \
-    -o manifests/ops-files/use-compiled-releases.yml \
+    -l manifests/paasta-container-service-vars-aws.yml \    
     -o manifests/ops-files/paasta-container-service/network-aws.yml \
     -o manifests/ops-files/misc/first-time-deploy.yml \
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
@@ -393,7 +392,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 서비스 이미지 파일 다운로드 :  
-   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download)  
+   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/sePzP9PzYWNwgJy/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
@@ -401,7 +400,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1
 $ cd ~/workspace/paasta-5.5.1
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/sePzP9PzYWNwgJy/download
 
 $ ls ~/workspace/paasta-5.5.1
   container-service-image.tar
@@ -485,7 +484,7 @@ $ vi container-service-vars.sh
 ```                                                     
 # COMMON ENV VARIABLE
 
-PAASTA_SYSTEM_DOMAIN="xxx.xx.xx.xxx.xip.io"             # PaaS-TA System Domain
+PAASTA_SYSTEM_DOMAIN="xxx.xx.xx.xxx.nip.io"             # PaaS-TA System Domain
 HAPROXY_IP="xxx.xx.xx.xxx"                              # Deployment 'paasta-container-platform' haproxy public ip
 K8S_MASTER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes master node public ip
 K8S_WORKER_NODE_IP="xxx.xx.xx.xxx"                      # Kubernetes worker node public ip
