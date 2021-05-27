@@ -277,8 +277,7 @@ export CONTAINER_BOSH2_UUID=`bosh int <(bosh -e ${CONTAINER_BOSH2_NAME} environm
 
 # DEPLOY
 bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-redact manifests/paasta-container-service-deployment-{IAAS}.yml \
-    -l manifests/paasta-container-service-vars-{IAAS}.yml \
-    -o manifests/ops-files/use-compiled-releases.yml \
+    -l manifests/paasta-container-service-vars-{IAAS}.yml \    
     -o manifests/ops-files/paasta-container-service/network-{IAAS}.yml \
     -o manifests/ops-files/misc/first-time-deploy.yml \
     -v deployment_name=${CONTAINER_DEPLOYMENT_NAME} \
