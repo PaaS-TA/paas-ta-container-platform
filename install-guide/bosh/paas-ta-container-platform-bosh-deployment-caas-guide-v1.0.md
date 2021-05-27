@@ -392,7 +392,7 @@ Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이�
 해당 내용은 Kubernetes Master Node에서 실행한다.
  
 + 컨테이너 서비스 이미지 파일 다운로드 :  
-   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/CjdmZAsGQnX3Zzj/download)  
+   [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/sePzP9PzYWNwgJy/download)  
 
 ```
 # 이미지 파일 다운로드 경로 생성
