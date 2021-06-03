@@ -123,7 +123,7 @@ $ mkdir -p ~/workspace/paasta-5.5.1/deployment/
 $ cd ~/workspace/paasta-5.5.1/deployment/
 
 # Deployment 다운로드
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.3
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.4
 ```
 
 ### <div id='2.4'>2.4. Deployment 파일 수정
