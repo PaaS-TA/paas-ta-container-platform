@@ -41,12 +41,15 @@
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
 본 문서(컨테이너 서비스 설치 가이드)는 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈의 설치 및 서비스 등록 방법을 기술하였다.
+<br>PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
 
-PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
-
+<br>
+ 
 ### <div id='1.2'>1.2. 범위
 설치 범위는 Kubernetes 서비스 배포를 기준으로 작성하였다.
 
+<br> 
+ 
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 서비스 포털 환경을 배포한다. <br>
@@ -54,6 +57,8 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ![image 001]
 
+<br>
+ 
 ### <div id='1.4'>1.4. 참고 자료
 > http://bosh.io/docs  
 > https://docs.cloudfoundry.org
@@ -63,10 +68,10 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 ## <div id='2'>2. 컨테이너 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
 본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
-- [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
-- [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
-- [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md)
+> [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md) <br>
+> [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md) <br>
+> [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md) <br>
+> [PaaS-TA 포털 UI 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_UI_SERVICE_INSTALL_GUIDE_V1.0.md) <br>
 
 #### 방화벽 정보
 IaaS Security Group의 열어줘야할 Port를 설정한다.
@@ -99,7 +104,11 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 ### <div id='2.2'>2.2. Stemcell 확인
 Stemcell 목록을 확인하여 서비스 설치에 필요한 Stemcell이 업로드 되어 있는 것을 확인한다. (PaaS-TA 5.5 와 동일 Stemcell 사용)
 - Stemcell 업로드 및 Cloud Config, Runtime Config 설정 부분은 [PaaS-TA 5.5 설치가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)를 참고 한다.  
-> $ bosh -e micro-bosh stemcells
+
+```
+$ bosh -e micro-bosh stemcells
+```
+ 
 ```
 Using environment '10.0.1.6' as client 'admin'
 
@@ -112,6 +121,8 @@ bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.94   ubuntu-xenial  -    ami-0694eb
 
 Succeeded
 ```
+ 
+<br>
 
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
@@ -125,10 +136,16 @@ $ cd ~/workspace/paasta-5.5/deployment/
 $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.4
 ```
 
+<br> 
+ 
 ### <div id='2.4'>2.4. Deployment 파일 수정
-BOSH Deployment manifest는 Components 요소 및 배포의 속성을 정의한 YAML 파일이다. Deployment 파일에서 사용하는 network, vm_type, disk_type 등은 Cloud config를 활용하고, 활용 방법은 BOSH 2.0 가이드를 참고한다.
+BOSH Deployment manifest는 Components 요소 및 배포의 속성을 정의한 YAML 파일이다.<br> Deployment 파일에서 사용하는 network, vm_type, disk_type 등은 Cloud config를 활용하고, 활용 방법은 BOSH 2.0 가이드를 참고한다.<br>
+일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다. 
+ 
 - Cloud config 설정 내용을 확인한다.
-> $ bosh -e micro-bosh cloud-config
+```
+$ bosh -e micro-bosh cloud-config
+```
 ```
 Using environment '10.0.1.6' as client 'admin'
 
@@ -186,18 +203,18 @@ vm_types:
 
 Succeeded
 ```
-
-> 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.
-
+ 
+<br>
+ 
 - Deployment YAML에서 사용하는 변수 파일을 서버 환경에 맞게 수정한다.
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
+  + IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
+  + IPS - k8s_auth_bearer : [[6.1. Cluster Role 사용자 생성 및 Token 획득]](#6.1) 참고하여 Token 값 입력
+
+#### paasta-container-service-vars-{IAAS}.yml 
+```
+$ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/manifests/paasta-container-service-vars-{IAAS}.yml
 (e.g. {IAAS} :: aws)
-
-> IPS - k8s_api_server_ip : Kubernetes Master Node IP<br>
-  IPS - k8s_auth_bearer : [[6.1. Cluster Role 사용자 생성 및 Token 획득]](#6.1) 참고하여 Token 값 입력
-
-
-#### paasta-container-service-vars-{IAAS}.yml
+```
 ```
 # INCEPTION OS USER NAME
 inception_os_user_name: "ubuntu"
@@ -263,11 +280,14 @@ private_image_repository_root_directory: "/var/vcap/data/private-image-repositor
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
 
+<br> 
+ 
 ### <div id='2.5'>2.5. 서비스 설치
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.    
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
+```
+$ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
 (e.g. {IAAS} :: aws)
-
+```
 ```    
 #!/bin/bash
 
@@ -292,6 +312,8 @@ $ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
 
+<br>                                             
+                                             
 ### <div id='2.6'>2.6. 서비스 설치 - 다운로드 된 릴리즈 파일 이용 방식
 
 - 서비스 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
@@ -310,9 +332,10 @@ $ ls ~/workspace/paasta-5.5/release/service
 ```
 - 서버 환경에 맞추어 Deploy 스크립트 파일의 VARIABLES 설정을 수정한다.  
   (추가) -o manifests/ops-files/use-offline-releases.yml \
-> $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
+```
+$ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh  
 (e.g. {IAAS} :: aws)
-
+```
 ```    
 #!/bin/bash
 
@@ -337,11 +360,14 @@ $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bos
 $ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
-
+                                             
+<br>
+                                             
 ### <div id='2.7'>2.7. 서비스 설치 확인
 설치 완료된 서비스를 확인한다.
-> $ bosh -e micro-bosh -d paasta-container-platform vms
-
+```
+$ bosh -e micro-bosh -d paasta-container-platform vms
+```
 ```
 Using environment '10.0.1.6' as client 'admin'
 
@@ -360,6 +386,8 @@ private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7
 Succeeded
 ```
 
+<br> 
+ 
 ### <div id='2.8'>2.8. CVE/CCE 진단항목 적용
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.  
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
@@ -372,7 +400,7 @@ Succeeded
 ### <div id='3.1'>3.1. CRI-O insecure-registry 설정
 컨테이너 플랫폼 Image Push, Pull 작업을 진행하기 위해 Kubernetes Master Node, Worker Node 내 podman 설치 및 config 파일에 'insecure-registries' 설정을 추가한다. <br>
 Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 crio, podman을 재시작한다.<br>
->  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다.
+ - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment **'paasta-container-platform'** 의 haproxy public ip 입력
 ```
 # podman 설치
 $ sudo apt-get update
@@ -415,6 +443,8 @@ location = "{HAProxy_IP}:5001"
 $ sudo systemctl restart podman
 ```
 
+<br> 
+ 
 ### <div id='3.2'>3.2. 컨테이너 서비스 이미지 업로드
 Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
@@ -489,12 +519,12 @@ cp-secret   kubernetes.io/dockerconfigjson   1      0s
 {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]}
  ```
 
- > * Secret 조회
+* Secret 조회
  ```
  $ kubectl get secret cp-secret
  ```
 
- > * Private Repository에 업로드 된 이미지 목록 확인 명령어
+ * Private Repository에 업로드 된 이미지 목록 확인 명령어
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
  ```
@@ -522,21 +552,22 @@ K8S_AUTH_BEARER_TOKEN="{k8s bearer token}"              # Kubernetes bearer toke
 MARIADB_USER_ID="{mariadb admin user id}"               # Mariadb admin user id (e.g. cp-admin)
 MARIADB_USER_PASSWORD="{mariadb admin user password}"   # Mariadb admin user password (e.g. Paasta!2021)
 ```
-> - PAASTA_SYSTEM_DOMAIN :<br> PaaS-TA System Domain 입력<br><br>
-> - HAPROXY_IP :<br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
-> - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
-> - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>
->   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br><br>
-> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력
->   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
-> - K8S_AUTH_BEARER_TOKEN :<br>kubernetes bearer token 입력 <br>
->   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br><br>
-> - MARIADB_USER_ID :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br>
->   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_id' 값 입력 <br><br>
-> - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
->   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
+- **PAASTA_SYSTEM_DOMAIN** <br> PaaS-TA System Domain 입력<br><br>
+- **HAPROXY_IP** <br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
+- **K8S_MASTER_NODE_IP** <br>Kubernetes master node public ip 입력 <br><br>
+- **K8S_WORKER_NODE_IP** <br>Kubernetes worker node public ip 입력 <br>
+  + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br><br>
+- **K8S_WORKER_NODE_HOSTNAME** <br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력
+   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
+- **K8S_AUTH_BEARER_TOKEN** <br>kubernetes bearer token 입력 <br>
+   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br><br>
+- **MARIADB_USER_ID** <br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin user id 입력 <br>
+   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_id' 값 입력 <br><br>
+- **MARIADB_USER_PASSWORD** <br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
+   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
 
-
+<br>
+ 
 #### <div id='3.3.2'>3.3.2. 컨테이너 서비스 리소스 배포
 컨테이너 서비스 배포를 위한 배포 스크립트를 실행한다.
 
@@ -577,7 +608,7 @@ replicaset.apps/service-dashboard-deployment-974c87585    1         1         1 
 ```
 ##### 배포된 리소스 조회 명령어
 
- >  + Deployment, ReplicaSet, Pod, Service 조회
++ Deployment, ReplicaSet, Pod, Service 조회
  ```
  $ kubectl get all
  ```
@@ -601,14 +632,15 @@ No service brokers found
 ```
 
 - 컨테이너 서비스 브로커를 등록한다.
+```
+$ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31888
+``` 
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{Worker Node IP}:31888
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
 > - 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 브로커 NodePort
 >   + Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
-```
-$ cf create-service-broker container-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31888
-```
+
 
 - 등록된 컨테이너 서비스 브로커를 확인한다.
 ```
@@ -653,6 +685,8 @@ broker: container-service-broker
    container-service   Small      all
 ```
 
+<br>
+ 
 ### <div id='4.2'> 4.2. 컨테이너 서비스 UAA Client 등록
 UAA 포털 계정 등록 절차에 대한 순서를 확인한다.
 
@@ -716,6 +750,7 @@ $ uaac clients
 $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, http://xxx.xxx.xxx.xxx:32091/callback"
 ```
 
+<br> 
 
 ### <div id='4.3'>4.3. PaaS-TA 포털에서 컨테이너 서비스 조회 설정
 
@@ -758,7 +793,7 @@ ex)
 ### <div id='5.1'>5.1. Jenkins 서비스 브로커 배포
 해당 [[5.1. Jenkins 서비스 브로커 배포]](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다.<br>
 Jenkins 서비스 브로커 배포를 위한 배포 스크립트를 실행한다.
-
+ 
 ```
 $ cd ~/workspace/paasta-5.5/container-service/service-script
 $ ./jenkins-service-deploy.sh
@@ -784,11 +819,12 @@ replicaset.apps/jenkins-broker-deployment-94555d79f   1         1         1     
 ```
 ##### 배포된 리소스 조회 명령어
 
- >  + Jenkins 서비스 브로커 관련 Deployment, ReplicaSet, Pod, Service 조회
++ Jenkins 서비스 브로커 관련 Deployment, ReplicaSet, Pod, Service 조회
  ```
  $ kubectl get all -l app=jenkins-broker
  ```
 
+<br>
 
 ### <div id='5.2'>5.2. Jenkins 서비스 브로커 등록
 
@@ -802,6 +838,12 @@ name                       url
 container-service-broker   http://xxx.xxx.xxx.xxx:31888
 ```
 - Jenkins 서비스 브로커를 등록한다.
+ 
+```
+$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31787
+Creating service broker jenkins-service-broker as admin...
+OK
+``` 
 
 > $ create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{Worker Node IP}:31787
 > - 서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭
@@ -809,11 +851,6 @@ container-service-broker   http://xxx.xxx.xxx.xxx:31888
 > - 서비스팩 URL : Kubernetes Worker Node IP 와 배포된 Jenkins 서비스 브로커 NodePort
 >   + Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
 
-```
-$ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.xxx.xxx.xxx:31787
-Creating service broker jenkins-service-broker as admin...
-OK
-```
 
 - 등록된 Jenkins 서비스 브로커를 확인한다.
 ```
@@ -865,6 +902,8 @@ broker: jenkins-service-broker
    container-jenkins-service   jenkins_20GB   all
 ```
 
+<br> 
+ 
 ### <div id='5.3'>5.3. PaaS-TA 포털에서 Jenkins 서비스 조회 설정
 
 1.PaaS-TA Admin 포털에 접속한다.
@@ -877,7 +916,6 @@ broker: jenkins-service-broker
 ![image 008]
 
 <br>
-
 
 
 ## <div id='6'>6. 참고
