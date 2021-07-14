@@ -458,7 +458,7 @@ $ mkdir -p ~/workspace/paasta-5.5
 $ cd ~/workspace/paasta-5.5
 
 # 이미지 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Zy6BFZkWAziLqWb/download  
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Zy6BFZkWAziLqWb/download
  
 $ ls ~/workspace/paasta-5.5
   container-service-image-1.1.tar
