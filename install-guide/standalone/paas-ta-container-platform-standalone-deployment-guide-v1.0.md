@@ -105,7 +105,7 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 | TCP | 30000-32767 ||| NodePort Services |  
 | UDP | 8285 | Worker Nodes || flannel overlay network |  
 | UDP | 8472 | Worker Nodes || flannel overlay network |  
-| TCP | 179 | Worker Nodes || Calio BGP network | 
+| TCP | 179 | Worker Nodes || Calio BGP network |
 
 <br>
 
@@ -166,7 +166,7 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.14.2 이다.
 ```
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.0.4
 ```
 
 <br>
