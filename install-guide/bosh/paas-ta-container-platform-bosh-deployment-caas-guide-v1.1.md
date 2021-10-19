@@ -414,6 +414,7 @@ $ sudo vi /etc/crio/crio.conf
 
 ```
 ...
+## 아래 항목을 추가한다
 insecure_registries = [
     "{HAProxy_IP}:5001"
   ]
@@ -432,6 +433,7 @@ $ sudo vi /etc/containers/registries.conf
 
 ```
 ...
+## 아래 항목을 추가한다
 [[registry]]
 insecure = true
 location = "{HAProxy_IP}:5001"
