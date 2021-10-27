@@ -284,6 +284,27 @@ $ vi roles/kubernetes-apps/metrics_server/defaults/main.yml
 master_node_hostname: {MASTER_HOST_NAME}
 ````
 
+- 외부에서 kubectl 명령어를 사용하기 위해 Master Node의 Public IP 정보를 추가한다.
+```
+$ vi roles/kubernetes/control-plane/tasks/kubeadm-setup.yml
+```
+
+```
+- name: kubeadm | aggregate all SANs
+  set_fact:
+    apiserver_sans: "{{ (sans_base + groups['kube_control_plane'] + sans_lb + sans_lb_ip + sans_supp + sans_access_ip + sans_ip + sans_address + sans_override + sans_hostname + sans_fqdn) | unique }}"
+  vars:
+    sans_base:
+      - "kubernetes"
+      - "kubernetes.default"
+      - "kubernetes.default.svc"
+      - "kubernetes.default.svc.{{ dns_domain }}"
+      - "{MASTER_NODE_PUBLIC_IP}" (추가)
+      - "{{ kube_apiserver_ip }}"
+      - "localhost"
+      - "127.0.0.1"
+```
+
 <br>
 
 ### <div id='2.6'> 2.6. Kubespray 설치

@@ -44,21 +44,21 @@
 ### <div id='1.1'>1.1. 목적
 본 문서(컨테이너 플랫폼 설치 가이드)는 단독배포된 Kubernetes를 사용하기 위해 Bosh 기반 릴리즈 설치 방법을 기술하였다.<br>
 PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다.
-    
+
 <br>
-    
+
 ### <div id='1.2'>1.2. 범위
 설치 범위는 Kubernetes 단독 배포를 기준으로 작성하였다.
-    
+
 <br>
-    
+
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
 총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
 
 ![image 001]
-    
+
 <br>    
 
 ### <div id='1.4'>1.4. 참고 자료
@@ -119,9 +119,9 @@ bosh-aws-xen-hvm-ubuntu-xenial-go_agent  621.94   ubuntu-xenial  -    ami-0694eb
 
 Succeeded
 ```
-    
+
 <br>
-    
+
 ### <div id='2.3'>2.3. Deployment 다운로드
 서비스 설치에 필요한 Deployment를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
 - 컨테이너 플랫폼 Deployment Git Repository URL : <br> https://github.com/PaaS-TA/paas-ta-container-platform-deployment
@@ -136,12 +136,12 @@ $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
 
 <br>
-    
+
 ### <div id='2.4'>2.4. Deployment 파일 수정
-BOSH Deployment manifest는 Components 요소 및 배포의 속성을 정의한 YAML 파일이다.<br> 
+BOSH Deployment manifest는 Components 요소 및 배포의 속성을 정의한 YAML 파일이다.<br>
 Deployment 파일에서 사용하는 network, vm_type, disk_type 등은 Cloud config를 활용하고, 활용 방법은 BOSH 2.0 가이드를 참고한다. <br>
 일부 application의 경우 이중화를 위한 조치는 되어 있지 않으며 인스턴스 수 조정 시 신규로 생성되는 인스턴스에는 데이터의 반영이 안될 수 있으니, 1개의 인스턴스로 유지한다.    
-    
+
 - Cloud config 설정 내용을 확인한다.
 ```
 $ bosh -e micro-bosh cloud-config
@@ -279,7 +279,7 @@ private_image_repository_port: 5001                                             
 private_image_repository_root_directory: "/var/vcap/data/private-image-repository"   # private image repository root directory
 private_image_repository_persistent_disk_type: "10GB"                                # private image repository's persistent disk type
 ```
-    
+
 <br>    
 
 ### <div id='2.5'>2.5. 릴리즈 설치  
@@ -288,7 +288,7 @@ private_image_repository_persistent_disk_type: "10GB"                           
 ```
 $ vi ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh/deploy-{IAAS}.sh
 ```
-    
+
 ```    
 #!/bin/bash
 
@@ -306,7 +306,7 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
     -v director_name=${CONTAINER_BOSH2_NAME} \
     -v director_uuid=${CONTAINER_BOSH2_UUID}
 ```
-                                          
+
 - 릴리즈를 설치한다.
 ```
 $ cd ~/workspace/paasta-5.5/deployment/paas-ta-container-platform-deployment/bosh
@@ -315,7 +315,7 @@ $ ./deploy-{IAAS}.sh
 ```
 
 <br>                                             
-                                             
+
 ### <div id='2.6'>2.6. 릴리즈 설치 - 다운로드 된 릴리즈 파일 이용 방식
 - 릴리즈 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 릴리즈 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
@@ -363,11 +363,11 @@ $ ./deploy-{IAAS}.sh
 ```
 
 <br>
-    
-    
+
+
 ### <div id='2.7'>2.7. 릴리즈 설치 확인
 설치 완료된 릴리즈를 확인한다.
-    
+
 ```
 $ bosh -e micro-bosh -d paasta-container-platform vms
 ```
@@ -389,7 +389,7 @@ Succeeded
 ```
 
 <br>    
-    
+
 ### <div id='2.8'>2.8. CVE/CCE 진단항목 적용
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
@@ -416,6 +416,7 @@ $ sudo vi /etc/crio/crio.conf
 
 ```
 ...
+## 아래 항목을 추가한다
 insecure_registries = [
     "{HAProxy_IP}:5001"
   ]
@@ -434,6 +435,7 @@ $ sudo vi /etc/containers/registries.conf
 
 ```
 ...
+## 아래 항목을 추가한다
 [[registry]]
 insecure = true
 location = "{HAProxy_IP}:5001"
@@ -446,7 +448,7 @@ $ sudo systemctl restart podman
 ```
 
 <br>
-    
+
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
 Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 해당 내용은 Kubernetes Master Node에서 실행한다.
@@ -650,7 +652,7 @@ configmap "cp-redis-config-bbdk5h2k6b" deleted
 service "redis-deployment" deleted
 deployment.apps "redis-deployment" deleted
 ```
-    
+
 <br>
 
 ## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 회원가입
@@ -692,23 +694,23 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 # {Kubernetes Cluster API URL} : https://xxx.xxx.xxx.xxx:6443
 # {Kubernetes Cluster Token} : qY3k2xaZpNbw3AJxxxxx......
 ```
-    
+
 <br>    
-    
+
 ### <div id='4.2'/>4.2. 컨테이너 플랫폼 운영자 포털 로그인
 - 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다.
 
 ![image 006]
 
 <br>    
-    
+
 ### <div id='4.3'/>4.3. 컨테이너 플랫폼 사용자 포털 회원가입
 - 등록할 사용자 계정정보(사용자 ID, Password, E-mail)를 입력 후 [Register] 버튼을 클릭하여  컨테이너 플랫폼 사용자 포털에 회원가입한다. <br> 사용자 포털은 회원가입 후 즉시 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
 
 ![image 007]
 
 <br>    
-    
+
 ### <div id='4.4'/>4.4. 컨테이너 플랫폼 사용자 Namespace/Role 할당
 #### <div id='4.4.1'/>4.4.1 Namespace 관리자 지정
 - Clusters 메뉴 > Namespaces 선택 > 할당 하고자하는 Namespace 명 선택 > 하단 [수정]버튼 클릭
@@ -725,7 +727,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 ![image 011]
 
 <br>    
-    
+
 #### <div id='4.4.2'/>4.4.2 Namespace 사용자 지정
 
 ##### 운영자 포털
@@ -754,7 +756,7 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 - 사용자 ID와 비밀번호를 입력후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 로그인 한다.
 
 ![image 019]
-    
+
 <br>    
 
 ### <div id='4.6'/>4.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
@@ -802,7 +804,7 @@ Mountable secrets:   k8sadmin-token-xxxx
 
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
-    
+
 <br>
 
 ### <div id='5.2'>5.2. kubernetes 리소스 생성 시 주의사항
