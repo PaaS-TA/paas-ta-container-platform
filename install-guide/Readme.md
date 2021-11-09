@@ -1,6 +1,5 @@
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Install
 # Container Platform(CP) - install
----
 
 ## 단독 배포   
 - [Kubespray 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.1.md)
@@ -24,4 +23,4 @@
   + [릴리즈 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/master) 
 
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > AP Install
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Install
