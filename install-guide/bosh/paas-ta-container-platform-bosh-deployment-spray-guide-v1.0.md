@@ -50,7 +50,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다. 
+총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
 
 ![image 001]
 
@@ -62,7 +62,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다. 
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다.
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
@@ -93,7 +93,7 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 | TCP | 30000-32767 ||| NodePort Services |  
 | UDP | 8285 | Worker Nodes || flannel overlay network |  
 | UDP | 8472 | Worker Nodes || flannel overlay network |  
-| TCP | 179 | Worker Nodes || Calio BGP network | 
+| TCP | 179 | Worker Nodes || Calio BGP network |
 
 <br>
 
@@ -287,8 +287,8 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh 
-$ chmod +x *.sh 
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh
+$ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
 
@@ -330,8 +330,8 @@ bosh -e ${CONTAINER_BOSH2_NAME} -n -d ${CONTAINER_DEPLOYMENT_NAME} deploy --no-r
 ```
 - 릴리즈를 설치한다.
 ```
-$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh 
-$ chmod +x *.sh 
+$ cd ~/workspace/paasta-5.5.1/deployment/paas-ta-container-platform-deployment/bosh
+$ chmod +x *.sh
 $ ./deploy-{IAAS}.sh
 ```
 
@@ -355,21 +355,21 @@ private-image-repository/2803b9a6-d797-4afb-9a34-65ce15853a9e  running        z7
 Succeeded
 ```
 
-### <div id='2.8'>2.8. CVE/CCE 진단항목 적용 
+### <div id='2.8'>2.8. CVE/CCE 진단항목 적용
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.    
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
 <br>
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
-해당 항목부터는 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 플랫폼을 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
+해당 항목부터는 배포된 Kubernetes Cluster 환경의 **Master Node**에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 플랫폼을 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다.
 
-### <div id='3.1'>3.1. Docker insecure-registry 설정 
-Kubernetes Master Node, Worker Node 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
+### <div id='3.1'>3.1. Docker insecure-registry 설정
+Kubernetes **Master Node, Worker Node** 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
 Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 Docker를 재시작한다.<br>
->  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다. 
+>  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다.
 ```
-# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요 
+# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
@@ -381,8 +381,8 @@ $ sudo systemctl restart docker
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
 Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
-해당 내용은 Kubernetes Master Node에서 실행한다.
- 
+해당 내용은 Kubernetes **Master Node**에서 실행한다.
+
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
    [container-platform-standalone-image.tar](https://nextcloud.paas-ta.org/index.php/s/PPCttKyiNcqYnJ9/download)  
 
@@ -431,12 +431,12 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 
 #### Private Repository 이미지 업로드
 
- + Private Repository에 이미지를 업로드하는 스크립트를 실행한다. <br> 
+ + Private Repository에 이미지를 업로드하는 스크립트를 실행한다. <br>
    스크립트 실행 후 Private Repository에 이미지가 정상적으로 업로드 되었는지 확인한다.
  ```
  $ cd ~/workspace/paasta-5.5.1/container-platform/container-platform-script
  $ chmod +x *.sh  
- $ ./image-upload-standalone.sh {HAProxy_IP}:5001 
+ $ ./image-upload-standalone.sh {HAProxy_IP}:5001
 
 '''
 
@@ -444,7 +444,7 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 
 {"repositories":["container-platform-api","container-platform-common-api","container-platform-webadmin","container-platform-webuser"]}
  ```
- 
+
  > * Private Repository에 업로드 된 이미지 목록 확인 명령어
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
@@ -454,8 +454,8 @@ $ cd ~/workspace/paasta-5.5.1/container-platform
 ### <div id='3.3'>3.3. 컨테이너 플랫폼 배포
 
 #### <div id='3.3.1'>3.3.1. 컨테이너 플랫폼 배포 YAML 내 환경변수 정의
-컨테이너 플랫폼을 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다. 
-                                                                                                    
+컨테이너 플랫폼을 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
+
 ```
 $ vi container-platform-vars.sh
  ```
@@ -475,7 +475,7 @@ MARIADB_USER_PASSWORD="{mariadb admin user password}"   # mariadb admin user pas
 > - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
 > - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>
 >   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br><br>
-> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력 
+> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력
 >   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
 > - CP_CLUSTER_NAME :<br>컨테이너 플랫폼에서 사용할 클러스터 명으로 원하는 값 입력<br>
 >   + 배포 후 운영자 포털 접속 및 회원가입 시 해당 클러스터 명 입력 필요 <br><br>
@@ -484,8 +484,8 @@ MARIADB_USER_PASSWORD="{mariadb admin user password}"   # mariadb admin user pas
 > - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
 >   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
 
- 
-#### <div id='3.3.2'>3.3.2. 컨테이너 플랫폼 리소스 배포 
+
+#### <div id='3.3.2'>3.3.2. 컨테이너 플랫폼 리소스 배포
 컨테이너 플랫폼 배포를 위한 배포 스크립트를 실행한다.
 
 ```
@@ -537,12 +537,12 @@ NAME                         DATA   AGE
 cp-redis-config-bbdk5h2k6b   1      4m7s
 ```
 ##### 배포된 리소스 조회 명령어
- 
- >  + Deployment, ReplicaSet, Pod, Service 조회 
+
+ >  + Deployment, ReplicaSet, Pod, Service 조회
  ```
  $ kubectl get all
  ```
- > + Namespace 조회 
+ > + Namespace 조회
  ```
  $ kubectl get namespace paas-ta-container-platform-temp-namespace
  ```
@@ -554,7 +554,7 @@ cp-redis-config-bbdk5h2k6b   1      4m7s
  ```
  $ kubectl get configmap -l app=cp-redis-config
  ```
- 
+
 <br>
 
 #### <div id='3.3.3'>3.3.3. (참고) 컨테이너 플랫폼 리소스 삭제
@@ -605,24 +605,24 @@ paas-ta-container-platform-temp-namespace   Active   74m
 Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [회원가입] 버튼을 클릭하여 컨테이너 플랫폼 운영자포털에 회원가입을 진행한다.
 
 ![image 005]
-> - Kubernetes Cluster Name : <br> [container-platform-vars.sh](#3.3.1)에 설정한 변수 'CP_CLUSTER_NAME' 값을 입력 <br><br> 
+> - Kubernetes Cluster Name : <br> [container-platform-vars.sh](#3.3.1)에 설정한 변수 'CP_CLUSTER_NAME' 값을 입력 <br><br>
 > - Kubernetes Cluster API URL : <br> <b>https://{K8S_MASTER_NODE_IP}:6443</b> 입력 <br>
->    + {K8S_MASTER_NODE_IP}는 [container-platform-vars.sh](#3.3.1)에 설정한 변수 'K8S_MASTER_NODE_IP' 값을 입력한다. <br><br> 
+>    + {K8S_MASTER_NODE_IP}는 [container-platform-vars.sh](#3.3.1)에 설정한 변수 'K8S_MASTER_NODE_IP' 값을 입력한다. <br><br>
 > - Kubernetes Cluster Token : <br> [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br>
 >    + (참고) [[5.1. Cluster Role 운영자 생성 및 Token 획득]](#5.1) <br><br>
-> - Namespace : <br> 신규로 생성할 Namespace 명을 입력<br> 
+> - Namespace : <br> 신규로 생성할 Namespace 명을 입력<br>
 >    + 회원가입 완료 후 해당 Namespace에 kubernetes에서 제공하는 ClusterRole 'cluster-admin' 과 운영자 계정이 바인딩된다.
 
 <br>
 
 ```
-# ex) 이해를 돕기 위한 예시 정보 
+# ex) 이해를 돕기 위한 예시 정보
 # {Kubernetes Cluster Name} : cp-cluster
 # {Kubernetes Cluster API URL} : https://xxx.xxx.xxx.xxx:6443
 # {Kubernetes Cluster Token} : qY3k2xaZpNbw3AJxxxxx......
 ```
 ### <div id='4.2'/>4.2. 컨테이너 플랫폼 운영자 포털 로그인
-- 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다. 
+- 사용자 ID와 비밀번호를 입력 후 [로그인] 버튼을 클릭하여 컨테이너 플랫폼 운영자 포털에 로그인 한다.
 
 ![image 006]
 
@@ -638,7 +638,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 ![image 008]
 ![image 009]
 
-- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭 
+- 해당 Namespace의 관리자로 지정할 사용자 ID 선택 후 저장버튼 클릭
 - 해당 Namespace의 Resource Quotas, Limit Ranges 수정 가능
 
 ![image 010]
@@ -646,7 +646,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 - [참고] Namespace 생성시에도 Namespace 관리자를 지정할 수 있다.
 ![image 011]
 
-## 2) Namespace 사용자 지정 
+## 2) Namespace 사용자 지정
 
 ### 운영자 포털
 - Managements 메뉴 > Users 선택 > User 탭 선택 > 사용자 ID 선택 > 하단 [수정]버튼 클릭
@@ -661,7 +661,7 @@ Kubernetes Cluster 정보, 생성할 Namespace 명, User 정보를 입력 후 [�
 
 <hr>
 
-### 사용자 포털 
+### 사용자 포털
 Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경 및 해당 Namespace를 미사용하는 사용자에게 접근 권한을 할당할 수 있다.
 
 ![image 012]
@@ -677,7 +677,7 @@ Namespace 관리자는 해당 Namespace를 이용중인 사용자의 Role 변경
 ### <div id='4.6'/>4.6. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
   + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
-  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md) 
+  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
 
 
 <br>

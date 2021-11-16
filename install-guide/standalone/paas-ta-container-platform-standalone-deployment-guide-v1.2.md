@@ -11,10 +11,9 @@
   2.1. [Prerequisite](#2.1)  
   2.2. [SSH Key 생성 및 배포](#2.2)  
   2.3. [Kubespray 다운로드](#2.3)  
-  2.4. [Ubuntu, Python Package 설치](#2.4)  
-  2.5. [Kubespray 파일 수정](#2.5)  
-  2.6. [Kubespray 설치](#2.6)  
-  2.7. [Kubespray 설치 확인](#2.7)  
+  2.4. [Kubespray 설치 준비](#2.4)  
+  2.5. [Kubespray 설치](#2.5)  
+  2.6. [Kubespray 설치 확인](#2.6)  
 
 3. [Kubespray 삭제 (참고)](#3)  
 
@@ -41,9 +40,9 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
-Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
+시스템 구성은 Kubernetes Cluster(Master, Worker) 환경으로 구성되어 있다.<br>
+Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
 
 ![image 001]
 
@@ -68,9 +67,9 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 |Kubespray|v2.16.0|ansible|2.9.20|
 |Kubernetes Native|v1.20.5|jinja2|2.11.3|
 |CRI-O|v1.20.0|netaddr|0.7.19|
-|||pbr|5.4.4|
-|||jmespath|0.9.5|
-|||ruamel.yaml|0.16.10|
+|Helm|3.5.4|pbr|5.4.4|
+|Istio|1.11.4|jmespath|0.9.5|
+|NFS Common||ruamel.yaml|0.16.10|
 |||cryptography|2.8|
 |||MarkupSafe|1.1.1|
 
@@ -113,7 +112,7 @@ Kubespray 설치를 위해서는 SSH Key가 인벤토리의 모든 서버들에 
 
 SSH Key 생성 및 배포 이후의 모든 설치과정은 **Master Node**에서 진행한다.
 
-- Master Node에서 RSA 공개키를 생성한다.
+- **Master Node**에서 RSA 공개키를 생성한다.
 ```
 $ ssh-keygen -t rsa
 Generating public/private rsa key pair.
@@ -146,7 +145,7 @@ $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5QrbqzV6g4iZT4iR1u+EKKVQGqBy4DbGqH7/PVfmAYEo3CcFGhRhzLcVz3rKb+C25mOne+MaQGynZFpZk4muEAUdkpieoo+B6r2eJHjBLopn5quWJ561H7EZb/GlfC5ThjHFF+hTf5trF4boW1iZRvUM56KAwXiYosLLRBXeNlub4SKfApe8ojQh4RRzFBZP/wNbOKr+Fo6g4RQCWrr5xQCZMK3ugBzTHM+zh9Ra7tG0oCySRcFTAXXoyXnJm+PFhdR6jbkerDlUYP9RD/87p/YKS1wSXExpBkEglpbTUPMCj+t1kXXEJ68JkMrVMpeznuuopgjHYWWD2FgjFFNkp ubuntu@paasta-cp-master
 ```
 
-- 사용할 Master, Worker Node의 authorized_keys 파일 본문의 마지막 부분(기존 본문 내용 아래 추가)에 공개키를 복사한다.
+- 사용할 **Master, Worker Node**의 authorized_keys 파일 본문의 마지막 부분(기존 본문 내용 아래 추가)에 공개키를 복사한다.
 ```
 $ vi .ssh/authorized_keys
 
@@ -170,20 +169,12 @@ $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
 <br>
 
-### <div id='2.4'> 2.4. Ubuntu, Python Package 설치
-Kubespray 설치에 필요한 Ansible, Jinja 등 Python Package 설치를 진행한다.
+### <div id='2.4'> 2.4. Kubespray 설치 준비
+Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
 
-- apt-get update를 진행한다.
-```
-$ sudo apt-get update
-```
+Kubespray 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
-- python3-pip Package를 설치한다.
-```
-$ sudo apt-get install -y python3-pip
-```
-
-- Kubespray 설치경로 이동, pip를 이용하여 Kubespray 설치에 필요한 Python Package 설치를 진행한다.
+- Kubespray 설치경로 이동한다.
 ```
 ## AWS 환경 설치 시
 
@@ -196,127 +187,14 @@ $ cd paas-ta-container-platform-deployment/standalone/aws
 $ cd paas-ta-container-platform-deployment/standalone/openstack
 ```
 
+- Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-$ sudo pip3 install -r requirements.txt
-```
+## HostName 정보 확인
 
-<br>
-
-### <div id='2.5'> 2.5. Kubespray 파일 수정
-Kubespray inventory 파일에는 배포할 Master, Worker Node의 구성을 정의한다.
-본 설치 가이드에서는 1개의 Master Node와 3개의 Worker Node, 1개의 etcd 배포를 기준으로 가이드를 진행하며 기본 CNI는 calico로 설정되어있다.
-(기본 Cluster 환경 구성은 Master Node 1개와 Worker Node 1개 이상을 필요로 한다.)
-
-- mycluster 디렉토리의 inventory.ini 파일을 설정한다.
-```
-$ vi inventory/mycluster/inventory.ini
-```
-
-```
-## *_HOST_NAME = 각 호스트의 쉘에서 hostname 명령어 입력
-## *_NODE_IP = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
-
-[all]
-{MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
-{WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
-{WORKER_HOST_NAME2} ansible_host={WORKER_NODE_IP2} ip={WORKER_NODE_IP2}
-{WORKER_HOST_NAME3} ansible_host={WORKER_NODE_IP3} ip={WORKER_NODE_IP3}
-
-[kube_control_plane]
-paasta-cp-master           #{MASTER_HOST_NAME}
-
-[etcd]
-paasta-cp-master           #{MASTER_HOST_NAME}
-
-[kube_node]
-paasta-cp-worker-1           #{WORKER_HOST_NAME1}: 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
-{WORKER_HOST_NAME2}
-{WORKER_HOST_NAME3}
-
-[calico_rr]
-
-[k8s_cluster:children]
-kube_control_plane
-kube_node
-calico_rr
-```
-
-```
-ex)
-paasta-cp-master  ansible_host=10.x.x.x ip=10.x.x.x etcd_member_name=etcd1
-paasta-cp-worker-1  ansible_host=10.x.x.x ip=10.x.x.x
-...
-[kube_control_plane]
+$ hostname
 paasta-cp-master
-...
-```
 
-- Metrics-server 를 배포할 Master Node의 HostName 정보를 추가한다.
-
-```
-$ vi roles/kubernetes-apps/metrics_server/defaults/main.yml
-```
-
-```
-...
-master_node_hostname: {MASTER_NODE_HOSTNAME}
-````
-
-- 외부에서 kubectl 명령어를 사용하기 위해 Master Node의 Public IP 정보를 추가한다.
-```
-$ vi roles/kubernetes/control-plane/tasks/kubeadm-setup.yml
-```
-
-```
-- name: kubeadm | aggregate all SANs
-  set_fact:
-    apiserver_sans: "{{ (sans_base + groups['kube_control_plane'] + sans_lb + sans_lb_ip + sans_supp + sans_access_ip + sans_ip + sans_address + sans_override + sans_hostname + sans_fqdn) | unique }}"
-  vars:
-    sans_base:
-      - "kubernetes"
-      - "kubernetes.default"
-      - "kubernetes.default.svc"
-      - "kubernetes.default.svc.{{ dns_domain }}"
-      - "{MASTER_NODE_PUBLIC_IP}" (추가)
-      - "{{ kube_apiserver_ip }}"
-      - "localhost"
-      - "127.0.0.1"
-```
-
-<br>
-
-### <div id='2.6'> 2.6. Kubespray 설치
-Ansible playbook을 이용하여 Kubespray 설치를 진행한다.
-
-- 인벤토리 빌더로 Ansible 인벤토리 파일을 업데이트한다.
-```
-## {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
-## {WORKER_NODE_IP}는 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
-
-$ declare -a IPS=({MASTER_NODE_IP} {WORKER_NODE_IP1} {WORKER_NODE_IP2} {WORKER_NODE_IP3})
-
-ex)
-declare -a IPS=(10.x.x.x 10.x.x.x 10.x.x.x 10.x.x.x)
-```
-
-```
-## ${IPS[@]}는 변수가 아니라 명령어의 일부분이므로 주의
-
-$ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
-```
-
-- Openstack 환경에 설치 시 추가적인 환경변수 설정이 필요하며 설정 파일을 다운로드 받아 자동으로 환경변수 등록이 가능하다.
-```
-## Openstack UI 로그인 > 프로젝트 선택 > API 액세스 메뉴 선택 > OpenStack RC File 다운로드 클릭
-## 스크립트 파일 실행 후 Openstack 계정 패스워드 입력
-
-$ source {OPENSTACK_PROJECT_NAME}-openrc.sh
-Please enter your OpenStack Password for project admin as user admin: {패스워드 입력}
-```
-
-- Openstack 네트워크 인터페이스의 MTU값이 기본값 1450이 아닐 경우 CNI Plugin MTU 설정 변경이 필요하다.
-```
-## MTU 확인 (ex mtu 1400)
+## Private IP, MTU 정보 확인
 
 $ ifconfig
 ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
@@ -331,30 +209,63 @@ ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
 ```
 
 ```
-$ vi inventory/mycluster/group_vars/k8s_cluster/k8s-net-calico.yml
+$ vi kubespray_var.sh
 ```
 
+```
+#!/bin/bash
+
+export MASTER_NODE_HOSTNAME={Master Node의 HostName 정보 입력}
+export MASTER_NODE_PUBLIC_IP={Master Node의 Public IP 정보 입력}
+export MASTER_NODE_PRIVATE_IP={Master Node의 Private IP 정보 입력}
+export WORKER1_NODE_HOSTNAME={Worker 1번 Node의 HostName 정보 입력}
+export WORKER1_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER2_NODE_HOSTNAME={Worker 2번 Node의 HostName 정보 입력}
+export WORKER2_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER3_NODE_HOSTNAME={Worker 3번 Node의 HostName 정보 입력}
+export WORKER3_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+...
+```
+
+- OpenStack 환경에 설치 시 kubespray_var.sh 스크립트 내 다음 변수가 추가된다.
+OpenStack 네트워크 인터페이스의 MTU값이 기본값 1450이 아닐 경우 CNI Plugin MTU 설정 변경을 위해 다음 값을 수정한다.
 ```
 ...
-calico_mtu: 1400
-...
+export CALICO_MTU=1450 (필요 시 수정)
 ```
+- Openstack 환경에 설치 시 추가적인 환경변수 설정이 필요하며 설정 파일을 다운로드 받아 자동으로 환경변수 등록이 가능하다.
+```
+## Openstack UI 로그인 > 프로젝트 선택 > API 액세스 메뉴 선택 > OpenStack RC File 다운로드 클릭
+## 스크립트 파일 실행 후 Openstack 계정 패스워드 입력
 
-- Ansible playbook으로 Kubespray 배포를 진행한다. playbook은 root로 실행하도록 옵션을 지정한다. (--become-user=root)
-```
-$ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
-```
-
-- Kubespray 설치 완료 후 Cluster 사용을 위하여 다음 과정을 실행한다.
-```
-$ mkdir -p $HOME/.kube
-$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+$ source {OPENSTACK_PROJECT_NAME}-openrc.sh
+Please enter your OpenStack Password for project admin as user admin: {패스워드 입력}
 ```
 
 <br>
 
-### <div id='2.7'> 2.7. Kubespray 설치 확인
+### <div id='2.5'> 2.5. Kubespray 설치
+Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
+
+쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, Kubespray 설치정보 설정, Ansible playbook을 통한 Kubespray 설치를 일괄적으로 진행한다.
+
+- 쉘 스크립트를 통해 설치를 진행한다.
+```
+$ . deploy_kubespray.sh
+```
+
+- 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
+
+```
+1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언
+2. package_install.sh : pip 패키지 설치
+3. kubespray_setting.sh : Node 구성정보, Kubespray 설치정보 설정
+4. kubespray_install.sh : Ansible playbook을 통한 Kubespray 설치
+```
+
+<br>
+
+### <div id='2.6'> 2.6. Kubespray 설치 확인
 Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 Kubespray 설치를 확인한다.
 
 ```
@@ -405,7 +316,7 @@ snapshot-controller-0                         1/1     Running   0          7m33s
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 
 ```
-$ ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root reset.yml
+$ . remove_kubespray.sh
 ```
 
 <br>
@@ -475,4 +386,4 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 <br>
 
 ----
-[image 001]:images/cp-001.png
+[image 001]:images/standalone-v1.2.png

@@ -43,7 +43,7 @@ PaaS-TA 5.5 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker, Edge)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다. <br>
 Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. BOSH release로는 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, Edge 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, Edge 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
 
 ![image 001]
 
@@ -59,7 +59,7 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 ## <div id='2'> 2. KubeEdge 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 Ubuntu 환경에서 설치하는 것을 기준으로 하였다. KubeEdge 설치를 위해서는 Docker, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. KubeEdge 설치를 위해서는 Docker, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
 
 KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
@@ -126,7 +126,7 @@ kube_network_plugin: flannel (수정)
 ### <div id='2.3'> 2.3. KubeEdge keadm 설치
 KubeEdge 설치를 위한 keadm 설치를 진행한다. keadm 실행 시 Super User 혹은 root 권한이 필요하므로 root 권한으로 설치를 진행한다.
 
-- Cloud 영역의 Master Node와 Edge 영역의 Edge Node로 사용할 VM에 keadm 다운로드 및 설치를 진행한다.
+- Cloud 영역의 **Master Node**와 Edge 영역의 **Edge Node**로 사용할 VM에 keadm 다운로드 및 설치를 진행한다.
 
 ```
 $ sudo su -
@@ -141,7 +141,7 @@ $ sudo su -
 ### <div id='2.4'> 2.4. KubeEdge CloudCore 설치
 Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진행한다.
 
-- keadm init 명령으로 Cloud 영역의 Master Node에 CloudCore 설치를 진행한다.
+- keadm init 명령으로 Cloud 영역의 **Master Node**에 CloudCore 설치를 진행한다.
 ```
 ## {MASTER_PUB_IP} : Master Node Public IP
 ## {MASTER_PRIV_IP} : Master Node Private IP
@@ -157,7 +157,7 @@ Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진�
 <br>
 
 ### <div id='2.5'> 2.5. KubeEdge EdgeCore 설치
-Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCore를 설치하여 설정을 진행한다.
+Edge 영역의 **Edge Node**에 Docker 설치를 사전 진행 후, KubeEdge EdgeCore를 설치하여 설정을 진행한다.
 
 - apt-get update를 진행한다.
 ```
@@ -235,7 +235,7 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 # apt-get install -y docker-ce={VERSION_STRING} docker-ce-cli={VERSION_STRING} containerd.io
 ```
 
-- keadm join 명령으로 Edge Node에 EdgeCore 설치를 진행한다.
+- keadm join 명령으로 **Edge Node**에 EdgeCore 설치를 진행한다.
 ```
 ## {MASTER_PUB_IP} : Master Node Public IP
 ## {INTERFACE_NAME} : 실제 Edge Node에서 사용중인 인터페이스 이름 (ex: ens5)
@@ -244,13 +244,13 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 # keadm join --cloudcore-ipport={MASTER_PUB_IP}:10000 --token={GET_TOKEN} --kubeedge-version 1.6.1
 ```
 
-- Master Node에서 Edge Node에 배포할 Flannel CNI DaemonSet YAML 수정을 위해 기본 YAML을 가져온다.
+- **Master Node**에서 Edge Node에 배포할 Flannel CNI DaemonSet YAML 수정을 위해 기본 YAML을 가져온다.
 
 ```
 # kubectl get ds kube-flannel -n kube-system -o yaml > edge-flannel.yaml
 ```
 
-- Master Node에서 Kubespray를 통해 배포된 Flannel CNI가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+- **Master Node**에서 Kubespray를 통해 배포된 Flannel CNI가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit ds kube-flannel -n kube-system
 ```
@@ -268,7 +268,7 @@ Edge 영역의 Edge Node에 Docker 설치를 사전 진행 후, KubeEdge EdgeCor
 ...
 ```
 
-- Master Node에서 Edge Node에 배포할 Flannel CNI DaemonSet을 신규로 배포한다.
+- **Master Node**에서 Edge Node에 배포할 Flannel CNI DaemonSet을 신규로 배포한다.
 ```
 # vi edge-flannel.yaml
 
@@ -333,7 +333,7 @@ ingress-nginx-controller-nfckc   1/1     Running   0          64m
 ingress-nginx-controller-z7bxk   0/1     Error     18         53m
 ```
 
-- Master Node에서 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+- **Master Node**에서 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit daemonsets.apps ingress-nginx-controller -n ingress-nginx
 ```
@@ -354,7 +354,7 @@ ingress-nginx-controller-z7bxk   0/1     Error     18         53m
 ### <div id='2.6'> 2.6. KubeEdge Flannel CNI 활성화
 KubeEdge에서 Flannel CNI를 정상 배포 및 사용하기 위한 설정을 진행한다.
 
-- Master Node에서 CloudCore dynamicController를 활성화한다.
+- **Master Node**에서 CloudCore dynamicController를 활성화한다.
 ```
 # vi /etc/kubeedge/config/cloudcore.yaml
 
@@ -369,7 +369,7 @@ dynamicController:
 # pkill cloudcore ; nohup /usr/local/bin/cloudcore > /var/log/kubeedge/cloudcore.log 2>&1 &
 ```
 
-- Edge Node에서 CNI 바이너리를 다운로드 한다.
+- **Edge Node**에서 CNI 바이너리를 다운로드 한다.
 ```
 # wget "https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz"
 
@@ -379,7 +379,7 @@ dynamicController:
 ```
 
 
-- Edge Node에서 EdgeCore 설정을 수정한다.
+- **Edge Node**에서 EdgeCore 설정을 수정한다.
 ```
 # vi /etc/kubeedge/config/edgecore.yaml
 
@@ -411,12 +411,12 @@ modules:
 ### <div id='2.7'> 2.7. kubectl logs 기능 활성화
 KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.  
 
-- Master Node에서 kubernetes ca.crt 및 ca.key 파일을 확인한다.
+- **Master Node**에서 kubernetes ca.crt 및 ca.key 파일을 확인한다.
 ```
 # ls /etc/kubernetes/pki/
 ```
 
-- Master Node에서 CLOUDCOREIPS 환경변수 설정 및 확인을 진행한다. (HA Cluster 구성 시 VIP 설정)
+- **Master Node**에서 CLOUDCOREIPS 환경변수 설정 및 확인을 진행한다. (HA Cluster 구성 시 VIP 설정)
 ```
 ## {MASTER_PUB_IP} : Master Node Public IP
 
@@ -425,7 +425,7 @@ KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 �
 # echo $CLOUDCOREIPS
 ```
 
-- Master Node에서 certgen.sh 다운로드 및 인증서 생성을 진행한다.
+- **Master Node**에서 certgen.sh 다운로드 및 인증서 생성을 진행한다.
 ```
 # cd /etc/kubeedge
 
@@ -436,12 +436,12 @@ KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 �
 # /etc/kubeedge/certgen.sh stream
 ```
 
-- Master Node에서 iptables을 설정한다.
+- **Master Node**에서 iptables을 설정한다.
 ```
 # iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to $CLOUDCOREIPS:10003
 ```
 
-- Master Node에서 cloudcore.yaml 파일을 수정한다. (enable: true 로 변경)
+- **Master Node**에서 cloudcore.yaml 파일을 수정한다. (enable: true 로 변경)
 ```
 # vi /etc/kubeedge/config/cloudcore.yaml
 ```
@@ -459,13 +459,13 @@ cloudStream:
   tunnelPort: 10004
 ```
 
-- Master Node에서 cloudcore를 재시작한다.
+- **Master Node**에서 cloudcore를 재시작한다.
 ```
 # pkill cloudcore
 # nohup cloudcore > cloudcore.log 2>&1 &
 ```
 
-- Edge Node에서 edgecore.yaml 파일을 수정한다. (enable: true, server: {MASTER_PUB_IP}:10004)
+- **Edge Node**에서 edgecore.yaml 파일을 수정한다. (enable: true, server: {MASTER_PUB_IP}:10004)
 ```
 # vi /etc/kubeedge/config/edgecore.yaml
 ```
@@ -498,7 +498,7 @@ edgeStream:
 Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 ```
 
-- Edge Node에서 edgecore를 재시작한다.
+- **Edge Node**에서 edgecore를 재시작한다.
 ```
 # systemctl daemon-reload
 # systemctl restart edgecore.service

@@ -22,7 +22,7 @@
  3.3. [컨테이너 서비스 배포](#3.3)   
  3.3.1. [컨테이너 서비스 배포 YAML 내 환경변수 정의](#3.3.1)  
  3.3.2. [컨테이너 서비스 리소스 배포](#3.3.2)    
- 
+
 4. [컨테이너 서비스 브로커](#4)  
  4.1. [컨테이너 서비스 브로커 등록](#4.1)  
  4.2. [컨테이너 서비스 UAA Client 등록](#4.2)   
@@ -35,7 +35,7 @@
 
 6. [참고](#6)  
  6.1. [Cluster Role 사용자 생성 및 Token 획득](#6.1)   
-    
+
 <br>
 
 ## <div id='1'>1. 문서 개요
@@ -50,7 +50,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 서비스 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 서비스를 설치하는 내용이다. 
+총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 컨테이너 서비스를 설치하는 내용이다.
 
 ![image 001]
 
@@ -62,7 +62,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ## <div id='2'>2. 컨테이너 서비스 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다. 서비스 설치를 위해서는 BOSH 2.0과 PaaS-TA 5.5, PaaS-TA 포털 API, PaaS-TA 포털 UI가 설치 되어 있어야 한다.
 - [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 - [PaaS-TA 포털 API 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/portal/PAAS-TA_PORTAL_API_SERVICE_INSTALL_GUIDE_V1.0.md)
@@ -300,7 +300,7 @@ $ ./deploy-{IAAS}.sh
 - 서비스 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 서비스 설치 작업 경로로 위치시킨다.  
   + 설치 릴리즈 파일 다운로드 :  
   [paasta-container-platform-1.0.tgz](https://nextcloud.paas-ta.org/index.php/s/ggdZyEKejPSszFj/download)  
-       
+
 ```
 # 릴리즈 다운로드 파일 위치 경로 생성
 $ mkdir -p ~/workspace/paasta-5.5.1/release/service
@@ -363,21 +363,21 @@ private-image-repository/561550fb-95de-4c12-95bf-94ac5fde53cc  running        z7
 Succeeded
 ```
 
-### <div id='2.8'>2.8. CVE/CCE 진단항목 적용 
+### <div id='2.8'>2.8. CVE/CCE 진단항목 적용
 배포된 Kubernetes Cluster, BOSH Inception 환경에 아래 가이드를 참고하여 해당 CVE/CCE 진단항목을 필수적으로 적용시켜야 한다.  
 - [CVE/CCE 진단 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/check-guide/paas-ta-container-platform-check-guide.md)
 
 <br>
 
 ## <div id='3'>3. 컨테이너 서비스 배포
-해당 [[3.컨테이너 서비스 배포]](#3) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 서비스를 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다. 
+해당 [[3.컨테이너 서비스 배포]](#3) 항목은 배포된 Kubernetes Cluster 환경의 **Master Node**에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 서비스를 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다.
 
-### <div id='3.1'>3.1. Docker insecure-registry 설정 
-Kubernetes Master Node, Worker Node 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
+### <div id='3.1'>3.1. Docker insecure-registry 설정
+Kubernetes **Master Node, Worker Node** 내 docker daemon.json 파일에 'insecure-registries' 설정을 추가한다. <br>
 Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 Docker를 재시작한다.<br>
->  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다. 
+>  - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip를 입력한다.
 ```
-# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요 
+# Master Node, Worker Node 모두 'insecure-registries' 설정 추가 필요
 $ sudo vi /etc/docker/daemon.json
 {
         "insecure-registries": ["{HAProxy_IP}:5001"]
@@ -389,8 +389,8 @@ $ sudo systemctl restart docker
 
 ### <div id='3.2'>3.2. 컨테이너 서비스 이미지 업로드
 Private Repository에 이미지 업로드를 위해 컨테이너 서비스 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
-해당 내용은 Kubernetes Master Node에서 실행한다.
- 
+해당 내용은 Kubernetes **Master Node**에서 실행한다.
+
 + 컨테이너 서비스 이미지 파일 다운로드 :  
    [container-service-image.tar](https://nextcloud.paas-ta.org/index.php/s/sePzP9PzYWNwgJy/download)  
 
@@ -443,7 +443,7 @@ $ cd ~/workspace/paasta-5.5.1/container-service
  ```
  $ cd ~/workspace/paasta-5.5.1/container-service/service-script
  $ chmod +x *.sh  
- $ ./image-upload-caas.sh {HAProxy_IP}:5001 
+ $ ./image-upload-caas.sh {HAProxy_IP}:5001
 
 '''
 
@@ -459,12 +459,12 @@ cp-secret   kubernetes.io/dockerconfigjson   1      0s
 
 {"repositories":["container-jenkins-broker","container-service-api","container-service-broker","container-service-common-api","container-service-dashboard","paasta_jenkins"]}
  ```
- 
+
  > * Secret 조회
  ```
  $ kubectl get secret cp-secret
  ```
- 
+
  > * Private Repository에 업로드 된 이미지 목록 확인 명령어
  ```
  $ curl -H 'Authorization:Basic YWRtaW46YWRtaW4=' http://{HAProxy_IP}:5001/v2/_catalog
@@ -475,8 +475,8 @@ cp-secret   kubernetes.io/dockerconfigjson   1      0s
 ### <div id='3.3'>3.3. 컨테이너 서비스 배포
 
 #### <div id='3.3.1'>3.3.1. 컨테이너 서비스 배포 YAML 내 환경변수 정의
-컨테이너 서비스를 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다. 
-                                                                                                    
+컨테이너 서비스를 배포하기 전 배포 Yaml 내 환경변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
+
 ```
 $ vi container-service-vars.sh
  ```
@@ -493,12 +493,12 @@ K8S_AUTH_BEARER_TOKEN="{k8s bearer token}"              # Kubernetes bearer toke
 MARIADB_USER_ID="{mariadb admin user id}"               # Mariadb admin user id (e.g. cp-admin)
 MARIADB_USER_PASSWORD="{mariadb admin user password}"   # Mariadb admin user password (e.g. Paasta!2021)
 ```
-> - PAASTA_SYSTEM_DOMAIN :<br> PaaS-TA System Domain 입력<br><br> 
+> - PAASTA_SYSTEM_DOMAIN :<br> PaaS-TA System Domain 입력<br><br>
 > - HAPROXY_IP :<br>BOSH Inception에 배포된 Deployment 'paasta-container-platform' 의 haproxy public ip 입력 <br><br>
 > - K8S_MASTER_NODE_IP :<br>Kubernetes master node public ip 입력 <br><br>
 > - K8S_WORKER_NODE_IP :<br>Kubernetes worker node public ip 입력 <br>
 >   + worker node가 2개 이상인 경우, 그 중 한 worker node의 public ip를 입력 &nbsp; :: ex)첫 번째 woker node의 public ip <br><br>
-> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력 
+> - K8S_WORKER_NODE_HOSTNAME :<br>위 'K8S_WORKER_NODE_IP'에 입력한 woker node의 hostname 입력
 >   + 해당 worker node 접속 후 명령어 'hostname'으로 확인 <br><br>
 > - K8S_AUTH_BEARER_TOKEN :<br>kubernetes bearer token 입력 <br>
 >   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 IPS - 'k8s_auth_bearer' 값 입력 <br><br>
@@ -507,8 +507,8 @@ MARIADB_USER_PASSWORD="{mariadb admin user password}"   # Mariadb admin user pas
 > - MARIADB_USER_PASSWORD :<br>배포된 Deployment 'paasta-container-platform' 의 mariadb admin password 입력 <br>
 >   + [paasta-container-service-vars-{IAAS}.yml](#paasta-container-service-vars-iaasyml) 내 MARIADB - 'mariadb_admin_user_password' 값 입력 <br><br>
 
- 
-#### <div id='3.3.2'>3.3.2. 컨테이너 서비스 리소스 배포 
+
+#### <div id='3.3.2'>3.3.2. 컨테이너 서비스 리소스 배포
 컨테이너 서비스 배포를 위한 배포 스크립트를 실행한다.
 
 ```
@@ -547,12 +547,12 @@ replicaset.apps/service-common-api-deployment-5d786869b   1         1         1 
 replicaset.apps/service-dashboard-deployment-974c87585    1         1         1       30s
 ```
 ##### 배포된 리소스 조회 명령어
- 
- >  + Deployment, ReplicaSet, Pod, Service 조회 
+
+ >  + Deployment, ReplicaSet, Pod, Service 조회
  ```
  $ kubectl get all
  ```
- 
+
 <br>
 
 ## <div id='4'>4. 컨테이너 서비스 브로커
@@ -604,7 +604,7 @@ broker: container-service-broker
 ```
 
 - 특정 조직에 해당 서비스 접근 허용을 할당한다.
- 
+
 ```
 $ cf enable-service-access container-service
 Enabling access to all plans of service offering container-service for all orgs as admin...
@@ -666,7 +666,7 @@ $ uaac client add caasclient -s clientsecret --redirect_uri "http://xxx.xxx.xxx.
 
 # e.g. 컨테이너 서비스 계정 생성 확인
 $ uaac clients
-  
+
   caasclient
     scope: cloud_controller.read cloud_controller.write
     cloud_controller_service_permissions.read openid cloud_controller.admin
@@ -694,25 +694,25 @@ $ uaac client update caasclient --redirect_uri "http://xxx.xxx.xxx.xxx:32091, ht
 
 1.PaaS-TA Admin 포털에 접속한다.
 ![image 002]
-  
+
 2.왼쪽 네비게이션 바에서 [설정]-[설정정보] 페이지를 접속, 인프라 설정을 클릭 후 CaaS서비스 정보를 입력한다.
-![image 003] 
-  
- 
+![image 003]
+
+
 - 해당 정보를 입력하기 위해 필요한 값을 찾는다.
 > - CaaS_Api_Uri : <br> http://{Worker Node IP}:30333 <br>
                    -  Kubernetes Worker Node IP 와 배포된 컨테이너 서비스 Api NodePort <br>
                    -  Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력한다.
                    <br><br>
 > - CaaS_Authorization : <br> Basic YWRtaW46UGFhUy1UQQ==
- 
+
 
 ```
 ex)
 - CaaS_Api_Uri : http://{Worker Node IP}:30333
 - CaaS_Authorization : Basic YWRtaW46UGFhUy1UQQ==
 ```
-![image 004] 
+![image 004]
 
 
 3.[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS서비스를 선택한다.
@@ -726,8 +726,8 @@ ex)
 ## <div id='5'>5. Jenkins 서비스 브로커(Optional)
 해당 내용은 jenkins 서비스를 이용하기 위한 설정이다.
 
-### <div id='5.1'>5.1. Jenkins 서비스 브로커 배포 
-해당 [[5.1. Jenkins 서비스 브로커 배포]](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다.<br>
+### <div id='5.1'>5.1. Jenkins 서비스 브로커 배포
+해당 [[5.1. Jenkins 서비스 브로커 배포]](#5.1) 항목은 배포된 Kubernetes Cluster 환경의 **Master Node**에서 진행한다.<br>
 Jenkins 서비스 브로커 배포를 위한 배포 스크립트를 실행한다.
 
 ```
@@ -754,8 +754,8 @@ NAME                                                  DESIRED   CURRENT   READY 
 replicaset.apps/jenkins-broker-deployment-94555d79f   1         1         1       60s
 ```
 ##### 배포된 리소스 조회 명령어
- 
- >  + Jenkins 서비스 브로커 관련 Deployment, ReplicaSet, Pod, Service 조회 
+
+ >  + Jenkins 서비스 브로커 관련 Deployment, ReplicaSet, Pod, Service 조회
  ```
  $ kubectl get all -l app=jenkins-broker
  ```
@@ -785,7 +785,7 @@ $ cf create-service-broker jenkins-service-broker admin cloudfoundry http://xxx.
 Creating service broker jenkins-service-broker as admin...
 OK
 ```
- 
+
 - 등록된 Jenkins 서비스 브로커를 확인한다.
 ```
 $ cf service-brokers
@@ -840,7 +840,7 @@ broker: jenkins-service-broker
 
 1.PaaS-TA Admin 포털에 접속한다.
 ![image 002]
-  
+
 2.[운영관리]-[카탈로그] 메뉴에서 앱서비스 탭 안에 CaaS Jenkins 서비스를 선택한다.
 ![image 007]
 
@@ -855,7 +855,7 @@ broker: jenkins-service-broker
 
 ### <div id='6.1'>6.1. Cluster Role 사용자 생성 및 Token 획득
 Kubernetes에서 Cluster Role을 가진 사용자의 Service Account를 생성하고 해당 Service Account의 Token 값을 획득한다.<br>
-획득한 Token 값은 컨테이너 서비스 설치에 사용된다. 
+획득한 Token 값은 컨테이너 서비스 설치에 사용된다.
 
 - Service Account를 생성한다.
 ```

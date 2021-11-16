@@ -43,7 +43,7 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Registry)환경으로 구성되어 있다.<br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database, Private registry 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
 
 ![image 001]
 
@@ -58,7 +58,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH release로 Database,
 ## <div id='2'> 2. Kubespray 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 Ubuntu 18.04 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v2.9 +, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 하며 설치 가이드에 따라 순차적으로 설치가 진행된다.
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v2.9 +, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 하며 설치 가이드에 따라 순차적으로 설치가 진행된다.
 
 
 Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
@@ -112,7 +112,7 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 ### <div id='2.2'> 2.2. SSH Key 생성 및 배포
 Kubespray 설치를 위해서는 SSH Key가 인벤토리의 모든 서버들에 복사되어야 한다. 본 설치 가이드에서는 RSA 공개키를 이용하여 SSH 접속 설정을 진행한다.  
 
-SSH Key 생성 및 배포 이후의 모든 설치과정은 Master Node에서 진행한다.
+SSH Key 생성 및 배포 이후의 모든 설치과정은 **Master Node**에서 진행한다.
 
 - Master Node에서 RSA 공개키를 생성한다.
 ```
@@ -159,7 +159,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdc4dIUh1AbmMrMQtLH6nTNt6WZA9K5BzyNAEsDbb
 <br>
 
 ### <div id='2.3'> 2.3. Kubespray 다운로드
-2.3.부터는 Master Node에서만 진행을 하면 된다.(Worker Node에는 더 이상 추가 작업이 없음)
+2.3.부터는 **Master Node**에서만 진행을 하면 된다.(Worker Node에는 더 이상 추가 작업이 없음)
 Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 작업 경로로 위치시킨다.
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment
@@ -211,33 +211,12 @@ Kubespray inventory 파일에는 배포할 Master, Worker Node의 구성을 정�
 - mycluster 디렉토리의 inventory.ini 파일을 설정한다.
 ```
 $ vi inventory/mycluster/inventory.ini
-```
+````
 
 ```
-## {MASTER_HOST_NAME}, {WORKER_HOST_NAME} : 실제 Master, Worker Node hostname
+## *_HOST_NAME = 각 호스트의 쉘에서 hostname 명령어 입력
+## *_NODE_IP = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
 
-ex)
-$ hostname
-paasta-cp-kubespray-master
-```
-
-```
-## {MASTER_NODE_IP}, {WORKER_NODE_IP} : Master, Worker Node Private IP
-
-ex)
-$ ifconfig
-ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
-        inet 10.0.0.109  netmask 255.255.255.0  broadcast 10.0.0.255
-        inet6 fe80::b4:95ff:fe80:f56e  prefixlen 64  scopeid 0x20<link>
-        ether 02:b4:95:80:f5:6e  txqueuelen 1000  (Ethernet)
-        RX packets 65520893  bytes 67774122613 (67.7 GB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 49370008  bytes 67899804965 (67.8 GB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-...
-```
-
-```
 [all]
 {MASTER_HOST_NAME} ansible_host={MASTER_NODE_IP} ip={MASTER_NODE_IP} etcd_member_name=etcd1
 {WORKER_HOST_NAME1} ansible_host={WORKER_NODE_IP1} ip={WORKER_NODE_IP1}      # 사용할 WORKER_NODE 개수(1개 이상)에 따라 작성
