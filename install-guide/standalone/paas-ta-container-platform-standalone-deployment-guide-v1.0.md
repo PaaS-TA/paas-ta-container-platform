@@ -265,7 +265,7 @@ master_node_hostname: {MASTER_HOST_NAME}
 
 - 외부에서 kubectl 명령어를 사용하기 위해 Master Node의 Public IP 정보를 추가한다.
 ```
-$ vi roles/kubernetes/control-plane/tasks/kubeadm-setup.yml
+$ vi roles/kubernetes/master/tasks/kubeadm-setup.yml
 ```
 
 ```
