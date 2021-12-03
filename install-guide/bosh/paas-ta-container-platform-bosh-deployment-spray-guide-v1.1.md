@@ -55,7 +55,7 @@ PaaS-TA 3.5 버전부터는 Bosh 2.0 기반으로 배포(deploy)를 진행한다
 ### <div id='1.3'>1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 BOSH Inception(DBMS, HAProxy, Private Repository)환경으로 구성되어 있다. <br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
+총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, BOSH Inception VM: 1개**가 필요하고 본 문서는 BOSH Inception 환경을 구성하기 위한 VM 설치와 Kubernetes Cluster에 컨테이너 플랫폼을 배포하는 내용이다.
 
 ![image 001]
 
@@ -69,7 +69,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 BOSH 릴리즈로 Databas
 
 ## <div id='2'>2. 컨테이너 플랫폼 설치
 ### <div id='2.1'>2.1. Prerequisite
-본 설치 가이드는 Ubuntu환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다.
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다. 단독 배포를 위해서는 Inception 환경이 구축 되어야 하므로 BOSH 2.0 설치와 PaaS-TA 5.5 가이드의 Stemcell 업로드, Cloud Config 설정, Runtime Config 설정이 사전에 진행이 되어야 한다.
 > [BOSH 2.0 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/bosh/PAAS-TA_BOSH2_INSTALL_GUIDE_V5.0.md) <br>
 > [PaaS-TA 5.5 설치 가이드](https://github.com/PaaS-TA/Guide/blob/master/install-guide/paasta/PAAS-TA_CORE_INSTALL_GUIDE_V5.0.md)
 
@@ -397,10 +397,10 @@ Succeeded
 <br>
 
 ## <div id='3'>3. 컨테이너 플랫폼 배포
-해당 항목부터는 배포된 Kubernetes Cluster 환경의 Master Node에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 플랫폼을 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다.
+해당 항목부터는 배포된 Kubernetes Cluster 환경의 **Master Node**에서 진행한다. kubernetes에 PaaS-TA용 컨테이너 플랫폼을 배포하기 위해서는 Bosh 릴리즈를 통해 배포된 Private Repository에 이미지를 업로드하는 작업이 필요하다.
 
 ### <div id='3.1'>3.1. CRI-O insecure-registry 설정
-컨테이너 플랫폼 Image Push, Pull 작업을 진행하기 위해 Kubernetes Master Node, Worker Node 내 podman 설치 및 config 파일에 'insecure-registries' 설정을 추가한다. <br>
+컨테이너 플랫폼 Image Push, Pull 작업을 진행하기 위해 Kubernetes **Master Node, Worker Node** 내 podman 설치 및 config 파일에 'insecure-registries' 설정을 추가한다. <br>
 Bosh 릴리즈를 통해 배포된 Private Repository를 'insecure-registries'로 설정 후 crio, podman을 재시작한다.<br>
 - {HAProxy_IP} 값은 BOSH Inception에 배포된 Deployment **'paasta-container-platform'** 의 haproxy public ip 입력
 ```
@@ -451,7 +451,7 @@ $ sudo systemctl restart podman
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 이미지 업로드
 Private Repository에 이미지 업로드를 위해 컨테이너 플랫폼 이미지 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
-해당 내용은 Kubernetes Master Node에서 실행한다.
+해당 내용은 Kubernetes **Master Node**에서 실행한다.
 
 + 컨테이너 플랫폼 이미지 파일 다운로드 :  
    [container-platform-standalone-image-1.1.tar](https://nextcloud.paas-ta.org/index.php/s/H7rdKPpHBZA9ZTD/download)  
