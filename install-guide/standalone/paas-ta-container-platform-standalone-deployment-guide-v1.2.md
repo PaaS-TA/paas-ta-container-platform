@@ -170,8 +170,6 @@ $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 <br>
 
 ### <div id='2.4'> 2.4. Kubespray 설치 준비
-Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
-
 Kubespray 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
 - Kubespray 설치경로 이동한다.
@@ -189,30 +187,14 @@ $ cd paas-ta-container-platform-deployment/standalone/openstack
 
 - Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-## HostName 정보 확인
-
-$ hostname
-paasta-cp-master
-
-## Private IP, MTU 정보 확인
-
-$ ifconfig
-ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
-        inet 10.100.2.226  netmask 255.255.255.0  broadcast 10.100.2.255
-        inet6 fe80::f816:3eff:fe2f:a831  prefixlen 64  scopeid 0x20<link>
-        ether fa:16:3e:2f:a8:31  txqueuelen 1000  (Ethernet)
-        RX packets 19850  bytes 167795140 (167.7 MB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 17667  bytes 1920463 (1.9 MB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-...
-```
-
-```
 $ vi kubespray_var.sh
 ```
 
 ```
+## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
+## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
+## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
+
 #!/bin/bash
 
 export MASTER_NODE_HOSTNAME={Master Node의 HostName 정보 입력}
@@ -245,8 +227,6 @@ Please enter your OpenStack Password for project admin as user admin: {패스워
 <br>
 
 ### <div id='2.5'> 2.5. Kubespray 설치
-Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
-
 쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, Kubespray 설치정보 설정, Ansible playbook을 통한 Kubespray 설치를 일괄적으로 진행한다.
 
 - 쉘 스크립트를 통해 설치를 진행한다.

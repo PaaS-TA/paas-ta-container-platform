@@ -68,7 +68,9 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 |---|---|
 |KubeEdge|v1.8.2|
 |Kubernetes Native|v1.20.5|
+|Kubernetes Native (Edge Node)|v1.19.3|
 |CRI-O|v1.20.0|
+|CRI-O (Edge Node)|v1.19.0|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
@@ -142,10 +144,10 @@ $ sudo su -
 # git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
 ## Ubuntu 아키텍쳐가 amd64일 경우 (ex: Cloud 영역 Master Node)
-# cp paas-ta-container-platform-deployment/edge/amd64/keadm /usr/bin/keadm
+# cp paas-ta-container-platform-deployment/edge/keadm/amd64/keadm /usr/bin/keadm
 
 ## Ubuntu 아키텍쳐가 arm64일 경우 (ex: Edge 영역 Edge Node)
-# cp paas-ta-container-platform-deployment/edge/arm64/keadm /usr/bin/keadm
+# cp paas-ta-container-platform-deployment/edge/keadm/arm64/keadm /usr/bin/keadm
 ```
 
 <br>
@@ -173,10 +175,22 @@ Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge Edge
 
 - EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다.
 ```
-$ sudo su -
-
 # vi /boot/firmware/cmdline.txt
-cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
+
+... cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
+```
+
+- CRI-O 설치 전 라즈베리파이 **Ubuntu 20.04** arm64 버전에 APT 이슈가 존재하여 아래 조치를 진행한다.
+```
+# killall apt apt-get
+
+# rm /var/lib/apt/lists/lock
+# rm /var/cache/apt/archives/lock
+# rm /var/lib/dpkg/lock*
+
+# dpkg --configure -a
+
+# apt-get update
 ```
 
 - 라즈베리파이 Reboot을 진행한다.
@@ -184,57 +198,22 @@ cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
 # reboot
 ```
 
-- CRI-O 설치 전 라즈베리파이 **Ubuntu 20.04** arm64 버전에 APT 이슈가 존재하여 아래 조치를 진행한다.
-```
-$ sudo killall apt apt-get
-
-$ sudo rm /var/lib/apt/lists/lock
-$ sudo rm /var/cache/apt/archives/lock
-$ sudo rm /var/lib/dpkg/lock*
-
-$ sudo dpkg --configure -a
-
-$ sudo apt-get update
-```
-
 - **Edge Node**에서 CRI-O 설치를 진행한다.
 ```
-$ sudo su -
+# cd paas-ta-container-platform-deployment/edge
 
-# OS=xUbuntu_20.04
-# VERSION=1.19
-
-# echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-
-# echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$VERSION.list
-
-# curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/Release.key | apt-key add -
-
-# curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | apt-key add -
-
-# apt-get update
-# apt-get install cri-o cri-o-runc
+# . crio-install.sh
 ```
 
-- **Edge Node**에서 CRI-O 사용을 위한 CNI Plugin 설치를 진행한다. CNI Plugin 빌드를 위해 GO가 사전 설치되어있어야 한다.
+- **Edge Node**에서 CRI-O 사용을 위한 CNI Plugin 설치를 진행한다.
 ```
-# git clone https://github.com/containernetworking/plugins
-# cd plugins
-# git checkout v0.8.7
-
-# ./build_linux.sh
-
 # mkdir -p /opt/cni/bin
-# cp bin/* /opt/cni/bin/
+# cp cni-plugins/* /opt/cni/bin/
 ```
 
 - **Edge Node**에서 CRI-O 서비스 등록 및 시작을 진행한다.
 ```
-# sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
-
-# systemctl daemon-reload
-# systemctl enable crio.service
-# systemctl start crio.service
+# . enable-crio.sh
 ```
 
 - **Edge Node**에서 keadm join 명령으로 EdgeCore 설치를 진행한다.
@@ -282,7 +261,7 @@ KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원�
                 operator: DoesNotExist
 ```
 
-- **Master Node**에서 csi cinder nodeplugin이 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+- OpenStack일 경우 **Master Node**에서 csi cinder nodeplugin이 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit daemonsets.apps csi-cinder-nodeplugin -n kube-system
 ```
@@ -304,36 +283,6 @@ KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원�
 ### <div id='2.7'> 2.7. kubectl logs 기능 활성화
 KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.  
 
-- **Master Node**에서 kubernetes ca.crt 및 ca.key 파일을 확인한다.
-```
-# ls /etc/kubernetes/pki/
-```
-
-- **Master Node**에서 CLOUDCOREIPS 환경변수 설정 및 확인을 진행한다. (HA Cluster 구성 시 VIP 설정)
-```
-## {MASTER_PUB_IP} : Master Node Public IP
-
-# export CLOUDCOREIPS="{MASTER_PUB_IP}"
-
-# echo $CLOUDCOREIPS
-```
-
-- **Master Node**에서 certgen.sh 다운로드 및 인증서 생성을 진행한다.
-```
-# cd /etc/kubeedge
-
-# wget https://raw.githubusercontent.com/kubeedge/kubeedge/master/build/tools/certgen.sh
-
-# chmod +x certgen.sh
-
-# /etc/kubeedge/certgen.sh stream
-```
-
-- **Master Node**에서 iptables을 설정한다.
-```
-# iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to $CLOUDCOREIPS:10003
-```
-
 - **Master Node**에서 cloudcore.yaml 파일을 수정한다. (enable: true 로 변경)
 ```
 # vi /etc/kubeedge/config/cloudcore.yaml
@@ -352,10 +301,21 @@ cloudStream:
   tunnelPort: 10004
 ```
 
+- **Master Node**에서 kubectl logs 기능 활성화를 위한 스크립트내 IP 정보를 수정 후 실행한다.
+```
+# vi enable-logs.sh
+
+export CLOUDCOREIPS="{MASTER_PUB_IP}" (수정)
+...
+```
+
+```
+# . enable-logs.sh
+```
+
 - **Master Node**에서 cloudcore를 재시작한다.
 ```
-# pkill cloudcore
-# nohup cloudcore > cloudcore.log 2>&1 &
+# . restart-cloudcore.sh
 ```
 
 - **Edge Node**에서 edgecore.yaml 파일을 수정한다. (enable: true)
@@ -389,8 +349,7 @@ Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 
 - **Edge Node**에서 edgecore를 재시작한다.
 ```
-# systemctl daemon-reload
-# systemctl restart edgecore.service
+# . restart-edgecore.sh
 ```
 
 <br>
@@ -398,20 +357,14 @@ Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 ### <div id='2.8'> 2.8. EdgeMesh 배포
 KubeEdge v1.8 부터 EdgeMesh가 EdgeCore 모듈에서 별도의 Pod로 분리되었으며 EdgeMesh Server, Agent Pod 배포 가이드를 제공한다.
 
-- **Master Node**에서 EdgeMesh 다운로드를 진행한다.
-```
-# git clone https://github.com/kubeedge/edgemesh.git
-#  cd edgemesh/
-```
-
 - **Master Node**에서 EdgeMesh Pod 배포 전 관련 CRDs 배포를 진행한다.
 ```
-#  kubectl apply -f build/crds/istio/
+#  kubectl apply -f edgemesh/crds/istio/
 ```
 
 - **Edge Node**에서 EdgeCore설정 변경 및 서비스 재시작을 통해 EdgeNode의 List-Watch를 활성화한다.
 ```
-# vi /etc/kubeedge/config/cloudcore.yaml
+# vi /etc/kubeedge/config/edgecore.yaml
 ```
 
 ```
@@ -427,7 +380,7 @@ modules:
 ```
 
 ```
-# systemctl restart edgecore
+# . restart-edgecore.sh
 ```
 
 - **Master Node**에서 CloudCore의 설정 변경 및 서비스 재시작을 진행한다.
@@ -444,23 +397,29 @@ modules:
 ```
 
 ```
-# pkill cloudcore
-# nohup cloudcore > cloudcore.log 2>&1 &
+# . restart-cloudcore.sh
 ```
 
 - **Master Node**에서 EdgeMesh Server가 배포될 VM의 호스트명 정보를 수정한다.
 ```
-vi build/server/edgemesh/06-deployment.yaml
+# vi edgemesh/server/06-deployment.yaml
+
+...
+spec:
+  hostNetwork: true
+#     use label to selector node
+  nodeName: {MASTER_HOSTNAME} (수정)
+...
 ```
 
 - **Master Node**에서 EdgeMesh Server 배포를 진행한다.
 ```
-# kubectl apply -f build/server/edgemesh/
+# kubectl apply -f edgemesh/server/
 ```
 
 - **Master Node**에서 EdgeMesh Agent 배포를 진행한다.
 ```
-# kubectl apply -f build/agent/kubernetes/edgemesh-agent/
+# kubectl apply -f edgemesh/agent/
 ```
 
 <br>
