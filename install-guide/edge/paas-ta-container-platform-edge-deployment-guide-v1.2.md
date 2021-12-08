@@ -1,3 +1,5 @@
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge Deployment
+
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -424,7 +426,7 @@ spec:
 
 <br>
 
-### <div id='2.8'> 2.8. KubeEdge 설치 확인
+### <div id='2.9'> 2.9. KubeEdge 설치 확인
 Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치를 확인한다.
 
 ```
@@ -539,3 +541,5 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 
 ----
 [image 001]:images/edge-v1.2.png
+
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge Deployment
