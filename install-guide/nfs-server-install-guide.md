@@ -75,9 +75,13 @@ $ sudo systemctl restart portmap
 
 ### <div id='2.2'> 2.2. 동작 확인
 
-- 정상동작 확인
+- 설정 확인
 ```
 $ sudo exportfs -v 
+```
+
+- 정상 결과
+```
 /home/share/nfs 
                 <world>(rw,async,wdelay,no_root_squash,no_subtree_check,sec=sys,rw,secure,no_root_squash,no_all_squash)
 ```
