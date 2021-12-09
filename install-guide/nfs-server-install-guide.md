@@ -3,6 +3,17 @@
 
 # NFS 서버 설치 
 
+## Table of Contents
+
+1. [문서 개요](#1)  
+  1.1. [목적](#1.1)  
+  1.2. [범위](#1.2)  
+
+2. [NFS Server 설치](#2)  
+  2.1. [Prerequisite](#2.1)  
+  2.2. [설치](#2.2)  
+  2.3. [동작확인](#2.3)
+
 <br>
 
 ## <div id='1'> 1. 문서 개요
@@ -23,13 +34,11 @@ PaaS-TA 6.0 버전부터는 Kuberspray에서 배포되는 기본클러스터에 
 
 <br>
 
-## <div id='2'> 2. Kubespray 설치
-
 ### <div id='2.1'> 2.1. Prerequisite
 본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. Kubespray로 배포된 Cluster에서 사용할 Storage용이기에 Storage용 별도 VM에 설치한다.
 
 
-### <div id='2.2'> 2.2. NFS 서버 설치
+### <div id='2.2'> 2.2. 설치
 - 패키지 업데이트
 ```
 $ sudo apt-get update
@@ -63,6 +72,8 @@ $ sudo /etc/init.d/nfs-kernel-server restart
 $ sudo systemctl restart portmap
 ```
 
+
+### <div id='2.2'> 2.2. 동작 확인
 
 - 정상동작 확인
 ```
