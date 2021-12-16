@@ -1,5 +1,7 @@
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > StandAlone Deployment
 
+<hr>
+
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -24,7 +26,7 @@
 
 5. [Resource 생성 시 주의사항](#5)  
 
-<br>
+<hr>
 
 ## <div id='1'> 1. 문서 개요
 
@@ -53,7 +55,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, P
 > https://kubespray.io  
 > https://github.com/kubernetes-sigs/kubespray  
 
-<br>
+<hr>
 
 ## <div id='2'> 2. Kubespray 설치
 
@@ -138,7 +140,7 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-- 사용할 Master, Worker Node에 공개키를 복사한다.
+- 사용할 **Master, Worker Node**에 공개키를 복사한다.
 ```
 ## 출력된 공개키 복사
 
@@ -232,7 +234,7 @@ Please enter your OpenStack Password for project admin as user admin: {패스워
 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
-$ . deploy_kubespray.sh
+$ source deploy_kubespray.sh
 ```
 
 - 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
@@ -291,16 +293,16 @@ openstack-cloud-controller-manager-mct28      1/1     Running   0          8m57s
 snapshot-controller-0                         1/1     Running   0          7m33s
 ```
 
-<br>
+<hr>
 
 ## <div id='3'> 3. Kubespray 삭제 (참고)
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 
 ```
-$ . remove_kubespray.sh
+$ source remove_kubespray.sh
 ```
 
-<br>
+<hr>
 
 ## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
@@ -329,6 +331,8 @@ $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
 
+<br>
+
 ### <div id='4.2'> 4.2. Namespace 사용자 Token 획득
 포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
 
@@ -342,7 +346,7 @@ $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
 
-<br>
+<hr>
 
 ## <div id='5'> 5. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
@@ -364,9 +368,8 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 |Pod|nodes|
 ||resources|
 
-<br>
-
-----
-[image 001]:images/standalone-v1.2.png
+<hr>
 
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > StandAlone Deployment
+
+[image 001]:images/standalone-v1.2.png
