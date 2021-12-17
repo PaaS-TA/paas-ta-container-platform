@@ -206,9 +206,9 @@ export MASTER_NODE_PRIVATE_IP={Master Node의 Private IP 정보 입력}
 export WORKER1_NODE_HOSTNAME={Worker 1번 Node의 HostName 정보 입력}
 export WORKER1_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
 export WORKER2_NODE_HOSTNAME={Worker 2번 Node의 HostName 정보 입력}
-export WORKER2_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER2_NODE_PRIVATE_IP={Worker 2번 Node의 Private IP 정보 입력}
 export WORKER3_NODE_HOSTNAME={Worker 3번 Node의 HostName 정보 입력}
-export WORKER3_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER3_NODE_PRIVATE_IP={Worker 3번 Node의 Private IP 정보 입력}
 ...
 ```
 
