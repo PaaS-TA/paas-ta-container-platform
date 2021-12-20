@@ -62,9 +62,10 @@ $ sudo vi /etc/exports
 ## 형식 : [/공유디렉토리] [접근IP] [옵션]
 /home/share/nfs *(rw,no_root_squash,async)
 ```
-^옵션 : rw - 읽기쓰기
-        no_root_squash - 클라이언트가 root 권한 획득 가능, 파일생성 시 클라이언트 권한으로 생성됨.
-        async - 요청에 의해 변경되기 전에 요청에 응답, 성능 향상용
+>`rw - 읽기쓰기` <br>
+>       `no_root_squash - 클라이언트가 root 권한 획득 가능, 파일생성 시 클라이언트 권한으로 생성됨.`<br>
+>       `async - 요청에 의해 변경되기 전에 요청에 응답, 성능 향상용`
+
 
 - nfs 서버 재시작
 ```
