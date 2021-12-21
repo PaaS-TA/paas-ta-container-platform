@@ -74,9 +74,12 @@
 	* [3.2.2.4.6. Job 작업 정렬](#3-2-2-4-6)
 	* [3.2.2.4.7. 새 작업 그룹 추가](#3-2-2-4-7)
 	* [3.2.3.     파이프라인 관리](#3-2-3)
-	* [3.2.3.1.   Cloud Foundry 정보 관리](#3-2-3-1)
-	* [3.2.3.1.1. Cloud Foundry 계정 등록](#3-2-3-1-1)
-	* [3.2.3.1.2. Cloud Foundry 계정 수정](#3-2-3-1-2)
+	* [3.2.3.1.   Kubernetes 정보 관리](#3-2-3-1)
+	* [3.2.3.1.1. Kubernetes 정보 등록](#3-2-3-1-1)
+	* [3.2.3.1.2. Kubernetes 정보 수정](#3-2-3-1-2)
+	* [3.2.3.2.   JOB 감사 추적](#3-2-3-2)
+	* [3.2.3.2.1. JOB 감사 추적 조회](#3-2-3-2-1)
+	* [3.2.3.2.2. JOB 감사 추적 검색 조회](#3-2-3-2-2)
 	* [3.2.4.     품질 관리](#3-2-4)
 	* [3.2.4.1.   품질 이슈](#3-2-4-1)
 	* [3.2.4.2.   코딩 규칙](#3-2-4-2)
@@ -93,6 +96,12 @@
 	* [3.2.4.4.4. 품질 게이트 조건 추가](#3-2-4-4-4)
 	* [3.2.4.4.5. 품질 게이트 프로젝트 연결](#3-2-4-4-5)
 	* [3.2.4.4.6. 품질 게이트 삭제](#3-2-4-4-6)
+	* [3.2.4.5.   스테이징 관리](#3-2-4-5)
+	* [3.2.4.5.1. 환경 정보 관리](#3-2-4-5-1)
+	* [3.2.4.5.1.1. 환경 정보 등록](#3-2-4-5-1-1)
+	* [3.2.4.5.1.2. 환경 정보 목록 검색](#3-2-4-5-1-2)
+	* [3.2.4.5.1.3. 환경 정보 삭제](#3-2-4-5-1-3)
+	
 
 # <div id='1'/> 1. 문서 개요
 
@@ -344,12 +353,16 @@
 4. Docker File 생성하기 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146745889-fca0a935-c9fe-4745-b10f-132b7af0a775.png)
 
-5. 형상관리 정보를 입력한 후 브랜치 조회 버튼을 클릭한다.
+5. 스테이징 정보 조회 내 빌더유형에 맞는 이름을 클릭하면, Spring Config Client 설정 방법 예시 정보가 조회된다.
+![image](https://user-images.githubusercontent.com/80228983/146876710-95db595c-2d71-41f6-bb1b-d62da91eb0f1.png)
+![image](https://user-images.githubusercontent.com/80228983/146877968-5fc84abf-f882-46a2-8f28-77f846052031.png)
+
+6. 형상관리 정보를 입력한 후 브랜치 조회 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146746751-8d825ad5-caa4-485f-91f9-72adc15fb9b8.png)
 
 ***※ Github을 선택했을 때, 공개 레파지토리 경로를 입력하는 경우 브랜치 조회 시 아이디와 비밀번호를 입력하지 않아도 된다.***
 
-6. 원하는 브랜치를 선택하고, 저장 버튼을 클릭한다.
+7. 원하는 브랜치를 선택하고, 저장 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146750384-d397253f-225d-4241-bbf1-72351a7f5486.png)
 
 
@@ -364,7 +377,7 @@
 3. 수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.(예제에서는  Dockerfile을 수정)
 ![image](https://user-images.githubusercontent.com/80228983/146850268-67058b4b-7c88-4911-a686-8d37aabeec61.png)
 
-***※ 빌드 Job 수정 시, 형상관리 정보의 경우 브랜치 이외에는 수정할 수 없다.***
+***※ 빌드 Job 수정 시, 형상관리 정보의 경우 브랜치 이외에는 수정할 수 없다.***<br>
 4. 구성 상세페이지로 이동하여 수정된 정보들을 확인한다.
 ![image](https://user-images.githubusercontent.com/80228983/146850355-91325e6d-4b7f-4a07-9a7b-0d1c992981f8.png)
 
@@ -440,8 +453,8 @@
 1.	Job의 “추가” 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146851671-71848dd9-7a21-4202-a5d3-d3f6cd37ced0.png)
 2.	구성 페이지로 이동하여 작업 유형을 정적분석(Static-Analysis)으로 선택한 후 입력 유형에서 원하는 품질 프로파일과 품질 게이트, 작업 그룹을 선택한다. 그 후에 작업 트리거는 각자의 상황에 맞게 선택한다. (처음에는 품질 게이트가 존재하지 않는다. [품질 게이트 생성](#3-2-4-4-1) 을 참조하여 생성한다.)
-![image](https://user-images.githubusercontent.com/80228983/146852468-9f9620b6-280a-4946-9c69-eaa75e647f4d.png)
-3.      JACOCO plugin script tab의 GRADLE, MAVEN을 클릭하면 jacoco plugin 적용방법을 확인할 수 있다.(예시이므로 상황에 맞게 플러그인을 적용한다.)
+![image](https://user-images.githubusercontent.com/80228983/146852468-9f9620b6-280a-4946-9c69-eaa75e647f4d.png) 
+3.	JACOCO plugin script tab의 GRADLE, MAVEN을 클릭하면 jacoco plugin 적용방법을 확인할 수 있다.(예시이므로 상황에 맞게 플러그인을 적용한다.)
 ![image](https://user-images.githubusercontent.com/80228983/146852604-7539eefd-f3d0-435f-8248-f8ae534d071e.png)
 4.	“저장” 버튼을 클릭하고, 파이프라인 상세페이지에서 테스트 Job 생성된 것을 확인한다.
 ![image](https://user-images.githubusercontent.com/80228983/146852642-91708e7f-6fa9-4ec9-8f18-ba97bbfe6e6e.png)
@@ -602,7 +615,7 @@
 ***※	테스트 Job 삭제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
 ##### <div id='3-2-2-4-5'/> 3.2.2.4.5.	배포 Job
-###### <div id='3.2.2.4.5.1'/> 3.2.2.4.5.1.	배포 Job 생성
+###### <div id='3-2-2-4-5-1'/> 3.2.2.4.5.1.	배포 Job 생성
 1. Job의 “추가” 버튼을 클릭한다.<br>
 ![image](https://user-images.githubusercontent.com/80228983/146858411-96203d4e-86db-45cb-b4eb-69d8839beaa6.png)
 2.	구성 페이지로 이동하여 작업 유형을 배포(Deploy)로 선택한 후 유형에서 원하는 배포 유형 및 앱 유형을 선택, 파이프라인 관리에서 저장해 놓은 Kubernetes 정보를 선택한다. (Kubernetes 정보를 가져오기 위해서는 선행 과정이 필요하다. 과정은 3.2.3.1. Kubernetes 정보 관리 항목을 참고한다).
@@ -681,7 +694,6 @@
 ![image](https://user-images.githubusercontent.com/80228983/146860050-1d04e411-18b2-4412-a7a9-62970bdef9eb.png)
 2.	그 이후의 과정은 3.2.2.4.2.8. 빌드 Job 삭제 항목을 참고한다.
 
-![125]
 
 ***※	배포 Job 삭제는 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
@@ -691,154 +703,206 @@
 2.	현재 작업 그룹 내에서 정렬할 수 있는 나머지 Job의 번호의 목록이 drop down 메뉴로 보인다.
 ![image](https://user-images.githubusercontent.com/80228983/146860179-bfda5a8b-ca6d-48a6-b77d-dee8d022c543.png)
 3.	그중 정렬하고자 하는 번호를 클릭 시 그 번호의 Job 과 위치가 서로 바뀌게 되며 정렬된다.
-![128]
+![image](https://user-images.githubusercontent.com/80228983/146867130-e39790ed-765c-4ec4-9668-04e356271c74.png)
 
 ***※	Job 작업 정렬은 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
-##### <div id='3-2-2-4-6'/> 3.2.2.4.6. 새 작업 그룹 추가
+##### <div id='3-2-2-4-7'/> 3.2.2.4.7. 새 작업 그룹 추가
 1.	파이프라인 상세페이지에서 “새 작업 그룹 추가” 버튼을 클릭한다.
-![129]
+![image](https://user-images.githubusercontent.com/80228983/146867152-0477d45e-b5b5-4b64-8735-ee5ac4596880.png)
 2.	Job 구성 상세페이지로 이동한다.
-![130]
+![image](https://user-images.githubusercontent.com/80228983/146867201-e8622591-6e47-4f57-b3e9-162f47ee6529.png)
 3.	새로운 Job 한 개를 생성한 뒤 파이프라인 상세페이지로 이동한다. 이전 작업 그룹 아래로 점선이 생기며 새로 생성한 Job이 새로운 그룹 내로 나눠진 것을 확인할 수 있다.
-![131]
+![image](https://user-images.githubusercontent.com/80228983/146867284-fdac0c1e-962b-49c4-a8ea-759b99b9cc32.png)
 
 ***※	Job 새 작업  그룹 추가는 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
 ### <div id='3-2-3'/> 3.2.3. 파이프라인 관리
-본 장에서는 Cloud Foundry 정보를 등록하여 Job을 배포할 Cloud Foundry target URL을 연동하는 과정에 대하여 기술한다.
-#### <div id='3-2-3-1'/> 3.2.3.1. Cloud Foundry 정보 관리
-###### <div id='3-2-3-1-1'/> 3.2.3.1.1. Cloud Foundry 계정등록
-1. Cloud Foundry 정보 관리 대시보드에서 우측 상단에 “Cloud Foundry 계정 등록” 버튼을 클릭한다.
-![132]
-2. Cloud Foundry 계정 등록 페이지로 이동한다.
-![133]
-3. 계정 명을 입력한 후 아이디와 비밀번호에는 Cloud Foundry 로그인에 필요한 아이디와 비밀번호를 입력한다.
-![134]
-4. URL에는 “URL 관리” 버튼을 클릭한 후 팝업 창이 뜨면 “URL 등록” 버튼을 클릭하여 Cloud Foundry 계정 정보를 등록하도록 한다.<br>
-![135]
-5. Cloud Foundry API 명(ex. api)을 입력하고, Job 배포 계정으로 사용하고자 하는 Cloud Foundry target API URL(ex. https://api.115.68.46.186.nip.io) 을 입력한 후 “URL 저장” 버튼을 클릭한다.
-![136]
-6. URL이 등록되었음을 확인한다.<br>
-![137]
-7. 다시 계정 등록 화면으로 돌아와 등록한 URL을 선택 후 나머지 값을 입력한다. 마지막으로 “등록” 버튼을 클릭한다.
-![138]
-8. Cloud Foundry 정보 관리 대시보드에서 Cloud Foundry 계정 정보가 정상적으로 등록되었음을 확인한다.
-![139]
+#### <div id='3-2-3-1'/> 3.2.3.1. Kubernetes 정보 관리
+###### <div id='3-2-3-1-1'/> 3.2.3.1.1. Kubernetes 정보 등록
+1. 파이프라인 관리 > Kubernetes 정보 관리 메뉴를 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146867460-8d62380a-8c55-4b41-826c-0237c49aee56.png)
+2. 대시보드에서 우측 상단에 “Kuber Config 등록” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146867477-b8c5ff71-29c9-4d91-9e1c-8f55b42222db.png)
+3. kubernetes config 등록 페이지로 이동한다.
+![image](https://user-images.githubusercontent.com/80228983/146867522-fec558d7-8caf-4639-aad0-dcabe9ad565e.png)
+4. config 명과 kube config를 입력한 후 등록 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146867697-4ba6e049-35b1-4192-81a5-13e5d8511b12.png)
+5. kubernetes config가 등록되었음을 확인한다.<br>
+![image](https://user-images.githubusercontent.com/80228983/146867770-d5515ac3-8701-4c7d-a1f9-a8d37dbd24f9.png)
 
-###### <div id='3-2-3-1-2'/> 3.2.3.1.2. Cloud Foundry 계정수정
-1.	Cloud Foundry 정보 관리 대시보드에서 수정하고자 하는 계정을 클릭한다.
-![140]
+###### <div id='3-2-3-1-2'/> 3.2.3.1.2. Kubernetes 정보 수정
+1.	kubernetes 정보 관리 대시보드에서 수정하고자 하는 정보를 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146868073-7f58c5bf-2cd2-4d77-9de6-ebcd77bfcb34.png)
 2.	수정할 값들을 입력하고 “수정” 버튼을 클릭한다.
-![141]
-3.	다시 대시보드를 통해 계정 상세 페이지로 이동 후 수정되었는지 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146868101-2e66c9c0-6aef-4425-9c68-79e88be3ab1f.png)
+3.	다시 대시보드를 통해 정보 상세 페이지로 이동 후 수정되었는지 확인한다.
+
+#### <div id='3-2-3-2'/> 3.2.3.2. JOB 감사 추적
+###### <div id='3-2-3-2-1'/> 3.2.3.2.1. JOB 감사 추적 조회
+1.      파이프라인 관리 > JOB 감사 추적 메뉴를 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146868232-07e6f6bc-c4d3-45c6-a16c-4f0297796724.png)
+2.      JOB 감사 추적 대시보드에서 최근 등록/실행/수정/삭제된 JOB 목록을 조회할 수 있다.
+![image](https://user-images.githubusercontent.com/80228983/146868328-1bdac61c-9e7d-4331-bea8-61ccb5e9657b.png)
+
+
+###### <div id='3-2-3-2-2'/> 3.2.3.2.2. JOB 감사 추적 검색 조회
+1.	JOB 감사 추적 대시보드에서 검색하고자 하는 메시지를 입력한다.
+![image](https://user-images.githubusercontent.com/80228983/146868426-029fff3a-3eb2-46ab-9631-2cf8fd890fae.png)
+2.	JOB 감사 추적 페이지 안에 검색한 메시지와 일치하는 추적 기록만 조회된다.
+![image](https://user-images.githubusercontent.com/80228983/146868447-a51aa764-5e56-4902-83e7-538ba3f60cec.png)
+
 
 ### <div id='3-2-4'/> 3.2.4. 품질 관리
-본 장에서는 테스트 Job을 통해 검사한 소스 코드와 관련하여 품질 이슈와 코딩 규칙, 품질 프로파일, 품질 게이트에 대한 설명을 기술한다.
+본 장에서는 정적분석 Job을 통해 검사한 소스 코드와 관련하여 품질 이슈와 코딩 규칙, 품질 프로파일, 품질 게이트에 대한 설명을 기술한다.
 #### <div id='3-2-4-1'/> 3.2.4.1. 품질 이슈
 1.	품질 관리 메뉴에서 품질 이슈를 클릭하여 품질 이슈 대시보드로 이동한다.
-![142]
-2.	“규칙상세” 버튼을 클릭한다.
-![143]
+![image](https://user-images.githubusercontent.com/80228983/146868645-21adac37-a946-4dcb-8fce-b3d4e642b0f9.png)
+2.      보고자하는 코딩 규칙의 “상세” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146868787-a3182e36-27f6-4925-9c24-4ca302195167.png)
 3.	오른쪽 상단의 “목록” 버튼을 클릭하면 Job 테스트 목록이 있는 품질 이슈 대시보드로 이동한다.
+![image](https://user-images.githubusercontent.com/80228983/146868854-58ede260-4324-4e70-8623-cb5378403a85.png)
+<br>
+![image](https://user-images.githubusercontent.com/80228983/146868893-612518cf-0f65-4b81-a184-0a1d2b4ac8e7.png)
+
 
 #### <div id='3-2-4-2'/> 3.2.4.2. 코딩 규칙
 1.	품질 관리 메뉴에서 코딩 규칙을 클릭하여 코딩 규칙 대시보드로 이동한다.
-![144]
+![image](https://user-images.githubusercontent.com/80228983/146869100-bf9ced1d-6ac5-43d5-9772-dacb723c71bb.png)
 2.	“프로파일에 추가” 버튼을 클릭한 뒤 프로파일 추가 팝업 창에서 이슈 수준을 정한 후 “추가” 버튼을 클릭한다.
-![145]
-3. 왼쪽 하단에 품질 프로파일 메뉴에서 이전 단계에서 선택한 Default^Default-QualityProfle 을 클릭하여 추가한 코딩 규칙이 추가되었는지 확인한다.<br>
-![146]
+![image](https://user-images.githubusercontent.com/80228983/146869126-57b894b2-3bb4-4dfc-a5f8-945e4bcee0dc.png) 
+![image](https://user-images.githubusercontent.com/80228983/146869144-225b9a5b-8795-4eee-98c0-d8aea5c5095a.png) 
+
+3. 왼쪽 하단에 품질 프로파일 메뉴에서 이전 단계에서 선택한 default-paasta 을 클릭하여 추가한 코딩 규칙이 추가되었는지 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146869220-88df7154-a0e9-49a2-aed0-399ed89856d6.png)
 4.	“프로파일에 제거” 버튼을 클릭한다.
-![147]
+![image](https://user-images.githubusercontent.com/80228983/146869258-5f0dd80d-4ca1-4edc-ab98-a168a2d04e0b.png)
 5.	제거한 코딩 규칙이 품질 프로파일에서 삭제된 것을 확인한다.
-![148]
+![image](https://user-images.githubusercontent.com/80228983/146869296-2399267c-6685-40ee-9e94-e66875b63841.png)
 
 #### <div id='3-2-4-3'/> 3.2.4.3. 품질 프로파일
 ##### <div id='3-2-4-3-1'/> 3.2.4.3.1. 품질 프로파일 생성
 1.	품질 관리 메뉴에서 품질 프로파일을 선택하여 품질 프로파일 대시보드로 이동한다.
-![149]
+![image](https://user-images.githubusercontent.com/80228983/146869326-75a4cefe-3359-4868-961d-c40cabff7471.png)
 2.	우측 상단의 “생성” 버튼을 클릭한다.
-![150]
+![image](https://user-images.githubusercontent.com/80228983/146869368-150fd27b-c848-492a-9bc9-daf82bad9dd4.png)
 3.	품질 프로파일 명을 입력하고, 개발언어를 선택하여 “생성” 버튼을 클릭한다.
-![151]
+![image](https://user-images.githubusercontent.com/80228983/146869418-4b14c549-055d-46d9-9645-2ecb39ed267d.png)
 4.	품질 프로파일이 생성된 것을 확인한다.
-![152]
+![image](https://user-images.githubusercontent.com/80228983/146869466-70d23957-9668-44e1-90ff-18f743060566.png)
 
 ##### <div id='3-2-4-3-2'/> 3.2.4.3.2. 품질 프로파일 복제
 1.	품질 프로파일 대시보드에서 “복제” 버튼을 클릭한다.
-![153]
+![image](https://user-images.githubusercontent.com/80228983/146869595-579a04e7-92ea-4f2f-b67d-7d4567b417a4.png)
 2.	복제할 품질 프로파일의 이름을 입력하고, “복제” 버튼을 클릭한다.
-![154]
+![image](https://user-images.githubusercontent.com/80228983/146869642-41573c30-9867-484c-b3db-d36c7c5396de.png)
 3.	복제된 품질 프로파일을 확인한다.
-![155]
+![image](https://user-images.githubusercontent.com/80228983/146869693-2c0bced9-3618-4e4b-ba3d-a839706bb567.png)
 
 ##### <div id='3-2-4-3-3'/> 3.2.4.3.3. 품질 프로파일 수정
 1.	품질 프로파일 대시보드에서 “수정” 버튼을 클릭한다.
-![156]
+![image](https://user-images.githubusercontent.com/80228983/146869730-5e78b1e5-70ca-4472-b2a4-fdeb45fe7c3a.png)
 2.	수정할 품질 프로파일 팝업창이 뜨면 품질 프로파일 명을 수정하고 “수정” 버튼을 클릭한다.
-![157]
+![image](https://user-images.githubusercontent.com/80228983/146869753-e5a28251-de12-4331-b20e-7abcfd4e2cab.png)
 3. 품질 프로파일 명이 수정되었음을 확인한다.
-![158]
+![image](https://user-images.githubusercontent.com/80228983/146869782-6fb49ca0-1a77-43b7-b497-12ef3a5a4728.png)
 
 ##### <div id='3-2-4-3-4'/> 3.2.4.3.4. 품질 프로파일 프로젝트 연결
-1.	품질 프로파일 대시보드에서 연결된 프로젝트 항목을 확인한다. (첫 번째 사진은 테스트 Job 구성 조회 시 품질 프로파일을 Default-QualityProfile 로 설정한 것이다. 그러므로 두 번째 사진에서 예시로 새로 생성한 품질 프로파일[QualityProfile_hrjin]에는 연결된 프로젝트가 보이지 않는다.)
-![159]
+1.	품질 프로파일 대시보드에서 연결된 프로젝트 항목을 확인한다. (첫 번째 사진은 테스트 Job 구성 조회 시 품질 프로파일을 Sonar way 로 설정한 것이다. 그러므로 두 번째 사진에서 예시로 새로 생성한 품질 프로파일[GuideModified]에는 연결된 프로젝트가 보이지 않는다.)
+![image](https://user-images.githubusercontent.com/80228983/146869881-a5b19ce0-c43c-430f-bbc0-34e648c7816d.png)
 2.	연결된 프로젝트가 없을 경우 “미연결” 탭을 클릭한다.
-![160]
-3.	해당 품질 프로파일과 연결할 테스트 Job 프로젝트를 선택한다. 품질 프로파일 1개 당 여러 프로젝트 연결이 가능하다.
-![161]
+![image](https://user-images.githubusercontent.com/80228983/146870059-5edd86ac-a917-4d68-9057-df6b095d0cef.png) 
+3.	프로파일을 연결할 경우 "연결됨" 탭에 연결된 프로젝트가 확인된다.
+![image](https://user-images.githubusercontent.com/80228983/146870218-7903313a-1acd-4c5d-bb8e-bf2150e3aa3f.png) 
+![image](https://user-images.githubusercontent.com/80228983/146870235-e1d10c13-4001-47a9-b936-0684ded07a00.png) 
+
 ##### <div id='3-2-4-3-5'/> 3.2.4.3.5. 품질 프로파일 삭제
 1.	품질 프로파일 대시보드에서 “삭제” 버튼을 클릭한다.
-![162]
-2.	품질 프로파일이 삭제되었음을 확인한다.
-![163]
-
+![image](https://user-images.githubusercontent.com/80228983/146870360-07dfcc04-779c-4330-b46c-d7e3582b8ad8.png)
 
 #### <div id='3-2-4-4'/> 3.2.4.4. 품질 게이트
 ##### <div id='3-2-4-4-1'/> 3.2.4.4.1. 품질 게이트 생성
 1.	품질 관리 메뉴에서 품질 게이트를 선택하여 품질 게이트 대시보드로 이동한다.
-![164]
+![image](https://user-images.githubusercontent.com/80228983/146870977-2e815cd0-06a0-45d3-8b74-ae08b13ebb96.png)
 2.	우측 상단의 “생성” 버튼을 클릭한다.
-![165]
+![image](https://user-images.githubusercontent.com/80228983/146870997-cb6f0416-54f2-4943-add9-f8afef3963ee.png)
 3.	품질 게이트 명을 입력하고, “생성” 버튼을 클릭한다.
-![166]
+![image](https://user-images.githubusercontent.com/80228983/146871027-05bff6f6-dfc8-4be5-bf9c-12f6c5afcf8b.png)
 4.	품질 게이트가 생성된 것을 확인한다.
-![167]
+![image](https://user-images.githubusercontent.com/80228983/146871082-9f7b5524-7a08-4a65-b32e-5451a51d8192.png)
 
 ##### <div id='3-2-4-4-2'/> 3.2.4.4.2. 품질 게이트 복제
 1.	품질 게이트 대시보드에서 “복제” 버튼을 클릭한다.
-![168]
+![image](https://user-images.githubusercontent.com/80228983/146871101-e7d27bb3-088e-4e7c-8f2f-94d4c2674d74.png)
 2.	복제할 품질 게이트의 이름을 입력하고, “복제” 버튼을 클릭한다.
-![169]
-3.	복제된 품질 게이트를 확인한다.
-![170]
+![image](https://user-images.githubusercontent.com/80228983/146871144-b568c53d-0eb2-44b8-b497-ed41f27d7c63.png)
+
 
 ##### <div id='3-2-4-4-3'/> 3.2.4.4.3. 품질 게이트 수정
 1.	품질 게이트 대시보드에서 “수정” 버튼을 클릭한다.
-![171]
+![image](https://user-images.githubusercontent.com/80228983/146871383-81744c10-8694-430d-a5e1-3a8f2ba53fda.png)
 2.	수정할 품질 게이트 팝업창이 뜨면 품질 게이트 명을 수정하고 “수정” 버튼을 클릭한다.
-![172]
-3.	품질 게이트 명이 수정되었음을 확인한다.
-![173]
+![image](https://user-images.githubusercontent.com/80228983/146871410-9462890c-ce73-4824-9200-4e19681bd17d.png)
+
 
 ##### <div id='3-2-4-4-4'/> 3.2.4.4.4. 품질 게이트 조건추가
-1.	품질 게이트 대시보드에서 Job 테스트 시 통과 기준이 되는 조건을 설정할 수 있는 조건 추가 부분을 확인한다. 사용자가 직접 조건을 추가하고 기준 설정이 가능하다.
-![174]
+1.	품질 게이트 대시보드에서 Job 테스트 시 통과 기준이 되는 조건을 설정할 수 있는 조건 추가 부분을 확인한다. 사용자가 직접 조건을 추가하고 기준 설정이 가능하다. 저장/수정 열에서 저장을 클릭하여 저장한다.
+![image](https://user-images.githubusercontent.com/80228983/146871550-aadfbdcc-d228-4838-89f7-50e77865b71f.png)
 2.	조건에 따라 어느 기준 이상/이하가 될 시에 테스트를 통과시키도록 한다.
-![175]
-3.	현재 ‘Default-QualityGate’ 가 기본 품질 게이트로 설정되어 있는데 이것을 참고로 한다.
-![176]
+![image](https://user-images.githubusercontent.com/80228983/146871698-fd190b68-328f-46f3-813b-1923fe3171e9.png)
 
 ##### <div id='3-2-4-4-5'/> 3.2.4.4.5. 품질 게이트 프로젝트 연결
-1. 품질 게이트 대시보드에서 연결된 프로젝트 항목을 확인한다. (첫 번째 사진은 테스트 Job 구성 조회 시 품질 게이트를 test-QualityGate 로 설정한 것이다. 그러므로 두번째 사진에서 연결된 프로젝트에 test2 파이프라인의 테스트 Job 이 보인다.)<br>
-![159]
+1. 품질 게이트 대시보드에서 연결된 프로젝트 항목을 확인한다. (첫 번째 사진은 정적분석 Job 구성 조회 시 품질 게이트를 fortest 로 설정한 것이다. )
+![image](https://user-images.githubusercontent.com/80228983/146872137-88e8c4cd-bae9-4f19-bde7-513be375d303.png)
 2. 품질 게이트도 품질 프로파일과 마찬가지로 품질 게이트 1개당 여러 프로젝트 연결이 가능하다.
-![177]
+
 
 ##### <div id='3-2-4-4-6'/> 3.2.4.4.6. 품질 게이트 삭제
 1.	품질 게이트 대시보드에서 “삭제” 버튼을 클릭한다.
-![178]
+![image](https://user-images.githubusercontent.com/80228983/146872354-95a8dc91-4c18-43d5-9b5d-bbe76bd9226b.png)
 2.	품질 게이트가 삭제되었음을 확인한다.
-![179]
 
+
+#### <div id='3-2-4-5'/> 3.2.4.5. 스테이징 관리
+##### <div id='3-2-4-5-1'/> 3.2.4.5.1. 환경 정보 관리
+배포된 애플리케이션의 환경 설정을 관리하는 페이지이다. 컨테이너 플랫폼 파이프라인에서는 spring cloud config server 를 제공하며, 환경 정보를 DB에 저장하여 관리한다.
+
+###### <div id='3-2-4-5-1-1'/> 3.2.4.5.1.1. 환경 정보 등록
+1. 환경 정보 관리 페이지에 접속한다.
+![image](https://user-images.githubusercontent.com/80228983/146874425-487939dd-2877-45a6-ba78-075c1d096fd0.png) 
+2. 환경 정보 관리 대시보드 우측의 추가 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146874528-b9274fa9-4cfc-43c6-874f-596847eb699f.png)
+3. 환경 정보 등록 페이지 내 파일 선택 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146874591-9421c887-c653-4c24-ae81-9fad12bd44e1.png)
+***※    .properties, .yaml', .yml 형식을 선택하며, '----' 등의 구분선이 포함되지 않아야한다.***
+4. 올바르게 선택한 경우 정상이라는 팝업 알림창이 뜬다.
+![image](https://user-images.githubusercontent.com/80228983/146874707-3efa4b94-2af7-437e-8004-efde7ae737a8.png)
+5. 상황에 맞게 Application 명, Profile 명을 입력한다.
+![image](https://user-images.githubusercontent.com/80228983/146874773-59b32463-844f-4d76-bc55-7316bdb777b8.png)
+***※	Container Platform 파이프라인에서는 Label 명이 'standalone'으로 고정된다.***
+6. 등록 버튼을 클릭하여 환경정보를 등록한다.
+![image](https://user-images.githubusercontent.com/80228983/146874930-d4fd9c03-ef65-4d3d-8d04-a5de6c0f6d71.png)
+7. 환경 정보가 제대로 등록되었음을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146874997-8f397560-05ff-4d01-9ed6-27e23983cc77.png)
+
+###### <div id='3-2-4-5-1-2'/> 3.2.4.5.1.2. 환경 정보 목록 검색
+환경정보 관리 대시보드에서는 'Application 명', 'profile 명', 'Key 검색' 3가지를 통해 검색할 수 있다.
+1. Application 필터를 확장시켜 원하는 어플리케이션을 선택한다.
+![image](https://user-images.githubusercontent.com/80228983/146875629-2c192489-d556-40ec-8769-53bc31abbf1f.png)
+2. 선택된 어플리케이션으로 필터링되어 조회된다.
+![image](https://user-images.githubusercontent.com/80228983/146875710-102c4b0d-d265-498f-a13d-78afbcb333ce.png)
+3. 선택된 프로필명으로 필터링되어 조회되는 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146875761-2f72dff9-2346-4f84-9a21-952e735f4fe3.png)
+3. 입력한 Key명으로 필터링되어 조회되는 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146875822-e2e85169-4cf7-417f-b80c-3a9ed13bf38b.png)
+
+###### <div id='3-2-4-5-1-3'/> 3.2.4.5.1.3. 환경 정보 삭제
+환경정보 관리 대시보드에서는 선택한 어플리케이션/프로파일 정보를 삭제할 수 있다.
+1. Application 필터를 확장시켜 삭제하고자 하는 어플리케이션을 선택한다.
+![image](https://user-images.githubusercontent.com/80228983/146875945-98cf9929-1c37-417d-b1e1-c13d9b077f03.png) 
+2. Profile 필터를 확장시켜, 삭제하고자하는 프로필을 선택한다.
+![image](https://user-images.githubusercontent.com/80228983/146876117-de125635-3612-43b1-9de4-1d1781b3c67e.png)
+3. paasta-delivery-pipeline-inspection-api 어플리케이션, 'default' 프로필을 선택하고, 'Application 삭제' 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146876164-ffb906d8-0a8a-4aef-ac1d-82469c87c0ee.png)
+4. 선택한 환경정보가 삭제되었음을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146876207-8d3b8d4e-4fe3-4e33-8fbe-5a41fd8bc1f2.png)
