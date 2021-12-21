@@ -38,32 +38,41 @@
 	* [3.2.2.4.2.3.    빌드 Job 실행](#3-2-2-4-2-3)
 	* [3.2.2.4.2.4.    빌드 Job 정지](#3-2-2-4-2-4)
 	* [3.2.2.4.2.5.    빌드 Job 로그/히스토리](#3-2-2-4-2-5)
-	* [3.2.2.4.2.6.    빌드 Job 로그 다운로드](#3-2-2-4-2-6)
-	* [3.2.2.4.2.7.    빌드 Job 추가](#3-2-2-4-2-7)
-	* [3.2.2.4.2.8.    빌드 Job 복제](#3-2-2-4-2-8)
-	* [3.2.2.4.2.9.    빌드 Job 삭제](#3-2-2-4-2-9)
-	* [3.2.2.4.3. 테스트 Job](#3-2-2-4-3)
-	* [3.2.2.4.3.1.    테스트 Job 생성](#3-2-2-4-3-1)
-	* [3.2.2.4.3.2.    테스트 Job 구성 조회/수정](#3-2-2-4-3-2)
-	* [3.2.2.4.3.3.    테스트 Job 실행](#3-2-2-4-3-3)
-	* [3.2.2.4.3.4.    테스트 Job 정지](#3-2-2-4-3-4)
-	* [3.2.2.4.3.5.    테스트 Job 로그/히스토리](#3-2-2-4-3-5)
-	* [3.2.2.4.3.6.    테스트 Job 추가](#3-2-2-4-3-6)
-	* [3.2.2.4.3.7.    테스트 Job 품질 이슈 결과](#3-2-2-4-3-7)
-	* [3.2.2.4.3.8.    테스트 Job 복제](#3-2-2-4-3-8)
-	* [3.2.2.4.3.9.    테스트 Job 삭제](#3-2-2-4-3-9)
-	* [3.2.2.4.4. 배포 Job](#3-2-2-4-4)
-	* [3.2.2.4.4.1.    배포 Job 생성](#3-2-2-4-4-1)
-	* [3.2.2.4.4.2.    배포 Job 구성 조회/수정](#3-2-2-4-4-2)
-	* [3.2.2.4.4.3.    배포 Job 실행](#3-2-2-4-4-3)
-	* [3.2.2.4.4.4.    배포 Job 정지](#3-2-2-4-4-4)
-	* [3.2.2.4.4.5.    배포 Job 로그/히스토리](#3-2-2-4-4-5)
-	* [3.2.2.4.4.6.    배포 Job 현재 작업으로 롤백](#3-2-2-4-4-6)
-	* [3.2.2.4.4.7.    배포 Job 추가](#3-2-2-4-4-7)
-	* [3.2.2.4.4.8.    배포 Job 복제](#3-2-2-4-4-8)
-	* [3.2.2.4.4.9.    배포 Job 삭제](#3-2-2-4-4-9)
-	* [3.2.2.4.5. Job 작업 정렬](#3-2-2-4-5)
-	* [3.2.2.4.6. 새 작업 그룹 추가](#3-2-2-4-6)
+	* [3.2.2.4.2.6.    빌드 Job 추가](#3-2-2-4-2-6)
+	* [3.2.2.4.2.7.    빌드 Job 복제](#3-2-2-4-2-7)
+	* [3.2.2.4.2.8.    빌드 Job 삭제](#3-2-2-4-2-8)
+	* [3.2.2.4.3. 정적분석 Job](#3-2-2-4-3)
+	* [3.2.2.4.3.1.    정적분석 Job 생성](#3-2-2-4-3-1)
+	* [3.2.2.4.3.2.    정적분석 Job 구성 조회/수정](#3-2-2-4-3-2)
+	* [3.2.2.4.3.3.    정적분석 Job 실행](#3-2-2-4-3-3)
+	* [3.2.2.4.3.4.    정적분석 Job 정지](#3-2-2-4-3-4)
+	* [3.2.2.4.3.5.    정적분석 Job 로그/히스토리](#3-2-2-4-3-5)
+	* [3.2.2.4.3.6.    정적분석 Job 추가](#3-2-2-4-3-6)
+	* [3.2.2.4.3.7.    정적분석 Job 품질 이슈 결과](#3-2-2-4-3-7)
+	* [3.2.2.4.3.8.    정적분석 Job 복제](#3-2-2-4-3-8)
+	* [3.2.2.4.3.9.    정적분석 Job 삭제](#3-2-2-4-3-9)
+	* [3.2.2.4.4. 테스트 Job](#3-2-2-4-4)
+	* [3.2.2.4.4.1.    테스트 Job 생성](#3-2-2-4-4-1)
+	* [3.2.2.4.4.2.    테스트 Job 구성 조회/수정](#3-2-2-4-4-2)
+	* [3.2.2.4.4.3.    테스트 Job 실행](#3-2-2-4-4-3)
+	* [3.2.2.4.4.4.    테스트 Job 정지](#3-2-2-4-4-4)
+	* [3.2.2.4.4.5.    테스트 Job 로그/히스토리](#3-2-2-4-4-5)
+	* [3.2.2.4.4.6.    테스트 Job 추가](#3-2-2-4-4-6)
+	* [3.2.2.4.4.7.    테스트 Job 품질 이슈 결과](#3-2-2-4-4-7)
+	* [3.2.2.4.4.8.    테스트 Job 복제](#3-2-2-4-4-8)
+	* [3.2.2.4.4.9.    테스트 Job 삭제](#3-2-2-4-4-9)
+	* [3.2.2.4.5. 배포 Job](#3-2-2-4-5)
+	* [3.2.2.4.5.1.    배포 Job 생성](#3-2-2-4-5-1)
+	* [3.2.2.4.5.2.    배포 Job 구성 조회/수정](#3-2-2-4-5-2)
+	* [3.2.2.4.5.3.    배포 Job 실행](#3-2-2-4-5-3)
+	* [3.2.2.4.5.4.    배포 Job 정지](#3-2-2-4-5-4)
+	* [3.2.2.4.5.5.    배포 Job 로그/히스토리](#3-2-2-4-5-5)
+	* [3.2.2.4.5.6.    배포 Job 현재 작업으로 롤백](#3-2-2-4-5-6)
+	* [3.2.2.4.5.7.    배포 Job 추가](#3-2-2-4-5-7)
+	* [3.2.2.4.5.8.    배포 Job 복제](#3-2-2-4-5-8)
+	* [3.2.2.4.5.9.    배포 Job 삭제](#3-2-2-4-5-9)
+	* [3.2.2.4.6. Job 작업 정렬](#3-2-2-4-6)
+	* [3.2.2.4.7. 새 작업 그룹 추가](#3-2-2-4-7)
 	* [3.2.3.     파이프라인 관리](#3-2-3)
 	* [3.2.3.1.   Cloud Foundry 정보 관리](#3-2-3-1)
 	* [3.2.3.1.1. Cloud Foundry 계정 등록](#3-2-3-1-1)
@@ -330,7 +339,7 @@
 3. 작업 유형을 선택한 후 빌드 유형으로 선택한다. 그 후 Harbor에 저장할 이미지 이름을 입력한다. <br>
 ![image](https://user-images.githubusercontent.com/80228983/146745847-993cd35d-5c9c-41f6-ba7f-c43a901b0c2a.png)
 
-***※ Gradle을 선택한 경우 소스 빌드 및 테스트, 정적 분석의 경우 Gradle wrapper 설정을 반영한다. ***
+***※ Gradle을 선택한 경우 소스 빌드 및 테스트, 정적 분석의 경우 Gradle wrapper 설정을 반영한다.***
 
 4. Docker File 생성하기 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146745889-fca0a935-c9fe-4745-b10f-132b7af0a775.png)
@@ -338,7 +347,7 @@
 5. 형상관리 정보를 입력한 후 브랜치 조회 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146746751-8d825ad5-caa4-485f-91f9-72adc15fb9b8.png)
 
-***※ Github을 선택한 경우, 공개 레파지토리 경로를 입력하는 경우 브랜치 조회 시 아이디와 비밀번호를 입력하지 않아도 된다.***
+***※ Github을 선택했을 때, 공개 레파지토리 경로를 입력하는 경우 브랜치 조회 시 아이디와 비밀번호를 입력하지 않아도 된다.***
 
 6. 원하는 브랜치를 선택하고, 저장 버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/80228983/146750384-d397253f-225d-4241-bbf1-72351a7f5486.png)
@@ -349,267 +358,338 @@
 
 ###### <div id='3-2-2-4-2-2'/> 3.2.2.4.2.2. 빌드 Job 구성 조회/수정
 1. 생성된 빌드 Job 의 “구성” 아이콘을 클릭한다.<br>
-![060]
+![image](https://user-images.githubusercontent.com/80228983/146850081-a3331972-8b8a-4c41-9c8f-fe258d34bf8d.png)
 2. 구성 상세페이지로 이동하여 생성 시 저장해 놓았던 구성 정보들을 조회한다.
-![061]
-3. 수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.
-![062]
+![image](https://user-images.githubusercontent.com/80228983/146850120-cee00d5f-c539-4bbf-914d-d14bf559c5f2.png)
+3. 수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.(예제에서는  Dockerfile을 수정)
+![image](https://user-images.githubusercontent.com/80228983/146850268-67058b4b-7c88-4911-a686-8d37aabeec61.png)
+
+***※ 빌드 Job 수정 시, 형상관리 정보의 경우 브랜치 이외에는 수정할 수 없다.***
 4. 구성 상세페이지로 이동하여 수정된 정보들을 확인한다.
-![063]
+![image](https://user-images.githubusercontent.com/80228983/146850355-91325e6d-4b7f-4a07-9a7b-0d1c992981f8.png)
 
 ***※ 빌드 Job 구성 조회는 파이프라인 참여자이면 모두 조회가 가능하다. 하지만 수정은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 수정이 가능하다.***
 
 ###### <div id='3-2-2-4-2-3'/> 3.2.2.4.2.3. 빌드 Job 실행
 1. 파이프라인 상세페이지에서 “실행” 아이콘을 클릭한다.<br>
-![064]
+![image](https://user-images.githubusercontent.com/80228983/146850397-8c68b631-d8fe-4449-8d62-24ba86cc6cf2.png)
 2. 실행이 될 때 파란색으로 바뀌며 깜빡이는 것을 확인할 수 있다. (실행 중에 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.)
-![065]
+![image](https://user-images.githubusercontent.com/80228983/146850501-bf13c417-cf94-465c-8544-bf35beaece0f.png)
 3. 실행이 완료되면 초록색으로 바뀌며 작업 부분에 Build(실행완료) 로 표시된다.
-![066]
+![image](https://user-images.githubusercontent.com/80228983/146850568-30b068e6-b168-4fd8-b9a5-ea3d4178cd81.png)
 
 ***※	빌드 Job 실행은 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
 
 ###### <div id='3-2-2-4-2-4'/> 3.2.2.4.2.4. 빌드 Job 정지
 1.	실행 중인 빌드 Job을 정지 및 취소하고 싶을 때 “정지” 아이콘을 클릭한다.
-![067]
+![image](https://user-images.githubusercontent.com/80228983/146850630-62dafc69-f867-4b1f-b334-bdac4fad8387.png)
 2.	정지된 빌드 Job은 주황색으로 바뀌는 것을 확인할 수 있다.
-![068]
+![image](https://user-images.githubusercontent.com/80228983/146850652-8e95625f-e35b-48ef-bd19-8c1d9f3be335.png)
 
 ***※	빌드 Job 정지는 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
 
 ###### <div id='3-2-2-4-2-5'/> 3.2.2.4.2.5.	빌드 Job 로그/히스토리
 1.	빌드 Job 실행이 진행 중일 때 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.
-![069]
+![image](https://user-images.githubusercontent.com/80228983/146850705-e4479cf3-e470-4b07-883d-656855cd404a.png)
 2.	로그 조회 페이지로 이동한다. 실시간으로 로그가 보이고 있는 것을 확인한다.
-![070]
+![image](https://user-images.githubusercontent.com/80228983/146850741-c9f337fc-aedc-443c-a2dd-12373d4ac867.png)
 3.	빌드 Job 실행이 완료된 것을 확인하고, 히스토리를 확인한다.
-![071]
+![image](https://user-images.githubusercontent.com/80228983/146850789-b26d9402-472b-4cc5-8cb1-be28a4b6897a.png)
 4.	로그/히스토리 페이지에서 상단의 “취소” 버튼 또는 “실행” 버튼을 클릭하여 Job을 취소하고, 실행할 수 있다.
-![072]
-![073]
+![image](https://user-images.githubusercontent.com/80228983/146850835-a94b0f16-a0a2-496c-9425-cca7e66cf84c.png)
+![image](https://user-images.githubusercontent.com/80228983/146850845-0fecf61e-7799-4209-82e0-df735b1ad213.png)
 5.	로그/히스토리 페이지에서 “구성” 버튼을 클릭하면 빌드 Job 구성 조회 페이지로 이동한다.
-![074]
+![image](https://user-images.githubusercontent.com/80228983/146850911-c6360a49-215c-438a-b075-46fb4123dcde.png)
 6.	로그/히스토리 페이지에서 “목록” 버튼을 클릭하면 파이프라인 상세페이지로 이동한다.
-![075]
+![image](https://user-images.githubusercontent.com/80228983/146851003-63628715-e4b0-406e-88a8-7e06aec2a8fe.png)
 
 ***※	빌드 Job 로그/히스토리는 관리자와 모든 파이프라인 참여자가 조회 가능하나 실행 및 정지 버튼은 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-2-6'/> 3.2.2.4.2.6.	빌드 Job 로그 다운로드
-1.	빌드 Job 실행이 성공하면 로그/히스토리 페이지에서 “다운로드” 버튼이 활성화된다. 활성화된 “다운로드” 버튼을 클릭한다.<br>
-![076]
-2.	Build 된 파일(ex. war, jar, zip 등)이 다운로드 된다.
-![077]
-
-***※	빌드 Job 로그 다운로드는 관리자와 모든 파이프라인 참여자가 가능하다.***
-
-###### <div id='3-2-2-4-2-7'/> 3.2.2.4.2.7.	빌드 Job 추가
+###### <div id='3-2-2-4-2-6'/> 3.2.2.4.2.6.	빌드 Job 추가
 1.	파이프라인 상세페이지에서 빌드 Job의 “추가” 버튼을 클릭한다.
-![078]
-2.	구성 상세페이지로 이동한다.
-![079]
-3.	빌드 Job 생성과 같이 입력 폼에 알맞은 값들을 입력한 후 ”저장” 버튼을 클릭한다.(작업 유형은 빌드 이외에도 테스트, 배포 유형 선택이 가능하다.)
-![080]
-4.	추가된 빌드 Job 을 확인한다.<br>
-![081]
-5.	작업 트리거에서 이 작업(Job)을 새 작업 그룹으로 구성을 체크하면 새로운 그룹으로 Job이 추가된다. (이후에 새 작업 그룹 추가 항목에서 설명하겠습니다.)
+![image](https://user-images.githubusercontent.com/80228983/146851143-3e0902c7-5ade-45f8-bdc6-f1ff35076f62.png)
+2.	구성 상세페이지로 이동 후 빌드 Job 생성과 같이 입력 폼에 알맞은 값들을 입력한 후 ”저장” 버튼을 클릭한다.(작업 유형은 빌드 이외에도 테스트, 배포 유형 선택이 가능하다.).
+![image](https://user-images.githubusercontent.com/80228983/146851274-16f0fcd6-6282-44e7-a09a-f51d015d35b1.png)
+3.	추가된 빌드 Job 을 확인한다.<br>
+![image](https://user-images.githubusercontent.com/80228983/146851391-d452fb78-32ac-4561-95ea-545e5194ccbf.png)
+4.	작업 트리거에서 이 작업(Job)을 새 작업 그룹으로 구성을 체크하면 새로운 그룹으로 Job이 추가된다. (이후에 새 작업 그룹 추가 항목에서 설명하겠습니다.)
 
 ***※	빌드 Job 추가는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-2-8'/> 3.2.2.4.2.8.	빌드 Job 복제
+###### <div id='3-2-2-4-2-7'/> 3.2.2.4.2.7.	빌드 Job 복제
 1.	파이프라인 상세페이지에서 빌드 Job의 “복제” 버튼을 클릭한다.
-![082]
+![image](https://user-images.githubusercontent.com/80228983/146851489-6c7f2590-cf73-4be1-9cbe-45cc694796c7.png)
 2. 빌드 Job 이 복제된 것을 확인한다.
-![083]
+![image](https://user-images.githubusercontent.com/80228983/146851531-7e56baf5-2a5b-4abb-a0f1-7defa5fccf0b.png)
 
 ***※	빌드 Job 복제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-2-9'/> 3.2.2.4.2.9.	빌드 Job 삭제
+###### <div id='3-2-2-4-2-8'/> 3.2.2.4.2.8.	빌드 Job 삭제
 1.	파이프라인 상세페이지에서 빌드 Job의 “삭제” 버튼을 클릭한다.
-![084]
+![image](https://user-images.githubusercontent.com/80228983/146851560-96146948-a220-4dff-b59d-e122a89ebdd5.png)
 2.	빌드 Job 이 삭제된 것을 확인한다.
-![084-2]
+![image](https://user-images.githubusercontent.com/80228983/146851577-ba273df2-d952-42c0-9dad-4d44598371fc.png)
 
 ***※	빌드 Job 삭제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
 
-##### <div id='3-2-2-4-3'/> 3.2.2.4.3. 테스트 Job
-###### <div id='3-2-2-4-3-1'/> 3.2.2.4.3.1. 테스트 Job 생성
+##### <div id='3-2-2-4-3'/> 3.2.2.4.3. 정적분석 Job
+###### <div id='3-2-2-4-3-1'/> 3.2.2.4.3.1. 정적분석 Job 생성
 1.	Job의 “추가” 버튼을 클릭한다.
-![084-3]
-2.	구성 페이지로 이동하여 작업 유형을 테스트(Test)로 선택한 후 입력 유형에서 원하는 품질 프로파일과 품질 게이트, 작업 그룹을 선택한다. 그 후에 작업 트리거는 각자의 상황에 맞게 선택한다.
-![085]
+![image](https://user-images.githubusercontent.com/80228983/146851671-71848dd9-7a21-4202-a5d3-d3f6cd37ced0.png)
+2.	구성 페이지로 이동하여 작업 유형을 정적분석(Static-Analysis)으로 선택한 후 입력 유형에서 원하는 품질 프로파일과 품질 게이트, 작업 그룹을 선택한다. 그 후에 작업 트리거는 각자의 상황에 맞게 선택한다. (처음에는 품질 게이트가 존재하지 않는다. [품질 게이트 생성](#3-2-4-4-1) 을 참조하여 생성한다.)
+![image](https://user-images.githubusercontent.com/80228983/146852468-9f9620b6-280a-4946-9c69-eaa75e647f4d.png)
+3.      JACOCO plugin script tab의 GRADLE, MAVEN을 클릭하면 jacoco plugin 적용방법을 확인할 수 있다.(예시이므로 상황에 맞게 플러그인을 적용한다.)
+![image](https://user-images.githubusercontent.com/80228983/146852604-7539eefd-f3d0-435f-8248-f8ae534d071e.png)
+4.	“저장” 버튼을 클릭하고, 파이프라인 상세페이지에서 테스트 Job 생성된 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146852642-91708e7f-6fa9-4ec9-8f18-ba97bbfe6e6e.png)
+
+***※	정적분석 Job 생성은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 생성이 가능하다.***
+
+###### <div id='3-2-2-4-3-2'/> 3.2.2.4.3.2. 정적분석 Job 구성 조회/수정
+1.	생성된 정적분석 Job 의 “구성” 아이콘을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146852683-cae485a0-a992-43f8-9355-94aac7736b11.png)
+2.	구성 상세페이지로 이동하여 생성 시 저장해 놓았던 구성 정보들을 조회한다.
+![image](https://user-images.githubusercontent.com/80228983/146852728-f1824c6f-db5c-4265-9979-65bfaf632e05.png)
+3.	수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146853294-af315b80-4ce4-40ae-8d6a-da33f7e8ba45.png)
+4.	구성 상세페이지로 이동하여 수정된 정보들을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146853332-42795e48-c5dc-40f6-bb95-b7bf15db53cb.png)
+![image](https://user-images.githubusercontent.com/80228983/146853360-16b00830-b127-4cb7-87a2-aab4cde1602e.png)
+
+***※	정적분석 Job 구성 조회는 파이프라인 참여자이면 모두 조회가 가능하다. 하지만 수정은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 수정이 가능하다.***
+
+###### <div id='3-2-2-4-3-3'/> 3.2.2.4.3.3.	정적분석 Job 실행
+1.	파이프라인 상세페이지에서 정적분석 Job의 “실행” 아이콘을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146853405-4be9ac3d-a04a-4e77-994f-57826271ee1a.png)
+2.	실행이 될 때 파란색으로 바뀌며 깜빡이는 것을 확인할 수 있다. (실행 중에 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.)
+![image](https://user-images.githubusercontent.com/80228983/146853428-0ec56965-6b93-4e7a-b2ed-7eb0391c1e5d.png)
+3. 실행이 완료되면 초록색으로 바뀌며 작업 부분에 Test(실행완료) 로 표시된다.
+
+***※	 Job 실행은 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
+
+###### <div id='3-2-2-4-3-4'/> 3.2.2.4.3.4.	정적분석 Job 정지
+1.	실행 중인 정적분석 Job을 정지 및 취소하고 싶을 때 “정지” 아이콘을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146853481-0f5823a7-d29e-4e9c-acd8-4e0a89e0e2d7.png)
+2.	정지된 정적분석 Job은 주황색으로 바뀌는 것을 확인할 수 있다
+![image](https://user-images.githubusercontent.com/80228983/146853489-13d585dc-da3c-4eb4-b6a8-af4d3c72ccd4.png)
+
+***※	 Job 정지는 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
+
+###### <div id='3-2-2-4-3-5'/> 3.2.2.4.3.5.	정적분석 Job 로그/히스토리
+1.	정적분석 Job 실행이 진행 중일 때 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.
+![image](https://user-images.githubusercontent.com/80228983/146853578-293557f5-9e3a-4b57-b714-aee1d4012e8d.png)
+2.	로그 조회 페이지로 이동한다. 실시간으로 로그가 보이고 있는 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146853606-1ee8a3ef-3ad7-47c8-9a94-b5f14baef299.png)
+3.	정적분석 Job 실행이 완료된 것을 확인하고, 히스토리를 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146853695-5b4d7fc9-ca68-4b70-a5bd-b40f3fe7f709.png)
+4.	“실행”, “취소”, “구성”, “목록” 버튼은 3.2.2.4.2.5. 빌드 Job 로그/히스토리 항목을 참고한다.
+
+***※	 Job 로그/히스토리는 관리자와 모든 파이프라인 참여자가 조회 가능하나 실행 및 정지 버튼은 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
+
+
+###### <div id='3-2-2-4-3-6'/> 3.2.2.4.3.6.	정적분석 Job 품질 이슈 결과
+1.	테스트 Job의 로그/히스토리 “품질 이슈 결과” 버튼을 누르면 수행된 소스 코드의 오류 해결 여부 및 오류의 수준, 활성화 상태를 관리하는 품질 관리 대시보드로 이동한다.
+![image](https://user-images.githubusercontent.com/80228983/146853748-363d2706-87ba-4724-ac6f-015075c05740.png)
+2.	품질 관리 대시보드에 대해서는 이후 3.2.4 품질 관리 부분을 참고한다.
+
+***※	 Job 품질 이슈 결과는 관리자와 모든 파이프라인 참여자가 조회 가능하다.***
+
+###### <div id='3-2-2-4-3-7'/> 3.2.2.4.3.7.	 Job 추가
+1.	파이프라인 상세페이지에서 정적분석 Job의 “추가” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146854048-a807b104-c7fd-41e1-916d-3ae4bedf67ac.png)
+2.	그 이후의 과정은 3.2.2.4.2.7. 빌드 Job 추가 항목을 참고한다.
+
+***※	정적분석 Job 추가는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
+
+###### <div id='3-2-2-4-3-8'/> 3.2.2.4.3.8.	정적분석 Job 복제
+1.	파이프라인 상세페이지에서 테스트 Job의 “복제” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146854081-eb5c227c-9f06-46ab-9c09-18e11be46647.png)
+2.	정적분석 Job 이 복제된 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146854105-c13124bf-c7a3-43cb-a120-8be167d6715e.png)
+
+***※	정적분석 Job 복제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
+
+###### <div id='3-2-2-4-3-9'/> 3.2.2.4.3.9.	정적분석 Job 삭제
+1.	파이프라인 상세페이지에서 정적분석 Job의 “삭제” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146854183-3f69d84d-9553-4870-a5dd-7cbb9cf2890f.png)
+2.	정적분석 Job 이 삭제된 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146854202-4204c295-514a-4a4e-bc97-d5e06db1665b.png)
+
+***※	 Job 삭제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
+
+##### <div id='3-2-2-4-4'/> 3.2.2.4.4. 테스트 Job
+###### <div id='3-2-2-4-4-1'/> 3.2.2.4.4.1. 테스트 Job 생성
+1.	Job의 “추가” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146854258-a09a0a78-765d-4d40-acf8-856da17bdf33.png)
+2.	구성 페이지로 이동하여 작업 유형을 테스트(JUnit-Test)로 선택한 후 테스트할 입력유형을 선택한다. 그 후에 작업 트리거는 각자의 상황에 맞게 선택한다. 
+![image](https://user-images.githubusercontent.com/80228983/146854434-072106ab-6050-493f-917c-c93dd30bcf46.png)
 3.	“저장” 버튼을 클릭하고, 파이프라인 상세페이지에서 테스트 Job 생성된 것을 확인한다.
-![086]
+![image](https://user-images.githubusercontent.com/80228983/146854467-e84b2ab1-2f5d-4e5a-ad1b-735368c8fe3f.png)
 
 ***※	테스트 Job 생성은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 생성이 가능하다.***
 
-###### <div id='3-2-2-4-3-2'/> 3.2.2.4.3.2. 테스트 Job 구성 조회/수정
+###### <div id='3-2-2-4-4-2'/> 3.2.2.4.4.2. 정적분석 Job 구성 조회/수정
 1.	생성된 테스트 Job 의 “구성” 아이콘을 클릭한다.
-![087]
+![image](https://user-images.githubusercontent.com/80228983/146854497-54981906-68a4-43e3-aa0f-b7fe0d761084.png)
 2.	구성 상세페이지로 이동하여 생성 시 저장해 놓았던 구성 정보들을 조회한다.
-![087-2]
 3.	수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.
-![088]
+![image](https://user-images.githubusercontent.com/80228983/146854560-f4a6c6b3-53be-4fcb-8251-890bd517c47a.png)
 4.	구성 상세페이지로 이동하여 수정된 정보들을 확인한다.
-![089]
+![image](https://user-images.githubusercontent.com/80228983/146854581-3054e420-18a9-4caa-8f26-1fdce8ba34ca.png)
 
 ***※	테스트 Job 구성 조회는 파이프라인 참여자이면 모두 조회가 가능하다. 하지만 수정은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 수정이 가능하다.***
 
-###### <div id='3-2-2-4-3-3'/> 3.2.2.4.3.3.	테스트 Job 실행
+###### <div id='3-2-2-4-4-3'/> 3.2.2.4.4.3.	테스트 Job 실행
 1.	파이프라인 상세페이지에서 테스트 Job의 “실행” 아이콘을 클릭한다.
-![090]
+![image](https://user-images.githubusercontent.com/80228983/146857738-21d46e4c-4679-4373-8be8-31b4aa583439.png)
 2.	실행이 될 때 파란색으로 바뀌며 깜빡이는 것을 확인할 수 있다. (실행 중에 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.)
-![091]
+![image](https://user-images.githubusercontent.com/80228983/146857766-88d020e8-f41c-4f5e-aac2-e8564c2ed237.png)
 3. 실행이 완료되면 초록색으로 바뀌며 작업 부분에 Test(실행완료) 로 표시된다.
 
 ***※	테스트 Job 실행은 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-3-4'/> 3.2.2.4.3.4.	테스트 Job 정지
+###### <div id='3-2-2-4-4-4'/> 3.2.2.4.4.4.	테스트 Job 정지
 1.	실행 중인 테스트 Job을 정지 및 취소하고 싶을 때 “정지” 아이콘을 클릭한다.
-![092]
+![image](https://user-images.githubusercontent.com/80228983/146857820-1b9d8493-aa68-4d5b-9659-590e642c392e.png)
 2.	정지된 빌드 Job은 주황색으로 바뀌는 것을 확인할 수 있다
-![093]
+![image](https://user-images.githubusercontent.com/80228983/146857870-1e7a427d-50ad-41ce-9a17-d0c456048006.png)
 
 ***※	테스트 Job 정지는 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-3-5'/> 3.2.2.4.3.5.	테스트 Job 로그/히스토리
+###### <div id='3-2-2-4-4-5'/> 3.2.2.4.4.5.	테스트 Job 로그/히스토리
 1.	빌드 Job 실행이 진행 중일 때 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.
-![094]
+![image](https://user-images.githubusercontent.com/80228983/146857902-4bba7e92-2da2-48b0-86eb-5fd4314262b4.png)
 2.	로그 조회 페이지로 이동한다. 실시간으로 로그가 보이고 있는 것을 확인한다.
-![095]
+![image](https://user-images.githubusercontent.com/80228983/146857935-14f830cb-f40b-4692-8b5e-fe510d24453f.png)
 3.	테스트 Job 실행이 완료된 것을 확인하고, 히스토리를 확인한다.
-![096]
+![image](https://user-images.githubusercontent.com/80228983/146857996-3ceb188e-e440-4fb6-94c6-7a271a7fec45.png)
 4.	“실행”, “취소”, “구성”, “목록” 버튼은 3.2.2.4.2.5. 빌드 Job 로그/히스토리 항목을 참고한다.
 
 ***※	테스트 Job 로그/히스토리는 관리자와 모든 파이프라인 참여자가 조회 가능하나 실행 및 정지 버튼은 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
 
-###### <div id='3-2-2-4-3-6'/> 3.2.2.4.3.6.	테스트 Job 품질 이슈 결과
-1.	테스트 Job의 로그/히스토리 “품질 이슈 결과” 버튼을 누르면 수행된 소스 코드의 오류 해결 여부 및 오류의 수준, 활성화 상태를 관리하는 품질 관리 대시보드로 이동한다.
-![097]
-2.	품질 관리 대시보드에 대해서는 이후 3.2.4 품질 관리 부분을 참고한다.
+###### <div id='3-2-2-4-4-6'/> 3.2.2.4.4.6.	테스트 Test 결과
+1.	테스트 Job의 로그/히스토리 “Test 결과” 버튼을 누르면 수행된 소스 코드의 JUnit Test 결과 팝업 창이 뜬다.
+![image](https://user-images.githubusercontent.com/80228983/146858037-941cd966-1375-48ca-81a6-8d3d02e4244d.png)
+![image](https://user-images.githubusercontent.com/80228983/146858111-9b25dab5-85e0-4e43-af33-3aee82095eb4.png)
 
 ***※	테스트 Job 품질 이슈 결과는 관리자와 모든 파이프라인 참여자가 조회 가능하다.***
 
-###### <div id='3-2-2-4-3-7'/> 3.2.2.4.3.7.	테스트 Job 추가
+###### <div id='3-2-2-4-4-7'/> 3.2.2.4.4.7.	테스트 Job 추가
 1.	파이프라인 상세페이지에서 테스트 Job의 “추가” 버튼을 클릭한다.
-![098]
-2.	그 이후의 과정은 3.2.2.4.2.7. 빌드 Job 추가 항목을 참고한다.
+![image](https://user-images.githubusercontent.com/80228983/146858210-30863f47-0e41-43ba-bd3b-4df06e93aa81.png)
+2.	그 이후의 과정은 3.2.2.4.2.6. 빌드 Job 추가 항목을 참고한다.
 
 ***※	테스트 Job 추가는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-3-8'/> 3.2.2.4.3.8.	테스트 Job 복제
+###### <div id='3-2-2-4-4-8'/> 3.2.2.4.4.8.	테스트 Job 복제
 1.	파이프라인 상세페이지에서 테스트 Job의 “복제” 버튼을 클릭한다.
-![099]
-2.	테스트 Job 이 복제된 것을 확인한다.
-![100]
+![image](https://user-images.githubusercontent.com/80228983/146858286-38b6cff2-79be-4908-a68d-9c107e18b32e.png)
+2.	그 이후의 과정은 3.2.2.4.2.7 빌드 Job 복제 항목을 참고한다.
+
 
 ***※	테스트 Job 복제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-3-8'/> 3.2.2.4.3.9.	테스트 Job 삭제
+###### <div id='3-2-2-4-4-9'/> 3.2.2.4.4.9.	테스트 Job 삭제
 1.	파이프라인 상세페이지에서 테스트 Job의 “삭제” 버튼을 클릭한다.
-![101]
-2.	테스트 Job 이 삭제된 것을 확인한다.
-![102]
+![image](https://user-images.githubusercontent.com/80228983/146858302-223245b6-dd0a-4012-a31b-46761c075b70.png)
+2.	그 이후의 과정은 3.2.2.4.2.8 빌드 Job 삭제 항목을 참고한다.
+
 
 ***※	테스트 Job 삭제는 관리자와 생성 권한을 가진 파이프라인 참여자만 가능하다.***
 
-
-##### <div id='3-2-2-4-4'/> 3.2.2.4.4.	배포 Job
-###### <div id='3.2.2.4.4.1'/> 3.2.2.4.4.1.	배포 Job 생성
+##### <div id='3-2-2-4-5'/> 3.2.2.4.5.	배포 Job
+###### <div id='3.2.2.4.5.1'/> 3.2.2.4.5.1.	배포 Job 생성
 1. Job의 “추가” 버튼을 클릭한다.<br>
-![103]
-2.	구성 페이지로 이동하여 작업 유형을 배포(Deploy)로 선택한 후 유형에서 원하는 배포 유형을 선택, 파이프라인 관리에서 저장해 놓은 Cloud Foundry 정보를 선택한다. (Cloud Foundry 정보를 가져오기 위해서는 선행 과정이 필요하다. 과정은 3.2.3.1. Cloud Foundry 정보 관리 항목을 참고한다). 그다음 MANIFEST 사용 여부를 체크 후 입력 유형과 작업 트리거를 차례로 입력한다.
-![104]
-3.	“저장” 버튼을 클릭하고, 파이프라인 상세페이지에서 배포 Job이 생성된 것을 확인한다.
-![105]
+![image](https://user-images.githubusercontent.com/80228983/146858411-96203d4e-86db-45cb-b4eb-69d8839beaa6.png)
+2.	구성 페이지로 이동하여 작업 유형을 배포(Deploy)로 선택한 후 유형에서 원하는 배포 유형 및 앱 유형을 선택, 파이프라인 관리에서 저장해 놓은 Kubernetes 정보를 선택한다. (Kubernetes 정보를 가져오기 위해서는 선행 과정이 필요하다. 과정은 3.2.3.1. Kubernetes 정보 관리 항목을 참고한다).
+***※	선택한 유형(type), 앱 유형에 따라 DEPLOYMENT.YML, DEPLOYMENT_SERVICE.YML 서식이 달라진다.***
+![image](https://user-images.githubusercontent.com/80228983/146858644-8c03afea-aa2f-4eca-8833-dbfd624990bc.png)
+3.	DEPLOYMENT.YML, DEPLOYMENT_SERVICE.YML을 앱 설정에 맞게 변경한다.
+![image](https://user-images.githubusercontent.com/80228983/146859081-15639ae3-80c8-4ad7-b642-2477d1262c03.png)
+***※	YML 파일 내부에 들어 있는 %INTERNAL_SERVICE_PORT% 등의 %{VALUE}% 값은 반드시 변경해야 한다.***
+4.	“저장” 버튼을 클릭하고, 파이프라인 상세페이지에서 배포 Job이 생성된 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146859103-c8cd5ec4-a72b-4250-96e4-3ffb214baf55.png)
 
 ***※	배포 Job 생성은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 생성이 가능하다.***
 
-###### <div id='3-2-2-4-4-2'/> 3.2.2.4.4.2.	배포 Job 구성 조회/수정
+###### <div id='3-2-2-4-5-2'/> 3.2.2.4.5.2.	배포 Job 구성 조회/수정
 1.	생성된 배포 Job 의 “구성” 아이콘을 클릭한다.
-![106]
+![image](https://user-images.githubusercontent.com/80228983/146859159-6a32b287-ccdb-4278-b070-6db2d4900346.png)
 2.	구성 상세페이지로 이동하여 생성 시 저장해 놓았던 구성 정보들을 조회한다.
-![104]
-3.	수정 시에는 각 입력 폼에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.
-![107]
+![image](https://user-images.githubusercontent.com/80228983/146859182-f382647e-b7d2-4d6c-8c39-5fbcbfc1536a.png)
+3.	수정 시에는 각 입력 YML에 수정할 정보들을 다시 입력한 후 “저장” 버튼을 클릭한다.
+![image](https://user-images.githubusercontent.com/80228983/146859270-94d0e125-f790-485b-9515-710673d5bf66.png)
 4.	구성 상세페이지로 이동하여 수정된 정보들을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146859308-6871dc46-49b1-423e-b3c5-a3f5956b6e15.png)
+
 
 ***※	 배포 Job 구성 조회는 파이프라인 참여자이면 모두 조회가 가능하다. 하지만 수정은 관리자와 파이프라인 참여자 중 생성 권한을 가진 참여자만 수정이 가능하다.***
 
-###### <div id='3-2-2-4-4-3'/> 3.2.2.4.4.3.	배포 Job 실행
+###### <div id='3-2-2-4-5-3'/> 3.2.2.4.5.3.	배포 Job 실행
 1.	파이프라인 상세페이지에서 배포 Job의 “실행” 아이콘을 클릭한다.
-![108]
+![image](https://user-images.githubusercontent.com/80228983/146859343-b0ec964d-ba01-40e7-a73d-ce2703e3b2a1.png)
 2.	실행이 될 때 파란색으로 바뀌며 깜빡이는 것을 확인할 수 있다. (실행 중에 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.)
-![109]
+![image](https://user-images.githubusercontent.com/80228983/146859370-cacabc1a-1bfd-4fb0-bbfe-dfc355c1057c.png)
 3. 실행이 완료되면 초록색으로 바뀌며 작업 부분에 Deploy(실행완료) 로 표시된다.
-![110]
+
 
 ***※	배포 Job 실행은 관리자와 파이프라인 참여자 중 생성 권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-4-4'/> 3.2.2.4.4.4.	배포 Job 정지
+###### <div id='3-2-2-4-5-4'/> 3.2.2.4.5.4.	배포 Job 정지
 1.	실행 중인 배포 Job을 정지 및 취소하고 싶을 때 “정지” 아이콘을 클릭한다.
-![111]
+![image](https://user-images.githubusercontent.com/80228983/146859436-8034f833-8cc9-4b5d-956d-6a96bab44df1.png)
 2.	정지된 배포 Job이 주황색으로 바뀌는 것을 확인할 수 있다.
-![112]
+![image](https://user-images.githubusercontent.com/80228983/146859444-3933f6c3-b707-43fa-80c2-84c8d4ad1213.png)
 
 ***※	배포 Job 정지는 관리자와 파이프라인 참여자 중 생성권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-4-5'/> 3.2.2.4.4.5.	배포 Job 로그/히스토리
+###### <div id='3-2-2-4-5-5'/> 3.2.2.4.5.5.	배포 Job 로그/히스토리
 1.	배포 Job 실행이 진행 중일 때 “로그/히스토리” 아이콘을 클릭하여 실시간으로 로그를 조회할 수 있다.
-![113]
+![image](https://user-images.githubusercontent.com/80228983/146859484-9ef181ed-5612-4206-87ca-6b6df4f2343a.png)
 2.	로그 조회 페이지로 이동한다. 실시간으로 로그가 보이고 있는 것을 확인한다.
-![114]
 3.	배포 Job 실행이 완료된 것을 확인하고, 히스토리를 확인한다.
-![115]
-4.	PaaS-TA 포탈로 Cloud Foundry 계정을 만들어 배포한 결과 PaaS-TA 포탈 대시보드에서 공간의 애플리케이션 부분에 ‘testtest’라는 애플리케이션이 배포되었음을 확인할 수 있다.
-![116]
+![image](https://user-images.githubusercontent.com/80228983/146859513-36f03f0d-aeaa-428b-8ff7-5414488f7959.png)
+4.	PaaS-TA 컨테이너 플랫폼 포탈로 조회한 결과 디플로이먼트 부분에 ‘spring-music-test’라는 애플리케이션이 배포되었음을 확인할 수 있다.
+![image](https://user-images.githubusercontent.com/80228983/146859752-60cc0195-164d-4681-96a7-ee57c948bac8.png)
 
 ***※	배포 Job 로그/히스토리는 관리자와 모든 파이프라인 참여자가 조회 가능하나 실행 및 정지 버튼은 생성권한과 실행 권한을 가진 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-4-6'/> 3.2.2.4.4.6.	배포 Job 현재 작업으로 롤백
-1.	배포 Job 의 로그/히스토리 페이지에서 “현재 작업으로 롤백” 버튼을 클릭한다.
-![117]
-2.	현재 작업으로 롤백하는 창이 뜨고 Cloud Foundry 정보와 조직/공간 입력 값을 수정할 수 있다.
-예를 들어 애플리케이션 명을 ‘test-hrjin’이라 수정하고 “롤백” 버튼을 클릭한다.
-![118]
-3.	롤백을 진행한다.
-![119]
-4.	롤백 진행 후 PaaS-TA 포탈에서 확인한 결과 ‘test-hrjin’ 이란 이름의 애플리케이션이 배포 완료되었다.
-![120]
+###### <div id='3-2-2-4-5-6'/> 3.2.2.4.5.6.	배포 Job 현재 작업으로 롤백
+1.	배포 Job 의 로그/히스토리 페이지에서 “현재 작업으로 롤백” 버튼을 현재 지원하지 않는다.
+![image](https://user-images.githubusercontent.com/80228983/146859913-eaf78822-3a4e-4bf0-9f3b-034e293ac273.png)
 
-***※	배포 Job 현재 작업으로 롤백은 관리자와 생성권한과 실행 권한을 가진 참여자만 가능하다.***
-
-###### <div id='3-2-2-4-4-7'/> 3.2.2.4.4.7.	배포 Job 추가
+###### <div id='3-2-2-4-5-7'/> 3.2.2.4.5.7.	배포 Job 추가
 1.	파이프라인 상세페이지에서 테스트 Job의 “추가” 버튼을 클릭한다.
-![121]
-2.	그 이후의 과정은 3.2.2.4.2.7. 빌드 Job 추가, 3.2.2.4.3.7. 테스트 Job 추가 항목을 참고한다.
+![image](https://user-images.githubusercontent.com/80228983/146859973-75e5dc02-d29a-4b2e-8c72-1526c20025ff.png)
+2.	그 이후의 과정은 3.2.2.4.2.6. 빌드 Job 추가 항목을 참고한다.
 
 ***※	배포 Job 추가는 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-4-8'/> 3.2.2.4.4.8.	배포 Job 복제
+###### <div id='3-2-2-4-5-8'/> 3.2.2.4.5.8.	배포 Job 복제
 1.	파이프라인 상세페이지에서 배포 Job의 “복제” 버튼을 클릭한다.
-![122]
-2.	배포 Job 이 복제된 것을 확인한다.
-![123]
+![image](https://user-images.githubusercontent.com/80228983/146860020-4ead6b2e-4313-4946-989e-2be6c75df8d2.png)
+2.	그 이후의 과정은 3.2.2.4.2.7. 빌드 Job 복제 항목을 참고한다.
 
 ***※	배포 Job 복제는 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
-###### <div id='3-2-2-4-4-9'/> 3.2.2.4.4.9.	배포 Job 삭제
+###### <div id='3-2-2-4-5-9'/> 3.2.2.4.5.9.	배포 Job 삭제
 1.	파이프라인 상세페이지에서 배포 Job의 “삭제” 버튼을 클릭한다.
-![124]
-2.	배포 Job 이 삭제된 것을 확인한다.
+![image](https://user-images.githubusercontent.com/80228983/146860050-1d04e411-18b2-4412-a7a9-62970bdef9eb.png)
+2.	그 이후의 과정은 3.2.2.4.2.8. 빌드 Job 삭제 항목을 참고한다.
+
 ![125]
 
 ***※	배포 Job 삭제는 관리자와 생성권한을 가진 파이프라인 참여자만 가능하다.***
 
-##### <div id='3-2-2-4-5'/> 3.2.2.4.5. Job 작업 정렬
+##### <div id='3-2-2-4-6'/> 3.2.2.4.6. Job 작업 정렬
 1.	파이프라인 상세페이지에서 각 Job의 “작업 정렬” 아이콘을 클릭한다.
-![126]
+![image](https://user-images.githubusercontent.com/80228983/146860164-f447fbaa-1f6b-491d-a8b8-ad7a109125d2.png)
 2.	현재 작업 그룹 내에서 정렬할 수 있는 나머지 Job의 번호의 목록이 drop down 메뉴로 보인다.
-![127]
+![image](https://user-images.githubusercontent.com/80228983/146860179-bfda5a8b-ca6d-48a6-b77d-dee8d022c543.png)
 3.	그중 정렬하고자 하는 번호를 클릭 시 그 번호의 Job 과 위치가 서로 바뀌게 되며 정렬된다.
 ![128]
 
@@ -762,185 +842,3 @@
 2.	품질 게이트가 삭제되었음을 확인한다.
 ![179]
 
-[002]:/use-guide/images/pipeline/image002.png
-[003]:/use-guide/images/pipeline/image003.jpg
-[004]:/use-guide/images/pipeline/image004.jpg
-[005]:/use-guide/images/pipeline/image005.png
-[006]:/use-guide/images/pipeline/image006.jpg
-[007]:/use-guide/images/pipeline/image007.jpg
-[008]:/use-guide/images/pipeline/image008.png
-[009]:/use-guide/images/pipeline/image009.png
-[010]:/use-guide/images/pipeline/image010.jpg
-[011]:/use-guide/images/pipeline/image011.png
-[012]:/use-guide/images/pipeline/image012.jpg
-[013]:/use-guide/images/pipeline/image013.png
-[014]:/use-guide/images/pipeline/image014.png
-[015]:/use-guide/images/pipeline/image015.png
-[016]:/use-guide/images/pipeline/image016.jpg
-[017]:/use-guide/images/pipeline/image017.jpg
-[018]:/use-guide/images/pipeline/image018.png
-[019]:/use-guide/images/pipeline/image019.jpg
-[020]:/use-guide/images/pipeline/image020.png
-[021]:/use-guide/images/pipeline/image021.jpg
-[022]:/use-guide/images/pipeline/image022.png
-[023]:/use-guide/images/pipeline/image023.png
-[024]:/use-guide/images/pipeline/image024.png
-[025]:/use-guide/images/pipeline/image025.png
-[026]:/use-guide/images/pipeline/image026.png
-[027]:/use-guide/images/pipeline/image027.png
-[028]:/use-guide/images/pipeline/image028.png
-[029]:/use-guide/images/pipeline/image029.png
-[030]:/use-guide/images/pipeline/image030.png
-[031]:/use-guide/images/pipeline/image031.png
-[032]:/use-guide/images/pipeline/image032.jpg
-[033]:/use-guide/images/pipeline/image033.png
-[034]:/use-guide/images/pipeline/image034.png
-[035]:/use-guide/images/pipeline/image035.png
-[036]:/use-guide/images/pipeline/image036.jpg
-[037]:/use-guide/images/pipeline/image037.png
-[038]:/use-guide/images/pipeline/image038.png
-[039]:/use-guide/images/pipeline/image039.jpg
-[040]:/use-guide/images/pipeline/image040.jpg
-[041]:/use-guide/images/pipeline/image041.png
-[042]:/use-guide/images/pipeline/image042.jpg
-[043]:/use-guide/images/pipeline/image043.png
-[044]:/use-guide/images/pipeline/image044.png
-[045]:/use-guide/images/pipeline/image045.png
-[046]:/use-guide/images/pipeline/image046.png
-[047]:/use-guide/images/pipeline/image047.png
-[048]:/use-guide/images/pipeline/image048.jpg
-[049]:/use-guide/images/pipeline/image049.png
-[050]:/use-guide/images/pipeline/image050.jpg
-[051]:/use-guide/images/pipeline/image051.png
-[052]:/use-guide/images/pipeline/image052.png
-[053]:/use-guide/images/pipeline/image053.png
-[053-2]:/use-guide/images/pipeline/image053(2).png
-[054]:/use-guide/images/pipeline/image054.png
-[055]:/use-guide/images/pipeline/image055.jpg
-[056]:/use-guide/images/pipeline/image056.png
-[057]:/use-guide/images/pipeline/image057.jpg
-[058]:/use-guide/images/pipeline/image058.jpg
-[059]:/use-guide/images/pipeline/image059.png
-[060]:/use-guide/images/pipeline/image060.png
-[061]:/use-guide/images/pipeline/image061.jpg
-[062]:/use-guide/images/pipeline/image062.png
-[063]:/use-guide/images/pipeline/image063.jpg
-[064]:/use-guide/images/pipeline/image064.png
-[065]:/use-guide/images/pipeline/image065.jpg
-[066]:/use-guide/images/pipeline/image066.jpg
-[067]:/use-guide/images/pipeline/image067.png
-[068]:/use-guide/images/pipeline/image068.jpg
-[069]:/use-guide/images/pipeline/image069.png
-[070]:/use-guide/images/pipeline/image070.jpg
-[071]:/use-guide/images/pipeline/image071.jpg
-[072]:/use-guide/images/pipeline/image072.png
-[073]:/use-guide/images/pipeline/image073.png
-[074]:/use-guide/images/pipeline/image074.png
-[075]:/use-guide/images/pipeline/image075.png
-[076]:/use-guide/images/pipeline/image076.png
-[077]:/use-guide/images/pipeline/image077.png
-[078]:/use-guide/images/pipeline/image078.png
-[079]:/use-guide/images/pipeline/image079.jpg
-[080]:/use-guide/images/pipeline/image080.jpg
-[081]:/use-guide/images/pipeline/image081.png
-[082]:/use-guide/images/pipeline/image082.png
-[083]:/use-guide/images/pipeline/image083.jpg
-[084]:/use-guide/images/pipeline/image084.png
-[084-2]:/use-guide/images/pipeline/image084(2).png
-[084-3]:/use-guide/images/pipeline/image084(3).png
-[085]:/use-guide/images/pipeline/image085.jpg
-[086]:/use-guide/images/pipeline/image086.png
-[087]:/use-guide/images/pipeline/image087.png
-[087-2]:/use-guide/images/pipeline/image087(2).png
-[088]:/use-guide/images/pipeline/image088.png
-[089]:/use-guide/images/pipeline/image089.jpg
-[090]:/use-guide/images/pipeline/image090.png
-[091]:/use-guide/images/pipeline/image091.jpg
-[092]:/use-guide/images/pipeline/image092.png
-[093]:/use-guide/images/pipeline/image093.jpg
-[094]:/use-guide/images/pipeline/image094.png
-[095]:/use-guide/images/pipeline/image095.jpg
-[096]:/use-guide/images/pipeline/image096.jpg
-[097]:/use-guide/images/pipeline/image097.jpg
-[098]:/use-guide/images/pipeline/image098.png
-[099]:/use-guide/images/pipeline/image099.png
-[100]:/use-guide/images/pipeline/image100.jpg
-[101]:/use-guide/images/pipeline/image101.png
-[102]:/use-guide/images/pipeline/image102.jpg
-[103]:/use-guide/images/pipeline/image103.png
-[104]:/use-guide/images/pipeline/image104.jpg
-[105]:/use-guide/images/pipeline/image105.png
-[106]:/use-guide/images/pipeline/image106.png
-[107]:/use-guide/images/pipeline/image107.png
-[108]:/use-guide/images/pipeline/image108.png
-[109]:/use-guide/images/pipeline/image109.jpg
-[110]:/use-guide/images/pipeline/image110.jpg
-[111]:/use-guide/images/pipeline/image111.png
-[112]:/use-guide/images/pipeline/image112.jpg
-[113]:/use-guide/images/pipeline/image113.png
-[114]:/use-guide/images/pipeline/image114.jpg
-[115]:/use-guide/images/pipeline/image115.jpg
-[116]:/use-guide/images/pipeline/image116.png
-[117]:/use-guide/images/pipeline/image117.png
-[118]:/use-guide/images/pipeline/image118.png
-[119]:/use-guide/images/pipeline/image119.jpg
-[120]:/use-guide/images/pipeline/image120.png
-[121]:/use-guide/images/pipeline/image121.png
-[122]:/use-guide/images/pipeline/image122.png
-[123]:/use-guide/images/pipeline/image123.jpg
-[124]:/use-guide/images/pipeline/image124.png
-[125]:/use-guide/images/pipeline/image125.jpg
-[126]:/use-guide/images/pipeline/image126.png
-[127]:/use-guide/images/pipeline/image127.png
-[128]:/use-guide/images/pipeline/image128.jpg
-[129]:/use-guide/images/pipeline/image129.png
-[130]:/use-guide/images/pipeline/image130.jpg
-[131]:/use-guide/images/pipeline/image131.png
-[132]:/use-guide/images/pipeline/image132.png
-[133]:/use-guide/images/pipeline/image133.jpg
-[134]:/use-guide/images/pipeline/image134.png
-[135]:/use-guide/images/pipeline/image135.png
-[136]:/use-guide/images/pipeline/image136.png
-[137]:/use-guide/images/pipeline/image137.png
-[138]:/use-guide/images/pipeline/image138.png
-[139]:/use-guide/images/pipeline/image139.png
-[140]:/use-guide/images/pipeline/image140.jpg
-[141]:/use-guide/images/pipeline/image141.png
-[142]:/use-guide/images/pipeline/image142.jpg
-[143]:/use-guide/images/pipeline/image143.jpg
-[144]:/use-guide/images/pipeline/image144.jpg
-[145]:/use-guide/images/pipeline/image145.png
-[146]:/use-guide/images/pipeline/image146.png
-[147]:/use-guide/images/pipeline/image147.png
-[148]:/use-guide/images/pipeline/image148.png
-[149]:/use-guide/images/pipeline/image149.jpg
-[150]:/use-guide/images/pipeline/image150.png
-[151]:/use-guide/images/pipeline/image151.png
-[152]:/use-guide/images/pipeline/image152.png
-[153]:/use-guide/images/pipeline/image153.png
-[154]:/use-guide/images/pipeline/image154.png
-[155]:/use-guide/images/pipeline/image155.png
-[156]:/use-guide/images/pipeline/image156.png
-[157]:/use-guide/images/pipeline/image157.png
-[158]:/use-guide/images/pipeline/image158.png
-[159]:/use-guide/images/pipeline/image159.jpg
-[160]:/use-guide/images/pipeline/image160.png
-[161]:/use-guide/images/pipeline/image161.png
-[162]:/use-guide/images/pipeline/image162.png
-[163]:/use-guide/images/pipeline/image163.png
-[164]:/use-guide/images/pipeline/image164.jpg
-[165]:/use-guide/images/pipeline/image165.png
-[166]:/use-guide/images/pipeline/image166.png
-[167]:/use-guide/images/pipeline/image167.jpg
-[168]:/use-guide/images/pipeline/image168.png
-[169]:/use-guide/images/pipeline/image169.png
-[170]:/use-guide/images/pipeline/image170.png
-[171]:/use-guide/images/pipeline/image171.png
-[172]:/use-guide/images/pipeline/image172.png
-[173]:/use-guide/images/pipeline/image173.png
-[174]:/use-guide/images/pipeline/image174.png
-[175]:/use-guide/images/pipeline/image175.png
-[176]:/use-guide/images/pipeline/image176.jpg
-[177]:/use-guide/images/pipeline/image177.png
-[178]:/use-guide/images/pipeline/image178.png
-[179]:/use-guide/images/pipeline/image179.png
