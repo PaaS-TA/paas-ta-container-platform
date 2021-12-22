@@ -2,7 +2,7 @@
 
 ## Container Platform (CP) - Architecture
 - Container Platform
-  + [PaaS-TA CP]
+  + [PaaS-TA CP](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/architecture/paasta_cp.md)
 
 - Portal
 
