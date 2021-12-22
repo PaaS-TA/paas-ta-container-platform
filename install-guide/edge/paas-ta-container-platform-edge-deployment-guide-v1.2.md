@@ -1,6 +1,6 @@
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge Deployment
 
-<hr>
+<br>
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@
 
 5. [Resource 생성 시 주의사항](#5)
 
-<hr>
+<br>
 
 ## <div id='1'> 1. 문서 개요
 
@@ -59,7 +59,7 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 > https://kubeedge.io/en/docs/   
 > https://github.com/kubeedge/kubeedge
 
-<hr>
+<br>
 
 ## <div id='2'> 2. KubeEdge 설치
 
@@ -471,7 +471,7 @@ nodelocaldns-l9s47                         1/1     Running   0          37m
 nodelocaldns-vjl6r                         1/1     Running   0          37m
 ```
 
-<hr>
+<br>
 
 ## <div id='3'> 3. KubeEdge Reset (참고)
 Cloud Side, Edge Side에서 KubeEdge를 중지한다. 필수구성요소는 삭제하지 않는다.
@@ -486,7 +486,7 @@ Cloud Side, Edge Side에서 KubeEdge를 중지한다. 필수구성요소는 삭�
 # keadm reset
 ```
 
-<hr>
+<br>
 
 ## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
@@ -528,7 +528,7 @@ $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
 
-<hr>
+<br>
 
 ## <div id='5'> 5. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
@@ -550,7 +550,7 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 |Pod|nodes|
 ||resources|
 
-<hr>
+<br>
 
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge Deployment
 
