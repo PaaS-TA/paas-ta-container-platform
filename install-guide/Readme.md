@@ -33,6 +33,9 @@
   + [Edge 용 포탈 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-edge-guide-v1.0.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/master)
+- 샘플 모델
+  + 웹 카운팅
+  + 실시간 온도수집
 
 
 
