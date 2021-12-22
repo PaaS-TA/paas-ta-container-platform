@@ -1,3 +1,7 @@
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+
+<br>
+
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -334,3 +338,5 @@ broker: container-platform-source-control-service-broker
   + [컨테이너 플랫폼 소스 컨트롤 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/source-control/paas-ta-container-platform-source-control-use-guide-v1.2.md)   
 
 <br>
+
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
