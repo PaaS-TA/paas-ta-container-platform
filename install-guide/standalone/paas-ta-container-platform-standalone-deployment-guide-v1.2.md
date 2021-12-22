@@ -1,6 +1,6 @@
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > StandAlone Deployment
 
-<hr>
+<br>
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@
 
 5. [Resource 생성 시 주의사항](#5)  
 
-<hr>
+<br>
 
 ## <div id='1'> 1. 문서 개요
 
@@ -55,7 +55,7 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, P
 > https://kubespray.io  
 > https://github.com/kubernetes-sigs/kubespray  
 
-<hr>
+<br>
 
 ## <div id='2'> 2. Kubespray 설치
 
@@ -293,7 +293,7 @@ openstack-cloud-controller-manager-mct28      1/1     Running   0          8m57s
 snapshot-controller-0                         1/1     Running   0          7m33s
 ```
 
-<hr>
+<br>
 
 ## <div id='3'> 3. Kubespray 삭제 (참고)
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
@@ -302,7 +302,7 @@ Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 $ source remove_kubespray.sh
 ```
 
-<hr>
+<br>
 
 ## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
 
@@ -346,7 +346,7 @@ $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
 $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
 
-<hr>
+<br>
 
 ## <div id='5'> 5. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
@@ -368,7 +368,7 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 |Pod|nodes|
 ||resources|
 
-<hr>
+<br>
 
 ### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > StandAlone Deployment
 
