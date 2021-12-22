@@ -1,3 +1,7 @@
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Source Control 서비스 사용 가이드
+
+<br>
+
 # [PaaS-TA Container Platform 소스컨트롤 서비스 사용자 가이드]
 
 <br>
@@ -292,3 +296,5 @@
 ![image](https://user-images.githubusercontent.com/67407365/147026141-c65dd6de-8c90-48d7-8d52-530140a82513.png)
 
 <br>
+
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Source Control 서비스 사용 가이드
