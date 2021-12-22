@@ -3,10 +3,10 @@
 
 ## 단독형 배포   
 - 클러스터 설치
-  + [설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)
+  + [클러스터 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포탈 설치
-  + [설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.2.md)  
+  + [포탈 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-spray-guide-v1.2.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/master)
 - 서비스 설치
@@ -15,7 +15,7 @@
 
 ## 서비스형 배포 
 - 클러스터 설치
-  + [설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)  
+  + [클러스터 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포탈 설치
   + [포탈 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.2.md)
