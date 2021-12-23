@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드
 
 <br>
 
@@ -161,8 +161,10 @@ PROVIDER_TYPE="standalone"
 
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 파이프라인 제공 타입 입력 <br>
+
    + 본 가이드는 단독 배포 설치 가이드로 **'standalone'** 값 입력 필요
-<br>    
+<br>
+- **CF_API_URL** <br>단독 배포 버젼에서는 입력할 필요 없음 <br>    
 
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 파이프라인 배포 스크립트 실행
 컨테이너 플랫폼 파이프라인 배포를 위한 배포 스크립트를 실행한다.
@@ -200,15 +202,11 @@ NOTES:
 
 
 <br>
-    
-컨테이너 플랫폼 파이프라인 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 약간의 시간이 소요된다.
 
->`$ kubectl get all -n paas-ta-container-platform-pipeline`
 - **컨테이너 플랫폼 파이프라인**
 
 ```
-# 소스 컨트롤 리소스 확인
+# 파이프라인 리소스 확인
 $ kubectl get all -n paas-ta-container-platform-pipeline
 ```
 
@@ -280,20 +278,27 @@ statefulset.apps/paas-ta-container-platform-postgresql-postgresql   1/1     1h
 #### 사용자 회원가입    
 - Keycloak(http://{K8S_MASTER_NODE_IP}:32710)에 접속한다.
 - Administration Console(관리자 페이지)로 접속한다. <br>
-    ![image](https://user-images.githubusercontent.com/80228983/146140243-b01fe7b7-c610-4c74-b520-839b581ca178.png)
-<br>
-- username : **admin** / password : **admin** 계정으로 접속한다. <br>
-    ![image](https://user-images.githubusercontent.com/80228983/146140270-06c6bc41-94cd-4947-8376-f6ade73b61ac.png)
-<br>
-- 좌측 메뉴 하단의 'Users' 목록을 클릭한다.<br>
-    ![image](https://user-images.githubusercontent.com/80228983/146140350-c2bed5ab-0683-47cf-838b-6c970e492605.png)
-<br>
-- 오른쪽 버튼인 Add User를 클릭한다.<br>
-    ![image](https://user-images.githubusercontent.com/80228983/146140392-1eb2d2e4-47d7-4fd2-8370-9d3e5b2a9871.png)
+    ![image](https://user-images.githubusercontent.com/80228983/146140243-b01fe7b7-c610-4c74-b520-839b581ca178.png)  
 <br>
 
-- Username 을 입력하고, Email Verified 스위치를 On으로 변경한다. 그 후 Save를 누른다.<br>
+- username : **admin** / password : **admin** 계정으로 접속한다. <br>
+    ![image](https://user-images.githubusercontent.com/80228983/146140270-06c6bc41-94cd-4947-8376-f6ade73b61ac.png)
+
+<br>
+
+- 좌측 메뉴 하단의 'Users' 목록을 클릭한다. <br>
+    ![image](https://user-images.githubusercontent.com/80228983/146140350-c2bed5ab-0683-47cf-838b-6c970e492605.png)   
+
+<br>
+
+- 오른쪽 버튼인 Add User를 클릭한다. <br>
+    ![image](https://user-images.githubusercontent.com/80228983/146140392-1eb2d2e4-47d7-4fd2-8370-9d3e5b2a9871.png)  
+
+<br>
+
+- Username 을 입력하고, Email Verified 스위치를 On으로 변경한다. 그 후 Save를 누른다. <br>
     ![image](https://user-images.githubusercontent.com/80228983/146140503-3ad5e8f7-613b-4583-83fe-3f6623736286.png)
+
 <br>
 
 - Credentials 탭으로 이동한다.
@@ -314,4 +319,4 @@ statefulset.apps/paas-ta-container-platform-postgresql-postgresql   1/1     1h
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드

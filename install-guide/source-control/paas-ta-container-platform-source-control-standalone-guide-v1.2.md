@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드
 
 <br>
 
@@ -84,7 +84,7 @@ Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-source-control-deployment.tar](https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We)  
+   [paas-ta-container-platform-source-control-deployment.tar.gz](https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -100,7 +100,7 @@ $ ls ~/workspace/container-platform
   ...
 
 # 이미지 파일 압축 해제
-$ tar -xvfz paas-ta-container-platform-source-control-deployment.tar.gz
+$ tar xvfz paas-ta-container-platform-source-control-deployment.tar.gz
 ```
 
 - 이미지 파일 디렉토리 구성
@@ -164,9 +164,6 @@ TEST SUITE: None
 
 <br>
     
-컨테이너 플랫폼 소스 컨트롤 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-
->`$ kubectl get all -n paas-ta-container-platform-source-control`
 - **컨테이너 플랫폼 소스 컨트롤**
 
 ```
@@ -259,4 +256,4 @@ replicaset.apps/container-platform-source-control-ui-deployment-55dc694d8c      
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드

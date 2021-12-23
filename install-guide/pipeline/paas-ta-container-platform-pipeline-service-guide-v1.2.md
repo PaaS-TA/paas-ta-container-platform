@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드
 
 <br>
 
@@ -208,14 +208,10 @@ NOTES:
 
 <br>
     
-컨테이너 플랫폼 파이프라인 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 약간의 시간이 소요된다.
-
->`$ kubectl get all -n paas-ta-container-platform-pipeline`
 - **컨테이너 플랫폼 파이프라인**
 
 ```
-# 소스 컨트롤 리소스 확인
+# 파이프라인 리소스 확인
 $ kubectl get all -n paas-ta-container-platform-pipeline
 ```
 
@@ -390,4 +386,4 @@ broker: container-platform-pipeline-service-broker
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드
