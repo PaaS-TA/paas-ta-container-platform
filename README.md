@@ -80,7 +80,7 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/master)
 
-## CaaS 배포 
+## 서비스형 배포 
 - [Kubespray 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.1.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - [CaaS 배포 설치 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/bosh/paas-ta-container-platform-bosh-deployment-caas-guide-v1.1.md)
@@ -92,6 +92,12 @@
   + [운영자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)
 - 사용자 포털
   + [사용자 포털 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)  
+
+## 서비스 이용 가이드
+- Pipeline
+  + [Pipeline 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide.md)
+- Source-Control
+  + [Source-Control 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/source-control/paas-ta-container-platform-source-control-use-guide.md) 
 
 ## 프로젝트
 ### PaaS-TA 컨테이너 플랫폼
