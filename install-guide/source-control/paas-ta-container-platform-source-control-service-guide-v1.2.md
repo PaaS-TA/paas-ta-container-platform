@@ -319,7 +319,7 @@ broker: container-platform-source-control-service-broker
 ![image](https://user-images.githubusercontent.com/80228983/146296230-2e3a90fa-44ac-4e13-9472-dfb3a1655a98.png)
 
 ##### Container Platform Source-control 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
->`'서비스' 항목 : 'container-platform-source-control' 으로 선택` <br>
+>`'서비스' 항목 : 'scm-manager' 으로 선택` <br>
 >`'공개' 항목 : 'Y' 로 체크`    
 
 ![image](https://user-images.githubusercontent.com/80228983/146360677-bd0878f4-85ac-48fc-9e30-6bc49a74381f.png)
