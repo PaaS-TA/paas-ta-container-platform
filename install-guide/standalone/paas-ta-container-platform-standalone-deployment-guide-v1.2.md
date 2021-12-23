@@ -1,3 +1,6 @@
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > 클러스터 설치 가이드
+
+<br>
 
 ## Table of Contents
 
@@ -137,7 +140,7 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-- 사용할 Master, Worker Node에 공개키를 복사한다.
+- 사용할 **Master, Worker Node**에 공개키를 복사한다.
 ```
 ## 출력된 공개키 복사
 
@@ -170,8 +173,6 @@ $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 <br>
 
 ### <div id='2.4'> 2.4. Kubespray 설치 준비
-Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
-
 Kubespray 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
 - Kubespray 설치경로 이동한다.
@@ -189,30 +190,14 @@ $ cd paas-ta-container-platform-deployment/standalone/openstack
 
 - Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-## HostName 정보 확인
-
-$ hostname
-paasta-cp-master
-
-## Private IP, MTU 정보 확인
-
-$ ifconfig
-ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1400
-        inet 10.100.2.226  netmask 255.255.255.0  broadcast 10.100.2.255
-        inet6 fe80::f816:3eff:fe2f:a831  prefixlen 64  scopeid 0x20<link>
-        ether fa:16:3e:2f:a8:31  txqueuelen 1000  (Ethernet)
-        RX packets 19850  bytes 167795140 (167.7 MB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 17667  bytes 1920463 (1.9 MB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-...
-```
-
-```
 $ vi kubespray_var.sh
 ```
 
 ```
+## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
+## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
+## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
+
 #!/bin/bash
 
 export MASTER_NODE_HOSTNAME={Master Node의 HostName 정보 입력}
@@ -221,9 +206,9 @@ export MASTER_NODE_PRIVATE_IP={Master Node의 Private IP 정보 입력}
 export WORKER1_NODE_HOSTNAME={Worker 1번 Node의 HostName 정보 입력}
 export WORKER1_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
 export WORKER2_NODE_HOSTNAME={Worker 2번 Node의 HostName 정보 입력}
-export WORKER2_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER2_NODE_PRIVATE_IP={Worker 2번 Node의 Private IP 정보 입력}
 export WORKER3_NODE_HOSTNAME={Worker 3번 Node의 HostName 정보 입력}
-export WORKER3_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER3_NODE_PRIVATE_IP={Worker 3번 Node의 Private IP 정보 입력}
 ...
 ```
 
@@ -245,13 +230,11 @@ Please enter your OpenStack Password for project admin as user admin: {패스워
 <br>
 
 ### <div id='2.5'> 2.5. Kubespray 설치
-Container Platform v1.2 부터 Kubespray 설치과정 간소화가 진행되었다.
-
 쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, Kubespray 설치정보 설정, Ansible playbook을 통한 Kubespray 설치를 일괄적으로 진행한다.
 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
-$ . deploy_kubespray.sh
+$ source deploy_kubespray.sh
 ```
 
 - 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
@@ -316,7 +299,7 @@ snapshot-controller-0                         1/1     Running   0          7m33s
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 
 ```
-$ . remove_kubespray.sh
+$ source remove_kubespray.sh
 ```
 
 <br>
@@ -347,6 +330,8 @@ $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
 
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
+
+<br>
 
 ### <div id='4.2'> 4.2. Namespace 사용자 Token 획득
 포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
@@ -385,5 +370,6 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 
 <br>
 
-----
 [image 001]:images/standalone-v1.2.png
+
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > 클러스터 설치 가이드

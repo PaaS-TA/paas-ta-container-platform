@@ -1,3 +1,7 @@
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge 설치 가이드
+
+<br>
+
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -43,8 +47,8 @@ PaaS-TA 5.5 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker, Edge) 환경으로 구성되어 있다. <br>
-Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다. Pod를 통해서는 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, Edge 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
+Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes Cluster와 Edge 환경에 KubeEdge를 설치한다. Pod를 통해서는 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, Edge VM: 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
 
 ![image 001]
 
@@ -60,7 +64,7 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 ## <div id='2'> 2. KubeEdge 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. EdgeNode의 경우 **arm64 아키텍쳐** 일 경우 CRI-O 설치를 위하여 **Ubuntu 20.04** 환경에서 설치를 진행한다. KubeEdge 설치를 위해서는 CRI-O, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. EdgeNode의 경우 **arm64 아키텍쳐** 일 경우 CRI-O 설치를 위하여 **Ubuntu 20.04** 환경에서 설치를 진행한다. 본 가이드에서는 EdgeNode의 환경을 **Ubuntu 20.04 arm64** 기준으로 작성하였다. KubeEdge 설치를 위해서는 CRI-O, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
 
 KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
@@ -68,7 +72,9 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 |---|---|
 |KubeEdge|v1.8.2|
 |Kubernetes Native|v1.20.5|
+|Kubernetes Native (Edge Node)|v1.19.3|
 |CRI-O|v1.20.0|
+|CRI-O (Edge Node)|v1.19.0|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
@@ -142,10 +148,10 @@ $ sudo su -
 # git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 
 ## Ubuntu 아키텍쳐가 amd64일 경우 (ex: Cloud 영역 Master Node)
-# cp paas-ta-container-platform-deployment/edge/amd64/keadm /usr/bin/keadm
+# cp paas-ta-container-platform-deployment/edge/keadm/amd64/keadm /usr/bin/keadm
 
 ## Ubuntu 아키텍쳐가 arm64일 경우 (ex: Edge 영역 Edge Node)
-# cp paas-ta-container-platform-deployment/edge/arm64/keadm /usr/bin/keadm
+# cp paas-ta-container-platform-deployment/edge/keadm/arm64/keadm /usr/bin/keadm
 ```
 
 <br>
@@ -171,70 +177,47 @@ Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진�
 ### <div id='2.5'> 2.5. KubeEdge EdgeCore 설치
 Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge EdgeCore를 설치하여 설정을 진행한다. EdgeNode의 경우 CRI-O arm64 설치를 위해 **Ubuntu 20.04** 환경으로 설치를 진행해야한다.
 
-- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다.
+- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 두 단계의 과정을 생략하고 Edge Node CRI-O 설치과정부터 진행한다.
 ```
-$ sudo su -
-
 # vi /boot/firmware/cmdline.txt
-cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
+
+... cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
 ```
 
-- 라즈베리파이 Reboot을 진행한다.
+- CRI-O 설치 전 **라즈베리파이 Ubuntu 20.04** arm64 버전에 APT 이슈가 존재하여 아래 조치를 진행한다.
+```
+# killall apt apt-get
+
+# rm /var/lib/apt/lists/lock
+# rm /var/cache/apt/archives/lock
+# rm /var/lib/dpkg/lock*
+
+# dpkg --configure -a
+
+# apt-get update
+```
+
+- **라즈베리파이** Reboot을 진행한다.
 ```
 # reboot
 ```
 
-- CRI-O 설치 전 라즈베리파이 **Ubuntu 20.04** arm64 버전에 APT 이슈가 존재하여 아래 조치를 진행한다.
-```
-$ sudo killall apt apt-get
-
-$ sudo rm /var/lib/apt/lists/lock
-$ sudo rm /var/cache/apt/archives/lock
-$ sudo rm /var/lib/dpkg/lock*
-
-$ sudo dpkg --configure -a
-
-$ sudo apt-get update
-```
-
 - **Edge Node**에서 CRI-O 설치를 진행한다.
 ```
-$ sudo su -
+# cd paas-ta-container-platform-deployment/edge
 
-# OS=xUbuntu_20.04
-# VERSION=1.19
-
-# echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-
-# echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$VERSION.list
-
-# curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/Release.key | apt-key add -
-
-# curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | apt-key add -
-
-# apt-get update
-# apt-get install cri-o cri-o-runc
+# source crio-install.sh
 ```
 
-- **Edge Node**에서 CRI-O 사용을 위한 CNI Plugin 설치를 진행한다. CNI Plugin 빌드를 위해 GO가 사전 설치되어있어야 한다.
+- **Edge Node**에서 CRI-O 사용을 위한 CNI Plugin 설치를 진행한다.
 ```
-# git clone https://github.com/containernetworking/plugins
-# cd plugins
-# git checkout v0.8.7
-
-# ./build_linux.sh
-
 # mkdir -p /opt/cni/bin
-# cp bin/* /opt/cni/bin/
+# cp cni-plugins/* /opt/cni/bin/
 ```
 
 - **Edge Node**에서 CRI-O 서비스 등록 및 시작을 진행한다.
 ```
-# sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
-
-# systemctl daemon-reload
-# systemctl enable crio.service
-# systemctl start crio.service
+# source enable-crio.sh
 ```
 
 - **Edge Node**에서 keadm join 명령으로 EdgeCore 설치를 진행한다.
@@ -282,7 +265,7 @@ KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원�
                 operator: DoesNotExist
 ```
 
-- **Master Node**에서 csi cinder nodeplugin이 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+- OpenStack일 경우 **Master Node**에서 csi cinder nodeplugin이 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit daemonsets.apps csi-cinder-nodeplugin -n kube-system
 ```
@@ -304,36 +287,6 @@ KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원�
 ### <div id='2.7'> 2.7. kubectl logs 기능 활성화
 KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.  
 
-- **Master Node**에서 kubernetes ca.crt 및 ca.key 파일을 확인한다.
-```
-# ls /etc/kubernetes/pki/
-```
-
-- **Master Node**에서 CLOUDCOREIPS 환경변수 설정 및 확인을 진행한다. (HA Cluster 구성 시 VIP 설정)
-```
-## {MASTER_PUB_IP} : Master Node Public IP
-
-# export CLOUDCOREIPS="{MASTER_PUB_IP}"
-
-# echo $CLOUDCOREIPS
-```
-
-- **Master Node**에서 certgen.sh 다운로드 및 인증서 생성을 진행한다.
-```
-# cd /etc/kubeedge
-
-# wget https://raw.githubusercontent.com/kubeedge/kubeedge/master/build/tools/certgen.sh
-
-# chmod +x certgen.sh
-
-# /etc/kubeedge/certgen.sh stream
-```
-
-- **Master Node**에서 iptables을 설정한다.
-```
-# iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to $CLOUDCOREIPS:10003
-```
-
 - **Master Node**에서 cloudcore.yaml 파일을 수정한다. (enable: true 로 변경)
 ```
 # vi /etc/kubeedge/config/cloudcore.yaml
@@ -352,10 +305,23 @@ cloudStream:
   tunnelPort: 10004
 ```
 
+- **Master Node**에서 kubectl logs 기능 활성화를 위한 스크립트내 IP 정보를 수정 후 실행한다.
+```
+# cd paas-ta-container-platform-deployment/edge
+
+# vi enable-logs.sh
+
+export CLOUDCOREIPS="{MASTER_PUB_IP}" (수정)
+...
+```
+
+```
+# source enable-logs.sh
+```
+
 - **Master Node**에서 cloudcore를 재시작한다.
 ```
-# pkill cloudcore
-# nohup cloudcore > cloudcore.log 2>&1 &
+# source restart-cloudcore.sh
 ```
 
 - **Edge Node**에서 edgecore.yaml 파일을 수정한다. (enable: true)
@@ -389,8 +355,7 @@ Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 
 - **Edge Node**에서 edgecore를 재시작한다.
 ```
-# systemctl daemon-reload
-# systemctl restart edgecore.service
+# source restart-edgecore.sh
 ```
 
 <br>
@@ -398,20 +363,14 @@ Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 ### <div id='2.8'> 2.8. EdgeMesh 배포
 KubeEdge v1.8 부터 EdgeMesh가 EdgeCore 모듈에서 별도의 Pod로 분리되었으며 EdgeMesh Server, Agent Pod 배포 가이드를 제공한다.
 
-- **Master Node**에서 EdgeMesh 다운로드를 진행한다.
-```
-# git clone https://github.com/kubeedge/edgemesh.git
-#  cd edgemesh/
-```
-
 - **Master Node**에서 EdgeMesh Pod 배포 전 관련 CRDs 배포를 진행한다.
 ```
-#  kubectl apply -f build/crds/istio/
+#  kubectl apply -f edgemesh/crds/istio/
 ```
 
 - **Edge Node**에서 EdgeCore설정 변경 및 서비스 재시작을 통해 EdgeNode의 List-Watch를 활성화한다.
 ```
-# vi /etc/kubeedge/config/cloudcore.yaml
+# vi /etc/kubeedge/config/edgecore.yaml
 ```
 
 ```
@@ -427,7 +386,7 @@ modules:
 ```
 
 ```
-# systemctl restart edgecore
+# source restart-edgecore.sh
 ```
 
 - **Master Node**에서 CloudCore의 설정 변경 및 서비스 재시작을 진행한다.
@@ -444,56 +403,72 @@ modules:
 ```
 
 ```
-# pkill cloudcore
-# nohup cloudcore > cloudcore.log 2>&1 &
+# source restart-cloudcore.sh
 ```
 
 - **Master Node**에서 EdgeMesh Server가 배포될 VM의 호스트명 정보를 수정한다.
 ```
-vi build/server/edgemesh/06-deployment.yaml
+# vi edgemesh/server/06-deployment.yaml
+
+...
+spec:
+  hostNetwork: true
+#     use label to selector node
+  nodeName: {MASTER_HOSTNAME} (수정)
+...
 ```
 
 - **Master Node**에서 EdgeMesh Server 배포를 진행한다.
 ```
-# kubectl apply -f build/server/edgemesh/
+# kubectl apply -f edgemesh/server/
 ```
 
 - **Master Node**에서 EdgeMesh Agent 배포를 진행한다.
 ```
-# kubectl apply -f build/agent/kubernetes/edgemesh-agent/
+# kubectl apply -f edgemesh/agent/
 ```
 
 <br>
 
-### <div id='2.8'> 2.8. KubeEdge 설치 확인
+### <div id='2.9'> 2.9. KubeEdge 설치 확인
 Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치를 확인한다.
 
 ```
 # kubectl get nodes
-NAME            STATUS   ROLES        AGE   VERSION
-ip-10-0-0-231   Ready    agent,edge   55m   v1.18.6-kubeedge-v1.4.0
-ip-10-0-0-40    Ready    <none>       67m   v1.18.6
-ip-10-0-0-60    Ready    master       68m   v1.18.6
+NAME                 STATUS   ROLES                  AGE     VERSION
+paasta-cp-edge       Ready    agent,edge             5m40s   v1.19.3-kubeedge-v1.8.2
+paasta-cp-master     Ready    control-plane,master   39m     v1.20.5
+paasta-cp-worker-1   Ready    <none>                 38m     v1.20.5
+paasta-cp-worker-2   Ready    <none>                 38m     v1.20.5
+paasta-cp-worker-3   Ready    <none>                 38m     v1.20.5
 
 # kubectl get pods -n kube-system
 NAME                                       READY   STATUS    RESTARTS   AGE
-calico-kube-controllers-6d654c9787-x7bs9   1/1     Running   0          67m
-calico-node-m795z                          1/1     Running   0          5m27s
-calico-node-ttrzd                          1/1     Running   0          5m12s
-coredns-7d45cfccd7-67crs                   1/1     Running   0          66m
-coredns-7d45cfccd7-wmlvq                   1/1     Running   0          66m
-dns-autoscaler-757b95599b-lhbkl            1/1     Running   0          66m
-kube-apiserver-ip-10-0-0-60                1/1     Running   0          68m
-kube-controller-manager-ip-10-0-0-60       1/1     Running   0          68m
-kube-proxy-9fmll                           1/1     Running   0          55m
-kube-proxy-hhh5r                           1/1     Running   0          67m
-kube-proxy-q2lvt                           1/1     Running   0          67m
-kube-scheduler-ip-10-0-0-60                1/1     Running   0          68m
-metrics-server-7fb7789fb-vxsnr             2/2     Running   0          66m
-nginx-proxy-ip-10-0-0-40                   1/1     Running   0          67m
-nodelocaldns-kxdpj                         1/1     Running   0          66m
-nodelocaldns-p6krc                         1/1     Running   0          55m
-nodelocaldns-pg8md                         1/1     Running   0          66m
+calico-kube-controllers-7c5b64bf96-5qdqv   1/1     Running   0          37m
+calico-node-4hbw5                          1/1     Running   0          4m34s
+calico-node-8q5tv                          1/1     Running   0          5m9s
+calico-node-qlq5k                          1/1     Running   0          5m26s
+calico-node-xc55c                          1/1     Running   0          4m53s
+coredns-657959df74-grflz                   1/1     Running   0          37m
+coredns-657959df74-wbdl6                   1/1     Running   0          37m
+dns-autoscaler-b5c786945-cbcv9             1/1     Running   0          37m
+kube-apiserver-paasta-cp-master            1/1     Running   0          36m
+kube-controller-manager-paasta-cp-master   1/1     Running   1          39m
+kube-proxy-2ckfd                           1/1     Running   0          38m
+kube-proxy-hb8p2                           1/1     Running   0          38m
+kube-proxy-nnh6d                           1/1     Running   0          38m
+kube-proxy-p9srm                           1/1     Running   0          6m4s
+kube-proxy-zmp95                           1/1     Running   0          38m
+kube-scheduler-paasta-cp-master            1/1     Running   1          39m
+metrics-server-5cd75b7749-57sc2            2/2     Running   0          37m
+nginx-proxy-paasta-cp-worker-1             1/1     Running   0          38m
+nginx-proxy-paasta-cp-worker-2             1/1     Running   0          38m
+nginx-proxy-paasta-cp-worker-3             1/1     Running   0          38m
+nodelocaldns-24vq4                         1/1     Running   0          6m4s
+nodelocaldns-jjrjj                         1/1     Running   0          37m
+nodelocaldns-kgzxb                         1/1     Running   0          37m
+nodelocaldns-l9s47                         1/1     Running   0          37m
+nodelocaldns-vjl6r                         1/1     Running   0          37m
 ```
 
 <br>
@@ -577,6 +552,6 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 
 <br>
 
-
-----
 [image 001]:images/edge-v1.2.png
+
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge 설치 가이드
