@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge 샘플 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Edge 샘플 가이드
 
 <br>
 
@@ -59,6 +59,8 @@ Raspberry Pi에는 온습도 센서 (DHT11)를 연결, 구성하였다.
 - **Master Node**와 **Edge Node**에서 Sample 배포에 필요한 파일을 다운로드한다.
 ```
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr7wNbcj/download
+
+$ tar zxvf kubeedge-sample.tar.gz
 ```
 
 <br>
@@ -67,7 +69,7 @@ $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr
 ```
 $ cd ~/kubeedge-sample/kubeedge-counter/amd64
 
-$ podman load -i kubeedge-counter-app.tar
+$ sudo podman load -i kubeedge-counter-app.tar
 ```
 
 <br>
@@ -76,7 +78,7 @@ $ podman load -i kubeedge-counter-app.tar
 ```
 $ cd ~/kubeedge-sample/kubeedge-counter/arm64
 
-$ podman load -i kubeedge-pi-counter.tar
+$ sudo podman load -i kubeedge-pi-counter.tar
 ```
 
 <br>
@@ -113,19 +115,41 @@ $ kubectl apply -f kubeedge-pi-counter-app.yaml
 
 <br>
 
-- **Master Node**에서 Device의 정보를 확인하여 수집중인 Counter 정보를 확인한다.
+- **Master Node**에서 Device의 정보를 확인하여 수집중인 Counter 정보를 확인한다. 하단의 value 값 업데이트가 확인된다.
 ```
 $ kubectl get device counter -oyaml -w
 ```
-![image 003]
+```
+...
+status:
+  twins:
+  - desired:
+      metadata:
+        timestamp: "1640"
+        type: string
+      value: "ON"
+    propertyName: status
+    reported:
+      metadata:
+        timestamp: "1640253571427"
+        type: string
+      value: "99"
+```
 
 <br>
 
 - **Edge Node**에서 '$hw/events/device/counter/twin/update' 토픽을 구독하여 전달되는 데이터를 확인한다.
 ```
-$ mosquitto_usb -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
+$ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 ```
-![image 004]
+```
+$ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
+{"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1643"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1644"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1645"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1646"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1647"},"metadata":{"type":"Updated"}}}}
+```
 <br>
 
 
@@ -135,6 +159,8 @@ $ mosquitto_usb -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 - **Master Node**와 **Edge Node**에서 Sample 배포에 필요한 파일을 다운로드한다.
 ```
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr7wNbcj/download
+
+$ tar zxvf kubeedge-sample.tar.gz
 ```
 
 <br>
@@ -143,7 +169,7 @@ $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr
 ```
 $ cd ~/kubeedge-sample/kubeedge-temperature/arm64
 
-$ podman load -i kubeedge-temperature.tar
+$ sudo podman load -i kubeedge-temperature.tar
 ```
 
 <br>
@@ -183,7 +209,7 @@ $ kubectl get device temperature -oyaml -w
 
 - **Edge Node**에서 '$hw/events/device/temperature/twin/update' 토픽을 구독하여 전달되는 데이터를 확인한다.
 ```
-$ mosquitto_usb -h 127.0.0.1 -t '$hw/events/device/temperature/twin/update' -p 1883
+$ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/temperature/twin/update' -p 1883
 ```
 ![image 006]
 
@@ -191,10 +217,8 @@ $ mosquitto_usb -h 127.0.0.1 -t '$hw/events/device/temperature/twin/update' -p 1
 
 [image 001]:images/edge-v1.2.png
 [image 002]: images/kubeedge-counter-web.png
-[image 003]: images/kubeedge-counter-device.png
-[image 004]: images/kubeedge-counter-mqtt.png
 [image 005]: images/kubeedge-temperature-device.png
 [image 006]: images/kubeedge-temperature-mqtt.png
 
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Edge 샘플 가이드
+### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Edge 샘플 가이드
