@@ -58,13 +58,13 @@ Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫�
 ### <div id='2.1'>2.1. NFS 서버 설치
 컨테이너 플랫폼 파이프라인에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/nfs-server-install-guide.md)      
     
 ### <div id='2.2'>2.2. 컨테이너 플랫폼 포탈 설치
 컨테이너 플랫폼 파이프라인에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **Maria DB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
 파스타 컨테이너 플랫폼 포탈 배포 시 해당 인프라를 모두 설치한다.
 컨테이너 플랫폼 인프라 설치는 아래 가이드를 참조한다.
-> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)     
+> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)     
 
 
 ### <div id='2.3'>2.3. Cluster 환경
@@ -99,7 +99,7 @@ data-paas-ta-container-platform-postgresql-postgresql-0   Bound    pvc-327312f3-
 컨테이너 플랫폼 포탈을 통해 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 파이프라인 관련 이미지 및 패키지 파일 업로드한다. 
 
 Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1)      
+> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1)      
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 파이프라인 배포
     
@@ -204,9 +204,15 @@ NOTES:
 컨테이너 플랫폼 파이프라인 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
 리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 약간의 시간이 소요된다.
 
+>`$ kubectl get all -n paas-ta-container-platform-pipeline`
 - **컨테이너 플랫폼 파이프라인**
+
 ```
+# 소스 컨트롤 리소스 확인
 $ kubectl get all -n paas-ta-container-platform-pipeline
+```
+
+```
 NAME                                                                  READY   STATUS    RESTARTS   AGE
 pod/container-platform-pipeline-api-deployment-6c5cdd777f-lsb5h       1/1     Running   1          1h
 pod/container-platform-pipeline-common-api-deployment-589768b97xxv7   1/1     Running   1          1h
@@ -304,7 +310,7 @@ statefulset.apps/paas-ta-container-platform-postgresql-postgresql   1/1     1h
 
 ### <div id='4.3'/>4.3. 컨테이너 플랫폼 파이프라인 사용 가이드
 - 컨테이너 플랫폼 파이프라인 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 파이프라인 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide-v1.2.md)    
+  + [컨테이너 플랫폼 파이프라인 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide-v1.2.md)    
 
 <br>
 
