@@ -34,8 +34,8 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/paas-ta-container-platform-release/tree/master)
 - 샘플 모델
-  + 웹 카운팅
-  + 실시간 온도수집
+  + [웹 카운팅 / 실시간 온도수집](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/edge/paas-ta-container-platform-edge-sample-guide.md)
+
 
 
 
