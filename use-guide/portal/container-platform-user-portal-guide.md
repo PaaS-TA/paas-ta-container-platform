@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 사용자 포털 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 사용자 포털 사용 가이드
 
 <br>
 
@@ -515,7 +515,7 @@
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 사용자 포털 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 사용자 포털 사용 가이드
 
 ----
 

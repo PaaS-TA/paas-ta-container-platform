@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Architecture](../README.md) > Portal
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > Portal
 
 ## 목적
 본 문서는 PaaS-TA Container Platform (CP)의 포탈 서비스에 대한 Architecture를 제공한다.
@@ -23,4 +23,4 @@
 파스-타 컨테이너플랫폼 포탈 서비스는 배포되는 쿠버네티스 클러스터의 워크로드를 관리하고, 테넌시별로 컨테이너의 배포 및 관리를 제어할 수 있는 UI를 제공한다.
 
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Architecture](../README.md) > Portal
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > Portal

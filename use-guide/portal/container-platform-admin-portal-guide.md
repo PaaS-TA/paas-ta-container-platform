@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 운영자 포털 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 운영자 포털 사용 가이드
 
 <br>
 
@@ -671,7 +671,7 @@ Namespace 수정 페이지에서 해당 **Namespace의 관리자**, **Resource Q
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 운영자 포털 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/Readme.md) > 운영자 포털 사용 가이드
 
 ----
 [IMG_001]:../images/v1.2/container-platform-portal/admin/cp-001.png
