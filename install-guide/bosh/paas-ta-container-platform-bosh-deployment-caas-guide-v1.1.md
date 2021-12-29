@@ -234,10 +234,6 @@ stemcell_os: "ubuntu-xenial"                                                    
 stemcell_version: "621.94"                                                          # stemcell version
 stemcell_alias: "xenial"                                                            # stemcell alias
 
-# CREDHUB
-credhub_server_url: "10.0.1.6:8844"
-credhub_admin_client_secret: "eft2zkfaerzyt8g6eonj"
-
 # VM_TYPE
 vm_type_small: "small"                                                              # vm type small
 vm_type_small_highmem_16GB: "small-highmem-16GB"                                    # vm type small highmem
@@ -615,7 +611,7 @@ replicaset.apps/service-dashboard-deployment-974c87585    1         1         1 
 <br>
 
 ## <div id='4'>4. 컨테이너 서비스 브로커
-컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 Kubernetes와의 연동을 위해서는 컨테이너 서비스 브로커를 등록해 주어야 한다.<br>PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
+컨테이너 서비스 형태로 설치하는 경우에 CF와 배포된 Kubernetes와의 연동을 위해서는 Bosh Inception 환경에서 컨테이너 서비스 브로커를 등록해 주어야 한다.<br>PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
 
 ### <div id='4.1'>4.1. 컨테이너 서비스 브로커 등록
 
@@ -709,7 +705,8 @@ Context: admin, from client admin
 - 컨테이너 서비스 계정 생성을 한다.
 
 > $ uaac client add caasclient -s {클라이언트 비밀번호} --redirect_uri  "http://{Worker Node IP}:32091, http://{Worker Node IP}:32091/callback" --scope {퍼미션 범위} --authorized_grant_types {권한 타입} --authorities={권한 퍼미션} --autoapprove={자동승인권한}
-  - <클라이언트 비밀번호> : uaac 클라이언트 secret  
+  - <클라이언트 비밀번호> : uaac 클라이언트 secret
+    + common-vars.yml의 uaa_client_portal_secret값을 입력
   - <컨테이너 서비스 DashBoard URI> : 성공적으로 리다이렉션 할 컨테이너 서비스 접근 URI  (Kubernetes   Worker Node IP 와 배포된 컨테이너 서비스 대시보드 NodePort)
     +  Worker Node IP : [container-service-vars.sh](#3.3.1)에서 입력한 'K8S_WORKER_NODE_IP' 값을 입력
   - <퍼미션 범위> : 클라이언트가 사용자를 대신하여 얻을 수있는 허용 범위 목록  

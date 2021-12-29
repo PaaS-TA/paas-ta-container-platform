@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > 클러스터 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > 클러스터 설치 가이드
 
 <br>
 
@@ -372,4 +372,4 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 
 [image 001]:images/standalone-v1.2.png
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > 클러스터 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > 클러스터 설치 가이드

@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드
 
 <br>
 
@@ -59,13 +59,13 @@ Kubespray를 통해 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 �
 ### <div id='2.1'>2.1. NFS 서버 설치
 컨테이너 플랫폼 소스 컨트롤에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/nfs-server-install-guide.md)      
     
 ### <div id='2.2'>2.2. 컨테이너 플랫폼 포탈 설치
 컨테이너 플랫폼 소스 컨트롤에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **Maria DB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
 파스타 컨테이너 플랫폼 포탈 배포 시 해당 인프라를 모두 설치한다.
 컨테이너 플랫폼 인프라 설치는 아래 가이드를 참조한다.
-> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)     
+> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)     
 
 
 ## <div id='3'>3. 컨테이너 플랫폼 소스 컨트롤 배포
@@ -75,7 +75,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 컨테이너 플랫폼 포탈을 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 소스 컨트롤 관련 이미지 및 패키지 파일 업로드한다. 
 
 Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1)      
+> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1)      
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 소스 컨트롤 배포
     
@@ -84,7 +84,7 @@ Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-source-control-deployment.tar](https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We)  
+   [paas-ta-container-platform-source-control-deployment.tar.gz](https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -100,7 +100,7 @@ $ ls ~/workspace/container-platform
   ...
 
 # 이미지 파일 압축 해제
-$ tar -xvfz paas-ta-container-platform-source-control-deployment.tar.gz
+$ tar xvfz paas-ta-container-platform-source-control-deployment.tar.gz
 ```
 
 - 이미지 파일 디렉토리 구성
@@ -164,9 +164,6 @@ TEST SUITE: None
 
 <br>
     
-컨테이너 플랫폼 소스 컨트롤 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-
->`$ kubectl get all -n paas-ta-container-platform-source-control`
 - **컨테이너 플랫폼 소스 컨트롤**
 
 ```
@@ -255,8 +252,8 @@ replicaset.apps/container-platform-source-control-ui-deployment-55dc694d8c      
 
 ### <div id='4.3'/>4.3. 컨테이너 플랫폼 소스 컨트롤 사용 가이드
 - 컨테이너 플랫폼 소스컨트롤 사용 방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 소스 컨트롤 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/source-control/paas-ta-container-platform-source-control-use-guide-v1.2.md)    
+  + [컨테이너 플랫폼 소스 컨트롤 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/source-control/paas-ta-container-platform-source-control-use-guide-v1.2.md)    
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드

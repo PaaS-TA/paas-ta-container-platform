@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드
 
 <br>
 
@@ -104,7 +104,7 @@ data-paas-ta-container-platform-postgresql-postgresql-0   Bound    pvc-327312f3-
 컨테이너 플랫폼 포탈 설치 시 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 파이프라인 관련 이미지 및 패키지 파일 업로드한다. 
 
 Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
+> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 파이프라인 배포
     
@@ -208,10 +208,13 @@ NOTES:
 
 <br>
     
-컨테이너 플랫폼 파이프라인 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 약간의 시간이 소요된다.
-
 - **컨테이너 플랫폼 파이프라인**
+
+```
+# 파이프라인 리소스 확인
+$ kubectl get all -n paas-ta-container-platform-pipeline
+```
+
 ```
 NAME                                                                  READY   STATUS    RESTARTS   AGE
 pod/container-platform-pipeline-api-deployment-67bc5b4d9b-s6455       1/1     Running   0          119s
@@ -271,10 +274,11 @@ PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-
 ## <div id='4.1'>4.1. 컨테이너 플랫폼 파이프라인 사용자 인증 서비스 구성
 컨테이너 플랫폼 파이프라인을 서비스로 사용하기 위해서는 **사용자 인증 서비스** 구성이 사전에 진행되어야 한다.<br>
 사용자 인증 서비스 구성은 아래 가이드를 참조한다.
-> [사용자 인증 서비스 구성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
+> [사용자 인증 서비스 구성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
 컨테이너 플랫폼 포탈 사용자 인증 서비스 구성 시, 파이프라인에도 적용된다.
 
 ### <div id='4.2'>4.2. 컨테이너 플랫폼 파이프라인 서비스 브로커 등록
+:bulb: 해당 내용은 PaaS-TA 포털이 설치된 **BOSH Inception**에서 진행한다.
 서비스 브로커 등록 시 개방형 클라우드 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어있어야 한다.
 
 ##### 서비스 브로커 목록을 확인한다.
@@ -378,8 +382,8 @@ broker: container-platform-pipeline-service-broker
     
 ### <div id='4.4'/>4.4. 컨테이너 플랫폼 파이프라인 사용 가이드
 - 컨테이너 플랫폼 파이프라인 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 파이프라인 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide-v1.2.md)   
+  + [컨테이너 플랫폼 파이프라인 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide-v1.2.md)   
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Pipeline 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Pipeline 설치 가이드

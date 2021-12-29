@@ -1,7 +1,7 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > NFS Server 설치
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > NFS Server 설치
 
 
-# NFS 서버 설치 
+# NFS 서버 설치
 
 ## Table of Contents
 
@@ -52,8 +52,8 @@ $ sudo apt-get install nfs-common nfs-kernel-server portmap
 
 - NFS에서 사용될 디렉토리 생성 및 권한 부여
 ```
-$ mkdir -p /home/share/nfs
-$ chmod 777 /home/share/nfs
+$ sudo mkdir -p /home/share/nfs
+$ sudo chmod 777 /home/share/nfs
 ```
 
 - 공유 디렉토리 설정
@@ -78,13 +78,13 @@ $ sudo systemctl restart portmap
 
 - 설정 확인
 ```
-$ sudo exportfs -v 
+$ sudo exportfs -v
 ```
 
 - 정상 결과
 ```
-/home/share/nfs 
+/home/share/nfs
                 <world>(rw,async,wdelay,no_root_squash,no_subtree_check,sec=sys,rw,secure,no_root_squash,no_all_squash)
 ```
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > > NFS Server 설치
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > > NFS Server 설치

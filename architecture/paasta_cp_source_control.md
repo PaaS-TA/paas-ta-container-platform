@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Architecture](../README.md) > SourceControl
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > SourceControl
 
 ## 목적
 본 문서는 PaaS-TA Container Platform SourceControl의 Architecture를 제공한다.
@@ -22,4 +22,4 @@
 파스-타 컨테이너플랫폼 소스 컨트롤 서비스는 Git과 Svn Repository를 관리할 수 있는 UI를 제공한다.   
 
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Architecture](../README.md) > SourceControl
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > SourceControl

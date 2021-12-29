@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드
 
 <br>
 
@@ -59,13 +59,13 @@ Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫�
 ### <div id='2.1'>2.1. NFS 서버 설치
 컨테이너 플랫폼 소스 컨트롤에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/nfs-server-install-guide.md)      
     
 ### <div id='2.2'>2.2. 컨테이너 플랫폼 포탈 설치
 컨테이너 플랫폼 소스 컨트롤에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **Maria DB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
 파스타 컨테이너 플랫폼 포탈 배포 시 해당 인프라를 모두 설치한다.
 컨테이너 플랫폼 포탈 설치는 아래 가이드를 참조한다.
-> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)     
+> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)     
 
   
 ## <div id='3'>3. 컨테이너 플랫폼 소스 컨트롤 배포
@@ -75,7 +75,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 컨테이너 플랫폼 포탈을 통해 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 소스 컨트롤 관련 이미지 및 패키지 파일 업로드한다. 
 
 Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
+> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 소스 컨트롤 배포
     
@@ -182,9 +182,6 @@ TEST SUITE: None
 
 <br>
     
-컨테이너 플랫폼 소스 컨트롤 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
-
->`$ kubectl get all -n paas-ta-container-platform-source-control`
 - **컨테이너 플랫폼 소스 컨트롤**
 
 ```
@@ -227,10 +224,11 @@ PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-
 ## <div id='4.1'>4.1. 컨테이너 플랫폼 소스 컨트롤 사용자 인증 서비스 구성
 컨테이너 플랫폼 소스 컨트롤을 서비스로 사용하기 위해서는 **사용자 인증 서비스** 구성이 사전에 진행되어야 한다.<br>
 사용자 인증 서비스 구성은 아래 가이드를 참조한다.
-> [사용자 인증 서비스 구성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
+> [사용자 인증 서비스 구성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
 컨테이너 플랫폼 포탈 사용자 인증 서비스 구성 시, 소스 컨트롤에도 적용된다.
 
 ### <div id='4.2'>4.2. 컨테이너 플랫폼 소스 컨트롤 서비스 브로커 등록
+:bulb: 해당 내용은 PaaS-TA 포털이 설치된 **BOSH Inception**에서 진행한다.
 서비스 브로커 등록 시 개방형 클라우드 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어있어야 한다.
 
 ##### 서비스 브로커 목록을 확인한다.
@@ -319,7 +317,7 @@ broker: container-platform-source-control-service-broker
 ![image](https://user-images.githubusercontent.com/80228983/146296230-2e3a90fa-44ac-4e13-9472-dfb3a1655a98.png)
 
 ##### Container Platform Source-control 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
->`'서비스' 항목 : 'container-platform-source-control' 으로 선택` <br>
+>`'서비스' 항목 : 'scm-manager' 으로 선택` <br>
 >`'공개' 항목 : 'Y' 로 체크`    
 
 ![image](https://user-images.githubusercontent.com/80228983/146360677-bd0878f4-85ac-48fc-9e30-6bc49a74381f.png)
@@ -335,8 +333,8 @@ broker: container-platform-source-control-service-broker
     
 ### <div id='4.4'/>4.4. 컨테이너 플랫폼 소스 컨트롤 사용 가이드
 - 컨테이너 플랫폼 소스 컨트롤 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 소스 컨트롤 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/use-guide/source-control/paas-ta-container-platform-source-control-use-guide-v1.2.md)   
+  + [컨테이너 플랫폼 소스 컨트롤 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/source-control/paas-ta-container-platform-source-control-use-guide-v1.2.md)   
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드

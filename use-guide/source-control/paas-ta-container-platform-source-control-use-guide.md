@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Source Control 서비스 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/use-guide/Readme.md) > Source Control 서비스 사용 가이드
 
 <br>
 
@@ -129,6 +129,10 @@
 3. 변경할 비밀번호를 입력 후 수정버튼을 클릭한다.
 ![image](https://user-images.githubusercontent.com/67407365/147021304-56f1437f-4a73-4247-bf83-f6095263aba1.png)
 
+
+***※변경된 비밀번호는 소스 컨트롤 repository를 접근할 때 사용되는 비밀번호로, 
+<br>로그인 정보(단독 배포의 경우 Keycloak 비밀번호, 서비스 배포의 경우 PaaS-TA 비밀번호)와 무관하다.*** <br>
+***※최초 계정 로그인 시 비밀번호를 반드시 변경해야 repository pull, push 등의 접근이 가능하다.*** <br>
 <br>
 
 ### <div id='3.2.2'/> 3.2.2. 사용자 관리
@@ -238,6 +242,10 @@
 
 2. 복사한 레파지토리 클론 URL을 기준으로 git remote add 및 push를 진행한다.
 
+***※복사한 레포지토리에 대하여 push, pull 등의 접근을 위해서는 계정 정보(소스 컨트롤 아이디/비밀번호) 입력이 필요하다.*** <br>
+***※아이디: 접속한 소스 컨트롤 아이디(e.g: admin)*** <br>
+***※비밀번호: 3.2.1.1.1에서 변경한 비밀번호*** <br>
+
 <br>
 
 3. 레파지토리 상세보기 페이지의 탭 첫 번째 왼쪽의 “파일(file)”에서 브렌치, 태그에 대한 정보 확인이 가능하다.
@@ -297,4 +305,4 @@
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide) > Source Control 서비스 사용 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Use](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/use-guide/Readme.md) > Source Control 서비스 사용 가이드
