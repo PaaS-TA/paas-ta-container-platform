@@ -432,7 +432,6 @@ UAA_CLIENT_ADMIN_SECRET="admin-secret"                            # UAA Admin Cl
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 스크립트를 실행한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ chmod +x create-service-provider.sh
 $ ./create-service-provider.sh
 ```

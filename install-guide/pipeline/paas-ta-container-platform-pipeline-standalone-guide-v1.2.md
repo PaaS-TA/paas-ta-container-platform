@@ -159,9 +159,7 @@ PROVIDER_TYPE="standalone"
 
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 파이프라인 제공 타입 입력 <br>
-
-   + 본 가이드는 단독 배포 설치 가이드로 **'standalone'** 값 입력 필요
-<br>
+   + 본 가이드는 단독 배포 설치 가이드로 **'standalone'** 값 입력 필요<br><br>
 - **CF_API_URL** <br>단독 배포 버젼에서는 입력할 필요 없음 <br>    
 
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 파이프라인 배포 스크립트 실행

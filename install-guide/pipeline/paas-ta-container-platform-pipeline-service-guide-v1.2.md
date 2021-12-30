@@ -165,7 +165,7 @@ CF_API_URL="https:\/\/api.xx.xxx.xxx.xx.nip.io"
 
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 파이프라인 제공 타입 입력 <br>
-   + 본 가이드는 서비스 배포 설치 가이드로 **'service'** 값 입력 필요
+   + 본 가이드는 서비스 배포 설치 가이드로 **'service'** 값 입력 필요<br><br>
 - **CF_API_URL** <br>서비스 연동할 PaaS-TA의 api domain 입력 <br>
 <br>    
 
