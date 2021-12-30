@@ -143,7 +143,6 @@ status:
 $ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 ```
 ```
-$ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 {"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1643"},"metadata":{"type":"Updated"}}}}
 {"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1644"},"metadata":{"type":"Updated"}}}}
 {"event_id":"","timestamp":0,"twin":{"status":{"actual":{"value":"1645"},"metadata":{"type":"Updated"}}}}
@@ -203,7 +202,21 @@ $ kubectl apply -f deployment.yaml
 ```
 $ kubectl get device temperature -oyaml -w
 ```
-![image 005]
+```
+...
+status:
+  twins:
+  - desired:
+      metadata:
+        type: string
+      value: ""
+    propertyName: temperature-status
+    reported:
+      metadata:
+        timestamp: "1640253571427"
+        type: string
+      value: "24C"
+```
 
 <br>
 
@@ -211,14 +224,17 @@ $ kubectl get device temperature -oyaml -w
 ```
 $ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/temperature/twin/update' -p 1883
 ```
-![image 006]
+```
+{"event_id":"","timestamp":0,"twin":{"temperature-status":{"actual":{"value":"24C"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"temperature-status":{"actual":{"value":"24C"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"temperature-status":{"actual":{"value":"23C"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"temperature-status":{"actual":{"value":"24C"},"metadata":{"type":"Updated"}}}}
+{"event_id":"","timestamp":0,"twin":{"temperature-status":{"actual":{"value":"24C"},"metadata":{"type":"Updated"}}}}
+```
 
 <br>
 
 [image 001]:images/edge-v1.2.png
 [image 002]: images/kubeedge-counter-web.png
-[image 005]: images/kubeedge-temperature-device.png
-[image 006]: images/kubeedge-temperature-mqtt.png
-
 
 ### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Edge 샘플 가이드

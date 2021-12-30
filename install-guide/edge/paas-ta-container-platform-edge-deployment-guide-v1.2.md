@@ -133,7 +133,7 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 
 - Cloud 영역에 Kubespray를 통해 Kubernetes Cluster 배포를 진행한다.
 
-> https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md
 
 <br>
 
@@ -252,6 +252,22 @@ KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원�
 - **Master Node**에서 Calico CNI가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
 ```
 # kubectl edit daemonsets.apps calico-node -n kube-system
+```
+
+- spec.template.spec 경로에 아래 내용을 추가한다.
+```
+     affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/edge
+                operator: DoesNotExist
+```
+
+- **Master Node**에서 Node Local DNS가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
+```
+# kubectl edit daemonsets.apps nodelocaldns -n kube-system
 ```
 
 - spec.template.spec 경로에 아래 내용을 추가한다.
@@ -468,7 +484,6 @@ nodelocaldns-24vq4                         1/1     Running   0          6m4s
 nodelocaldns-jjrjj                         1/1     Running   0          37m
 nodelocaldns-kgzxb                         1/1     Running   0          37m
 nodelocaldns-l9s47                         1/1     Running   0          37m
-nodelocaldns-vjl6r                         1/1     Running   0          37m
 ```
 
 <br>

@@ -44,11 +44,25 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 <br>
 
 ### <div id='1.3'> 1.3. 시스템 구성도
-시스템 구성은 LoadBalancer(HAProxy, Keepalived), Kubernetes Cluster(Master, External ETCD, Worker) 환경으로 구성되어 있다.<br>
-이중화된 LoadBalancer 구성 후 Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **LoadBalancer VM: 2개, Master VM: 3개, External ETCD VM: 3개, Worker VM: 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 LoadBalancer VM, Master VM, External ETCD VM, Worker VM 설치 내용이다.
+시스템 구성은 IaaS 환경에 따라 구성 차이가 있으며 External ETCD, Stacked ETCD 방식에 따라 구성에 차이가 있다.<br>
 
+시스템 구성은 LoadBalancer, Kubernetes Cluster 환경으로 구성되어 있으며 이중화된 LoadBalancer 구성 후 Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다.<br>
+
+**OpenStack External ETCD** 기준 총 필요한 VM 환경으로는 **LoadBalancer VM: 2개, Master VM: 3개, External ETCD VM: 3개, Worker VM: 1개 이상**이 필요하다.<br>
+
+**OpenStack Stacked ETCD** 기준 총 필요한 VM 환경으로는 **LoadBalancer VM: 2개, Master VM: 3개, Worker VM: 1개 이상**이 필요하다.<br>
+
+**AWS External ETCD** 기준 총 필요한 VM 환경으로는 **Master VM: 3개, External ETCD VM: 3개, Worker VM: 1개 이상**이 필요하다.<br>
+
+**AWS Stacked ETCD** 기준 총 필요한 VM 환경으로는 **Master VM: 3개, Worker VM: 1개 이상**이 필요하다.<br>
+
+본 문서는 Kubernetes Cluster 환경을 구성하기 위한 LoadBalancer, Master VM, External ETCD VM, Worker VM 설치 내용이다.<br>
+
+- External ETCD
 ![image 001]
+
+- Stacked ETCD
+![image 002]
 
 <br>
 
@@ -113,7 +127,24 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 ### <div id='2.2'> 2.2. LoadBalancer 구성
 Keepalived, HAProxy를 이용하여 LoadBalancer를 구성하며 HA 구성을 위하여 별도의 VIP가 필요하다. LoadBalancer 구성을 위한 2개의 VM에 다음과 같이 Keepalived, HAProxy 설치를 진행한다.
 
-- OpenStack 기준 LoadBalancer VM VIP 할당 방법을 간략하게 기술한다.
+- **AWS 기준 LoadBalancer 설정 방법을 간략하게 기술한다.** OpenStack과 다르게 별도의 VM 생성 및 Keepalived, HAProxy를 사용하지 않고 자체 제공하는 LoadBalancer를 이용한다. 사전에 Master Node VM이 생성되어 있어야 한다.
+
+1. **AWS 서비스 > EC2 > 로드밸런싱 > 로드밸런서 > 로드 밸런서 생성** 으로 이동
+<br>
+2. **Classic Load Balancer > Create** 로 이동
+<br>
+3. Load Balancer 이름 입력, LB 생성할 VPC 선택, 리스너 구성의 프로토콜: TCP  / 포트: 6443 선택, 서브넷 선택 후 다음으로 이동
+<br>
+4. 보안 그룹 선택 후 EC 인스턴스 추가 메뉴까지 다음으로 이동
+<br>
+5. EC2 인스턴스 추가 에서 Master Node 모두 선택 후 다음으로 이동
+<br>
+6. Load Balancer 생성
+<br>
+7. 이후 과정을 생략하고 **2.3. SSH Key 생성 및 배포** 과정을 진행
+<br>
+
+- **OpenStack 기준 LoadBalancer VM VIP 할당 방법을 간략하게 기술한다.**
 1. OpenStack Horizon 접속
 <br>
 2. **네트워크 > 네트워크 > "사용할 네트워크 이름 선택" > 포트 탭 > 포트생성** 으로 이동
@@ -301,13 +332,19 @@ $ cd paas-ta-container-platform-deployment/standalone-ha/openstack
 
 - Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-$ vi kubespray_var.sh
+## External ETCD 구성의 경우
+$ vi kubespray_var_external.sh
+
+## Stacked ETCD 구성의 경우
+$ vi kubespray_var_stacked.sh
 ```
 
 ```
 ## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
 ## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
 ## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
+
+## External ETCD 구성
 
 #!/bin/bash
 
@@ -325,6 +362,26 @@ export ETCD2_NODE_HOSTNAME={ETCD 2번 Node의 HostName 정보 입력}
 export ETCD2_NODE_PRIVATE_IP={ETCD 2번 Node의 Private IP 정보 입력}
 export ETCD3_NODE_HOSTNAME={ETCD 3번 Node의 HostName 정보 입력}
 export ETCD3_NODE_PRIVATE_IP={ETCD 3번 Node의 Private IP 정보 입력}
+export WORKER1_NODE_HOSTNAME={Worker 1번 Node의 HostName 정보 입력}
+export WORKER1_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
+export WORKER2_NODE_HOSTNAME={Worker 2번 Node의 HostName 정보 입력}
+export WORKER2_NODE_PRIVATE_IP={Worker 2번 Node의 Private IP 정보 입력}
+export WORKER3_NODE_HOSTNAME={Worker 3번 Node의 HostName 정보 입력}
+export WORKER3_NODE_PRIVATE_IP={Worker 3번 Node의 Private IP 정보 입력}
+...
+
+## Stacked ETCD 구성
+
+#!/bin/bash
+
+export LOADBALANCER_VIP={LoadBalancer의 Private VIP 정보 입력}
+export MASTER1_NODE_HOSTNAME={Master 1번 Node의 HostName 정보 입력}
+export MASTER1_NODE_PUBLIC_IP={Master 1번 Node의 Public IP 정보 입력}
+export MASTER1_NODE_PRIVATE_IP={Master 1번 Node의 Private IP 정보 입력}
+export MASTER2_NODE_HOSTNAME={Master 2번 Node의 HostName 정보 입력}
+export MASTER2_NODE_PRIVATE_IP={Master 2번 Node의 Private IP 정보 입력}
+export MASTER3_NODE_HOSTNAME={Master 3번 Node의 HostName 정보 입력}
+export MASTER3_NODE_PRIVATE_IP={Master 3번 Node의 Private IP 정보 입력}
 export WORKER1_NODE_HOSTNAME={Worker 1번 Node의 HostName 정보 입력}
 export WORKER1_NODE_PRIVATE_IP={Worker 1번 Node의 Private IP 정보 입력}
 export WORKER2_NODE_HOSTNAME={Worker 2번 Node의 HostName 정보 입력}
@@ -356,15 +413,21 @@ Please enter your OpenStack Password for project admin as user admin: {패스워
 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
-$ source deploy_kubespray.sh
+## External ETCD 구성의 경우
+$ source deploy_kubespray_external.sh
+
+## Stacked ETCD 구성의 경우
+$ source deploy_kubespray_stacked.sh
 ```
 
 - 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
 
 ```
-1. kubespray_var.sh : Kubespray HA 설치에 필요한 환경변수 선언
+1-1. kubespray_var_external.sh : Kubespray HA 설치에 필요한 환경변수 선언 (External ETCD 구성)
+1-2. kubespray_var_stacked.sh : Kubespray HA 설치에 필요한 환경변수 선언 (Stacked ETCD 구성)
 2. package_install.sh : pip 패키지 설치
-3. kubespray_setting.sh : Node 구성정보, Kubespray 설치정보 설정
+3-1. kubespray_setting_external.sh : Node 구성정보, Kubespray 설치정보 설정 (External ETCD 구성)
+3-2. kubespray_setting_stacked.sh : Node 구성정보, Kubespray 설치정보 설정 (Stacked ETCD 구성)
 4. kubespray_install.sh : Ansible playbook을 통한 Kubespray 설치
 ```
 
@@ -506,5 +569,6 @@ $ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut 
 <br>
 
 [image 001]:images/stanalone-ha-external-etcd-v1.2.png
+[image 002]:images/stanalone-ha-stacked-etcd-v1.2.png
 
 ### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > 클러스터 설치 가이드 (HA)
