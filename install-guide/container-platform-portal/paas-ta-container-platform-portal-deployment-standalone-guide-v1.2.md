@@ -89,7 +89,7 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 ### <div id='2.2'>2.2. NFS Server 설치
 컨테이너 플랫폼 포털 서비스에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS Server 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS Server 설치](../nfs-server-install-guide.md)      
     
 <br>
     
@@ -175,8 +175,6 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 
 - Deployment 파일 디렉토리 구성
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment
-
 ├── script     # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
 ├── images     # 컨테이너 플랫폼 포털 이미지 파일 위치
 ├── charts     # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
@@ -213,8 +211,8 @@ PROVIDER_TYPE="standalone"
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **K8S_AUTH_BEARER_TOKEN** <br>Kubernetes Bearer Token 입력<br>
    + [[5.1. 운영자 Cluster Role Token 생성]](#5.1) 참고하여 Token 값 생성 후 입력 <br><br>
-- **NFS_SERVER_IP** <br>NFS SERVER IP 입력 <br>
-   + 가이드 [[NFS Server 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)]를 통해 설치된 NFS Server IP 입력<br><br>
+- **NFS_SERVER_IP** <br>NFS Server Private IP 입력<br>
+   + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
    + 본 가이드는 포털 단독 배포 형 설치 가이드로 **'standalone'** 값 입력 필요
 <br>    
@@ -223,7 +221,6 @@ PROVIDER_TYPE="standalone"
 컨테이너 플랫폼 포털 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
 $ chmod +x deploy-container-platform-portal.sh
 $ ./deploy-container-platform-portal.sh
 ```
@@ -394,7 +391,8 @@ replicaset.apps/container-platform-webuser-deployment-d4755ccf7       1         
 - 등록할 사용자 계정정보를 입력 후 'Register' 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입한다.
 ![image 004]  
 
-- 컨테이너 플랫폼 사용자 포털은 회원가입 후 바로 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.   
+- 컨테이너 플랫폼 사용자 포털은 회원가입 후 바로 이용이 불가하며 Cluster 관리자 혹은 Namespace 관리자로부터 해당 사용자가 이용할 Namespace와 Role을 할당 받은 후 포털 이용이 가능하다.
+Namespace와 Role 할당은 [[4.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드]](#4.3) 를 참고한다.    
 ![image 005]    
 
 #### 사용자 로그인   
@@ -406,8 +404,8 @@ replicaset.apps/container-platform-webuser-deployment-d4755ccf7       1         
 
 ### <div id='4.3'/>4.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
-  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
+  + [컨테이너 플랫폼 운영자 포털 사용 가이드](../../use-guide/portal/container-platform-admin-portal-guide.md)    
+  + [컨테이너 플랫폼 사용자 포털 사용 가이드](../../use-guide/portal/container-platform-user-portal-guide.md)
 
 
 <br>

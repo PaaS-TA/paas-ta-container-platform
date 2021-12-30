@@ -60,13 +60,13 @@ Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫�
 ### <div id='2.1'>2.1. NFS 서버 설치
 컨테이너 플랫폼 파이프라인에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS 서버 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS 서버 설치](../nfs-server-install-guide.md)      
     
 ### <div id='2.2'>2.2. 컨테이너 플랫폼 포탈 설치
 컨테이너 플랫폼 파이프라인에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **Maria DB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
 파스타 컨테이너 플랫폼 포탈 배포 시 해당 인프라를 모두 설치한다.
 컨테이너 플랫폼 포탈 설치는 아래 가이드를 참조한다.
-> [파스타 컨테이너 플랫폼 포탈 배포](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)     
+> [파스타 컨테이너 플랫폼 포탈 배포](../container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)     
 
 
 ### <div id='2.3'>2.3. Cluster 환경
@@ -104,7 +104,7 @@ data-paas-ta-container-platform-postgresql-postgresql-0   Bound    pvc-327312f3-
 컨테이너 플랫폼 포탈 설치 시 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 파이프라인 관련 이미지 및 패키지 파일 업로드한다. 
 
 Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
+> [CRI-O insecure-registry 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)     
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 파이프라인 배포
     
@@ -120,21 +120,19 @@ Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 
 $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
-# 이미지 파일 다운로드 및 파일 경로 확인
+# Deployment 파일 다운로드 및 파일 경로 확인
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/6BDzar68ck5jryq/download
 
 $ ls ~/workspace/container-platform
   ...
   paas-ta-container-platform-pipeline-deployment.tar.gz
   ...
-# 이미지 파일 압축 해제
+# Deployment 파일 압축 해제
 $ tar xvfz paas-ta-container-platform-pipeline-deployment.tar.gz
 ```
 
-- 이미지 파일 디렉토리 구성
+- Deployment 파일 디렉토리 구성
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-pipeline-deployment
-
 ├── script     # 컨테이너 플랫폼 파이프라인 배포 관련 변수 및 스크립트 파일 위치
 ├── images     # 컨테이너 플랫폼 파이프라인 이미지 파일 위치
 ├── charts     # 컨테이너 플랫폼 파이프라인 Helm Charts 파일 위치
@@ -175,7 +173,6 @@ CF_API_URL="https:\/\/api.xx.xxx.xxx.xx.nip.io"
 컨테이너 플랫폼 파이프라인 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-pipeline-deployment/script
 $ chmod +x deploy-container-platform-pipeline.sh
 $ ./deploy-container-platform-pipeline.sh
 ```
@@ -274,7 +271,7 @@ PaaS-TA 운영자 포탈을 통해 서비스를 등록하고 공개하면, PaaS-
 ## <div id='4.1'>4.1. 컨테이너 플랫폼 파이프라인 사용자 인증 서비스 구성
 컨테이너 플랫폼 파이프라인을 서비스로 사용하기 위해서는 **사용자 인증 서비스** 구성이 사전에 진행되어야 한다.<br>
 사용자 인증 서비스 구성은 아래 가이드를 참조한다.
-> [사용자 인증 서비스 구성](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
+> [사용자 인증 서비스 구성](../container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#4)      
 컨테이너 플랫폼 포탈 사용자 인증 서비스 구성 시, 파이프라인에도 적용된다.
 
 ### <div id='4.2'>4.2. 컨테이너 플랫폼 파이프라인 서비스 브로커 등록
@@ -382,7 +379,7 @@ broker: container-platform-pipeline-service-broker
     
 ### <div id='4.4'/>4.4. 컨테이너 플랫폼 파이프라인 사용 가이드
 - 컨테이너 플랫폼 파이프라인 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 파이프라인 사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide-v1.2.md)   
+  + [컨테이너 플랫폼 파이프라인 사용 가이드](../../use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide.md)   
 
 <br>
 
