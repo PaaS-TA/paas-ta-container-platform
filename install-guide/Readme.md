@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Install
+### [Index](https://github.com/PaaS-TA/Guide) > CP Install
 # Container Platform(CP) - install
 
 ## 단독형 배포   
@@ -39,4 +39,4 @@
 
 
 
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Install
+### [Index](https://github.com/PaaS-TA/Guide) > CP Install

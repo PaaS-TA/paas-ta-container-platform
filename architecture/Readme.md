@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Architecture
+### [Index](https://github.com/PaaS-TA/Guide) > CP Architecture
 
 ## Container Platform (CP) - Architecture
 - Container Platform
@@ -11,4 +11,4 @@
   + [Pipeline](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/architecture/paasta_cp_pipeline.md)
   + [SourceControl](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/architecture/paasta_cp_source_control.md)
   
-### [Index](https://github.com/PaaS-TA/Guide/tree/working-new-template) > CP Architecture
+### [Index](https://github.com/PaaS-TA/Guide) > CP Architecture
