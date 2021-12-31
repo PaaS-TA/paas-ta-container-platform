@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/Readme.md) > 서비스형 배포 포털 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](/install-guide/Readme.md) > 서비스형 배포 포털 설치 가이드
 
 <br>
 
@@ -94,7 +94,7 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 ### <div id='2.2'>2.2. NFS Server 설치
 컨테이너 플랫폼 포털 서비스에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS Server 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)      
+> [NFS Server 설치](../nfs-server-install-guide.md)      
     
 <br>
     
@@ -180,8 +180,6 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 
 - Deployment 파일 디렉토리 구성
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment
-
 ├── script     # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
 ├── images     # 컨테이너 플랫폼 포털 이미지 파일 위치
 ├── charts     # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
@@ -217,9 +215,9 @@ PROVIDER_TYPE="service"
 
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **K8S_AUTH_BEARER_TOKEN** <br>Kubernetes Bearer Token 입력<br>
-   + [[6.1. 운영자 Cluster Role Token 생성]](#6.1) 참고하여 Token 값 생성 후 입력 <br><br>
-- **NFS_SERVER_IP** <br>NFS SERVER IP 입력 <br>
-   + 가이드 [[NFS Server 설치](https://github.com/PaaS-TA/paas-ta-container-platform/blob/dev/install-guide/nfs-server-install-guide.md)]를 통해 설치된 NFS Server IP 입력<br><br>
+   + [[6.1. 운영자 Cluster Role Token 생성]](#6.1) 참고하여 Token 값 생성 후 입력<br><br>
+- **NFS_SERVER_IP** <br>NFS Server Private IP 입력<br>
+   + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
    + 본 가이드는 포털 PaaS-TA 서비스 형 배포 설치 가이드로 **'service'** 값 입력 필요
 <br>    
@@ -228,7 +226,6 @@ PROVIDER_TYPE="service"
 컨테이너 플랫폼 포털 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
 $ chmod +x deploy-container-platform-portal.sh
 $ ./deploy-container-platform-portal.sh
 ```
@@ -435,7 +432,6 @@ UAA_CLIENT_ADMIN_SECRET="admin-secret"                            # UAA Admin Cl
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 스크립트를 실행한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ chmod +x create-service-provider.sh
 $ ./create-service-provider.sh
 ```
@@ -629,8 +625,8 @@ broker: container-platform-user-portal-service-broker
     
 ### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 운영자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-admin-guide-v1.0.md)    
-  + [컨테이너 플랫폼 사용자 포털  사용 가이드](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/use-guide/portal/paas-ta-container-platform-user-guide-v1.0.md)
+  + [컨테이너 플랫폼 운영자 포털 사용 가이드](../../use-guide/portal/container-platform-admin-portal-guide.md)    
+  + [컨테이너 플랫폼 사용자 포털 사용 가이드](../../use-guide/portal/container-platform-user-portal-guide.md)
 
 
 <br>
@@ -698,7 +694,7 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/Readme.md) > 서비스형 배포 포털 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](/install-guide/Readme.md) > 서비스형 배포 포털 설치 가이드
 
 [image 001]:images-v1.2/cp-001.png
 [image 002]:images-v1.2/cp-002.png
