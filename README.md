@@ -118,15 +118,15 @@
 
 ### 포털 이용 가이드
 - 운영자 포털
-  + [운영자 포털 사용 가이드](use-guide/portal/container-platform-admin-guide.md)
+  + [운영자 포털 사용 가이드](use-guide/portal/container-platform-admin-portal-guide.md)
 - 사용자 포털
-  + [사용자 포털 사용 가이드](use-guide/portal/container-platform-user-guide.md) 
+  + [사용자 포털 사용 가이드](use-guide/portal/container-platform-user-portal-guide.md) 
 
 ### 서비스 이용 가이드
 - Pipeline 서비스
-  + [Pipeline 서비스 사용 가이드](use-guide/portal/paas-ta-container-platform-admin-guide.md)
+  + [Pipeline 서비스 사용 가이드](use-guide/pipeline/paas-ta-container-platform-pipeline-use-guide.md)
 - Source Control 서비스
-  + [Source Control 서비스 사용 가이드](use-guide/portal/paas-ta-container-platform-admin-guide.md)
+  + [Source Control 서비스 사용 가이드](use-guide/source-control/paas-ta-container-platform-source-control-use-guide.md)
 
 
 <br>
