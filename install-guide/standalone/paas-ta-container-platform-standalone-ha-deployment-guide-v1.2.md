@@ -330,7 +330,7 @@ $ cd paas-ta-container-platform-deployment/standalone-ha/aws
 $ cd paas-ta-container-platform-deployment/standalone-ha/openstack
 ```
 
-- Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
+- Kubespray 설치에 필요한 환경변수를 정의한다.
 ```
 ## External ETCD 구성의 경우
 $ vi kubespray_var_external.sh
@@ -339,6 +339,27 @@ $ vi kubespray_var_external.sh
 $ vi kubespray_var_stacked.sh
 ```
 
+- AWS일 경우 LoadBalancer Domain 정보를 입력한다.
+```
+## LoadBalancer 정보 = AWS일 경우 Domain 정보, OpenStack일 경우 VIP 정보 입력
+
+#!/bin/bash
+
+export LOADBALANCER_DOMAIN={AWS LoadBalancer의 Domain 정보 입력}
+...
+```
+
+- OpenStack일 경우 LoadBalancer Private VIP 정보를 입력한다.
+```
+## LoadBalancer 정보 = AWS일 경우 Domain 정보, OpenStack일 경우 VIP 정보 입력
+
+#!/bin/bash
+
+export LOADBALANCER_VIP={LoadBalancer의 Private VIP 정보 입력}
+...
+```
+
+- IaaS 공통의 Node 정보를 입력한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
 ## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
 ## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
@@ -346,9 +367,7 @@ $ vi kubespray_var_stacked.sh
 
 ## External ETCD 구성
 
-#!/bin/bash
-
-export LOADBALANCER_VIP={LoadBalancer의 Private VIP 정보 입력}
+...
 export MASTER1_NODE_HOSTNAME={Master 1번 Node의 HostName 정보 입력}
 export MASTER1_NODE_PUBLIC_IP={Master 1번 Node의 Public IP 정보 입력}
 export MASTER1_NODE_PRIVATE_IP={Master 1번 Node의 Private IP 정보 입력}
@@ -372,9 +391,7 @@ export WORKER3_NODE_PRIVATE_IP={Worker 3번 Node의 Private IP 정보 입력}
 
 ## Stacked ETCD 구성
 
-#!/bin/bash
-
-export LOADBALANCER_VIP={LoadBalancer의 Private VIP 정보 입력}
+...
 export MASTER1_NODE_HOSTNAME={Master 1번 Node의 HostName 정보 입력}
 export MASTER1_NODE_PUBLIC_IP={Master 1번 Node의 Public IP 정보 입력}
 export MASTER1_NODE_PRIVATE_IP={Master 1번 Node의 Private IP 정보 입력}
@@ -391,7 +408,7 @@ export WORKER3_NODE_PRIVATE_IP={Worker 3번 Node의 Private IP 정보 입력}
 ...
 ```
 
-- OpenStack 환경에 설치 시 kubespray_var.sh 스크립트 내 다음 변수가 추가된다.
+- OpenStack 환경에 설치 시 kubespray_var_{IaaS}.sh 스크립트 내 다음 변수가 추가된다.
 OpenStack 네트워크 인터페이스의 MTU값이 기본값 1450이 아닐 경우 CNI Plugin MTU 설정 변경을 위해 다음 값을 수정한다.
 ```
 ...
