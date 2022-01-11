@@ -9,7 +9,7 @@
 
 2. [Keycloak TLS 설정](#2)  
     2.1. [TLS 인증서 파일 준비](#2.1)  
-    2.2. [Dockerfile 내 인증서 파일 경로 추가 ](#2.2)   
+    2.2. [Dockerfile 내 인증서 파일 경로 추가](#2.2)   
     2.3. [Keycloak values.yaml 파일 수정](#2.3)   
     2.4. [컨테이너 플랫폼 포털 변수 파일 수정](#2.4)   
 
@@ -29,14 +29,20 @@
 
 ### <div id='2.1'>2.1. TLS 인증서 파일 준비
 컨테이너 플랫폼 포털 배포 전 TLS 인증서 파일 (ex: tls.key, tls.crt)이 사전에 준비되어야 한다.<br>
-- 컨테이너 플랫폼 포털 Deployment 파일 **keycloak_orig** 디렉토리 내에 위치 필요
+- 컨테이너 플랫폼 포털 Deployment 파일 **keycloak_orig** 디렉토리 하위에 위치 필요
 - 인증서 파일 명은 **tls.key**, **tls.crt** 로 변경 필요
+- 인증서 파일 권한 변경 필요
 
 > `Example`
 ```
+# 인증서 파일 keycloak_orig 디렉토리 하위에 위치
 ls ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/tls-key
 tls.crt  tls.key
+
+# 인증서 파일 권한 변경
+chmod ug+r ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/tls-key/*
 ```
+
 
 <br>
     

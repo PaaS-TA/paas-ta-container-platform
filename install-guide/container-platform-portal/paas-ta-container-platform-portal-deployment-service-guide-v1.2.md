@@ -564,11 +564,11 @@ RESPONSE BODY:
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ chmod +x uninstall-service-provider.sh
-$ ./uninstall-container-platform-portal.sh {Service_Provider_ID}
+$ ./uninstall-service-provider.sh {Service_Provider_ID}
 ```
     
 ```    
-$ ./uninstall-container-platform-portal.sh 0679dca3-0461-4af9-b513-7c114b6f9110
+$ ./uninstall-service-provider.sh 0679dca3-0461-4af9-b513-7c114b6f9110
 ....  
 Are you sure you want to delete this service provider? <y/n> y
 DELETE https://uaa.13.125.147.203.nip.io/saml/service-providers/0679dca3-0461-4af9-b513-7c114b6f9110
