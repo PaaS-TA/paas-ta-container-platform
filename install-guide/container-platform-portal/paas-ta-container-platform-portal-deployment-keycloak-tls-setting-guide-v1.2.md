@@ -118,7 +118,11 @@ KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (in
     
 ### <div id='3.1'>3.1. 사용자 인증 구성 변수 값 변경 
  UAA 서비스와 Keycloak 서비스 인증 구성 변수 파일 내 **Keycloak URL** 값을 아래와 같이 변경한다.
-    
+
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
+$ vi container-platform-saml-vars.sh
+```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
 # Domain으로 nip.io를 사용하는 경우 아래와 같이 변경   
