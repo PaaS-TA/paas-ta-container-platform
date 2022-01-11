@@ -34,7 +34,7 @@
 
 > `Example`
 ```
-ls ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/ssl-key
+ls ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/tls-key
 tls.crt  tls.key
 ```
 
@@ -58,7 +58,7 @@ COPY {TLS_FILE_PATH}/* /etc/x509/https/
 > `Example`
 ```
 ...
-COPY ssl-key/* /etc/x509/https/
+COPY tls-key/* /etc/x509/https/
 COPY container-platform/ /opt/jboss/keycloak/themes/container-platform/
 ...
 ```    
