@@ -20,11 +20,13 @@
     3.2.1. [컨테이너 플랫폼 포털 Deployment 파일 다운로드](#3.2.1)  
     3.2.2. [컨테이너 플랫폼 포털 변수 정의](#3.2.2)    
     3.2.3. [컨테이너 플랫폼 포털 배포 스크립트 실행](#3.2.3)    
+    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4) 
 
 4. [컨테이너 플랫폼 포털 사용자 인증 서비스 구성](#4)      
     4.1. [컨테이너 플랫폼 포털 사용자 인증 구성 Deployment 다운로드](#4.1)      
     4.2. [컨테이너 플랫폼 포털 사용자 인증 구성 변수 정의](#4.2)      
     4.3. [컨테이너 플랫폼 포털 사용자 인증 구성 스크립트 실행](#4.3)          
+    4.4. [(참조) 컨테이너 플랫폼 포털 사용자 인증 구성 해제](#4.4)    
 
 5. [컨테이너 플랫폼 포털 서비스 브로커](#5)       
     5.1. [컨테이너 플랫폼 포털 서비스 브로커 등록](#5.1)  
@@ -180,17 +182,22 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 
 - Deployment 파일 디렉토리 구성
 ```
-├── script     # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
-├── images     # 컨테이너 플랫폼 포털 이미지 파일 위치
-├── charts     # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
-├── values     # 컨테이너 플랫폼 포털 Helm Charts values.yaml 파일 위치
-└── keycloak   # 컨테이너 플랫폼 포털 사용자 인증 관리를 위한 Keycloak 배포 관련 파일 위치
+├── script          # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
+├── images          # 컨테이너 플랫폼 포털 이미지 파일 위치
+├── charts          # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
+├── values_orig     # 컨테이너 플랫폼 포털 Helm Charts values.yaml 파일 위치
+└── keycloak_orig   # 컨테이너 플랫폼 포털 사용자 인증 관리를 위한 Keycloak 배포 관련 파일 위치
 ```
 
 <br>
 
 #### <div id='3.2.2'>3.2.2. 컨테이너 플랫폼 포털 변수 정의
 컨테이너 플랫폼 포털을 배포하기 전 변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
+
+:bulb: Keycloak 기본 배포 방식은 **HTTP**이며 인증서를 통한 **HTTPS**를 설정하고자 하는 경우 아래 가이드를 참조하여 선처리한다.
+> [Keycloak TLS 설정](paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md#2-keycloak-tls-설정)       
+
+<br>
 
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
@@ -220,6 +227,7 @@ PROVIDER_TYPE="service"
    + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
    + 본 가이드는 포털 PaaS-TA 서비스 형 배포 설치 가이드로 **'service'** 값 입력 필요
+    
 <br>    
 
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 포털 배포 스크립트 실행
@@ -376,6 +384,39 @@ replicaset.apps/container-platform-webuser-deployment-58b6b79669                
 
 <br>
 
+#### <div id='3.2.4'>3.2.4. (참조) 컨테이너 플랫폼 포털 리소스 삭제
+배포된 컨테이너 플랫폼 포털 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
+:loudspeaker: (주의) 컨테이너 플랫폼 포털이 운영되는 상태에서 해당 스크립트 실행 시, **운영에 필요한 리소스가 모두 삭제**되므로 주의가 필요하다.<br>
+
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
+$ chmod +x uninstall-container-platform-portal.sh
+$ ./uninstall-container-platform-portal.sh
+```
+```    
+Are you sure you want to delete the container platform portal? <y/n> y
+....
+release "paas-ta-container-platform-harbor" uninstalled
+release "paas-ta-container-platform-mariadb" uninstalled
+release "paas-ta-container-platform-keycloak" uninstalled
+release "paas-ta-container-platform-nfs-storageclass" uninstalled
+release "paas-ta-container-platform-api" uninstalled
+release "paas-ta-container-platform-common-api" uninstalled
+release "paas-ta-container-platform-webadmin" uninstalled
+release "paas-ta-container-platform-webuser" uninstalled
+release "paas-ta-container-platform-admin-service-broker" uninstalled
+release "paas-ta-container-platform-user-service-broker" uninstalled
+namespace "harbor" deleted
+namespace "mariadb" deleted
+namespace "keycloak" deleted
+namespace "nfs-storageclass" deleted
+namespace "paas-ta-container-platform-portal" deleted
+"paas-ta-container-platform-repository" has been removed from your repositories
+Uninstalled plugin: cm-push
+....    
+```
+
+<br>   
 
 ## <div id='4'>4. 컨테이너 플랫폼 포털 사용자 인증 서비스 구성
 컨테이너 플랫폼 포털 사용자 인증은 Keycloak 서비스를 통해 관리된다. PaaS-TA 포털의 사용자 인증 서비스 UAA의 사용자 계정으로 컨테이너 플랫폼 포털 접속을 위해 
@@ -407,6 +448,12 @@ $ tar -xvf paas-ta-container-platform-saml-deployment.tar.gz
 #### <div id='4.2'>4.2. 컨테이너 플랫폼 포털 사용자 인증 구성 변수 정의
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 변수 값 정의가 필요하다. 구성에 필요한 정보를 확인하여 변수를 설정한다.
 
+:bulb: **Keycloak TLS HTTPS** 설정이 적용된 경우, Keycloak URL 변수 값 변경이 필요하다. <br>
+아래 가이드를 참조하여 변수 값을 변경한다.
+> [(서비스형 배포) 사용자 인증 서비스 구성 변경](paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md#3-서비스형-배포-사용자-인증-서비스-구성-변경)       
+
+<br>
+    
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ vi container-platform-saml-vars.sh
@@ -426,8 +473,9 @@ UAA_CLIENT_ADMIN_SECRET="admin-secret"                            # UAA Admin Cl
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
 - **UAA_CLIENT_ADMIN_ID** <br>UAAC Admin Client Admin ID 입력 (기본 값 : admin)<br><br>
 - **UAA_CLIENT_ADMIN_SECRET** <br>UAAC Admin Client에 접근하기 위한 Secret 변수 (기본 값 : admin-secret)<br><br>
- 
 
+<br> 
+        
 #### <div id='4.3'>4.3. 컨테이너 플랫폼 포털 사용자 인증 구성 스크립트 실행
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 스크립트를 실행한다.
 
@@ -472,9 +520,61 @@ RESPONSE BODY:
     "active": true,
     "identityZoneId": "uaa"
   }
+....    
 ]
 ```    
 
+<br>
+
+#### <div id='4.4'>4.4. (참조) 컨테이너 플랫폼 포털 사용자 인증 구성 해제
+UAA 서비스와 Keycloak 서비스 인증 구성 해제를 원하는 경우 아래 스크립트를 실행한다.<br>
+:loudspeaker: (주의) 컨테이너 플랫폼 포털이 운영되는 상태에서 해당 스크립트 실행 시, 사용자 인증 구성이 불가하므로 주의가 필요하다.<br>
+
+   
+##### 해제할 Service Provider ID 조회
+UAAC Service Providers 조회 후 **RESPONSE BODY** 결과 내 아래 조건을 가진 **Service Provider ID**를 조회한다.
+- `entityId :http://{K8S_MASTER_NODE_IP}:32710/auth/realms/container-platform-realm` <br>
+- `name : paas-ta-container-platform-saml-sp` <br>
+
+```  
+$ uaac curl /saml/service-providers --insecure
+    
+.... 
+RESPONSE BODY:
+[
+  {
+    "config": "{\"metaDataLocation\": .... }",
+    "id": "0679dca3-0461-4af9-b513-7c114b6f9110",   # 해제할 Service Provider ID
+    "entityId": "http://xx.xxx.xxx.xx:32710/auth/realms/container-platform-realm",
+    "name": "paas-ta-container-platform-saml-sp",
+    "version": 0,
+    "created": 1639447555314,
+    "lastModified": 1639447555314,
+    "active": true,
+    "identityZoneId": "uaa"
+  }
+....    
+]
+```    
+
+<br>
+    
+해제할 **Service Provider ID** 조회 후 인증 구성 해제 스크립트를 실행한다.
+
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
+$ chmod +x uninstall-service-provider.sh
+$ ./uninstall-container-platform-portal.sh {Service_Provider_ID}
+```
+    
+```    
+$ ./uninstall-container-platform-portal.sh 0679dca3-0461-4af9-b513-7c114b6f9110
+....  
+Are you sure you want to delete this service provider? <y/n> y
+DELETE https://uaa.13.125.147.203.nip.io/saml/service-providers/0679dca3-0461-4af9-b513-7c114b6f9110
+....    
+```
+    
 <br>
     
 ## <div id='5'>5. 컨테이너 플랫폼 포털 서비스 브로커

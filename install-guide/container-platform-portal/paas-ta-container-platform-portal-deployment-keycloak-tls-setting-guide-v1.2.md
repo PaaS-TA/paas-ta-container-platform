@@ -6,77 +6,80 @@
 
 1. [문서 개요](#1)  
     1.1. [목적](#1.1)  
-    1.2. [범위](#1.2)  
-    1.3. [시스템 구성도](#1.3)  
-    1.4. [참고 자료](#1.4)  
 
 2. [Keycloak TLS 설정](#2)  
-    2.1. [컨테이너 플랫폼 포털 Deployment 파일 변경](#2.1)  
+    2.1. [TLS 인증서 파일 준비](#2.1)  
+    2.2. [Dockerfile 내 인증서 파일 경로 추가 ](#2.2)   
+    2.3. [Keycloak values.yaml 파일 수정](#2.3)   
+    2.4. [컨테이너 플랫폼 포털 변수 파일 수정](#2.4)   
+
+3. [(서비스형 배포) 사용자 인증 서비스 구성 변경](#3)  
+    3.1. [사용자 인증 구성 변수 값 변경 ](#3.1)  
 
 <br>
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(컨테이너 플랫폼 단독 배포 형 포털 설치 가이드)는 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 포털 배포 시 Keyclaok TLS 설정 방법을 기술하였다.
-<br>
-
-### <div id='1.2'>1.2. 범위
-설치 범위는 Kubernetes Cluster 배포를 기준으로 작성하였다.
-
-<br>
-
-### <div id='1.3'>1.3. 시스템 구성도
-<p align="center"><img src="images-v1.2/cp-001.png"></p>    
-
-시스템 구성은 **Kubernetes Cluster(Master, Worker)** 환경과 데이터 관리를 위한 **네트워크 파일 시스템(NFS)** 스토리지 서버로 구성되어 있다. Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 포털 이미지 및 Helm Chart를 관리하는 **Harbor**, 컨테이너 플랫폼 포털 사용자 인증을 관리하는 **Keycloak**, 컨테이너 플랫폼 포털 메타 데이터를 관리하는 **MariaDB(RDBMS)** 등 미들웨어 환경을 컨테이너로 제공한다. 총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, NFS Server : 1개**가 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포하는 내용이다. **네트워크 파일 시스템(NFS)** 은 컨테이너플랫폼에서 기본으로 제공하는 스토리지로 사용자 환경에 따라 다양한 종류의 스토리지를 사용할 수 있다.  
-
-<br>    
-
-### <div id='1.4'>1.4. 참고 자료
-> https://kubernetes.io/ko/docs<br>
-> https://goharbor.io/docs<br>
-> https://www.keycloak.org/documentation
-
-<br>
-
+본 문서(Keycloak TLS 설정 가이드)는 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 포털 배포 시 Keycloak TLS 설정 방법을 기술하였다.
+<br><br>
 
 ## <div id='2'>2. Keycloak TLS 설정
 본 가이드는 컨테이너 플랫폼 포털 배포 전 설정이 진행되어야 한다.
-단독형 배포 포털 설치 가이드, 서비스형 배포 포털 설치 가이드 본문의 **3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드** 이후 설정 변경을 진행한다.
+컨테이너 플랫폼 포털 단독형 배포 설치 가이드, 서비스형 배포 설치 가이드 본문의 **[3.2.2. 컨테이너 플랫폼 포털 변수 정의]** 실행 전 작업한다.
 
-### <div id='2.1'>2.1. 컨테이너 플랫폼 포털 Deployment 파일 변경
-컨테이너 플랫폼 포털 배포 전 TLS 인증서 파일 (ex: tls.key, tls.crt)이 사전에 준비되어야 한다.
-Keycloak 관련 설정 변경 후 포털 설치 가이드의 **3.2.2. 컨테이너 플랫폼 포털 변수 정의** 과정을 진행한다.
+### <div id='2.1'>2.1. TLS 인증서 파일 준비
+컨테이너 플랫폼 포털 배포 전 TLS 인증서 파일 (ex: tls.key, tls.crt)이 사전에 준비되어야 한다.<br>
+- 컨테이너 플랫폼 포털 Deployment 파일 **keycloak_orig** 디렉토리 내에 위치 필요
+- 인증서 파일 명은 **tls.key**, **tls.crt** 로 변경 필요
 
-- KeyCloak Dockerfile 내 인증서 파일 복사를 추가한다.
+> `Example`
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak
+ls ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/ssl-key
+tls.crt  tls.key
+```
 
+<br>
+    
+### <div id='2.2'>2.2. Dockerfile 내 인증서 파일 경로 추가 
+Keycloak Dockerfile 내 TLS 인증서 파일 경로를 추가한다.
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig
 $ vi Dockerfile
 ```
-
+    
 ```
-### TLS_FILE_PATH : TLS 인증서 파일이 위치한 Master Node 내 디렉토리 경로
-
+# TLS_FILE_PATH : TLS 인증서 파일이 위치한 Deployment 파일 keycloak_orig 디렉토리 내 인증서 파일 경로
+    
 ...
 COPY {TLS_FILE_PATH}/* /etc/x509/https/
 ...
 ```
-
-- 컨테이너 플랫폼 포털 Keycloak 변수를 수정한다.
+    
+> `Example`
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/values
+...
+COPY ssl-key/* /etc/x509/https/
+COPY container-platform/ /opt/jboss/keycloak/themes/container-platform/
+...
+```    
+    
+<br>
+    
+### <div id='2.3'>2.3. Keycloak values.yaml 파일 수정    
+Keycloak values.yaml 파일 내 아래 내용을 수정한다.
 
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/values_orig
 $ vi paas-ta-container-platform-keycloak-values.yaml
 ```
 
 ```
-## Service의 targetPort를 8443으로 변경하여 https로 접속
+# service.targetPort 값을 8443으로 변경 (https로 접속)
 
 ...
 service:
-  type: NodePort
-  protocol: TCP
+  type: {SERVICE_TYPE}
+  protocol: {SERVICE_PROTOCOL}
   port: 8080
   https:
     port: 8443
@@ -85,26 +88,46 @@ service:
 ...
 ```
 
-- 컨테이너 플랫폼 운영자 포털, 사용자 포털, 브로커 변수를 수정한다.
+<br>
+    
+### <div id='2.4'>2.4. 컨테이너 플랫폼 포털 변수 파일 수정
+컨테이너 플랫폼 포털 변수 파일 내 아래 내용을 수정한다.
 ```
-## 각 yaml 파일에 아래 url 정보를 모두 수정
-
-$ vi paas-ta-container-platform-admin-service-broker-values.yaml
-$ vi paas-ta-container-platform-user-service-broker-values.yaml
-$ vi paas-ta-container-platform-webadmin-values.yaml
-$ vi paas-ta-container-platform-webuser-values.yaml
+$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
+$ vi container-platform-portal-vars.sh    
+```    
 ```
-
+# KEYCLOAK_URL 값 http -> https 로 변경 
+# Domain으로 nip.io를 사용하는 경우 아래와 같이 변경
+    
+....  
+# KEYCLOAK    
+KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http:\/\/, if apply TLS, https:\/\/)
+....     
 ```
-## url 정보를 http > https로 수정
-## DOMAIN_NAME : TLS 인증서에 적용된 Domain Name 정보로 수정
-
-...
-  keycloak:
-    url: "https://{DOMAIN_NAME}" (수정)
-...
-```
-
+<br>
+    
+위 항목들의 **Keycloak TLS 설정**이 완료되면, 컨테이너 플랫폼 포털 단독형 배포 설치 혹은 서비스형 배포 설치 가이드 본문의 **[3.2.2. 컨테이너 플랫폼 포털 변수 정의]** 부터 진행을 시작한다.
 <br>
 
+
+<br><br> 
+    
+## <div id='3'>3. (서비스형 배포) 사용자 인증 서비스 구성 변경 
+컨테이너 플랫폼 포털 서비스형 배포 시, Keycloak TLS 설정이 적용된 경우 사용자 인증 구성 변수 값 변경이 필요하다.
+    
+### <div id='3.1'>3.1. 사용자 인증 구성 변수 값 변경 
+ UAA 서비스와 Keycloak 서비스 인증 구성 변수 파일 내 **Keycloak URL** 값을 아래와 같이 변경한다.
+    
+```
+# KEYCLOAK_URL 값 http -> https 로 변경 
+# Domain으로 nip.io를 사용하는 경우 아래와 같이 변경   
+    
+....     
+# KEYCLOAK
+KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http://, if apply TLS, https://)  
+.... 
+```
+<br>
+    
 ### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](/install-guide/Readme.md) > Keycloak TLS 설정 가이드

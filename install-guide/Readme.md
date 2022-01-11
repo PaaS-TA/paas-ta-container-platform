@@ -7,7 +7,7 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)  
-  + [Keycloak TLS 설정 가이드](container-platform-portal\paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
+  + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
@@ -20,7 +20,7 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)
-  + [Keycloak TLS 설정 가이드](container-platform-portal\paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
+  + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)   
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
@@ -33,7 +33,7 @@
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/edge)
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md)  
-  + [Keycloak TLS 설정 가이드](container-platform-portal\paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
+  + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
