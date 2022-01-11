@@ -20,6 +20,7 @@
     3.2.1. [컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드](#3.2.1)  
     3.2.2. [컨테이너 플랫폼 소스 컨트롤 변수 정의](#3.2.2)    
     3.2.3. [컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행](#3.2.3)    
+    3.2.4. [(참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제](#3.2.4)    
 
 4. [컨테이너 플랫폼 소스 컨트롤 접속](#4)      
     4.1. [컨테이너 플랫폼 소스 컨트롤 관리자 로그인](#4.1)      
@@ -105,10 +106,10 @@ $ tar xvfz paas-ta-container-platform-source-control-deployment.tar.gz
 
 - Deployment 파일 디렉토리 구성
 ```
-├── script     # 컨테이너 플랫폼 소스 컨트롤 배포 관련 변수 및 스크립트 파일 위치
-├── images     # 컨테이너 플랫폼 소스 컨트롤 이미지 파일 위치
-├── charts     # 컨테이너 플랫폼 소스 컨트롤 Helm Charts 파일 위치
-├── values     # 컨테이너 플랫폼 소스 컨트롤 Helm Charts values.yaml 파일 위치 
+├── script          # 컨테이너 플랫폼 소스 컨트롤 배포 관련 변수 및 스크립트 파일 위치
+├── images          # 컨테이너 플랫폼 소스 컨트롤 이미지 파일 위치
+├── charts          # 컨테이너 플랫폼 소스 컨트롤 Helm Charts 파일 위치
+├── values_orig     # 컨테이너 플랫폼 소스 컨트롤 Helm Charts values.yaml 원본 파일 위치 
 ```
 
 <br>
@@ -137,6 +138,23 @@ PROVIDER_TYPE="standalone"
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 소스 컨트롤 제공 타입 입력 <br>
    + 본 가이드는 단독 배포 설치 가이드로 **'standalone'** 값 입력 필요
 <br>    
+
+:bulb: Keycloak 기본 배포 방식은 **HTTP**이며 인증서를 통한 **HTTPS**를 설정되어 있는 경우
+> [Keycloak TLS 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md)
+
+컨테이너 플랫폼 소스 컨트롤 변수 파일 내 아래 내용을 수정한다.
+```
+$ vi container-platform-source-control-vars.sh    
+```    
+```
+# KEYCLOAK_URL 값 http -> https 로 변경 
+# Domain으로 nip.io를 사용하는 경우 아래와 같이 변경
+    
+....  
+# KEYCLOAK    
+KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http:\/\/, if apply TLS, https:\/\/)
+....     
+```
 
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행
 컨테이너 플랫폼 소스 컨트롤 배포를 위한 배포 스크립트를 실행한다.
@@ -194,6 +212,31 @@ replicaset.apps/container-platform-source-control-ui-deployment-55dc694d8c      
 ```    
 
 <br>
+
+#### <div id='3.2.4'>3.2.4. (참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제
+배포된 컨테이너 플랫폼 소스 컨트롤 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
+
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-source-control-deployment/script
+$ chmod +x uninstall-container-platform-source-control.sh
+$ ./uninstall-container-platform-source-control.sh
+
+```
+```
+...
+
+service "container-platform-source-control-api-service" deleted
+service "container-platform-source-control-manager-service" deleted
+service "container-platform-source-control-ui-service" deleted
+release "paas-ta-container-platform-source-control-api" uninstalled
+release "paas-ta-container-platform-source-control-manager" uninstalled
+release "paas-ta-container-platform-source-control-ui" uninstalled
+...
+...
+namespace "paas-ta-container-platform-source-control" deleted
+...
+...
+```
 
 ## <div id='4'>4. 컨테이너 플랫폼 소스 컨트롤 접속  
 컨테이너 플랫폼 소스 컨트롤 페이지는 아래 주소로 접속 가능하다.<br>
