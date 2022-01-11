@@ -533,7 +533,7 @@ UAA 서비스와 Keycloak 서비스 인증 구성 해제를 원하는 경우 아
    
 ##### 해제할 Service Provider ID 조회
 UAAC Service Providers 조회 후 **RESPONSE BODY** 결과 내 아래 조건을 가진 **Service Provider ID**를 조회한다.
-- `entityId :http://{K8S_MASTER_NODE_IP}:32710/auth/realms/container-platform-realm` <br>
+- `entityId : http://{K8S_MASTER_NODE_IP}:32710/auth/realms/container-platform-realm` <br>
 - `name : paas-ta-container-platform-saml-sp` <br>
 
 ```  
