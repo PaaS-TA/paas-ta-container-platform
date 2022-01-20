@@ -19,7 +19,8 @@
     3.2. [컨테이너 플랫폼 포털 배포](#3.2)  
     3.2.1. [컨테이너 플랫폼 포털 Deployment 파일 다운로드](#3.2.1)  
     3.2.2. [컨테이너 플랫폼 포털 변수 정의](#3.2.2)    
-    3.2.3. [컨테이너 플랫폼 포털 배포 스크립트 실행](#3.2.3)    
+    3.2.3. [컨테이너 플랫폼 포털 배포 스크립트 실행](#3.2.3)  
+    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4) 
 
 4. [컨테이너 플랫폼 운영자/사용자 포털 접속](#4)      
     4.1. [컨테이너 플랫폼 운영자 포털 로그인](#4.1)      
@@ -96,7 +97,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 ## <div id='3'>3. 컨테이너 플랫폼 포털 배포
 
 ### <div id='3.1'>3.1. CRI-O insecure-registry 설정
-컨테이너 플랫폼 포털 배포는 Private Repository(Harbor) 배포를 포함하고 있다. Private Repository에 컨테이너 플랫폼 포털 관련 이미지 및 패키지 파일 업로드 그리고 http 접속 설정을 위해 배포 전 Kubernetes **Master Node, Worker Node** 내 podman 설치 및 config 파일에 'insecure-registries' 설정을 진행한다.
+컨테이너 플랫폼 포털 배포는 Private Repository(Harbor) 배포를 포함하고 있다. Private Repository에 컨테이너 플랫폼 포털 관련 이미지 및 패키지 파일 업로드 그리고 HTTP 접속 설정을 위해 배포 전 Kubernetes **Master Node, Worker Node** 내 podman 설치 및 config 파일에 'insecure-registries' 설정을 진행한다.
 
 - **:bulb: Master Node, Worker Node에 모두 설정 추가 필요**
 - **{K8S_MASTER_NODE_IP} 값은 Kubernetes Master Node Public IP 입력**
@@ -175,11 +176,11 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 
 - Deployment 파일 디렉토리 구성
 ```
-├── script     # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
-├── images     # 컨테이너 플랫폼 포털 이미지 파일 위치
-├── charts     # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
-├── values     # 컨테이너 플랫폼 포털 Helm Charts values.yaml 파일 위치
-└── keycloak   # 컨테이너 플랫폼 포털 사용자 인증 관리를 위한 Keycloak 배포 관련 파일 위치
+├── script          # 컨테이너 플랫폼 포털 배포 관련 변수 및 스크립트 파일 위치
+├── images          # 컨테이너 플랫폼 포털 이미지 파일 위치
+├── charts          # 컨테이너 플랫폼 포털 Helm Charts 파일 위치
+├── values_orig     # 컨테이너 플랫폼 포털 Helm Charts values.yaml 파일 위치
+└── keycloak_orig   # 컨테이너 플랫폼 포털 사용자 인증 관리를 위한 Keycloak 배포 관련 파일 위치
 ```
 
 <br>
@@ -187,6 +188,11 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 #### <div id='3.2.2'>3.2.2. 컨테이너 플랫폼 포털 변수 정의
 컨테이너 플랫폼 포털을 배포하기 전 변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
 
+:bulb: Keycloak 기본 배포 방식은 **HTTP**이며 인증서를 통한 **HTTPS**를 설정하고자 하는 경우 아래 가이드를 참조하여 선처리한다.
+> [Keycloak TLS 설정](paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md#2-keycloak-tls-설정)       
+
+<br>
+    
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
 $ vi container-platform-portal-vars.sh
@@ -215,8 +221,10 @@ PROVIDER_TYPE="standalone"
    + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
    + 본 가이드는 포털 단독 배포 형 설치 가이드로 **'standalone'** 값 입력 필요
-<br>    
 
+<br>
+
+    
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 포털 배포 스크립트 실행
 컨테이너 플랫폼 포털 배포를 위한 배포 스크립트를 실행한다.
 
@@ -363,6 +371,39 @@ replicaset.apps/container-platform-webuser-deployment-d4755ccf7       1         
 ```    
 
 <br>
+
+#### <div id='3.2.4'>3.2.4. (참조) 컨테이너 플랫폼 포털 리소스 삭제
+배포된 컨테이너 플랫폼 포털 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
+:loudspeaker: (주의) 컨테이너 플랫폼 포털이 운영되는 상태에서 해당 스크립트 실행 시, **운영에 필요한 리소스가 모두 삭제**되므로 주의가 필요하다.<br>
+
+```
+$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
+$ chmod +x uninstall-container-platform-portal.sh
+$ ./uninstall-container-platform-portal.sh
+```
+```    
+Are you sure you want to delete the container platform portal? <y/n> y
+....
+release "paas-ta-container-platform-harbor" uninstalled
+release "paas-ta-container-platform-mariadb" uninstalled
+release "paas-ta-container-platform-keycloak" uninstalled
+release "paas-ta-container-platform-nfs-storageclass" uninstalled
+release "paas-ta-container-platform-api" uninstalled
+release "paas-ta-container-platform-common-api" uninstalled
+release "paas-ta-container-platform-webadmin" uninstalled
+release "paas-ta-container-platform-webuser" uninstalled
+namespace "harbor" deleted
+namespace "mariadb" deleted
+namespace "keycloak" deleted
+namespace "nfs-storageclass" deleted
+namespace "paas-ta-container-platform-portal" deleted
+"paas-ta-container-platform-repository" has been removed from your repositories
+Uninstalled plugin: cm-push
+....    
+```
+
+<br>    
+    
 
 ## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 접속  
 컨테이너 플랫폼 운영자/사용자 포털은 아래 주소로 접속 가능하다.<br>
