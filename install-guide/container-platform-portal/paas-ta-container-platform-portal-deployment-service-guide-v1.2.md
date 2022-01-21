@@ -13,14 +13,14 @@
 2. [Prerequisite](#2)  
     2.1. [방화벽 정보](#2.1)  
     2.2. [NFS Server 설치](#2.2)    
-     
+
 3. [컨테이너 플랫폼 포털 배포](#3)  
     3.1. [CRI-O insecure-registry 설정](#3.1)  
     3.2. [컨테이너 플랫폼 포털 배포](#3.2)  
     3.2.1. [컨테이너 플랫폼 포털 Deployment 파일 다운로드](#3.2.1)  
     3.2.2. [컨테이너 플랫폼 포털 변수 정의](#3.2.2)    
     3.2.3. [컨테이너 플랫폼 포털 배포 스크립트 실행](#3.2.3)    
-    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4) 
+    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4)
 
 4. [컨테이너 플랫폼 포털 사용자 인증 서비스 구성](#4)      
     4.1. [컨테이너 플랫폼 포털 사용자 인증 구성 Deployment 다운로드](#4.1)      
@@ -31,12 +31,12 @@
 5. [컨테이너 플랫폼 포털 서비스 브로커](#5)       
     5.1. [컨테이너 플랫폼 포털 서비스 브로커 등록](#5.1)  
     5.2. [컨테이너 플랫폼 포털 서비스 조회 설정](#5.2)    
-    5.3. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.3) 
+    5.3. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.3)
 
 6. [컨네이너 플랫폼 포털 참고](#6)  
     6.1. [운영자 Cluster Role Token 생성](#6.1)    
     6.2. [Kubernetes 리소스 생성 시 주의사항](#6.2)      
-   
+
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
@@ -50,20 +50,20 @@
 
 ### <div id='1.3'>1.3. 시스템 구성도
 <p align="center"><img src="images-v1.2/cp-001.png"></p>    
-    
+
 시스템 구성은 **Kubernetes Cluster(Master, Worker)** 환경과 데이터 관리를 위한 **네트워크 파일 시스템(NFS)** 스토리지 서버로 구성되어 있다. Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 포털 이미지 및 Helm Chart를 관리하는 **Harbor**, 컨테이너 플랫폼 포털 사용자 인증을 관리하는 **Keycloak**, 컨테이너 플랫폼 포털 메타 데이터를 관리하는 **MariaDB(RDBMS)** 등 미들웨어 환경을 컨테이너로 제공한다. 총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, NFS Server : 1개**가 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포하는 내용이다. **네트워크 파일 시스템(NFS)** 은 컨테이너플랫폼에서 기본으로 제공하는 스토리지로 사용자 환경에 따라 다양한 종류의 스토리지를 사용할 수 있다.  
-        
+
 <br>    
 
 ### <div id='1.4'>1.4. 참고 자료
 > https://kubernetes.io/ko/docs<br>
 > https://goharbor.io/docs<br>
 > https://www.keycloak.org/documentation
-    
+
 <br>
 
 ## <div id='2'>2. Prerequisite
-본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다. 
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다.
 
 ### <div id='2.1'>2.1. 방화벽 정보
 IaaS Security Group의 열어줘야할 Port를 설정한다.
@@ -72,7 +72,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
+| TCP | 111 | NFS PortMapper |  
 | TCP | 179 | Calio BGP Network |  
+| TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | Kubernetes API Server |  
 | TCP | 10250 | Kubelet API |  
@@ -85,7 +87,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
-| TCP | 179 | Calio BGP network |
+| TCP | 111 | NFS PortMapper |  
+| TCP | 179 | Calio BGP network |  
+| TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 30000-32767 | NodePort Services |  
@@ -97,9 +101,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 컨테이너 플랫폼 포털 서비스에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
 > [NFS Server 설치](../nfs-server-install-guide.md)      
-    
+
 <br>
-    
+
 ## <div id='3'>3. 컨테이너 플랫폼 포털 배포
 
 ### <div id='3.1'>3.1. CRI-O insecure-registry 설정
@@ -107,9 +111,9 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 
 - **:bulb: Master Node, Worker Node에 모두 설정 추가 필요**
 - **{K8S_MASTER_NODE_IP} 값은 Kubernetes Master Node Public IP 입력**
-    
+
 #### 1. podman 설치
-    
+
 ```
 $ sudo apt-get update
 $ sudo apt-get install -y podman
@@ -118,10 +122,10 @@ $ sudo apt-get install -y podman
 #### 2. crio.conf 내 'insecure-registries' 설정
 ```
 $ sudo vi /etc/crio/crio.conf
-``` 
-    
 ```
-# 'insecure_registries' 항목에 "{K8S_MASTER_NODE_IP}:30002" 추가 
+
+```
+# 'insecure_registries' 항목에 "{K8S_MASTER_NODE_IP}:30002" 추가
 ...    
 insecure_registries = [
  "xx.xxx.xxx.xx:30002"
@@ -157,7 +161,7 @@ $ sudo systemctl restart podman
 <br>
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 포털 배포
-    
+
 #### <div id='3.2.1'>3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드
 컨테이너 플랫폼 포털 배포를 위해 컨테이너 플랫폼 포털 Deployment 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
@@ -227,7 +231,7 @@ PROVIDER_TYPE="service"
    + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
    + 본 가이드는 포털 PaaS-TA 서비스 형 배포 설치 가이드로 **'service'** 값 입력 필요
-    
+
 <br>    
 
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 포털 배포 스크립트 실행
@@ -238,7 +242,7 @@ $ chmod +x deploy-container-platform-portal.sh
 $ ./deploy-container-platform-portal.sh
 ```
 <br>
-    
+
 컨테이너 플랫폼 포털 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
 리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다.
 
@@ -255,7 +259,7 @@ deployment.apps/nfs-pod-provisioner   1/1     1            1           3m24s
 NAME                                             DESIRED   CURRENT   READY   AGE
 replicaset.apps/nfs-pod-provisioner-7fff84f48f   1         1         1       3m24s
 ```
-    
+
 - **Harbor 리소스 조회**
 >`$ kubectl get all -n harbor`   
 ```
@@ -419,9 +423,9 @@ Uninstalled plugin: cm-push
 <br>   
 
 ## <div id='4'>4. 컨테이너 플랫폼 포털 사용자 인증 서비스 구성
-컨테이너 플랫폼 포털 사용자 인증은 Keycloak 서비스를 통해 관리된다. PaaS-TA 포털의 사용자 인증 서비스 UAA의 사용자 계정으로 컨테이너 플랫폼 포털 접속을 위해 
+컨테이너 플랫폼 포털 사용자 인증은 Keycloak 서비스를 통해 관리된다. PaaS-TA 포털의 사용자 인증 서비스 UAA의 사용자 계정으로 컨테이너 플랫폼 포털 접속을 위해
 UAA 서비스를 ID 제공자(Identity Provider)로, Keycloak 서비스를 서비스 제공자(Service Provider)로 구성하는 단계가 필요하다.
-        
+
 #### <div id='4.1'>4.1. 컨테이너 플랫폼 포털 사용자 인증 구성 Deployment 다운로드
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 Deployment 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 :bulb: 해당 내용은 PaaS-TA 포털이 설치된 **BOSH Inception**에서 진행한다.
@@ -453,7 +457,7 @@ UAA 서비스와 Keycloak 서비스 인증 구성을 위한 변수 값 정의가
 > [(서비스형 배포) 사용자 인증 서비스 구성 변경](paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md#3-서비스형-배포-사용자-인증-서비스-구성-변경)       
 
 <br>
-    
+
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ vi container-platform-saml-vars.sh
@@ -474,8 +478,8 @@ UAA_CLIENT_ADMIN_SECRET="admin-secret"                            # UAA Admin Cl
 - **UAA_CLIENT_ADMIN_ID** <br>UAAC Admin Client Admin ID 입력 (기본 값 : admin)<br><br>
 - **UAA_CLIENT_ADMIN_SECRET** <br>UAAC Admin Client에 접근하기 위한 Secret 변수 (기본 값 : admin-secret)<br><br>
 
-<br> 
-        
+<br>
+
 #### <div id='4.3'>4.3. 컨테이너 플랫폼 포털 사용자 인증 구성 스크립트 실행
 UAA 서비스와 Keycloak 서비스 인증 구성을 위한 스크립트를 실행한다.
 
@@ -485,7 +489,7 @@ $ ./create-service-provider.sh
 ```
 
 <br>
-    
+
 구성이 정상적으로 처리되었는지 확인한다. (**RESPONSE BODY 내 결과 확인**)
 - UAAC Service Providers 조회   
 >`$ uaac curl /saml/service-providers --insecure`     
@@ -530,7 +534,7 @@ RESPONSE BODY:
 UAA 서비스와 Keycloak 서비스 인증 구성 해제를 원하는 경우 아래 스크립트를 실행한다.<br>
 :loudspeaker: (주의) 컨테이너 플랫폼 포털이 운영되는 상태에서 해당 스크립트 실행 시, 사용자 인증 구성이 불가하므로 주의가 필요하다.<br>
 
-   
+
 ##### 해제할 Service Provider ID 조회
 UAAC Service Providers 조회 후 **RESPONSE BODY** 결과 내 아래 조건을 가진 **Service Provider ID**를 조회한다.
 - `entityId : http://{K8S_MASTER_NODE_IP}:32710/auth/realms/container-platform-realm` <br>
@@ -538,8 +542,8 @@ UAAC Service Providers 조회 후 **RESPONSE BODY** 결과 내 아래 조건을 
 
 ```  
 $ uaac curl /saml/service-providers --insecure
-    
-.... 
+
+....
 RESPONSE BODY:
 [
   {
@@ -558,7 +562,7 @@ RESPONSE BODY:
 ```    
 
 <br>
-    
+
 해제할 **Service Provider ID** 조회 후 인증 구성 해제 스크립트를 실행한다.
 
 ```
@@ -566,7 +570,7 @@ $ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
 $ chmod +x uninstall-service-provider.sh
 $ ./uninstall-service-provider.sh {Service_Provider_ID}
 ```
-    
+
 ```    
 $ ./uninstall-service-provider.sh 0679dca3-0461-4af9-b513-7c114b6f9110
 ....  
@@ -574,9 +578,9 @@ Are you sure you want to delete this service provider? <y/n> y
 DELETE https://uaa.13.125.147.203.nip.io/saml/service-providers/0679dca3-0461-4af9-b513-7c114b6f9110
 ....    
 ```
-    
+
 <br>
-    
+
 ## <div id='5'>5. 컨테이너 플랫폼 포털 서비스 브로커
 컨테이너 플랫폼 PaaS-TA 서비스 형 포털로 설치하는 경우 CF와 Kubernetes에 배포된 컨테이너 플랫폼 포털 서비스 연동을 위해서 브로커를 등록해 주어야 한다.
 PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-TA 사용자 포털을 통해 서비스를 신청하여 사용할 수 있다.
@@ -585,7 +589,7 @@ PaaS-TA 운영자 포털을 통해 서비스를 등록하고 공개하면, PaaS-
 서비스 브로커 등록 시 개방형 클라우드 플랫폼에서 서비스 브로커를 등록할 수 있는 사용자로 로그인이 되어있어야 한다.
 
 ##### 서비스 브로커 목록을 확인한다.
->`$ cf service-brokers` 
+>`$ cf service-brokers`
 ```
 $ cf service-brokers
 Getting service brokers as admin...
@@ -593,8 +597,8 @@ Getting service brokers as admin...
 name   url
 No service brokers found
 ```
-    
-    
+
+
 ##### 컨테이너 플랫폼 포털 서비스 브로커를 등록한다.
 >`$ cf create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}`
 
@@ -603,7 +607,7 @@ No service brokers found
 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL<br>
 
 
-###### 컨테이너 플랫폼 운영자 포털 서비스 브로커 등록 
+###### 컨테이너 플랫폼 운영자 포털 서비스 브로커 등록
 >`$ cf create-service-broker container-platform-admin-portal-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:32704`   
 ###### 컨테이너 플랫폼 사용자 포털 서비스 브로커 등록     
 >`$ cf create-service-broker container-platform-user-portal-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:32705`
@@ -618,9 +622,9 @@ Creating service broker container-platform-user-portal-service-broker as admin..
 OK
 ```    
 
-    
+
 ##### 등록된 컨테이너 플랫폼 포털 서비스 브로커를 확인한다.
->`$ cf service-brokers` 
+>`$ cf service-brokers`
 ```
 $ cf service-brokers
 Getting service brokers as admin...
@@ -629,7 +633,7 @@ container-platform-admin-portal-service-broker   http://xx.xxx.xxx.xx:32704
 container-platform-user-portal-service-broker    http://xx.xxx.xxx.xx:32705
 ```
 
-    
+
 ##### 접근 가능한 서비스 목록을 확인한다.
 >`$ cf service-access`     
 ```
@@ -647,7 +651,7 @@ broker: container-platform-user-portal-service-broker
    container-platform-user-portal-service-broker   Small      none
 ```
 
-        
+
 ##### 특정 조직에 해당 서비스 접근 허용을 할당한다.
 
 ###### 컨테이너 플랫폼 운영자 포털 서비스 접근 허용 할당  
@@ -665,9 +669,9 @@ Enabling access to all plans of service offering container-platform-user-portal-
 OK
 ```
 
-        
+
 ##### 접근 가능한 서비스 목록을 확인한다.
->`$ cf service-access` 
+>`$ cf service-access`
 
 ```
 $ cf service-access
@@ -685,7 +689,7 @@ broker: container-platform-user-portal-service-broker
 ```
 
 <br>
-    
+
 ### <div id='5.2'>5.2. 컨테이너 플랫폼 포털 서비스 조회 설정
 해당 설정은 PaaS-TA 포털에서 컨테이너 플랫폼 포털 서비스를 조회하고 신청할 수 있도록 하기 위한 설정이다.
 
@@ -698,31 +702,31 @@ broker: container-platform-user-portal-service-broker
 
 ##### Container Platform Admin Portal 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
 >`'서비스' 항목 : 'container-platform-admin-portal-service-broker' 로 선택` <br>
->`'공개' 항목 : 'Y' 로 체크` 
+>`'공개' 항목 : 'Y' 로 체크`
 
 ![image 009]
 
 ##### Container Platform User Portal 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
 >`'서비스' 항목 : 'container-platform-user-portal-service-broker' 로 선택` <br>
->`'공개' 항목 : 'Y' 로 체크` 
+>`'공개' 항목 : 'Y' 로 체크`
 
 ![image 010]    
 
 <br>
-    
-#### :bulb: 컨테이너 플랫폼 운영자 포털 서비스 신청 시 유의사항 
+
+#### :bulb: 컨테이너 플랫폼 운영자 포털 서비스 신청 시 유의사항
 - 컨테이너 플랫폼 운영자 포털 서비스의 경우 조직명 **'portal'** 조직에서만 신청 가능하다.
 - 컨테이너 플랫폼 운영자 포털 서비스는 전체 조직 내 한 조직에서만 신청 가능하며 이는 PaaS-TA Portal 배포 시 디폴트로 생성되는 조직 **'portal'** 로 지정하였다.
 - 서비스 신청 시 조직 **'portal'** 이 없는 경우 **'portal'** 명으로 조직 생성 후 서비스 신청이 필요하다.
 
-<br> 
-    
->`컨테이너 플랫폼 운영자 포털 서비스 신청 시 조직 명 'portal' 확인 후 신청 필요`     
-    
-![image 011]       
-    
 <br>
-    
+
+>`컨테이너 플랫폼 운영자 포털 서비스 신청 시 조직 명 'portal' 확인 후 신청 필요`     
+
+![image 011]       
+
+<br>
+
 ### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
   + [컨테이너 플랫폼 운영자 포털 사용 가이드](../../use-guide/portal/container-platform-admin-portal-guide.md)    
