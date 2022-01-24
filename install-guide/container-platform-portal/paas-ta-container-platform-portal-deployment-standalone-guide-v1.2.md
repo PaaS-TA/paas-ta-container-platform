@@ -13,14 +13,14 @@
 2. [Prerequisite](#2)  
     2.1. [방화벽 정보](#2.1)  
     2.2. [NFS Server 설치](#2.2)    
-     
+
 3. [컨테이너 플랫폼 포털 배포](#3)  
     3.1. [CRI-O insecure-registry 설정](#3.1)  
     3.2. [컨테이너 플랫폼 포털 배포](#3.2)  
     3.2.1. [컨테이너 플랫폼 포털 Deployment 파일 다운로드](#3.2.1)  
     3.2.2. [컨테이너 플랫폼 포털 변수 정의](#3.2.2)    
     3.2.3. [컨테이너 플랫폼 포털 배포 스크립트 실행](#3.2.3)  
-    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4) 
+    3.2.4. [(참조) 컨테이너 플랫폼 포털 리소스 삭제](#3.2.4)
 
 4. [컨테이너 플랫폼 운영자/사용자 포털 접속](#4)      
     4.1. [컨테이너 플랫폼 운영자 포털 로그인](#4.1)      
@@ -44,20 +44,20 @@
 
 ### <div id='1.3'>1.3. 시스템 구성도
 <p align="center"><img src="images-v1.2/cp-001.png"></p>    
-    
+
 시스템 구성은 **Kubernetes Cluster(Master, Worker)** 환경과 데이터 관리를 위한 **네트워크 파일 시스템(NFS)** 스토리지 서버로 구성되어 있다. Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 포털 이미지 및 Helm Chart를 관리하는 **Harbor**, 컨테이너 플랫폼 포털 사용자 인증을 관리하는 **Keycloak**, 컨테이너 플랫폼 포털 메타 데이터를 관리하는 **MariaDB(RDBMS)** 등 미들웨어 환경을 컨테이너로 제공한다. 총 필요한 VM 환경으로는 **Master Node VM: 1개, Worker Node VM: 1개 이상, NFS Server : 1개**가 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포하는 내용이다. **네트워크 파일 시스템(NFS)** 은 컨테이너플랫폼에서 기본으로 제공하는 스토리지로 사용자 환경에 따라 다양한 종류의 스토리지를 사용할 수 있다.  
-        
+
 <br>    
 
 ### <div id='1.4'>1.4. 참고 자료
 > https://kubernetes.io/ko/docs<br>
 > https://goharbor.io/docs<br>
 > https://www.keycloak.org/documentation
-    
+
 <br>
 
 ## <div id='2'>2. Prerequisite
-본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다. 
+본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다.
 
 ### <div id='2.1'>2.1. 방화벽 정보
 IaaS Security Group의 열어줘야할 Port를 설정한다.
@@ -66,7 +66,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
+| TCP | 111 | NFS PortMapper |  
 | TCP | 179 | Calio BGP Network |  
+| TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | Kubernetes API Server |  
 | TCP | 10250 | Kubelet API |  
@@ -79,7 +81,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
-| TCP | 179 | Calio BGP network |
+| TCP | 111 | NFS PortMapper |  
+| TCP | 179 | Calio BGP network |  
+| TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 30000-32767 | NodePort Services |  
@@ -91,9 +95,9 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 컨테이너 플랫폼 포털 서비스에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
 NFS Storage Server 설치는 아래 가이드를 참조한다.  
 > [NFS Server 설치](../nfs-server-install-guide.md)      
-    
+
 <br>
-    
+
 ## <div id='3'>3. 컨테이너 플랫폼 포털 배포
 
 ### <div id='3.1'>3.1. CRI-O insecure-registry 설정
@@ -101,9 +105,9 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 
 - **:bulb: Master Node, Worker Node에 모두 설정 추가 필요**
 - **{K8S_MASTER_NODE_IP} 값은 Kubernetes Master Node Public IP 입력**
-    
+
 #### 1. podman 설치
-    
+
 ```
 $ sudo apt-get update
 $ sudo apt-get install -y podman
@@ -112,10 +116,10 @@ $ sudo apt-get install -y podman
 #### 2. crio.conf 내 'insecure-registries' 설정
 ```
 $ sudo vi /etc/crio/crio.conf
-``` 
-    
 ```
-# 'insecure_registries' 항목에 "{K8S_MASTER_NODE_IP}:30002" 추가 
+
+```
+# 'insecure_registries' 항목에 "{K8S_MASTER_NODE_IP}:30002" 추가
 ...    
 insecure_registries = [
  "xx.xxx.xxx.xx:30002"
@@ -151,7 +155,7 @@ $ sudo systemctl restart podman
 <br>
 
 ### <div id='3.2'>3.2. 컨테이너 플랫폼 포털 배포
-    
+
 #### <div id='3.2.1'>3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드
 컨테이너 플랫폼 포털 배포를 위해 컨테이너 플랫폼 포털 Deployment 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
@@ -192,7 +196,7 @@ $ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
 > [Keycloak TLS 설정](paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide-v1.2.md#2-keycloak-tls-설정)       
 
 <br>
-    
+
 ```
 $ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
 $ vi container-platform-portal-vars.sh
@@ -224,7 +228,7 @@ PROVIDER_TYPE="standalone"
 
 <br>
 
-    
+
 #### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 포털 배포 스크립트 실행
 컨테이너 플랫폼 포털 배포를 위한 배포 스크립트를 실행한다.
 
@@ -233,11 +237,11 @@ $ chmod +x deploy-container-platform-portal.sh
 $ ./deploy-container-platform-portal.sh
 ```
 <br>
-    
+
 컨테이너 플랫폼 포털 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
 리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다.
 
-    
+
 - **NFS 리소스 조회**
 >`$ kubectl get all -n nfs-storageclass`  
 ```
@@ -251,7 +255,7 @@ deployment.apps/nfs-pod-provisioner   1/1     1            1           3m22s
 NAME                                             DESIRED   CURRENT   READY   AGE
 replicaset.apps/nfs-pod-provisioner-7f7c444487   1         1         1       3m22s
 ```
-    
+
 - **Harbor 리소스 조회**
 >`$ kubectl get all -n harbor`      
 ```
@@ -403,7 +407,7 @@ Uninstalled plugin: cm-push
 ```
 
 <br>    
-    
+
 
 ## <div id='4'>4. 컨테이너 플랫폼 운영자/사용자 포털 접속  
 컨테이너 플랫폼 운영자/사용자 포털은 아래 주소로 접속 가능하다.<br>
@@ -413,13 +417,13 @@ Uninstalled plugin: cm-push
 - 컨테이너 플랫폼 사용자포털 접속 URI : **http://{K8S_MASTER_NODE_IP}:32702** <br>
 
 <br>
-    
+
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 운영자 포털 로그인
 컨테이너 플랫폼 운영자 포털 접속 초기 정보는 아래와 같다.
 - http://{K8S_MASTER_NODE_IP}:32703에 접속한다.   
 - username : **admin** / password : **admin** 계정으로 컨테이너 플랫폼 운영자 포털에 로그인한다.
 ![image 002]
-    
+
 <br>    
 
 
@@ -428,7 +432,7 @@ Uninstalled plugin: cm-push
 - http://{K8S_MASTER_NODE_IP}:32702에 접속한다.
 - 하단의 'Register' 버튼을 클릭한다.
 ![image 003]
-    
+
 - 등록할 사용자 계정정보를 입력 후 'Register' 버튼을 클릭하여 컨테이너 플랫폼 사용자 포털에 회원가입한다.
 ![image 004]  
 
@@ -440,7 +444,7 @@ Namespace와 Role 할당은 [[4.3. 컨테이너 플랫폼 사용자/운영자 �
 - http://{K8S_MASTER_NODE_IP}:32702에 접속한다.
 - 회원가입을 통해 등록된 계정으로 컨테이너 플랫폼 사용자 포털에 로그인한다.
 ![image 006]
-    
+
 <br>    
 
 ### <div id='4.3'/>4.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드

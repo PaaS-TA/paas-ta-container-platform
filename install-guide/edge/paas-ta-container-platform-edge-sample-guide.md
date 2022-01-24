@@ -51,6 +51,9 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 Cloud 환경에 Kubernetes Cluster를 구성하였으며 Raspberry Pi를 이용하여 Edge Node를 추가하였다.
 Raspberry Pi에는 온습도 센서 (DHT11)를 연결, 구성하였다.
 
+Container Platform 포털 설치 진행 전 KubeEdge Sample을 배포하려면 별도로 Podman 설치를 진행해야한다. Podman 설치는 포털 설치 가이드의 **3.1. CRI-O insecure-registry 설정**을 참고한다.
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1
+
 <br>
 
 ### <div id='2.1'> 2.1. Web 기반 KubeEdge Counter Sample
@@ -140,6 +143,9 @@ status:
 
 - **Edge Node**에서 '$hw/events/device/counter/twin/update' 토픽을 구독하여 전달되는 데이터를 확인한다.
 ```
+## mosquitto_sub 명령어 사용을 위해서는 다음 패키지 설치를 진행한다.
+$ sudo apt install mosquitto-clients
+
 $ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 ```
 ```
@@ -193,6 +199,14 @@ $ kubectl apply -f instance.yaml
 
 - **Master Node**에서 Web Application, Counter Application을 배포한다.
 ```
+## deployment 내 nodeSelector 변경
+$ vi deployment.yaml
+
+...
+nodeSelector:
+  kubernetes.io/hostname: {{EDGE_NODE_NAME}} (변경)
+...
+
 $ kubectl apply -f deployment.yaml
 ```
 
@@ -222,6 +236,9 @@ status:
 
 - **Edge Node**에서 '$hw/events/device/temperature/twin/update' 토픽을 구독하여 전달되는 데이터를 확인한다.
 ```
+## mosquitto_sub 명령어 사용을 위해서는 다음 패키지 설치를 진행한다.
+$ sudo apt install mosquitto-clients
+
 $ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/temperature/twin/update' -p 1883
 ```
 ```

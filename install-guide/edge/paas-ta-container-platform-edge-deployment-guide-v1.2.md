@@ -88,7 +88,9 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
+| TCP | 111 | NFS PortMapper |  
 | TCP | 179 | Calio BGP Network |  
+| TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | kubernetes API Server |  
 | TCP | 9443 | cloudcore router port |  
@@ -107,7 +109,9 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
-| TCP | 179 | Calio BGP network |
+| TCP | 111 | NFS PortMapper |  
+| TCP | 179 | Calio BGP network |  
+| TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 30000-32767 | NodePort Services |  
@@ -117,7 +121,9 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
+| TCP | 111 | NFS PortMapper |  
 | TCP | 1883-1884 | eventBus mqttPort |  
+| TCP | 2049 | NFS |  
 | TCP | 10001 | edgeHub quic port |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
@@ -204,6 +210,9 @@ Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge Edge
 
 - **Edge Node**에서 CRI-O 설치를 진행한다.
 ```
+## 라즈베리파이 Reboot 이후 CRI-O 설치 진행 시 Root 권한으로 전환한다.
+$ sudo su -
+
 # cd paas-ta-container-platform-deployment/edge
 
 # source crio-install.sh
