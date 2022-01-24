@@ -210,6 +210,9 @@ Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge Edge
 
 - **Edge Node**에서 CRI-O 설치를 진행한다.
 ```
+## 라즈베리파이 Reboot 이후 CRI-O 설치 진행 시 Root 권한으로 전환한다.
+$ sudo su -
+
 # cd paas-ta-container-platform-deployment/edge
 
 # source crio-install.sh
