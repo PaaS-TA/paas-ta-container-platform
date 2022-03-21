@@ -161,7 +161,7 @@ $ sudo systemctl restart podman
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 포털 Deployment 파일 다운로드 :
-   [paas-ta-container-platform-portal-deployment.tar.gz](https://nextcloud.paas-ta.org/index.php/s/wYJ3wim3WCxG7Ed/download)
+   [paas-ta-container-platform-portal-deployment_v1.2.1.tar.gz](https://nextcloud.paas-ta.org/index.php/s/Fe7styBS7RFJ5wS/download)
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -169,13 +169,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wYJ3wim3WCxG7Ed/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Fe7styBS7RFJ5wS/download
 
 $ ls ~/workspace/container-platform
-  paas-ta-container-platform-portal-deployment.tar.gz
+  ...
+  paas-ta-container-platform-portal-deployment_v1.2.1.tar.gz
+  ...
 
 # Deployment 파일 압축 해제
-$ tar -xvf paas-ta-container-platform-portal-deployment.tar.gz
+$ tar -xvf paas-ta-container-platform-portal-deployment_v1.2.1.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성

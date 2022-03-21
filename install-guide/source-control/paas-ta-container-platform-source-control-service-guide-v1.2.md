@@ -85,7 +85,7 @@ Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-source-control-deployment.tar](https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We)  
+   [paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz](https://nextcloud.paas-ta.org/index.php/s/t7NqLbifbg6A2e9)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -93,14 +93,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/6WG9C29tjQGY8We/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/t7NqLbifbg6A2e9/download
 
 $ ls ~/workspace/container-platform
   ...
-  paas-ta-container-platform-source-control-deployment.tar.gz
+  paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz
   ...
+
 # Deployment 파일 압축 해제
-$ tar xvfz paas-ta-container-platform-source-control-deployment.tar.gz
+$ tar xvfz paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
