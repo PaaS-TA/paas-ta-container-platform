@@ -460,7 +460,7 @@ spec:
 추가 배포한 각 Edge Node의 CVE, CCE 취약점 개선을 진행한다.
 
 ```
-# source security.bin
+# ./security.bin
 ```
 
 ### <div id='2.10'> 2.10. KubeEdge 설치 확인
