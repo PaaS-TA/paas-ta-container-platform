@@ -15,13 +15,11 @@
     2.2. [컨테이너 플랫폼 포탈 설치](#2.2)  
     2.3. [클러스터 환경](#2.3)
         
-3. [컨테이너 플랫폼 파이프라인 배포](#3)  
-    3.1. [CRI-O insecure-registry 설정](#3.1)  
-    3.2. [컨테이너 플랫폼 파이프라인 배포](#3.2)  
-    3.2.1. [컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드](#3.2.1)  
-    3.2.2. [컨테이너 플랫폼 파이프라인 변수 정의](#3.2.2)    
-    3.2.3. [컨테이너 플랫폼 파이프라인 배포 스크립트 실행](#3.2.3)    
-    3.2.4. [(참조) 컨테이너 플랫폼 파이프라인 리소스 삭제](#3.2.4)    
+3. [컨테이너 플랫폼 파이프라인 배포](#3)      
+    3.1. [컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드](#3.1)    
+    3.2. [컨테이너 플랫폼 파이프라인 변수 정의](#3.2)    
+    3.3. [컨테이너 플랫폼 파이프라인 배포 스크립트 실행](#3.3)    
+    3.4. [(참조) 컨테이너 플랫폼 파이프라인 리소스 삭제](#3.4)    
 
 4. [컨테이너 플랫폼 파이프라인 접속](#4)      
     4.1. [컨테이너 플랫폼 파이프라인 관리자 로그인](#4.1)      
@@ -72,44 +70,35 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 컨테이너 플랫폼 배포를 위해서는 sonarqube, postgresql 등의 image를 public network에서 다운받기 때문에 **외부 네트워크 통신**이 가능한 환경에서 설치해야 한다. <br>
 컨테이너 플랫폼 파이프라인 설치 완료 시 idle 상태에서의 사용 resource는 다음과 같다.
 ```
-NAME                                                              CPU(cores)   MEMORY(bytes)
-container-platform-pipeline-api-deployment-5dcc5bd8c5-99vgp       2m           191Mi
-container-platform-pipeline-common-api-deployment-fbf44dc9tsrb8   2m           239Mi
-container-platform-pipeline-config-server-deployment-5555dhbtrn   2m           164Mi
-container-platform-pipeline-inspection-api-deployment-65f5gbrvw   2m           156Mi
-container-platform-pipeline-jenkins-deployment-66845767f9-gl8v6   2m           777Mi
-container-platform-pipeline-ui-deployment-5b68b494bf-8dbjf        1m           155Mi
-paas-ta-container-platform-postgresql-postgresql-0                5m           54Mi
-paas-ta-container-platform-sonarqube-sonarqube-5c799d8c97-2d6xg   10m          1577Mi
+NAME                                                     CPU(cores)   MEMORY(bytes)
+cp-pipeline-api-deployment-bb6f7bd46-nl4j4               1m           224Mi
+cp-pipeline-common-api-deployment-54c646c95c-87k5g       2m           255Mi
+cp-pipeline-config-server-deployment-78675b565d-8kxf9    2m           170Mi
+cp-pipeline-inspection-api-deployment-6bf9c4479d-d6xgb   1m           158Mi
+cp-pipeline-jenkins-deployment-779c6d7bc9-pn782          3m           1319Mi
+cp-pipeline-postgresql-postgresql-0                      4m           58Mi
+cp-pipeline-sonarqube-sonarqube-6d9c6b579f-2xkkw         7m           1744Mi
+cp-pipeline-ui-deployment-5db955b77b-snkpl               1m           337Mi
 ```
 컨테이너 플랫폼 파이프라인을 설치할 클러스터 환경에는 클러스터 총합 최소 **4Gi**의 여유 메모리를 권장한다.
 
 컨테이너 플랫폼 파이프라인 설치 완료 시 Persistent Volume 사용 resource는 다음과 같다.    
 ```
-NAME                                                      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                                  AGE
-container-platform-pipeline-jenkins-pv                    Bound    pvc-9faf103f-5462-4a76-9f4b-f9bd81e1471b   20Gi        RWO            paas-ta-container-platform-nfs-storageclass   30h
-data-paas-ta-container-platform-postgresql-postgresql-0   Bound    pvc-327312f3-35b9-4e4e-aa2a-0f094f5fdd0a   8Gi        RWX            paas-ta-container-platform-nfs-storageclass   30h
+NAME                                       STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS
+cp-pipeline-jenkins-pv                     Bound    pvc-4bf64900-d25c-482f-9aa3-baa07c11cdd1   20Gi       RWO            cp-nfs-storageclass
+data-cp-pipeline-postgresql-postgresql-0   Bound    pvc-f61096ac-5e2b-4105-9ed3-04a9a7d999cb   8Gi        RWX            cp-nfs-storageclass
 
 ```
 컨테이너 플랫폼 파이프라인을 설치할 클러스터 환경에는 NFS 스토리지 용량 **28Gi**의 여유 용량을 권장한다.<br>        
     
 ## <div id='3'>3. 컨테이너 플랫폼 파이프라인 배포
-
-### <div id='3.1'>3.1. CRI-O insecure-registry 설정
-컨테이너 플랫폼 파이프라인 배포 시 이미지 및 패키지 파일 업로드는 클러스터에 설치된 Private Repository에 한다.
-컨테이너 플랫폼 포탈을 통해 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 파이프라인 관련 이미지 및 패키지 파일 업로드한다. 
-
-Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1)      
-
-### <div id='3.2'>3.2. 컨테이너 플랫폼 파이프라인 배포
     
-#### <div id='3.2.1'>3.2.1. 컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드
+### <div id='3.1'>3.1. 컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드
 컨테이너 플랫폼 파이프라인 배포를 위해 컨테이너 플랫폼 파이프라인 Deployment 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-pipeline-deployment_v1.2.1.tar.gz](https://nextcloud.paas-ta.org/index.php/s/P4ZiPy9HQyN2xKr)  
+   [cp-pipeline-deployment_v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/HM3Lej9Y9DPeDgz)    
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -117,15 +106,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/P4ZiPy9HQyN2xKr/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/HM3Lej9Y9DPeDgz/download
 
 $ ls ~/workspace/container-platform
   ...
-  paas-ta-container-platform-pipeline-deployment_v1.2.1.tar.gz
+    cp-pipeline-deployment_v1.3.tar.gz
   ...
   
 # Deployment 파일 압축 해제
-$ tar xvfz paas-ta-container-platform-pipeline-deployment_v1.2.1.tar.gz
+$ tar xvfz cp-pipeline-deployment_v1.3.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
@@ -138,19 +127,18 @@ $ tar xvfz paas-ta-container-platform-pipeline-deployment_v1.2.1.tar.gz
 
 <br>
 
-#### <div id='3.2.2'>3.2.2. 컨테이너 플랫폼 파이프라인 변수 정의
+### <div id='3.2'>3.2. 컨테이너 플랫폼 파이프라인 변수 정의
 컨테이너 플랫폼 파이프라인을 배포하기 전 변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-pipeline-deployment/script
-$ vi container-platform-pipeline-vars.sh
+$ cd ~/workspace/container-platform/cp-pipeline-deployment/script
+$ vi cp-pipeline-vars.sh
 ```
 
 ```                                                     
 # COMMON VARIABLE
 K8S_MASTER_NODE_IP="{k8s master node public ip}"                 # Kubernetes master node public ip
 PROVIDER_TYPE="{container platform pipeline provider type}"        # Container platform pipeline provider type (Please enter 'standalone' or 'service')
-CF_API_URL="https:\/\/{paas-ta-api-domain}"                      # e.g) https:\/\/api.10.0.0.120.nip.io, PaaS-TA API Domain, PROVIDER_TYPE=service 인 경우 입력
 ....    
 ```
 ```    
@@ -171,7 +159,7 @@ PROVIDER_TYPE="standalone"
 
 컨테이너 플랫폼 파이프라인 변수 파일 내 아래 내용을 수정한다.
 ```
-$ vi container-platform-pipeline-vars.sh    
+$ vi cp-pipeline-vars.sh  
 ```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
@@ -183,36 +171,91 @@ KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (in
 ....     
 ```
 
-#### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 파이프라인 배포 스크립트 실행
+### <div id='3.3'>3.3. 컨테이너 플랫폼 파이프라인 배포 스크립트 실행
 컨테이너 플랫폼 파이프라인 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-$ chmod +x deploy-container-platform-pipeline.sh
-$ ./deploy-container-platform-pipeline.sh
+$ chmod +x deploy-cp-pipeline.sh
+$ ./deploy-cp-pipeline.sh
 ```
 
 ```
 
 ...
 ...
-NAME: paas-ta-container-platform-pipeline-api
-LAST DEPLOYED: Tue Dec 14 04:23:06 2021
-NAMESPACE: paas-ta-container-platfrom-pipeline
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
+Pushing cp-pipeline-configmap-1.3.tgz to cp-pipeline-repository...
+Done.
+Pushing cp-pipeline-jenkins-1.3.tgz to cp-pipeline-repository...
+Done.
+Pushing cp-pipeline-app-1.3.tgz to cp-pipeline-repository...
+Done.
+Pushing sonarqube-1.3.tgz to cp-pipeline-repository...
+Done.
+Pushing postgresql-1.3.tgz to cp-pipeline-repository...
+Done.
 ...
 ...
-NAME: paas-ta-container-platform-sonarqube
-LAST DEPLOYED: Tue Dec 14 04:23:12 2021
-NAMESPACE: paas-ta-container-platfrom-pipeline
-STATUS: deployed
-REVISION: 1
-NOTES:
-1. Get the application URL by running these commands:
-  export NODE_PORT=$(kubectl get --namespace paas-ta-container-platfrom-pipeline -o jsonpath="{.spec.ports[0].nodePort}" services paas-ta-container-platform-sonarqube-sonarqube)
-  export NODE_IP=$(kubectl get nodes --namespace paas-ta-container-platfrom-pipeline -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
+Update Complete. ⎈Happy Helming!⎈
+cp-pipeline-configmap deployed
+cp-pipeline-api deployed
+cp-pipeline-common-api deployed
+cp-pipeline-ui deployed
+cp-pipeline-inspection-api deployed
+cp-pipeline-jenkins deployed
+cp-pipeline-config-server deployed
+cp-pipeline-postgresql deployed
+cp-pipeline-sonarqube deployed
+NAME                            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+cp-pipeline-api                 cp-pipeline     1               2022-05-03 08:11:37.229869039 +0000 UTC deployed        cp-pipeline-app-1.3             1.16.0
+cp-pipeline-common-api          cp-pipeline     1               2022-05-03 08:11:37.627641739 +0000 UTC deployed        cp-pipeline-app-1.3             1.16.0
+cp-pipeline-config-server       cp-pipeline     1               2022-05-03 08:11:40.242660784 +0000 UTC deployed        cp-pipeline-app-1.3             1.16.0
+cp-pipeline-configmap           cp-pipeline     1               2022-05-03 08:11:35.69429441 +0000 UTC  deployed        cp-pipeline-configmap-1.3       1.16.0
+cp-pipeline-inspection-api      cp-pipeline     1               2022-05-03 08:11:39.131875192 +0000 UTC deployed        cp-pipeline-app-1.3             1.16.0
+cp-pipeline-jenkins             cp-pipeline     1               2022-05-03 08:11:39.592099347 +0000 UTC deployed        cp-pipeline-jenkins-1.3         1.16.0
+cp-pipeline-postgresql          cp-pipeline     1               2022-05-03 08:11:41.543610908 +0000 UTC deployed        postgresql-1.3                  11.14.0
+cp-pipeline-sonarqube           cp-pipeline     1               2022-05-03 08:11:42.629622004 +0000 UTC deployed        sonarqube-1.3                   8.5.1-community
+cp-pipeline-ui                  cp-pipeline     1               2022-05-03 08:11:38.607580498 +0000 UTC deployed        cp-pipeline-app-1.3             1.16.0
+NAME                                                         READY   STATUS              RESTARTS   AGE
+pod/cp-pipeline-api-deployment-bb6f7bd46-xmtxx               1/1     Running             0          6s
+pod/cp-pipeline-common-api-deployment-54c646c95c-pr8d4       1/1     Running             0          6s
+pod/cp-pipeline-config-server-deployment-78675b565d-jsg6z    0/1     ContainerCreating   0          3s
+pod/cp-pipeline-inspection-api-deployment-6bf9c4479d-qvt2s   1/1     Running             0          4s
+pod/cp-pipeline-jenkins-deployment-779c6d7bc9-fphrv          0/1     ContainerCreating   0          4s
+pod/cp-pipeline-postgresql-postgresql-0                      0/1     ContainerCreating   0          0s
+pod/cp-pipeline-sonarqube-sonarqube-6d9c6b579f-ndjmj         0/1     Init:0/1            0          0s
+pod/cp-pipeline-ui-deployment-5db955b77b-6zgtg               1/1     Running             0          5s
+
+NAME                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/cp-pipeline-api-service              NodePort    10.233.33.178   <none>        8082:30082/TCP   6s
+service/cp-pipeline-common-api-service       NodePort    10.233.42.55    <none>        8081:30081/TCP   6s
+service/cp-pipeline-config-server-service    NodePort    10.233.29.96    <none>        8080:30088/TCP   3s
+service/cp-pipeline-inspection-api-service   NodePort    10.233.18.126   <none>        8085:30085/TCP   4s
+service/cp-pipeline-jenkins-service          NodePort    10.233.43.30    <none>        8080:30086/TCP   4s
+service/cp-pipeline-postgresql               ClusterIP   10.233.27.243   <none>        5432/TCP         2s
+service/cp-pipeline-postgresql-headless      ClusterIP   None            <none>        5432/TCP         2s
+service/cp-pipeline-sonarqube-sonarqube      NodePort    10.233.52.4     <none>        9000:30087/TCP   1s
+service/cp-pipeline-ui-service               NodePort    10.233.57.132   <none>        8084:30084/TCP   5s
+
+NAME                                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cp-pipeline-api-deployment              1/1     1            1           6s
+deployment.apps/cp-pipeline-common-api-deployment       1/1     1            1           6s
+deployment.apps/cp-pipeline-config-server-deployment    1/1     1            1           3s
+deployment.apps/cp-pipeline-inspection-api-deployment   1/1     1            1           4s
+deployment.apps/cp-pipeline-jenkins-deployment          0/1     1            0           4s
+deployment.apps/cp-pipeline-sonarqube-sonarqube         0/1     1            0           0s
+deployment.apps/cp-pipeline-ui-deployment               1/1     1            1           5s
+
+NAME                                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/cp-pipeline-api-deployment-bb6f7bd46               1         1         1       6s
+replicaset.apps/cp-pipeline-common-api-deployment-54c646c95c       1         1         1       6s
+replicaset.apps/cp-pipeline-config-server-deployment-78675b565d    1         1         1       3s
+replicaset.apps/cp-pipeline-inspection-api-deployment-6bf9c4479d   1         1         1       4s
+replicaset.apps/cp-pipeline-jenkins-deployment-779c6d7bc9          1         1         0       4s
+replicaset.apps/cp-pipeline-sonarqube-sonarqube-6d9c6b579f         1         1         0       0s
+replicaset.apps/cp-pipeline-ui-deployment-5db955b77b               1         1         1       5s
+
+NAME                                                 READY   AGE
+statefulset.apps/cp-pipeline-postgresql-postgresql   0/1     1s
 
 ```
 
@@ -223,74 +266,76 @@ NOTES:
 
 ```
 # 파이프라인 리소스 확인
-$ kubectl get all -n paas-ta-container-platform-pipeline
+$ kubectl get all -n cp-pipeline
 ```
 
 ```
-NAME                                                                  READY   STATUS    RESTARTS   AGE
-pod/container-platform-pipeline-api-deployment-6c5cdd777f-lsb5h       1/1     Running   1          1h
-pod/container-platform-pipeline-common-api-deployment-589768b97xxv7   1/1     Running   1          1h
-pod/container-platform-pipeline-config-server-deployment-5555d4w5xl   1/1     Running   1          1h
-pod/container-platform-pipeline-inspection-api-deployment-64fcp6kbp   1/1     Running   1          1h
-pod/container-platform-pipeline-jenkins-deployment-5d9d9d4567-r2jlj   1/1     Running   1          1h
-pod/container-platform-pipeline-ui-deployment-d96754495-6j69f         1/1     Running   1          1h
-pod/paas-ta-container-platform-postgresql-postgresql-0                1/1     Running   1          1h
-pod/paas-ta-container-platform-sonarqube-sonarqube-5c799d8c97-5n2ts   1/1     Running   1          1h
+NAME                                                         READY   STATUS    RESTARTS      AGE
+pod/cp-pipeline-api-deployment-bb6f7bd46-xmtxx               1/1     Running   0             71s
+pod/cp-pipeline-common-api-deployment-54c646c95c-pr8d4       1/1     Running   0             71s
+pod/cp-pipeline-config-server-deployment-78675b565d-jsg6z    1/1     Running   0             68s
+pod/cp-pipeline-inspection-api-deployment-6bf9c4479d-qvt2s   1/1     Running   0             69s
+pod/cp-pipeline-jenkins-deployment-779c6d7bc9-fphrv          1/1     Running   0             69s
+pod/cp-pipeline-postgresql-postgresql-0                      1/1     Running   0             65s
+pod/cp-pipeline-sonarqube-sonarqube-6d9c6b579f-ndjmj         0/1     Running   0             65s
+pod/cp-pipeline-ui-deployment-5db955b77b-6zgtg               1/1     Running   0             70s
 
-NAME                                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/container-platform-pipeline-api-service              NodePort    10.233.19.233   <none>        8082:30082/TCP   1h
-service/container-platform-pipeline-common-api-service       NodePort    10.233.37.186   <none>        8081:30081/TCP   1h
-service/container-platform-pipeline-config-server-service    NodePort    10.233.58.13    <none>        8080:30088/TCP   1h
-service/container-platform-pipeline-inspection-api-service   NodePort    10.233.62.95    <none>        8085:30085/TCP   1h
-service/container-platform-pipeline-jenkins-service          NodePort    10.233.43.109   <none>        8080:30086/TCP   1h
-service/container-platform-pipeline-ui-service               NodePort    10.233.33.112   <none>        8084:30084/TCP   1h
-service/paas-ta-container-platform-postgresql                ClusterIP   10.233.9.51     <none>        5432/TCP         1h
-service/paas-ta-container-platform-postgresql-headless       ClusterIP   None            <none>        5432/TCP         1h
-service/paas-ta-container-platform-sonarqube-sonarqube       NodePort    10.233.6.103    <none>        9000:30087/TCP   1h
+NAME                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/cp-pipeline-api-service              NodePort    10.233.33.178   <none>        8082:30082/TCP   71s
+service/cp-pipeline-common-api-service       NodePort    10.233.42.55    <none>        8081:30081/TCP   71s
+service/cp-pipeline-config-server-service    NodePort    10.233.29.96    <none>        8080:30088/TCP   68s
+service/cp-pipeline-inspection-api-service   NodePort    10.233.18.126   <none>        8085:30085/TCP   69s
+service/cp-pipeline-jenkins-service          NodePort    10.233.43.30    <none>        8080:30086/TCP   69s
+service/cp-pipeline-postgresql               ClusterIP   10.233.27.243   <none>        5432/TCP         67s
+service/cp-pipeline-postgresql-headless      ClusterIP   None            <none>        5432/TCP         67s
+service/cp-pipeline-sonarqube-sonarqube      NodePort    10.233.52.4     <none>        9000:30087/TCP   66s
+service/cp-pipeline-ui-service               NodePort    10.233.57.132   <none>        8084:30084/TCP   70s
 
-NAME                                                                    READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/container-platform-pipeline-api-deployment              1/1     1            1           1h
-deployment.apps/container-platform-pipeline-common-api-deployment       1/1     1            1           1h
-deployment.apps/container-platform-pipeline-config-server-deployment    1/1     1            1           1h
-deployment.apps/container-platform-pipeline-inspection-api-deployment   1/1     1            1           1h
-deployment.apps/container-platform-pipeline-jenkins-deployment          1/1     1            1           1h
-deployment.apps/container-platform-pipeline-ui-deployment               1/1     1            1           1h
-deployment.apps/paas-ta-container-platform-sonarqube-sonarqube          1/1     1            1           1h
+NAME                                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cp-pipeline-api-deployment              1/1     1            1           71s
+deployment.apps/cp-pipeline-common-api-deployment       1/1     1            1           71s
+deployment.apps/cp-pipeline-config-server-deployment    1/1     1            1           68s
+deployment.apps/cp-pipeline-inspection-api-deployment   1/1     1            1           69s
+deployment.apps/cp-pipeline-jenkins-deployment          1/1     1            1           69s
+deployment.apps/cp-pipeline-sonarqube-sonarqube         0/1     1            0           65s
+deployment.apps/cp-pipeline-ui-deployment               1/1     1            1           70s
 
-NAME                                                                               DESIRED   CURRENT   READY   AGE
-replicaset.apps/container-platform-pipeline-api-deployment-6c5cdd777f              1         1         1       1h
-replicaset.apps/container-platform-pipeline-common-api-deployment-589768b984       1         1         1       1h
-replicaset.apps/container-platform-pipeline-config-server-deployment-5555dff6b4    1         1         1       1h
-replicaset.apps/container-platform-pipeline-inspection-api-deployment-64fc6484bf   1         1         1       1h
-replicaset.apps/container-platform-pipeline-jenkins-deployment-5d9d9d4567          1         1         1       1h
-replicaset.apps/container-platform-pipeline-ui-deployment-d96754495                1         1         1       1h
-replicaset.apps/paas-ta-container-platform-sonarqube-sonarqube-5c799d8c97          1         1         1       1h
+NAME                                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/cp-pipeline-api-deployment-bb6f7bd46               1         1         1       71s
+replicaset.apps/cp-pipeline-common-api-deployment-54c646c95c       1         1         1       71s
+replicaset.apps/cp-pipeline-config-server-deployment-78675b565d    1         1         1       68s
+replicaset.apps/cp-pipeline-inspection-api-deployment-6bf9c4479d   1         1         1       69s
+replicaset.apps/cp-pipeline-jenkins-deployment-779c6d7bc9          1         1         1       69s
+replicaset.apps/cp-pipeline-sonarqube-sonarqube-6d9c6b579f         1         1         0       65s
+replicaset.apps/cp-pipeline-ui-deployment-5db955b77b               1         1         1       70s
 
-NAME                                                                READY   AGE
-statefulset.apps/paas-ta-container-platform-postgresql-postgresql   1/1     1h
+NAME                                                 READY   AGE
+statefulset.apps/cp-pipeline-postgresql-postgresql   1/1     66s
 
 ```    
 
-#### <div id='3.2.4'>3.2.4. (참조) 컨테이너 플랫폼 파이프라인 리소스 삭제
+### <div id='3.4'>3.4. (참조) 컨테이너 플랫폼 파이프라인 리소스 삭제
 배포된 컨테이너 플랫폼 파이프라인 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-pipeline-deployment/script
-$ chmod +x uninstall-container-platform-pipeline.sh
-$ ./uninstall-container-platform-pipeline.sh
+$ cd ~/workspace/container-platform/cp-pipeline-deployment/script
+$ chmod +x uninstall-cp-pipeline.sh
+$ ./uninstall-cp-pipeline.sh
+Are you sure you want to delete the container platform pipeline? <y/n> # y 입력
 
 ```
 ```
 ...
 
-replicaset.apps "container-platform-pipeline-common-api-deployment-5d8c66f94c" deleted
-replicaset.apps "container-platform-pipeline-config-server-deployment-859fc5fd85" deleted
-replicaset.apps "container-platform-pipeline-inspection-api-deployment-56945ffc96" deleted
-replicaset.apps "container-platform-pipeline-jenkins-deployment-7466bbf878" deleted
-replicaset.apps "container-platform-pipeline-ui-deployment-7698cc79c8" deleted
-...
-...
-namespace "paas-ta-container-platform-pipeline" deleted
+release "cp-pipeline-api" uninstalled
+release "cp-pipeline-common-api" uninstalled
+release "cp-pipeline-ui" uninstalled
+release "cp-pipeline-inspection-api" uninstalled
+release "cp-pipeline-jenkins" uninstalled
+release "cp-pipeline-config-server" uninstalled
+release "cp-pipeline-postgresql" uninstalled
+release "cp-pipeline-sonarqube" uninstalled
+namespace "cp-pipeline" deleted
 ...
 ...
 ```

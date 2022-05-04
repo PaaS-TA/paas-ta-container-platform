@@ -15,12 +15,10 @@
     2.2. [컨테이너 플랫폼 포탈 설치](#2.2)  
         
 3. [컨테이너 플랫폼 소스 컨트롤 배포](#3)  
-    3.1. [CRI-O insecure-registry 설정](#3.1)  
-    3.2. [컨테이너 플랫폼 소스 컨트롤 배포](#3.2)  
-    3.2.1. [컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드](#3.2.1)  
-    3.2.2. [컨테이너 플랫폼 소스 컨트롤 변수 정의](#3.2.2)    
-    3.2.3. [컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행](#3.2.3)    
-    3.2.4. [(참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제](#3.2.4)    
+    3.1. [컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드](#3.1)  
+    3.2. [컨테이너 플랫폼 소스 컨트롤 변수 정의](#3.2)    
+    3.3. [컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행](#3.3)    
+    3.4. [(참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제](#3.4)    
 
 4. [컨테이너 플랫폼 소스 컨트롤 서비스 브로커](#4)   
     4.1. [컨테이너 플랫폼 소스 컨트롤 사용자 인증 서비스 구성](#4.1)   
@@ -70,22 +68,13 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 
   
 ## <div id='3'>3. 컨테이너 플랫폼 소스 컨트롤 배포
-
-### <div id='3.1'>3.1. CRI-O insecure-registry 설정
-컨테이너 플랫폼 소스 컨트롤 배포 시 이미지 및 패키지 파일 업로드는 클러스터에 설치된 Private Repository에 한다.
-컨테이너 플랫폼 포탈을 통해 배포된 Private Repository(Harbor)에 컨테이너 플랫폼 소스 컨트롤 관련 이미지 및 패키지 파일 업로드한다. 
-
-Private Repository 배포에 필요한 CRI-O insecure-registry 설정은 아래 가이드를 참조한다.
-> [CRI-O insecure-registry 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.1)      
-
-### <div id='3.2'>3.2. 컨테이너 플랫폼 소스 컨트롤 배포
     
-#### <div id='3.2.1'>3.2.1. 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드
+### <div id='3.1'>3.1. 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드
 컨테이너 플랫폼 소스 컨트롤 배포를 위해 컨테이너 플랫폼 소스 컨트롤 Deployment 파일을 다운로드 받아 아래 경로로 위치시킨다.<br>
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz](https://nextcloud.paas-ta.org/index.php/s/t7NqLbifbg6A2e9)  
+   [cp-source-control-deployment_v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -93,15 +82,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/t7NqLbifbg6A2e9/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT/download
 
 $ ls ~/workspace/container-platform
   ...
-  paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz
+  cp-source-control-deployment-v1.3.tar.gz
   ...
 
 # Deployment 파일 압축 해제
-$ tar xvfz paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz
+$ tar xvfz cp-source-control-deployment-v1.3.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
@@ -114,12 +103,12 @@ $ tar xvfz paas-ta-container-platform-source-control-deployment_v1.2.1.tar.gz
 
 <br>
 
-#### <div id='3.2.2'>3.2.2. 컨테이너 플랫폼 소스 컨트롤 변수 정의
+### <div id='3.2'>3.2. 컨테이너 플랫폼 소스 컨트롤 변수 정의
 컨테이너 플랫폼 소스 컨트롤을 배포하기 전 변수 값 정의가 필요하다. 배포에 필요한 정보를 확인하여 변수를 설정한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-source-control-deployment/script
-$ vi container-platform-source-control-vars.sh
+$ cd ~/workspace/container-platform/cp-source-control-deployment/script
+$ vi cp-source-control-vars.sh
 ```
 
 ```                                                     
@@ -152,46 +141,37 @@ $ vi container-platform-source-control-vars.sh
     
 ....  
 # KEYCLOAK    
-KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http:\/\/, if apply TLS, https:\/\/)
+KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   #if apply TLS, https://
 ....     
 ```
 
-#### <div id='3.2.3'>3.2.3. 컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행
+### <div id='3.3'>3.3. 컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행
 컨테이너 플랫폼 소스 컨트롤 배포를 위한 배포 스크립트를 실행한다.
 
 ```
-$ chmod +x deploy-container-platform-source-control.sh
-$ ./deploy-container-platform-source-control.sh
+$ chmod +x deploy-cp-source-control.sh
+$ ./deploy-cp-source-control.sh
 ```
 
 ```
 
 ...
 ...
-NAME: paas-ta-container-platform-source-control-api
-LAST DEPLOYED: Thu Dec 16 10:24:29 2021
-NAMESPACE: paas-ta-container-platform-source-control
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NAME: paas-ta-container-platform-source-control-manager
-LAST DEPLOYED: Thu Dec 16 10:24:30 2021
-NAMESPACE: paas-ta-container-platform-source-control
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NAME: paas-ta-container-platform-source-control-broker
-LAST DEPLOYED: Thu Dec 16 10:24:31 2021
-NAMESPACE: paas-ta-container-platform-source-control
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-NAME: paas-ta-container-platform-source-control-ui
-LAST DEPLOYED: Thu Dec 16 10:24:32 2021
-NAMESPACE: paas-ta-container-platform-source-control
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
+namespace/cp-source-control created
+secret/cp-secret created
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "cp-pipeline-repository" chart repository
+...Successfully got an update from the "cp-portal-repository" chart repository
+...Successfully got an update from the "cp-source-control-repository" chart repository
+Update Complete. ⎈Happy Helming!⎈
+cp-source-control-configmap deployed
+cp-source-control-api deployed
+cp-source-control-manager deployed
+cp-source-control-broker deployed
+cp-source-control-ui deployed
+...
+...
+
 
 ```
 
@@ -202,60 +182,57 @@ TEST SUITE: None
 
 ```
 # 소스 컨트롤 리소스 확인
-$ kubectl get all -n paas-ta-container-platform-source-control
+$ kubectl get all -n cp-source-control
 ```
 ```
-NAME                                                                  READY   STATUS    RESTARTS   AGE
-pod/container-platform-source-control-api-deployment-597fc499bc9dpp   1/1     Running   0          63s
-pod/container-platform-source-control-broker-deployment-68bbdcq2grf   1/1     Running   0          62s
-pod/container-platform-source-control-manager-deployment-6b548xkw7p   1/1     Running   0          63s
-pod/container-platform-source-control-ui-deployment-85f754cfc6k28hj   1/1     Running   0          61s
+NAME                                                       READY   STATUS    RESTARTS   AGE
+pod/cp-source-control-api-deployment-76c8c5d8d9-dxh7n      1/1     Running   0          51s
+pod/cp-source-control-broker-deployment-579c577b6-c2vjl    1/1     Running   0          51s
+pod/cp-source-control-manager-deployment-8ff6cb694-p4w25   1/1     Running   0          51s
+pod/cp-source-control-ui-deployment-bbfff5bd8-hl4fg        1/1     Running   0          51s
 
-NAME                                                        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/container-platform-source-control-api-service       NodePort   10.233.46.158   <none>        8091:30091/TCP   63s
-service/container-platform-source-control-broker-service    NodePort   10.233.38.22    <none>        8093:30093/TCP   62s
-service/container-platform-source-control-manager-service   NodePort   10.233.32.242   <none>        8080:30092/TCP   63s
-service/container-platform-source-control-ui-service        NodePort   10.233.29.174   <none>        8094:30094/TCP   61s
+NAME                                        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/cp-source-control-api-service       NodePort   10.233.41.43    <none>        8091:30091/TCP   110s
+service/cp-source-control-broker-service    NodePort   10.233.47.254   <none>        8093:30093/TCP   96s
+service/cp-source-control-manager-service   NodePort   10.233.55.178   <none>        8080:30092/TCP   102s
+service/cp-source-control-ui-service        NodePort   10.233.15.193   <none>        8094:30094/TCP   94s
 
-NAME                                                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/container-platform-source-control-api-deployment       1/1     1            1           63s
-deployment.apps/container-platform-source-control-broker-deployment    1/1     1            1           62s
-deployment.apps/container-platform-source-control-manager-deployment   1/1     1            1           63s
-deployment.apps/container-platform-source-control-ui-deployment        1/1     1            1           61s
+NAME                                                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cp-source-control-api-deployment       1/1     1            1           108s
+deployment.apps/cp-source-control-broker-deployment    0/1     1            0           96s
+deployment.apps/cp-source-control-manager-deployment   0/1     1            0           102s
+deployment.apps/cp-source-control-ui-deployment        0/1     1            0           94s
 
-NAME                                                                              DESIRED   CURRENT   READY   AGE
-replicaset.apps/container-platform-source-control-api-deployment-597fc499bb       1         1         1       63s
-replicaset.apps/container-platform-source-control-broker-deployment-68bbdcb55     1         1         1       62s
-replicaset.apps/container-platform-source-control-manager-deployment-6b54859fbf   1         1         1       63s
-replicaset.apps/container-platform-source-control-ui-deployment-85f754cfc6        1         1         1       61s
+NAME                                                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/cp-source-control-api-deployment-76c8c5d8d9      1         1         1       51s
+replicaset.apps/cp-source-control-broker-deployment-579c577b6    1         1         0       51s
+replicaset.apps/cp-source-control-manager-deployment-8ff6cb694   1         1         0       51s
+replicaset.apps/cp-source-control-ui-deployment-bbfff5bd8        1         1         0       51s
+
 
 ```    
 
 <br>
 
-#### <div id='3.2.4'>3.2.4. (참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제
+### <div id='3.4'>3.4. (참조) 컨테이너 플랫폼 소스 컨트롤 리소스 삭제
 배포된 컨테이너 플랫폼 소스 컨트롤 리소스의 삭제를 원하는 경우 아래 스크립트를 실행한다.<br>
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-source-control-deployment/script
-$ chmod +x uninstall-container-platform-source-control.sh
-$ ./uninstall-container-platform-source-control.sh
+$ cd ~/workspace/container-platform/cp-source-control-deployment/script
+$ chmod +x uninstall-cp-source-control.sh
+$ ./uninstall-cp-source-control.sh
 
 ```
 ```
+Are you sure you want to delete the container platform source control? <y/n> # y 입력
+release "cp-source-control-api" uninstalled
+release "cp-source-control-manager" uninstalled
+release "cp-source-control-broker" uninstalled
+release "cp-source-control-ui" uninstalled
+namespace "cp-source-control" deleted
+...
 ...
 
-service "container-platform-source-control-api-service" deleted
-service "container-platform-source-control-manager-service" deleted
-service "container-platform-source-control-ui-service" deleted
-release "paas-ta-container-platform-source-control-api" uninstalled
-release "paas-ta-container-platform-source-control-manager" uninstalled
-release "paas-ta-container-platform-source-control-ui" uninstalled
-...
-...
-namespace "paas-ta-container-platform-source-control" deleted
-...
-...
 ```
   
 ## <div id='4'>4. 컨테이너 플랫폼 소스 컨트롤 서비스 브로커
@@ -292,12 +269,12 @@ No service brokers found
 
 
 ###### 컨테이너 플랫폼 소스 컨트롤 서비스 브로커 등록 
->`$ cf create-service-broker container-platform-source-control-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:30093`   
+>`$ cf create-service-broker cp-source-control-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:30093`   
 
 
 ```
-$ cf create-service-broker container-platform-source-control-service-broker admin cloudfoundry http://xx.xxx.xxx.xx:30093
-Creating service broker container-platform-source-control-service-broker as admin...
+$ cf create-service-broker cp-source-control-service-broker admin cloudfoundry http://xx.xxx.xxx.xx:30093
+Creating service broker cp-source-control-service-broker as admin...
 OK
 ```    
 
@@ -308,7 +285,7 @@ OK
 $ cf service-brokers 
 Getting service brokers as admin... 
 name                                         url 
-container-platform-source-control-service-broker   http://xx.xxx.xxx.xx:30093
+cp-source-control-service-broker   http://xx.xxx.xxx.xx:30093
 ```
 
     
@@ -317,7 +294,7 @@ container-platform-source-control-service-broker   http://xx.xxx.xxx.xx:30093
 ```
 $ cf service-access 
 Getting service access as admin... 
-broker: container-platform-source-control-service-broker
+broker: cp-source-control-service-broker
    offering      plan     access   orgs
    scm-manager   Shared   none
 
@@ -341,7 +318,7 @@ OK
 ```
 $ cf service-access 
 Getting service access as admin... 
-broker: container-platform-source-control-service-broker
+broker: cp-source-control-service-broker
    offering      plan     access   orgs
    scm-manager   Shared   all
 ```
