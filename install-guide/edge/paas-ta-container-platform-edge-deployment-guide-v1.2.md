@@ -140,7 +140,7 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 
 - Cloud 영역에 Kubespray를 통해 Kubernetes Cluster 배포를 진행한다.
 
-> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide.md
 
 <br>
 
