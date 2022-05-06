@@ -167,7 +167,7 @@ $ vi cp-pipeline-vars.sh
     
 ....  
 # KEYCLOAK    
-KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http:\/\/, if apply TLS, https:\/\/)
+KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   #if apply TLS, https://
 ....     
 ```
 

@@ -36,11 +36,11 @@
 > `Example`
 ```
 # 인증서 파일 keycloak_orig 디렉토리 하위에 위치
-ls ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/tls-key
+ls ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key
 tls.crt  tls.key
 
 # 인증서 파일 권한 변경
-chmod ug+r ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig/tls-key/*
+chmod ug+r ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key/*
 ```
 
 
@@ -49,7 +49,7 @@ chmod ug+r ~/workspace/container-platform/paas-ta-container-platform-portal-depl
 ### <div id='2.2'>2.2. Dockerfile 내 인증서 파일 경로 추가 
 Keycloak Dockerfile 내 TLS 인증서 파일 경로를 추가한다.
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/keycloak_orig
+$ cd ~/workspace/container-platform/cp-portal-deployment/keycloak_orig
 $ vi Dockerfile
 ```
     
@@ -75,8 +75,8 @@ COPY container-platform/ /opt/jboss/keycloak/themes/container-platform/
 Keycloak values.yaml 파일 내 아래 내용을 수정한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/values_orig
-$ vi paas-ta-container-platform-keycloak-values.yaml
+$ cd ~/workspace/container-platform/cp-portal-deployment/values_orig
+$ vi cp-keycloak.yaml
 ```
 
 ```
@@ -99,8 +99,8 @@ service:
 ### <div id='2.4'>2.4. 컨테이너 플랫폼 포털 변수 파일 수정
 컨테이너 플랫폼 포털 변수 파일 내 아래 내용을 수정한다.
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-portal-deployment/script
-$ vi container-platform-portal-vars.sh    
+$ cd ~/workspace/container-platform/cp-portal-deployment/script
+$ vi cp-portal-vars.sh    
 ```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
@@ -108,7 +108,7 @@ $ vi container-platform-portal-vars.sh
     
 ....  
 # KEYCLOAK    
-KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (include http:\/\/, if apply TLS, https:\/\/)
+KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"                                            # keycloak url (if apply TLS, https:// )
 ....     
 ```
 <br>
@@ -126,8 +126,8 @@ KEYCLOAK_URL="https:\/\/${K8S_MASTER_NODE_IP}.nip.io:32710"   # Keycloak url (in
  UAA 서비스와 Keycloak 서비스 인증 구성 변수 파일 내 **Keycloak URL** 값을 아래와 같이 변경한다.
 
 ```
-$ cd ~/workspace/container-platform/paas-ta-container-platform-saml-deployment
-$ vi container-platform-saml-vars.sh
+$ cd ~/workspace/container-platform/cp-saml-deployment
+$ vi cp-saml-vars.sh
 ```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
