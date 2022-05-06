@@ -108,7 +108,7 @@ $ vi cp-portal-vars.sh
     
 ....  
 # KEYCLOAK    
-KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"                                            # keycloak url (if apply TLS, https:// )
+KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   # keycloak url (if apply TLS, https:// )
 ....     
 ```
 <br>
