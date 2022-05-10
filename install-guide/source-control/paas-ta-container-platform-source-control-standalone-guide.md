@@ -133,7 +133,7 @@ PROVIDER_TYPE="standalone"
 
 컨테이너 플랫폼 소스 컨트롤 변수 파일 내 아래 내용을 수정한다.
 ```
-$ vi container-platform-source-control-vars.sh    
+$ vi cp-source-control-vars.sh    
 ```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
