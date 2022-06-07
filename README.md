@@ -75,7 +75,7 @@
 
 ### 단독형 배포   
 - 클러스터 설치
-  + [클러스터 설치 가이드](install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)
+  + [클러스터 설치 가이드](install-guide/standalone/cp-cluster-install.md)
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포털 설치
   + [포털 설치 가이드](install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)  
@@ -88,7 +88,7 @@
 
 ### 서비스형 배포 
 - 클러스터 설치
-  + [클러스터 설치 가이드](install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide-v1.2.md)  
+  + [클러스터 설치 가이드](install-guide/standalone/cp-cluster-install.md)
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/standalone)
 - 포털 설치
   + [포털 설치 가이드](install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide.md)
@@ -101,7 +101,7 @@
 
 ### Edge 배포
 - Edge 설치
-  + [Edge 설치 가이드](install-guide/edge/paas-ta-container-platform-edge-deployment-guide-v1.2.md)  
+  + [Edge 설치 가이드](install-guide/edge/cp-edge-install.md)  
   + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/edge)
 - 포털 설치
   + [포털 설치 가이드](install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)  
