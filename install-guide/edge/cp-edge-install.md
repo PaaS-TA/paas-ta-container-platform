@@ -151,7 +151,6 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 ### <div id='2.3'> 2.3. KubeEdge 설치 준비
 KubeEdge 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
-- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 세 단계의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
 - EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
 ```
 # vi /boot/firmware/cmdline.txt
