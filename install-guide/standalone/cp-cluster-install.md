@@ -169,7 +169,7 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
-- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.18.0 이다.
+- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 Master (2022-04-13) 이다.
 ```
 $ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b release_v1.3
 ```
@@ -197,8 +197,8 @@ $ vi kubespray_var.sh
 #!/bin/bash
 
 export MASTER_NODE_HOSTNAME={Master Node의 HostName 정보 입력}
-export MASTER_NODE_PRIVATE_IP={Master Node의 Private IP 정보 입력}
 export MASTER_NODE_PUBLIC_IP={Master Node의 Public IP 정보 입력}
+export MASTER_NODE_PRIVATE_IP={Master Node의 Private IP 정보 입력}
 
 ## Worker Node Count Info
 export WORKER_NODE_CNT={Worker Node의 갯수}

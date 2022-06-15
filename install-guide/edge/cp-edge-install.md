@@ -49,14 +49,13 @@ PaaS-TA 5.5 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker, Edge) 환경으로 구성되어 있다. <br>
 Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes Cluster와 Edge 환경에 KubeEdge를 설치한다. Pod를 통해서는 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **단독배포 기준 Master VM: 1개, Worker VM: 1개 이상, Edge VM: 1개 이상** 이 필요하고, **HA배포 기준 Master VM: 3개, Worker VM: 1개 이상, Edge VM: 1개 이상** 이 필요하며 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
+총 필요한 VM 환경으로는 **단독배포, HA배포 클러스터, Edge VM: 1개 이상** 이 필요하며,  본 문서는 Kubernetes Cluster 환경에 Edge Node를 구성하기 위한 Edge VM 설치 내용이다.
 
 ![image 001]
 
 <br>
 
 ### <div id='1.4'> 1.4. 참고자료
-> https://docs.docker.com/engine/install/  
 > https://kubeedge.io/en/docs/   
 > https://github.com/kubeedge/kubeedge
 
@@ -65,7 +64,7 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 ## <div id='2'> 2. KubeEdge 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드에서는 **Master, Worker Node의 환경을 Ubuntu 20.04 amd64**, **Edge Node의 환경을 Ubuntu 20.04 arm64** 환경에서 설치하는 것을 기준으로 하였다. KubeEdge 설치를 위해서는 CRI-O, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
+본 설치 가이드에서는 **Master, Worker Node의 환경을 Ubuntu 20.04 amd64**, **Edge Node의 환경을 Ubuntu 20.04 arm64** 환경에서 설치하는 것을 기준으로 하였다. KubeEdge 설치를 위해서는 Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
 
 KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
@@ -144,7 +143,8 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 
 - Cloud 영역에 Kubespray를 통해 Kubernetes Cluster 배포를 진행한다.
 
-> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/paas-ta-container-platform-standalone-deployment-guide.md
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/cp-cluster-install.md (단독배포)
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/cp-cluster-ha-install.md (HA배포)
 
 <br>
 
@@ -152,23 +152,11 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 KubeEdge 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
 - EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 세 단계의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
+- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
 ```
 # vi /boot/firmware/cmdline.txt
 
 ... cgroup_enable=memory cgroup_memory=1 (맨 뒤에 추가)
-```
-
-- CRI-O 설치 전 **라즈베리파이 Ubuntu 20.04** arm64 버전에 APT 이슈가 존재하여 아래 조치를 진행한다.
-```
-# killall apt apt-get
-
-# rm /var/lib/apt/lists/lock
-# rm /var/cache/apt/archives/lock
-# rm /var/lib/dpkg/lock*
-
-# dpkg --configure -a
-
-# apt-get update
 ```
 
 - **라즈베리파이** Reboot을 진행한다.
@@ -213,23 +201,26 @@ export EDGE{n}_NODE_PRIVATE_IP={Edge Node의 갯수에 맞춰 Private IP 정보 
 
 
 ### <div id='2.4'> 2.4. KubeEdge 설치
-쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, Kubespray 설치정보 설정, Ansible playbook을 통한 Kubespray 설치를 일괄적으로 진행한다.
+쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, KubeEdge 설치정보 설정, Ansible playbook을 통한 KubeEdge 설치를 일괄적으로 진행한다.
 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
-##
+## 단독배포 구성의 경우
+$ source deploy_kubeedge.sh
+
+## External ETCD 구성의 경우
 $ source deploy_kubeedge_external.sh
 
-##
+## Stacked ETCD 구성의 경우
 $ source deploy_kubeedge_stacked.sh
 ```
 
 - 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
 
 ```
-1-1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언 (단독배포의 경우)
-1-2. kubespray_var_external.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 ETCD External의 경우)
-1-3. kubespray_var_stacked.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 ETCD Stacked의 경우)
+1-1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언 (단독배포 구성의 경우)
+1-2. kubespray_var_external.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 External ETCD 구성의 경우)
+1-3. kubespray_var_stacked.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 Stacked ETCD 구성의 경우)
 2. kubeedge_var.sh : KubeEdge 설치에 필요한 환경변수 선언
 3. kubeedge_setting.sh : Node 구성정보, KubeEdge 설치정보 설정
 4. kubeedge_install.sh : Ansible playbook을 통한 KubeEdge 설치
