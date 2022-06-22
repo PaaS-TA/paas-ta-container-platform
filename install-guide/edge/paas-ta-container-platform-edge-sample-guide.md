@@ -52,7 +52,7 @@ Cloud 환경에 Kubernetes Cluster를 구성하였으며 Raspberry Pi를 이용�
 Raspberry Pi에는 온습도 센서 (DHT11)를 연결, 구성하였다.
 
 Container Platform 포털 설치 진행 전 KubeEdge Sample을 배포하려면 별도로 Podman 설치를 진행해야한다. Podman 설치는 포털 설치 가이드의 **3.1. CRI-O insecure-registry 설정**을 참고한다.
-> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md#3.1
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md#3.1
 
 <br>
 

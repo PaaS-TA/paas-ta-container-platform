@@ -49,7 +49,7 @@ PaaS-TA 5.5 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker, Edge) 환경으로 구성되어 있다. <br>
 Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes Cluster와 Edge 환경에 KubeEdge를 설치한다. Pod를 통해서는 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, Edge VM: 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
+총 필요한 VM 환경으로는 **단독배포 기준 Master VM: 1개, Worker VM: 1개 이상, Edge VM: 1개 이상** 이 필요하고, **HA배포 기준 Master VM: 3개, Worker VM: 1개 이상, Edge VM: 1개 이상** 이 필요하며 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM, Edge VM 설치 내용이다.
 
 ![image 001]
 
@@ -65,17 +65,17 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 ## <div id='2'> 2. KubeEdge 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 하였다. EdgeNode의 경우 **arm64 아키텍쳐** 일 경우 CRI-O 설치를 위하여 **Ubuntu 20.04** 환경에서 설치를 진행한다. 본 가이드에서는 EdgeNode의 환경을 **Ubuntu 20.04 arm64** 기준으로 작성하였다. KubeEdge 설치를 위해서는 CRI-O, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
+본 설치 가이드에서는 **Master, Worker Node의 환경을 Ubuntu 20.04 amd64**, **Edge Node의 환경을 Ubuntu 20.04 arm64** 환경에서 설치하는 것을 기준으로 하였다. KubeEdge 설치를 위해서는 CRI-O, Kubernetes Native Cluster가 시스템에 배포되어 있어야 한다.
 
 KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
 |주요 소프트웨어|Version|
 |---|---|
-|KubeEdge|v1.8.2|
-|Kubernetes Native|v1.20.5|
-|Kubernetes Native (Edge Node)|v1.19.3|
-|CRI-O|v1.20.0|
-|CRI-O (Edge Node)|v1.19.0|
+|KubeEdge|v1.10.0|
+|Kubernetes Native|v1.23.5|
+|Kubernetes Native (Edge Node)|v1.22.6|
+|CRI-O|v1.23.0|
+|CRI-O (Edge Node)|v1.22.0|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
@@ -90,7 +90,6 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP Network |  
 | TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | kubernetes API Server |  
@@ -104,19 +103,23 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 | TCP | 10251 | kube-scheduler |  
 | TCP | 10252 | kube-controller-manager |  
 | TCP | 10255 | Read-Only Kubelet API |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| TCP | 20004 | edgeMesh server containerPort |  
+| TCP | 20006 | edgeMesh tunnel listenPort |  
+| TCP | 40001 | edgeMesh edgeProxy listenPort |  
+| UDP | 4789 | Calico networking VXLAN |  
 
 - Worker Node
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP network |  
 | TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
+| TCP | 20006 | edgeMesh tunnel listenPort |  
 | TCP | 30000-32767 | NodePort Services |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| TCP | 40001 | edgeMesh edgeProxy listenPort |  
+| UDP | 4789 | Calico networking VXLAN |  
 
 - Edge Node
 
@@ -130,8 +133,9 @@ Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고�
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 10350 | Use kubectl logs |  
 | TCP | 10550 | edgecore list-watch port |  
+| TCP | 20006 | edgeMesh tunnel listenPort |  
 | TCP | 30000-32767 | NodePort Services |  
-| TCP | 40001 | edgeMesh listenPort |
+| TCP | 40001 | edgeMesh edgeProxy listenPort |  
 
 <br>
 
@@ -144,47 +148,10 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 
 <br>
 
-### <div id='2.3'> 2.3. KubeEdge keadm 설치
-KubeEdge 설치를 위한 keadm 설치를 진행한다. keadm 실행 시 Super User 혹은 root 권한이 필요하므로 **root 권한**으로 설치를 진행한다.
+### <div id='2.3'> 2.3. KubeEdge 설치 준비
+KubeEdge 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
-- Cloud 영역의 **Master Node**와 Edge 영역의 **Edge Node**로 사용할 VM에 keadm 다운로드 및 설치를 진행한다.
-
-```
-$ sudo su -
-
-# git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
-
-## Ubuntu 아키텍쳐가 amd64일 경우 (ex: Cloud 영역 Master Node)
-# cp paas-ta-container-platform-deployment/edge/keadm/amd64/keadm /usr/bin/keadm
-
-## Ubuntu 아키텍쳐가 arm64일 경우 (ex: Edge 영역 Edge Node)
-# cp paas-ta-container-platform-deployment/edge/keadm/arm64/keadm /usr/bin/keadm
-```
-
-<br>
-
-### <div id='2.4'> 2.4. KubeEdge CloudCore 설치
-Cloud 영역의 Master Node에 KubeEdge CloudCore를 설치하여 설정을 진행한다.
-
-- keadm init 명령으로 Cloud 영역의 **Master Node**에 CloudCore 설치를 진행한다.
-```
-## {MASTER_PUB_IP} : Master Node Public IP
-## {MASTER_PRIV_IP} : Master Node Private IP
-
-# keadm init --advertise-address={MASTER_PUB_IP} --kubeedge-version 1.8.2 --master=https://{MASTER_PRIV_IP}:6443
-```
-
-- Edge 영역에 EdgeCore를 설치하기 위한 Token값을 가져온다.
-```
-# keadm gettoken
-```
-
-<br>
-
-### <div id='2.5'> 2.5. KubeEdge EdgeCore 설치
-Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge EdgeCore를 설치하여 설정을 진행한다. EdgeNode의 경우 CRI-O arm64 설치를 위해 **Ubuntu 20.04** 환경으로 설치를 진행해야한다.
-
-- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 두 단계의 과정을 생략하고 Edge Node CRI-O 설치과정부터 진행한다.
+- EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 세 단계의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
 ```
 # vi /boot/firmware/cmdline.txt
 
@@ -209,259 +176,66 @@ Edge 영역의 **Edge Node**에 CRI-O 설치를 사전 진행 후, KubeEdge Edge
 # reboot
 ```
 
-- **Edge Node**에서 CRI-O 설치를 진행한다.
+- Kubespray 설치경로 이동한다. 이후 부터는 **Master Node**에서만 진행을 하면 된다.
 ```
-## 라즈베리파이 Reboot 이후 CRI-O 설치 진행 시 Root 권한으로 전환한다.
-$ sudo su -
+## 단독배포 Cluster의 경우
+$ cd paas-ta-container-platform-deployment/standalone/single_control_plane
 
-# cd paas-ta-container-platform-deployment/edge
-
-# source crio-install.sh
-```
-
-- **Edge Node**에서 CRI-O 사용을 위한 CNI Plugin 설치를 진행한다.
-```
-# mkdir -p /opt/cni/bin
-# cp cni-plugins/* /opt/cni/bin/
+## HA배포 Cluster의 경우
+$ cd paas-ta-container-platform-deployment/standalone/ha_control_plane
 ```
 
-- **Edge Node**에서 CRI-O 서비스 등록 및 시작을 진행한다.
+- KubeEdge 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-# source enable-crio.sh
-```
-
-- **Edge Node**에서 keadm join 명령으로 EdgeCore 설치를 진행한다.
-```
-## {MASTER_PUB_IP} : Master Node Public IP
-## {GET_TOKEN} : Cloud 영역에서 CloudCore 설치 이후 호출한 Token 값
-
-# keadm join --cloudcore-ipport={MASTER_PUB_IP}:10000 --token={GET_TOKEN} --cgroupdriver systemd --remote-runtime-endpoint unix:///var/run/crio/crio.sock --runtimetype remote --kubeedge-version 1.8.2
-```
-
-<br>
-
-### <div id='2.6'> 2.6. DaemonSet 설정 변경
-KubeEdge에서는 본 설치 가이드 작성 시점에 Ingress, CNI를 지원하지 않으므로 Edge Node에 Ingress Controller 및 Calico CNI가 배포되지 않도록 조치가 필요하다. 추가로 OpenStack에서는 csi cinder nodeplugin이 배포되지 않도록 추가 조치를 진행한다.
-
-- **Master Node**에서 Ingress Controller가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
-```
-# kubectl edit daemonsets.apps ingress-nginx-controller -n ingress-nginx
-```
-
-- spec.template.spec 경로에 아래 내용을 추가한다.
-```
-     affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
-```
-
-- **Master Node**에서 Calico CNI가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
-```
-# kubectl edit daemonsets.apps calico-node -n kube-system
-```
-
-- spec.template.spec 경로에 아래 내용을 추가한다.
-```
-     affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
-```
-
-- **Master Node**에서 Node Local DNS가 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
-```
-# kubectl edit daemonsets.apps nodelocaldns -n kube-system
-```
-
-- spec.template.spec 경로에 아래 내용을 추가한다.
-```
-     affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
-```
-
-- OpenStack일 경우 **Master Node**에서 csi cinder nodeplugin이 Edge Node에 배포되지 않도록 DaemonSet yaml 수정을 진행한다.
-```
-# kubectl edit daemonsets.apps csi-cinder-nodeplugin -n kube-system
-```
-
-- spec.template.spec 경로에 아래 내용을 추가한다.
-```
-     affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
-```
-
-<br>
-
-
-### <div id='2.7'> 2.7. kubectl logs 기능 활성화
-KubeEdge에서는 기본적으로 kubectl logs 명령을 사용할 수 없는 이슈가 존재한다. 본 설치 가이드에서는 해당 기능을 활성화 하기 위한 설정 가이드를 제공한다.  
-
-- **Master Node**에서 cloudcore.yaml 파일을 수정한다. (enable: true 로 변경)
-```
-# vi /etc/kubeedge/config/cloudcore.yaml
+$ vi kubeedge_var.sh
 ```
 
 ```
-cloudStream:
-  enable: true (수정)
-  streamPort: 10003
-  tlsStreamCAFile: /etc/kubeedge/ca/streamCA.crt
-  tlsStreamCertFile: /etc/kubeedge/certs/stream.crt
-  tlsStreamPrivateKeyFile: /etc/kubeedge/certs/stream.key
-  tlsTunnelCAFile: /etc/kubeedge/ca/rootCA.crt
-  tlsTunnelCertFile: /etc/kubeedge/certs/server.crt
-  tlsTunnelPrivateKeyFile: /etc/kubeedge/certs/server.key
-  tunnelPort: 10004
-```
+## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
+## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
+## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
 
-- **Master Node**에서 kubectl logs 기능 활성화를 위한 스크립트내 IP 정보를 수정 후 실행한다.
-```
-# cd paas-ta-container-platform-deployment/edge
+#!/bin/bash
 
-# vi enable-logs.sh
+export CLOUDCOREIPS={Master Node의 Public IP 정보 입력}
 
-export CLOUDCOREIPS="{MASTER_PUB_IP}" (수정)
-...
-```
+export EDGE_NODE_CNT={Edge Node의 갯수}
 
-```
-# source enable-logs.sh
-```
-
-- **Master Node**에서 cloudcore를 재시작한다.
-```
-# source restart-cloudcore.sh
-```
-
-- **Edge Node**에서 edgecore.yaml 파일을 수정한다. (enable: true)
-```
-# vi /etc/kubeedge/config/edgecore.yaml
-```
-
-```
-edgeStream:
-  enable: true (수정)
-  handshakeTimeout: 30
-  readDeadline: 15
-  server: xxx.xxx.xxx.xxx:10004
-  tlsTunnelCAFile: /etc/kubeedge/ca/rootCA.crt
-  tlsTunnelCertFile: /etc/kubeedge/certs/server.crt
-  tlsTunnelPrivateKeyFile: /etc/kubeedge/certs/server.key
-  writeDeadline: 15
-```
-
-kube-proxy 배포되어 있을 경우 edgecore 재시작이 불가능하므로 edgecore 재시작 시 kube-proxy 배포 여부를 우회할 수 있는 방법을 기술한다.
-
-- **EdgeNode**에서 edgecore.service 파일을 수정한다.
-```
-# vi /etc/kubeedge/edgecore.service
-```
-
-- edgecore.service 파일의 [Service]에 다음을 추가한다.
-```
-Environment="CHECK_EDGECORE_ENVIRONMENT=false"
-```
-
-- **Edge Node**에서 edgecore를 재시작한다.
-```
-# source restart-edgecore.sh
-```
-
-<br>
-
-### <div id='2.8'> 2.8. EdgeMesh 배포
-KubeEdge v1.8 부터 EdgeMesh가 EdgeCore 모듈에서 별도의 Pod로 분리되었으며 EdgeMesh Server, Agent Pod 배포 가이드를 제공한다.
-
-- **Master Node**에서 EdgeMesh Pod 배포 전 관련 CRDs 배포를 진행한다.
-```
-#  kubectl apply -f edgemesh/crds/istio/
-```
-
-- **Edge Node**에서 EdgeCore설정 변경 및 서비스 재시작을 통해 EdgeNode의 List-Watch를 활성화한다.
-```
-# vi /etc/kubeedge/config/edgecore.yaml
-```
-
-```
-modules:
-  ..
-  edgeMesh: (추가)
-    enable: false (추가)
-  ..
-  metaManager:
-    metaServer:
-      enable: true (수정)
-..
-```
-
-```
-# source restart-edgecore.sh
-```
-
-- **Master Node**에서 CloudCore의 설정 변경 및 서비스 재시작을 진행한다.
-```
-# vi /etc/kubeedge/config/cloudcore.yaml
-```
-
-```
-modules:
-  ..
-  dynamicController:
-    enable: true (수정)
-..
-```
-
-```
-# source restart-cloudcore.sh
-```
-
-- **Master Node**에서 EdgeMesh Server가 배포될 VM의 호스트명 정보를 수정한다.
-```
-# vi edgemesh/server/06-deployment.yaml
+export EDGE1_NODE_HOSTNAME={Edge 1번 Node의 HostName 정보 입력}
+export EDGE1_NODE_PRIVATE_IP={Edge 1번 Node의 Private IP 정보 입력}
 
 ...
-spec:
-  hostNetwork: true
-#     use label to selector node
-  nodeName: {MASTER_HOSTNAME} (수정)
-...
-```
-
-- **Master Node**에서 EdgeMesh Server 배포를 진행한다.
-```
-# kubectl apply -f edgemesh/server/
-```
-
-- **Master Node**에서 EdgeMesh Agent 배포를 진행한다.
-```
-# kubectl apply -f edgemesh/agent/
+export EDGE{n}_NODE_HOSTNAME={Edge Node의 갯수에 맞춰 HostName 정보 변수 추가}
+export EDGE{n}_NODE_PRIVATE_IP={Edge Node의 갯수에 맞춰 Private IP 정보 변수 추가}
 ```
 
 <br>
 
-### <div id='2.9'> 2.9. CVE, CCE 취약점 개선
-추가 배포한 각 Edge Node의 CVE, CCE 취약점 개선을 진행한다.
+
+### <div id='2.4'> 2.4. KubeEdge 설치
+쉘 스크립트를 통해 필요 패키지 설치, Node 구성정보 설정, Kubespray 설치정보 설정, Ansible playbook을 통한 Kubespray 설치를 일괄적으로 진행한다.
+
+- 쉘 스크립트를 통해 설치를 진행한다.
+```
+##
+$ source deploy_kubeedge_external.sh
+
+##
+$ source deploy_kubeedge_stacked.sh
+```
+
+- 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
 
 ```
-# ./security.bin
+1-1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언 (단독배포의 경우)
+1-2. kubespray_var_external.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 ETCD External의 경우)
+1-3. kubespray_var_stacked.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 ETCD Stacked의 경우)
+2. kubeedge_var.sh : KubeEdge 설치에 필요한 환경변수 선언
+3. kubeedge_setting.sh : Node 구성정보, KubeEdge 설치정보 설정
+4. kubeedge_install.sh : Ansible playbook을 통한 KubeEdge 설치
 ```
+
+<br>
 
 ### <div id='2.10'> 2.10. KubeEdge 설치 확인
 Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치를 확인한다.
@@ -506,16 +280,10 @@ nodelocaldns-l9s47                         1/1     Running   0          37m
 <br>
 
 ## <div id='3'> 3. KubeEdge Reset (참고)
-Cloud Side, Edge Side에서 KubeEdge를 중지한다. 필수구성요소는 삭제하지 않는다.
+Ansible playbook을 이용하여 KubeEdge 삭제를 진행한다.
 
-- Cloud Side에서 cloudcore를 중지하고 kubeedge Namespace와 같은 Kubernetes Master에서 KubeEdge 관련 리소스를 삭제한다.
 ```
-# keadm reset --kube-config=$HOME/.kube/config
-```
-
-- Edge Side에서 edgecore를 중지한다.
-```
-# keadm reset
+$ source remove_edge.sh
 ```
 
 <br>
