@@ -321,7 +321,7 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 Master (2022-04-13 기준) 이다.
 ```
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b release_v1.3
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
 
 <br>
