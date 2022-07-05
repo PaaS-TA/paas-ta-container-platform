@@ -1,26 +1,26 @@
 ### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > Portal
 
-## Purpose
-This document provides an architecture for portal services on the PaaS-TA Container Platform (CP)..
+## 목적
+본 문서는 PaaS-TA Container Platform (CP)의 포탈 서비스에 대한 Architecture를 제공한다.
 <br><br>
 
-## Contaier  Configuration Diagram
+## 컨테이너 구성도
 ![image](https://user-images.githubusercontent.com/67575226/147046843-e7dd3c3d-c8d5-442c-bc9b-9469cba3e67c.png)
 
 
 
-| Container Name  | Role |
+| 컨테이너명  | 역할 |
 |-------|----|
-| Admin-Portal | Container Platform Manager Portal UI |
-| User-Portal | Container Platform User Portal UI |
-| Portal-API | Provides the REST API required for container platform portal service control |
-| Common-API | Provides Database API for metadata control required for service management |
-| Service-Broker | Application for relay role between PaaS-TA and container platform portal service |
-| MariaDB | Container Platform Portal Service Database for Data Management |
+| Admin-Portal | 컨테이너플랫폼 관리자 포탈 UI |
+| User-Portal | 컨테이너플랫폼 사용자 포탈 UI |
+| Portal-API | 컨테이너플랫폼 포탈 서비스 제어에 필요한 REST API를 제공 |
+| Common-API | 서비스 관리에 필요한 메타데이터 제어를 위한 Database API를 제공 |
+| Service-Broker | PaaS-TA와 컨테이너플랫폼 포탈 서비스 간의 중계 역할용 어플리케이션 |
+| MariaDB | 컨테이너플랫폼 포탈 서비스 데이터 관리용 Database |
 
 
-## Description
-The PaaS-TA container platform portal service provides a UI for managing workloads in deployed Kubernetes clusters and controlling container deployment and management by tenant.
+## 설명
+파스-타 컨테이너플랫폼 포탈 서비스는 배포되는 쿠버네티스 클러스터의 워크로드를 관리하고, 테넌시별로 컨테이너의 배포 및 관리를 제어할 수 있는 UI를 제공한다.
 
 
 ### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Architecture](../README.md) > Portal
