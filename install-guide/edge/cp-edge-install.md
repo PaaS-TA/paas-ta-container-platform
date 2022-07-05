@@ -49,7 +49,7 @@ PaaS-TA 5.5 버전부터는 KubeEdge 기반으로 단독 배포를 지원한다.
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker, Edge) 환경으로 구성되어 있다. <br>
 Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes Cluster와 Edge 환경에 KubeEdge를 설치한다. Pod를 통해서는 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **단독배포, HA배포 클러스터, Edge VM: 1개 이상** 이 필요하며,  본 문서는 Kubernetes Cluster 환경에 Edge Node를 구성하기 위한 Edge VM 설치 내용이다.
+총 필요한 VM 환경으로는 **단독배포 또는 HA배포 클러스터, Edge VM: 1개 이상** 이 필요하며,  본 문서는 Kubernetes Cluster 환경에 Edge Node를 구성하기 위한 Edge VM 설치 내용이다.
 
 ![image 001]
 
@@ -71,7 +71,7 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 |주요 소프트웨어|Version|
 |---|---|
 |KubeEdge|v1.10.0|
-|Kubernetes Native|v1.23.5|
+|Kubernetes Native|v1.23.7|
 |Kubernetes Native (Edge Node)|v1.22.6|
 |CRI-O|v1.23.0|
 |CRI-O (Edge Node)|v1.22.0|
@@ -144,6 +144,7 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 - Cloud 영역에 Kubespray를 통해 Kubernetes Cluster 배포를 진행한다.
 
 > https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/cp-cluster-install.md (단독배포)
+
 > https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/standalone/cp-cluster-ha-install.md (HA배포)
 
 <br>
@@ -174,7 +175,7 @@ $ cd paas-ta-container-platform-deployment/standalone/ha_control_plane
 
 - KubeEdge 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-$ vi kubeedge_var.sh
+$ vi cp-edge-vars.sh
 ```
 
 ```
@@ -184,13 +185,12 @@ $ vi kubeedge_var.sh
 
 #!/bin/bash
 
-export CLOUDCOREIPS={Master Node의 Public IP 정보 입력}
-
+## Edge Node Count Info
 export EDGE_NODE_CNT={Edge Node의 갯수}
 
+## Add Edge Node Info
 export EDGE1_NODE_HOSTNAME={Edge 1번 Node의 HostName 정보 입력}
 export EDGE1_NODE_PRIVATE_IP={Edge 1번 Node의 Private IP 정보 입력}
-
 ...
 export EDGE{n}_NODE_HOSTNAME={Edge Node의 갯수에 맞춰 HostName 정보 변수 추가}
 export EDGE{n}_NODE_PRIVATE_IP={Edge Node의 갯수에 맞춰 Private IP 정보 변수 추가}
@@ -205,24 +205,13 @@ export EDGE{n}_NODE_PRIVATE_IP={Edge Node의 갯수에 맞춰 Private IP 정보 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
 ## 단독배포 구성의 경우
-$ source deploy_kubeedge.sh
+$ source deploy-cp-edge.sh
 
 ## External ETCD 구성의 경우
-$ source deploy_kubeedge_external.sh
+$ source deploy-external-cp-edge.sh
 
 ## Stacked ETCD 구성의 경우
-$ source deploy_kubeedge_stacked.sh
-```
-
-- 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
-
-```
-1-1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언 (단독배포 구성의 경우)
-1-2. kubespray_var_external.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 External ETCD 구성의 경우)
-1-3. kubespray_var_stacked.sh : Kubespray 설치에 필요한 환경변수 선언 (HA배포 Stacked ETCD 구성의 경우)
-2. kubeedge_var.sh : KubeEdge 설치에 필요한 환경변수 선언
-3. kubeedge_setting.sh : Node 구성정보, KubeEdge 설치정보 설정
-4. kubeedge_install.sh : Ansible playbook을 통한 KubeEdge 설치
+$ source deploy-stacked-cp-edge.sh
 ```
 
 <br>
@@ -233,11 +222,11 @@ Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치
 ```
 # kubectl get nodes
 NAME                 STATUS   ROLES                  AGE     VERSION
-paasta-cp-edge       Ready    agent,edge             5m40s   v1.19.3-kubeedge-v1.8.2
-paasta-cp-master     Ready    control-plane,master   39m     v1.20.5
-paasta-cp-worker-1   Ready    <none>                 38m     v1.20.5
-paasta-cp-worker-2   Ready    <none>                 38m     v1.20.5
-paasta-cp-worker-3   Ready    <none>                 38m     v1.20.5
+paasta-cp-edge       Ready    agent,edge             5m40s   v1.22.6-kubeedge-v1.10.0
+paasta-cp-master     Ready    control-plane,master   39m     v1.23.7
+paasta-cp-worker-1   Ready    <none>                 38m     v1.23.7
+paasta-cp-worker-2   Ready    <none>                 38m     v1.23.7
+paasta-cp-worker-3   Ready    <none>                 38m     v1.23.7
 
 # kubectl get pods -n kube-system
 NAME                                       READY   STATUS    RESTARTS   AGE
@@ -273,7 +262,7 @@ nodelocaldns-l9s47                         1/1     Running   0          37m
 Ansible playbook을 이용하여 KubeEdge 삭제를 진행한다.
 
 ```
-$ source remove_edge.sh
+$ source reset-cp-edge.sh
 ```
 
 <br>
@@ -294,6 +283,7 @@ $ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
 - Cluster Role을 생성한 Service Account에 바인딩한다.
 ```
 $ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
+(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
 ```
 
 - 생성한 Service Account의 Token을 획득한다.
@@ -301,6 +291,7 @@ $ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admi
 ## {SECRET_NAME} : Mountable secrets 값 확인
 
 $ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
+(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
 
 $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
 ```
