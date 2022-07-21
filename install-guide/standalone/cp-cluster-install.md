@@ -60,17 +60,17 @@ Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, P
 ## <div id='2'> 2. Kubespray 설치
 
 ### <div id='2.1'> 2.1. Prerequisite
-본 설치 가이드는 **Ubuntu 20.04** 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v5.5+, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 하며 설치 가이드에 따라 순차적으로 설치가 진행된다.
+본 설치 가이드는 **Ubuntu 20.04** 환경에서 설치하는 것을 기준으로 하였다. Kubespray 설치를 위해서는 Ansible v5.7+, Jinja 2.11+ 및 python-netaddr이 Ansible 명령을 실행할 시스템에 설치되어 있어야 하며 설치 가이드에 따라 순차적으로 설치가 진행된다.
 
 
 Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보는 다음과 같다.
 
 |주요 소프트웨어|Version|Python Package|Version
 |---|---|---|---|
-|Kubespray|Master (2022-04-13)|ansible|5.5.0|
-|Kubernetes Native|v1.23.5|ansible-core|2.12.3|
-|CRI-O|v1.23.0|cryptography|2.8|
-|Helm|v3.8.0|jinja2|2.11.3|
+|Kubespray|v2.19.0|ansible|5.7.1|
+|Kubernetes Native|v1.23.7|ansible-core|2.12.5|
+|CRI-O|v1.23.0|cryptography|3.4.8|
+|Helm|v3.8.2|jinja2|2.11.3|
 |Istio|1.11.4|netaddr|0.7.19|
 |NFS Common||pbr|5.4.4|
 |||jmespath|0.9.5|
@@ -171,7 +171,7 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 Master (2022-04-13) 이다.
 ```
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b v1.3.1
 ```
 
 <br>
@@ -186,7 +186,7 @@ $ cd paas-ta-container-platform-deployment/standalone/single_control_plane
 
 - Kubespray 설치에 필요한 환경변수를 정의한다. HostName, IP 정보는 다음을 통해 확인할 수 있다.
 ```
-$ vi kubespray_var.sh
+$ vi cp-cluster-vars.sh
 ```
 
 ```
@@ -222,16 +222,7 @@ export WORKER{n}_NODE_PRIVATE_IP={Worker Node의 갯수에 맞춰 Private IP 정
 
 - 쉘 스크립트를 통해 설치를 진행한다.
 ```
-$ source deploy_kubespray.sh
-```
-
-- 환경변수를 잘못 설정하였거나 설치 과정에서 이슈가 생길 경우 각각의 분리된 스크립트를 이용하여 설치를 진행할 수 있다.
-
-```
-1. kubespray_var.sh : Kubespray 설치에 필요한 환경변수 선언
-2. package_install.sh : pip 패키지 설치
-3. kubespray_setting.sh : Node 구성정보, Kubespray 설치정보 설정
-4. kubespray_install.sh : Ansible playbook을 통한 Kubespray 설치
+$ source deploy-cp-cluster.sh
 ```
 
 <br>
@@ -242,10 +233,10 @@ Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 Kubespray 설�
 ```
 $ kubectl get nodes
 NAME                 STATUS   ROLES                  AGE   VERSION
-paasta-cp-master     Ready    control-plane,master   12m   v1.23.5
-paasta-cp-worker-1   Ready    <none>                 10m   v1.23.5
-paasta-cp-worker-2   Ready    <none>                 10m   v1.23.5
-paasta-cp-worker-3   Ready    <none>                 10m   v1.23.5
+paasta-cp-master     Ready    control-plane,master   12m   v1.23.7
+paasta-cp-worker-1   Ready    <none>                 10m   v1.23.7
+paasta-cp-worker-2   Ready    <none>                 10m   v1.23.7
+paasta-cp-worker-3   Ready    <none>                 10m   v1.23.7
 
 $ kubectl get pods -n kube-system
 NAME                                          READY   STATUS    RESTARTS      AGE
@@ -280,7 +271,7 @@ nodelocaldns-x7grn                            1/1     Running   0             8m
 Ansible playbook을 이용하여 Kubespray 삭제를 진행한다.
 
 ```
-$ source remove_kubespray.sh
+$ source reset-cp-cluster.sh
 ```
 
 <br>
