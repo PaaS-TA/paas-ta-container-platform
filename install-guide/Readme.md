@@ -8,7 +8,7 @@
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)  
   + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide.md)  
-  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/container-platform-helm-chart/tree/master/container-platform-portal)  
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
   + [Pipeline 설치 가이드](pipeline/paas-ta-container-platform-pipeline-standalone-guide.md)
@@ -21,7 +21,7 @@
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide.md)
   + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide.md)  
-  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)   
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/container-platform-helm-chart/tree/master/container-platform-portal)   
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
   + [Pipeline 설치 가이드](pipeline/paas-ta-container-platform-pipeline-service-guide.md)
@@ -34,7 +34,7 @@
 - 포털 설치
   + [포털 설치 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)  
   + [Keycloak TLS 설정 가이드](container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide.md)  
-  + [설치 및 배포 파일](https://github.com/PaaS-TA/paas-ta-container-platform-deployment/tree/master/bosh)  
+  + [설치 및 배포 파일](https://github.com/PaaS-TA/container-platform-helm-chart/tree/master/container-platform-portal)  
   + [릴리즈 파일](https://github.com/PaaS-TA/container-platform-portal-release/tree/master)
 - 서비스 설치
   + [Pipeline 설치 가이드](pipeline/paas-ta-container-platform-pipeline-standalone-guide.md)
