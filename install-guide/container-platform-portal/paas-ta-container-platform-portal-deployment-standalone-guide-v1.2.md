@@ -4,7 +4,7 @@
 
 >v1.2 (Current)
 
->v1.3 (/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)
+>[v1.3](/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)
 
 
 ## Table of Contents
