@@ -2,6 +2,11 @@
 
 <br>
 
+>v1.2 (Current)
+
+>v1.3 (/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)
+
+
 ## Table of Contents
 
 1. [문서 개요](#1)  
