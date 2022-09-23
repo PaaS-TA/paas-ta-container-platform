@@ -28,11 +28,16 @@ Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동
 
 <br>
   
-본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드 진행 시 아래 링크를 대체한다.
+본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 **3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드** 의 다운로드 경로는 아래 링크를 대체하여 진행한다. 이후 본 문서의 2.3. 컨테이너 권한 제어 항목을 진행한다.
 
+<br>
+  
 - Portal 배포 가이드
-| https://github.com/PaaS-TA/paas-ta-container-platform/blob/v1.2.1/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md
+> https://github.com/PaaS-TA/paas-ta-container-platform/blob/v1.2.1/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md#3.2.1
 
+<br>
+
+- 대체 링크
 ```
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wp8EZ5CeFPwxHzG/download
 ```
@@ -223,9 +228,8 @@ W0902 00:20:55.761056 2731247 warnings.go:70] would violate PodSecurity "restric
 
 <br>
 
-<img alt="Html" src ="https://img.shields.io/static/v1?label=Caution&message=★★&color=red"/>
+## <div id='3'> 3. YAML, Helm Chart를 이용한 Pod 배포 시 설정 사항 <img alt="Html" src ="https://img.shields.io/badge/★★Caution★★-E34F26.svg?&style=for-the-badge&logo=&logoColor=white"/>
 
-## <div id='3'> 3. YAML, Helm Chart를 이용한 Pod 배포 시 설정 사항
 > 조치 후 운영되거나 배포되는 Pod의 이미지 권한 설정(Dockerfile)과 배포Menifest설정이 없을경우 아래와 같이 배포가 되지 않으니, KISA와 협의하여 운영상 문제가 없도록 협의가 필요할것으로 보인다.
 
 ```
