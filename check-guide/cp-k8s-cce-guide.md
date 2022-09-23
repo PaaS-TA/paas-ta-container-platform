@@ -23,7 +23,16 @@
 본 문서 (Container Platform CCE 사후조치 가이드) 는 개방형 PaaS 플랫폼 고도화 및 개발자 지원 환경 기반의 Open PaaS에 배포되는 컨테이터 플랫폼에 CCE 취약점 조치를 위한 사후조치 방법을 기술하였다.
 
 Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동조치 될 예정이다.
-  
+
+본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드 진행 시 아래 링크를 대체한다.
+
+- Portal 배포 가이드
+| https://github.com/PaaS-TA/paas-ta-container-platform/blob/v1.2.1/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide-v1.2.md
+
+```
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wp8EZ5CeFPwxHzG/download
+```
+
 |주요 소프트웨어|Version|
 |---|---|
 |Kubernetes Native|v1.23.7|
@@ -266,6 +275,7 @@ helm-nginx   0/1     0            0           71s
 ```
 
 - helm install 시 --set 옵션을 설정한다.
+|Name|Description|Value|
 |---|---|---|
 |podSecurityContext.enabled|Enabled NGINX pods' Security Context|false|
 |podSecurityContext.fsGroup|Set NGINX pod's Security Context fsGroup|1001|
