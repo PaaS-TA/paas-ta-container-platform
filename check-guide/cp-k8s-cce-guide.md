@@ -193,8 +193,8 @@ W0902 00:20:55.761056 2731247 warnings.go:70] would violate PodSecurity "restric
 네임스페이스 공유 금지가 적절하게 되어 있지 않을 경우 취약점이 존재하기 때문에 설정이 필요하나 PodSecurity의 enforce: "restricted" 설정으로 인하여 spec.hostNetwork, spec.hostPID, spec.hostIPC 가 기본적으로 제한된다.
 
 <br>
-#E25A1C
-<img alt="Html" src ="https://simpleicons.org/icons/apachespark.svg?&style=for-the-badge&logo=#E25A1C&logoColor=#E25A1C"/>
+
+  https://img.shields.io/badge/Caution-★★-red
 ## <div id='3'> 3. YAML, Helm Chart를 이용한 Pod 배포 시 설정 사항
 조치 후 운영되거나 배포되는 Pod의 이미지 권한 설정(Dockerfile)과 배포Menifest설정이 없을경우 아래와 같이 배포가 되지 않으니, KISA와 협의하여 운영상 문제가 없도록 협의가 필요할것으로 보인다.
 
