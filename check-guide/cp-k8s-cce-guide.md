@@ -194,7 +194,7 @@ W0902 00:20:55.761056 2731247 warnings.go:70] would violate PodSecurity "restric
 
 <br>
 
-  <img alt="Html" src ="https://img.shields.io/static/v1?label=Caution&message=★★&color=red/>
+  <img alt="Html" src ="https://img.shields.io/static/v1?label=Caution&message=★★&color=red"/>
 ## <div id='3'> 3. YAML, Helm Chart를 이용한 Pod 배포 시 설정 사항
 조치 후 운영되거나 배포되는 Pod의 이미지 권한 설정(Dockerfile)과 배포Menifest설정이 없을경우 아래와 같이 배포가 되지 않으니, KISA와 협의하여 운영상 문제가 없도록 협의가 필요할것으로 보인다.
 
