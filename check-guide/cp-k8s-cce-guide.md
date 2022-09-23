@@ -28,7 +28,14 @@ Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동
 
 <br>
   
-본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 **3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드** 의 다운로드 경로는 아래 링크를 대체하여 진행한다. 이후 본 문서의 2.3. 컨테이너 권한 제어 항목을 진행한다.
+본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 **3.2.1. 컨테이너 플랫폼 포탈 Deployment 파일 다운로드** 의 다운로드 경로는 아래 링크를 대체하여 진행한다.
+
+<br>
+  
+신규로 포탈을 배포하기 전 기존에 다운로드한 포탈 Deployment는 삭제한다.
+```
+$ rm -rf ~/workspace/container-platform/paas-ta-container-platform-portal-deployment
+```
 
 <br>
   
@@ -41,6 +48,8 @@ Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동
 ```
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wp8EZ5CeFPwxHzG/download
 ```
+  
+이후 본 문서의 2.3. 컨테이너 권한 제어 항목을 진행한다.
 
 <br>
   
