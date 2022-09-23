@@ -305,6 +305,7 @@ helm-nginx   0/1     0            0           71s
 <br>
   
 - helm install 시 --set 옵션을 설정한다.
+
 |Name|Description|Value|
 |---|---|---|
 |podSecurityContext.enabled|Enabled NGINX pods' Security Context|false|
