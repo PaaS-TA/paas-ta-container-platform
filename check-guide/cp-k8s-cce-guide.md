@@ -23,6 +23,12 @@
 본 문서 (Container Platform CCE 사후조치 가이드) 는 개방형 PaaS 플랫폼 고도화 및 개발자 지원 환경 기반의 Open PaaS에 배포되는 컨테이터 플랫폼에 CCE 취약점 조치를 위한 사후조치 방법을 기술하였다.
 
 Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동조치 될 예정이다.
+  
+|주요 소프트웨어|Version|
+|---|---|
+|Kubernetes Native|v1.23.7|
+|Container Platform Cluster|v1.3.1|
+|Container Platform Portal|v1.2.3|
 
 <br>
 
