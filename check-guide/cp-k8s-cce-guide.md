@@ -22,8 +22,12 @@
 ### <div id='1.1'> 1.1. 목적
 본 문서 (Container Platform CCE 사후조치 가이드) 는 개방형 PaaS 플랫폼 고도화 및 개발자 지원 환경 기반의 Open PaaS에 배포되는 컨테이터 플랫폼에 CCE 취약점 조치를 위한 사후조치 방법을 기술하였다.
 
+ <br>
+  
 Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동조치 될 예정이다.
 
+<br>
+  
 본 문서의 2.2. etcd 암호화 적용 까지 진행 후 Container Platform 포탈 배포를 진행하며 배포 가이드 문서를 참고하여 진행하되 3.2.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드 진행 시 아래 링크를 대체한다.
 
 - Portal 배포 가이드
@@ -33,6 +37,8 @@ Container Platform v1.3.2 부터는 Container Platform Cluster 배포 시 자동
 $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wp8EZ5CeFPwxHzG/download
 ```
 
+<br>
+  
 |주요 소프트웨어|Version|
 |---|---|
 |Kubernetes Native|v1.23.7|
@@ -46,6 +52,8 @@ $ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/wp8EZ5CeF
 ### <div id='2.1'> 2.1. Admission Control Plugin 설정
 Admission Control Plugin 설정이 적절하게 설정되어 있지 않을 경우 취약점이 존재하기 때문에 다음과 같이 설정을 진행한다.
 
+<br>
+  
 - **AdmissionConfiguration** 설정 파일을 추가한다.
 ```
 $ sudo mkdir /etc/kubernetes/admission
@@ -75,6 +83,8 @@ plugins:
         namespaces: [kube-system,nfs-storageclass]
 ```
 
+<br>
+  
 - **EventRateLimit** 설정 파일을 추가한다.
 
 ```
@@ -94,6 +104,8 @@ limits:
     burst: 50
 ```
 
+<br>
+  
 - **kube-apiserver** Manifest 파일을 수정한다.
 **PodSecurityPolicy**의 경우 **Kubernetes v1.21** 이후부터 사용되지 않으며 **PodSecurity**로 대체한다.
 --disable-admission-plugins=ServiceAccount 설정의 경우 nfs-pod-provisioner 배포가 불가능하여 설정에서 제외 처리하였다.
@@ -123,6 +135,8 @@ $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ### <div id='2.2'> 2.2. etcd 암호화 적용
 etcd 암호화 적용을 하고 있지 않을 경우 취약점이 존재하기 때문에 다음과 같이 설정을 진행한다. 
 
+<br>
+  
 - **EncryptionConfiguration** 설정 파일을 추가한다.
 ```
 $ sudo mkdir /etc/kubernetes/etcd
@@ -142,6 +156,8 @@ resources:
               secret: dYbd3wKBk/AoUqXFbw2XNkxCXycdZ1g0Fc0DAwRZn2c=
       - identity: {}
 ```
+
+<br>
 
 - **kube-apiserver** Manifest 파일을 수정한다.
 ```
@@ -168,7 +184,9 @@ $ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ### <div id='2.3'> 2.3. 컨테이너 권한 제어
 컨테이너 권한 제어를 적절하게 설정하고 있지 않을 경우 취약점이 존재하기 때문에 다음과 같이 설정을 진행한다.
 
--  Deployment, Pod 등 YAML 파일 작성 시 PodSecurity의 enforce: "restricted" 설정으로 인하여 다음과 같은 securityContext 설정을 필수로 추가한다.
+<br>
+  
+- Deployment, Pod 등 YAML 파일 작성 시 PodSecurity의 enforce: "restricted" 설정으로 인하여 다음과 같은 securityContext 설정을 필수로 추가한다.
 ```
 ...
 spec:
@@ -191,6 +209,8 @@ spec:
 ...
 ```
 
+<br>
+
 - 해당 설정 누락 시 다음과 같은 예시의 WARN 메시지가 출력되며 Pod가 배포되지 않는다.
 ```
 W0902 00:20:55.761056 2731247 warnings.go:70] would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "nfs-pod-provisioner" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "nfs-pod-provisioner" must set securityContext.capabilities.drop=["ALL"]), restricted volume types (volume "nfs-provisioner" uses restricted volume type "nfs"), runAsNonRoot != true (pod or container "nfs-pod-provisioner" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "nfs-pod-provisioner" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
@@ -206,14 +226,18 @@ W0902 00:20:55.761056 2731247 warnings.go:70] would violate PodSecurity "restric
 <img alt="Html" src ="https://img.shields.io/static/v1?label=Caution&message=★★&color=red"/>
 
 ## <div id='3'> 3. YAML, Helm Chart를 이용한 Pod 배포 시 설정 사항
->조치 후 운영되거나 배포되는 Pod의 이미지 권한 설정(Dockerfile)과 배포Menifest설정이 없을경우 아래와 같이 배포가 되지 않으니, KISA와 협의하여 운영상 문제가 없도록 협의가 필요할것으로 보인다.
+> 조치 후 운영되거나 배포되는 Pod의 이미지 권한 설정(Dockerfile)과 배포Menifest설정이 없을경우 아래와 같이 배포가 되지 않으니, KISA와 협의하여 운영상 문제가 없도록 협의가 필요할것으로 보인다.
 
 ```
 Error from server (Forbidden): pods "nginx" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "nginx" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "nginx" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "nginx" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "nginx" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
 ```
+
+<br>
   
 위의 경우는 PodSecurity의 enforce: "restricted" 설정으로 인하여 발생하는 것으로 이를 만족하기 위해서는 securityContext 설정이 필수로 적용되어야 한다.
 
+<br>
+  
 - kubectl create --image 옵션으로 Deployment 배포 시 다음과 같이 Pod가 생성되지 않는다.
 ```
 $ kubectl create deployment nginx --image=nginx
@@ -227,6 +251,8 @@ NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 nginx      0/1     0            0           25s
 ```
 
+<br>
+  
 -  YAML 파일을 작성하여 배포를 진행해야 한다.
 ```
 apiVersion: v1
@@ -252,6 +278,8 @@ spec:
     - containerPort: 80
 ```
 
+<br>
+  
 - helm install을 이용하여 Deployment 배포 시 다음과 같이 Pod가 생성되지 않는다.
 ```
 $ helm install helm-nginx bitnami/nginx
@@ -274,6 +302,8 @@ NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 helm-nginx   0/1     0            0           71s
 ```
 
+<br>
+  
 - helm install 시 --set 옵션을 설정한다.
 |Name|Description|Value|
 |---|---|---|
@@ -288,6 +318,8 @@ helm-nginx   0/1     0            0           71s
 $ helm install helm-nginx bitnami/nginx --set podSecurityContext.enabled=true
 ```
 
+<br>
+  
 - 또는 helm chart 파일을 다운로드 후 templates 또는 values.yaml 파일을 수정한다. (https://github.com/bitnami/charts/tree/master/bitnami/nginx/)
 ```
 $ vi nginx/values.yaml
