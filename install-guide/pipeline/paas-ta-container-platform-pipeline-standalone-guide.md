@@ -98,7 +98,7 @@ data-cp-pipeline-postgresql-postgresql-0   Bound    pvc-f61096ac-5e2b-4105-9ed3-
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 파이프라인 Deployment 파일 다운로드 :  
-   [cp-pipeline-deployment-v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/HM3Lej9Y9DPeDgz)    
+   [cp-pipeline-deployment-v1.3.2.tar.gz](https://nextcloud.paas-ta.org/index.php/s/CSBqkwJYwJpiR9z)    
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -106,15 +106,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/HM3Lej9Y9DPeDgz/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/CSBqkwJYwJpiR9z/download
 
 $ ls ~/workspace/container-platform
   ...
-    cp-pipeline-deployment-v1.3.tar.gz
+    cp-pipeline-deployment-v1.3.2.tar.gz
   ...
   
 # Deployment 파일 압축 해제
-$ tar xvfz cp-pipeline-deployment-v1.3.tar.gz
+$ tar xvfz cp-pipeline-deployment-v1.3.2.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성

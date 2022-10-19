@@ -74,7 +74,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [cp-source-control-deployment_v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT)  
+   [cp-source-control-deployment-v1.3.2.tar.gz](https://nextcloud.paas-ta.org/index.php/s/GBsDqcBGwrkbKmM)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -82,15 +82,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/GBsDqcBGwrkbKmM/download
 
 $ ls ~/workspace/container-platform
   ...
-  cp-source-control-deployment-v1.3.tar.gz
+  cp-source-control-deployment-v1.3.2.tar.gz
   ...
 
 # Deployment 파일 압축 해제
-$ tar xvfz cp-source-control-deployment-v1.3.tar.gz
+$ tar xvfz cp-source-control-deployment-v1.3.2.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성

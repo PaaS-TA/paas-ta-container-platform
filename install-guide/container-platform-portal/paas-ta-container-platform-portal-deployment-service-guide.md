@@ -115,7 +115,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 포털 Deployment 파일 다운로드 :
-   [cp-portal-deployment-v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/e7ZqzxP4ZFa6GDG/download)
+   [cp-portal-deployment-v1.3.2.tar.gz](https://nextcloud.paas-ta.org/index.php/s/mzq7gm6QsqfKrRJ)
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -123,13 +123,13 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/e7ZqzxP4ZFa6GDG/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/mzq7gm6QsqfKrRJ/download
 
 $ ls ~/workspace/container-platform
-  cp-portal-deployment-v1.3.tar.gz
+  cp-portal-deployment-v1.3.2.tar.gz
 
 # Deployment 파일 압축 해제
-$ tar -xvf cp-portal-deployment-v1.3.tar.gz
+$ tar -xvf cp-portal-deployment-v1.3.2.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
@@ -380,7 +380,7 @@ UAA 서비스와 Keycloak 서비스 인증 구성을 위한 Deployment 파일을
 :bulb: 해당 내용은 PaaS-TA 포털이 설치된 **BOSH Inception**에서 진행한다.
 
 + 컨테이너 플랫폼 포털 사용자 인증 구성 Deployment 다운로드 :  
-   [cp-saml-deployment-v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/YB4GsA4wZRiNTTi/download)  
+   [cp-saml-deployment-v1.3.2.tar.gz](https://nextcloud.paas-ta.org/index.php/s/miCRbypGySjFza3)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -388,13 +388,13 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/YB4GsA4wZRiNTTi/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/miCRbypGySjFza3/download
 
 $ ls ~/workspace/container-platform
-  cp-saml-deployment-v1.3.tar.gz
+  cp-saml-deployment-v1.3.2.tar.gz
 
 # Deployment 파일 압축 해제
-$ tar -xvf cp-saml-deployment-v1.3.tar.gz
+$ tar -xvf cp-saml-deployment-v1.3.2.tar.gz
 ```
 <br>
 
