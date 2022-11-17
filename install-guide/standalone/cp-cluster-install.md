@@ -20,11 +20,7 @@
 
 3. [Kubespray 삭제 (참고)](#3)  
 
-4. [컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)](#4)  
-  4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
-  4.2. [Namespace 사용자 Token 획득](#4.2)  
-
-5. [Resource 생성 시 주의사항](#5)  
+4. [Resource 생성 시 주의사항](#4)  
 
 <br>
 
@@ -45,7 +41,14 @@ PaaS-TA 5.5 버전부터는 Kubespray 기반으로 단독 배포를 지원한다
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker) 환경으로 구성되어 있다.<br>
 Kubespary를 통해 Kubernetes Cluster를 설치하고 Pod를 통해 Database, Private registry 등 미들웨어 환경을 제공하여 Container Image로 Kubernetes Cluster에 Container Platform 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 3개 이상**이 필요하고 본 문서는 Kubernetes Cluster 환경을 구성하기 위한 Master VM 과 Worker VM 설치 내용이다.
+
+> 컨테이너 플랫폼 v1.4 버전부터는 Cluster 배포 시 Storage가 함께 배포된다.
+
+> NFS 배포 시 NFS-Server 설치가 우선 진행되어야 한다.  
+> [NFS Server 설치](../nfs-server-install-guide.md)  
+
+> Rook-Ceph 배포 시 **각 Worker VM에 Root Volume 외에 추가 Volume 할당**이 우선 진행되어야 한다.
 
 ![image 001]
 
@@ -67,16 +70,16 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 
 |주요 소프트웨어|Version|Python Package|Version
 |---|---|---|---|
-|Kubespray|v2.19.0|ansible|5.7.1|
-|Kubernetes Native|v1.23.7|ansible-core|2.12.5|
-|CRI-O|v1.23.0|cryptography|3.4.8|
+|Kubespray|v2.20.0|ansible|5.7.1|
+|Kubernetes Native|v1.24.6|ansible-core|2.12.5|
+|CRI-O|v1.24.3|cryptography|3.4.8|
 |Helm|v3.8.2|jinja2|2.11.3|
 |Istio|1.11.4|netaddr|0.7.19|
-|NFS Common||pbr|5.4.4|
-|||jmespath|0.9.5|
-|||ruamel.yaml|0.16.10|
-|||ruamel.yaml.clib|0.2.6|
-|||MarkupSafe|1.1.1|
+|Podman|3.4.2|pbr|5.4.4|
+|NFS Common||jmespath|0.9.5|
+|Rook Ceph|1.10.3|ruamel.yaml|0.16.10|
+|Kubeflow|1.6.1|ruamel.yaml.clib|0.2.6|
+|Vault|1.11.3|MarkupSafe|1.1.1|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
@@ -169,9 +172,9 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
-- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 Master (2022-04-13) 이다.
+- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.20.0 이다.
 ```
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b branch_v1.4.x
 ```
 
 <br>
@@ -215,6 +218,28 @@ export WORKER{n}_NODE_HOSTNAME={Worker Node의 갯수에 맞춰 HostName 정보 
 export WORKER{n}_NODE_PRIVATE_IP={Worker Node의 갯수에 맞춰 Private IP 정보 변수 추가}
 ```
 
+- 설치할 스토리지를 선택한다.   
+Node에 볼륨 추가가 불가능할 경우 NFS를, 볼륨 추가가 가능할 경우 Rook-Ceph을 선택하는 것을 권장한다.  
+NFS 선택 시 NFS Server의 Private IP 정보를 입력한다.
+```
+...
+## Storage Type Info (eg. nfs, rook-ceph)
+export STORAGE_TYPE={설치할 Storage Type 정보 입력}
+export NFS_SERVER_PRIVATE_IP={Storage Type nfs 설정 시 NFS Server의 Private IP 정보 입력}
+...
+```
+
+- 컨테이너 플랫폼 v1.4 에서는 Multi Cluster 배포 및 관리가 가능하다. Global Cluster에서 Sub Cluster 배포 시 IaaS가 다른 경우 원활한 통신을 위해 각 Worker Node의 Public IP 정보를 입력한다.
+```
+...
+## Terraman Node Info
+export WORKER1_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 1번 Node의 Public IP 정보 입력}
+export WORKER2_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 2번 Node의 Public IP 정보 입력}
+export WORKER3_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 3번 Node의 Public IP 정보 입력}
+...
+export WORKER{n}_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker Node의 갯수에 맞춰 Public IP 정보 변수 추가}
+```
+
 <br>
 
 ### <div id='2.5'> 2.5. Kubespray 설치
@@ -233,14 +258,13 @@ Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 Kubespray 설�
 ```
 $ kubectl get nodes
 NAME                 STATUS   ROLES                  AGE   VERSION
-paasta-cp-master     Ready    control-plane,master   12m   v1.23.7
-paasta-cp-worker-1   Ready    <none>                 10m   v1.23.7
-paasta-cp-worker-2   Ready    <none>                 10m   v1.23.7
-paasta-cp-worker-3   Ready    <none>                 10m   v1.23.7
+paasta-cp-master     Ready    control-plane          12m   v1.24.6
+paasta-cp-worker-1   Ready    <none>                 10m   v1.24.6
+paasta-cp-worker-2   Ready    <none>                 10m   v1.24.6
+paasta-cp-worker-3   Ready    <none>                 10m   v1.24.6
 
 $ kubectl get pods -n kube-system
 NAME                                          READY   STATUS    RESTARTS      AGE
-calico-kube-controllers-7c5b64bf96-xwdgn      1/1     Running   0             8m52s
 calico-node-d8sg6                             1/1     Running   0             9m22s
 calico-node-kfvjx                             1/1     Running   0             10m
 calico-node-khwdz                             1/1     Running   0             10m
@@ -276,53 +300,7 @@ $ source reset-cp-cluster.sh
 
 <br>
 
-## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
-
-### <div id='4.1'> 4.1. Cluster Role 운영자 생성 및 Token 획득
-Kubespray 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
-
-- Service Account를 생성한다.
-```
-## {SERVICE_ACCOUNT} : 생성할 Service Account 명
-
-$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(ex. kubectl create serviceaccount k8sadmin -n kube-system)
-```
-
-- Cluster Role을 생성한 Service Account에 바인딩한다.
-```
-$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
-(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
-```
-
-- 생성한 Service Account의 Token을 획득한다.
-```
-## {SECRET_NAME} : Mountable secrets 값 확인
-
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
-
-$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-<br>
-
-### <div id='4.2'> 4.2. Namespace 사용자 Token 획득
-포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
-
-- Namespace 사용자의 Token을 획득한다.
-```
-## {SECRET_NAME} : Mountable secrets 값 확인
-## {NAMESPACE} : Namespace 명
-
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
-
-$ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-<br>
-
-## <div id='5'> 5. Resource 생성 시 주의사항
+## <div id='4'> 4. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
 
 |Resource 명|생성 시 제외해야 할 prefix|

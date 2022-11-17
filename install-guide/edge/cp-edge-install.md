@@ -24,11 +24,7 @@
 
 3. [KubeEdge Reset (참고)](#3)  
 
-4. [컨테이너 플랫폼 운영자 생성 및 Token 획득](#4)  
-  4.1. [Cluster Role 운영자 생성 및 Token 획득](#4.1)  
-  4.2. [Namespace 사용자 Token 획득](#4.2)  
-
-5. [Resource 생성 시 주의사항](#5)
+4. [Resource 생성 시 주의사항](#4)
 
 <br>
 
@@ -70,10 +66,10 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 
 |주요 소프트웨어|Version|
 |---|---|
-|KubeEdge|v1.10.0|
-|Kubernetes Native|v1.23.7|
+|KubeEdge|v1.12.0|
+|Kubernetes Native|v1.24.6|
 |Kubernetes Native (Edge Node)|v1.22.6|
-|CRI-O|v1.23.0|
+|CRI-O|v1.24.0|
 |CRI-O (Edge Node)|v1.22.0|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
@@ -150,6 +146,111 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 <br>
 
 ### <div id='2.3'> 2.3. KubeEdge 설치 준비
+KubeEdge CloudCore HA 구성을 위해 2개의 Kubernetes native Worker Node에 Keepalived 사전 설치를 진행한다.
+
+- Keepalived 설치를 진행한다.
+```
+$ sudo su -
+
+# apt-get update
+
+# apt-get install -y keepalived
+
+# echo 'net.ipv4.ip_nonlocal_bind=1' >> /etc/sysctl.conf
+# echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+# sysctl -p
+```
+
+- Keepalived 설정을 진행한다.
+```
+# vi /etc/keepalived/keepalived.conf
+```
+
+```
+## Interface Name 정보 : 각 호스트의 쉘에서 ifconfig 입력 후 확인
+## VIP 정보 : VM에 할당한 포트의 VIP
+
+## Keepalived Master VM에 설정을 진행한다.
+
+global_defs {
+  router_id lb01
+  vrrp_mcast_group4 224.0.0.19
+}
+# CloudCore
+vrrp_script CloudCore_check {
+  script "/etc/keepalived/check_cloudcore.sh" # the script for health check
+  interval 2
+  weight 2
+  fall 2
+  rise 2
+}
+vrrp_instance CloudCore {
+  state MASTER
+  interface {{INTERFACE_NAME}} # based on your host
+  virtual_router_id 167
+  priority 100
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass 1111
+  }
+  virtual_ipaddress {
+    {{VIP}}/24 # VIP
+  }
+  track_script {
+    CloudCore_check
+  }
+}
+
+## Keepalived Backup VM에 설정을 진행한다.
+global_defs {
+  router_id lb02
+  vrrp_mcast_group4 224.0.0.19
+}
+# CloudCore
+vrrp_script CloudCore_check {
+  script "/etc/keepalived/check_cloudcore.sh" # the script for health check
+  interval 2
+  weight 2
+  fall 2
+  rise 2
+}
+vrrp_instance CloudCore {
+  state BACKUP
+  interface {{INTERFACE_NAME}} # based on your host
+  virtual_router_id 167
+  priority 99
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass 1111
+  }
+  virtual_ipaddress {
+    {{VIP}}/24 # VIP
+  }
+  track_script {
+    CloudCore_check
+  }
+}
+```
+
+- Cloudcore 체크 Script를 추가한다.
+```
+$ vi /etc/keepalived/check_cloudcore.sh
+```
+
+```
+#!/usr/bin/env bash
+http_code=`curl -k -o /dev/null -s -w %{http_code} https://127.0.0.1:10002/readyz`
+if [ $http_code == 200 ]; then
+    exit 0
+else
+    exit 1
+fi
+```
+
+<br>
+
 KubeEdge 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
 - EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
@@ -184,6 +285,11 @@ $ vi cp-edge-vars.sh
 ## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
 
 #!/bin/bash
+
+export CLOUDCORE_VIP=
+
+export CLOUDCORE1_NODE_HOSTNAME=
+export CLOUDCORE2_NODE_HOSTNAME=
 
 ## Edge Node Count Info
 export EDGE_NODE_CNT={Edge Node의 갯수}
@@ -222,15 +328,14 @@ Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치
 ```
 # kubectl get nodes
 NAME                 STATUS   ROLES                  AGE     VERSION
-paasta-cp-edge       Ready    agent,edge             5m40s   v1.22.6-kubeedge-v1.10.0
-paasta-cp-master     Ready    control-plane,master   39m     v1.23.7
-paasta-cp-worker-1   Ready    <none>                 38m     v1.23.7
-paasta-cp-worker-2   Ready    <none>                 38m     v1.23.7
-paasta-cp-worker-3   Ready    <none>                 38m     v1.23.7
+paasta-cp-edge       Ready    agent,edge             5m40s   v1.22.6-kubeedge-v1.12.0
+paasta-cp-master     Ready    control-plane,master   39m     v1.24.6
+paasta-cp-worker-1   Ready    <none>                 38m     v1.24.6
+paasta-cp-worker-2   Ready    <none>                 38m     v1.24.6
+paasta-cp-worker-3   Ready    <none>                 38m     v1.24.6
 
 # kubectl get pods -n kube-system
 NAME                                       READY   STATUS    RESTARTS   AGE
-calico-kube-controllers-7c5b64bf96-5qdqv   1/1     Running   0          37m
 calico-node-4hbw5                          1/1     Running   0          4m34s
 calico-node-8q5tv                          1/1     Running   0          5m9s
 calico-node-qlq5k                          1/1     Running   0          5m26s
@@ -267,51 +372,7 @@ $ source reset-cp-edge.sh
 
 <br>
 
-## <div id='4'> 4. 컨테이너 플랫폼 운영자 생성 및 Token 획득 (참고)
-
-### <div id='4.1'> 4.1. Cluster Role 운영자 생성 및 Token 획득
-KubeEdge 설치 이후에 Cluster Role을 가진 운영자의 Service Account를 생성한다. 해당 Service Account의 Token은 운영자 포털에서 Super Admin 계정 생성 시 이용된다.
-
-- Service Account를 생성한다.
-```
-## {SERVICE_ACCOUNT} : Service Account 명
-
-$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(eg. kubectl create serviceaccount k8sadmin -n kube-system)
-```
-
-- Cluster Role을 생성한 Service Account에 바인딩한다.
-```
-$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
-(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
-```
-
-- 생성한 Service Account의 Token을 획득한다.
-```
-## {SECRET_NAME} : Mountable secrets 값 확인
-
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
-
-$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-### <div id='4.2'> 4.2. Namespace 사용자 Token 획득
-포털에서 Namespace 생성 및 사용자 등록 이후 Token값을 획득 시 이용된다.
-
-- Namespace 사용자의 Token을 획득한다.
-```
-## {SECRET_NAME} : Mountable secrets 값 확인
-## {NAMESPACE} : Namespace 명
-
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n {NAMESPACE}
-
-$ kubectl describe secret {SECRET_NAME} -n {NAMESPACE} | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-<br>
-
-## <div id='5'> 5. Resource 생성 시 주의사항
+## <div id='4'> 4. Resource 생성 시 주의사항
 사용자가 직접 Resource를 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
 
 |Resource 명|생성 시 제외해야 할 prefix|
