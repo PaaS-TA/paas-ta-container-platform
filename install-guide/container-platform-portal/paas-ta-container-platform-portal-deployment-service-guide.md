@@ -2,10 +2,6 @@
 
 <br>
 
->[v1.2](/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-service-guide-v1.2.md)
-
->v1.3 (Current)
-
 ## Table of Contents
 
 1. [문서 개요](#1)  
@@ -16,7 +12,6 @@
 
 2. [Prerequisite](#2)  
     2.1. [방화벽 정보](#2.1)  
-    2.2. [NFS Server 설치](#2.2)    
 
 3. [컨테이너 플랫폼 포털 배포](#3)  
     3.1. [컨테이너 플랫폼 포털 배포](#3.1)  
@@ -34,16 +29,15 @@
 5. [컨테이너 플랫폼 포털 서비스 브로커](#5)       
     5.1. [컨테이너 플랫폼 포털 서비스 브로커 등록](#5.1)  
     5.2. [컨테이너 플랫폼 포털 서비스 조회 설정](#5.2)    
-    5.3. [컨테이너 플랫폼 사용자/운영자 포털 사용 가이드](#5.3)
+    5.3. [컨테이너 플랫폼 포털 사용 가이드](#5.3)
 
-6. [컨네이너 플랫폼 포털 참고](#6)  
-    6.1. [운영자 Cluster Role Token 생성](#6.1)    
-    6.2. [Kubernetes 리소스 생성 시 주의사항](#6.2)      
+6. [컨네이너 플랫폼 포털 참고](#6)   
+    6.1. [Kubernetes 리소스 생성 시 주의사항](#6.1)      
 
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(컨테이너 플랫폼 PaaS-TA 서비스 배포 형 포털 설치 가이드)는 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 PaaS-TA 서비스 배포 형 포털 배포 방법을 기술하였다.<br>
+본 문서(컨테이너 플랫폼 서비스 배포 형 포털 설치 가이드)는 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 서비스 배포 형 포털 배포 방법을 기술하였다.<br>
 <br>
 
 ### <div id='1.2'>1.2. 범위
@@ -66,7 +60,7 @@
 <br>
 
 ## <div id='2'>2. Prerequisite
-본 설치 가이드는 **Ubuntu 18.04** 환경에서 설치하는 것을 기준으로 작성하였다.
+본 설치 가이드는 **Ubuntu 20.04** 환경에서 설치하는 것을 기준으로 작성하였다.
 
 ### <div id='2.1'>2.1. 방화벽 정보
 IaaS Security Group의 열어줘야할 Port를 설정한다.
@@ -100,14 +94,8 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 
 <br>
 
-### <div id='2.2'>2.2. NFS Server 설치
-컨테이너 플랫폼 포털 서비스에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
-NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS Server 설치](../nfs-server-install-guide.md)      
-
-<br>
-
 ## <div id='3'>3. 컨테이너 플랫폼 포털 배포
+
 ### <div id='3.1'>3.1. 컨테이너 플랫폼 포털 배포
 
 #### <div id='3.1.1'>3.1.1. 컨테이너 플랫폼 포털 Deployment 파일 다운로드
@@ -115,7 +103,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 포털 Deployment 파일 다운로드 :
-   [cp-portal-deployment-v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/e7ZqzxP4ZFa6GDG/download)
+   [cp-portal-deployment-v1.4.0.tar.gz](https://nextcloud.paas-ta.org/index.php/s/WtNQn2agk6epFHC/download)
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -123,13 +111,13 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/e7ZqzxP4ZFa6GDG/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/WtNQn2agk6epFHC/download
 
 $ ls ~/workspace/container-platform
-  cp-portal-deployment-v1.3.tar.gz
+  cp-portal-deployment-v1.4.0.tar.gz
 
 # Deployment 파일 압축 해제
-$ tar -xvf cp-portal-deployment-v1.3.tar.gz
+$ tar -xvf cp-portal-deployment-v1.4.0.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
@@ -157,30 +145,26 @@ $ vi cp-portal-vars.sh
 ```
 
 ```                                                     
-# COMMON VARIABLE
-K8S_MASTER_NODE_IP="{k8s master node public ip}"             # Kubernetes Master Node Public IP
-K8S_AUTH_BEARER_TOKEN="{k8s auth bearer token}"              # Kubernetes Authorization Bearer Token
-NFS_SERVER_IP="{nfs server ip}"                              # NFS Server IP
-PROVIDER_TYPE="{container platform portal provider type}"    # Container Platform Portal Provider Type (Please enter 'standalone' or 'service')
+# COMMON VARIABLE (Please change the values of the four variables below.)
+K8S_MASTER_NODE_IP="{k8s master node public ip}"            # Kubernetes Master Node Public IP
+HOST_CLUSTER_IAAS_TYPE="{host cluster iaas type}"           # Host Cluster IaaS Type (Please enter 'AWS' or 'OPENSTACK')
+PROVIDER_TYPE="{container platform portal provider type}"   # Container Platform Portal Provider Type (Please enter 'standalone' or 'service')
 ....    
 ```
 ```    
 # Example
-K8S_MASTER_NODE_IP="xx.xxx.xxx.xx"                 
-K8S_AUTH_BEARER_TOKEN="qY3k2xaZpNbw3AJxxxxx...."                 
-NFS_SERVER_IP="xx.xxx.xxx.xx"                                  
-PROVIDER_TYPE="service"           
+K8S_MASTER_NODE_IP="xx.xxx.xxx.xx"
+HOST_CLUSTER_IAAS_TYPE="AWS"
+PROVIDER_TYPE="service"
 ```
 
 - **K8S_MASTER_NODE_IP** <br>Kubernetes Master Node Public IP 입력<br><br>
-- **K8S_AUTH_BEARER_TOKEN** <br>Kubernetes Bearer Token 입력<br>
-   + [[6.1. 운영자 Cluster Role Token 생성]](#6.1) 참고하여 Token 값 생성 후 입력<br><br>
-- **NFS_SERVER_IP** <br>NFS Server Private IP 입력<br>
-   + 가이드 [[NFS Server 설치](../nfs-server-install-guide.md)]를 통해 설치된 NFS Server Private IP 입력<br><br>
+- **HOST_CLUSTER_IAAS_TYPE** <br>Kubernetes Cluster IaaS 환경 입력 <br><br>
 - **PROVIDER_TYPE** <br>컨테이너 플랫폼 포털 제공 타입 입력 <br>
-   + 본 가이드는 포털 PaaS-TA 서비스 형 배포 설치 가이드로 **'service'** 값 입력 필요
+   + 본 가이드는 포털 서비스 배포 형 설치 가이드로 **'service'** 값 입력 필요
 
-<br>    
+<br>
+
 
 #### <div id='3.1.3'>3.1.3. 컨테이너 플랫폼 포털 배포 스크립트 실행
 컨테이너 플랫폼 포털 배포를 위한 배포 스크립트를 실행한다.
@@ -194,144 +178,131 @@ $ ./deploy-cp-portal.sh
 컨테이너 플랫폼 포털 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
 리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다.
 
-- **NFS 리소스 조회**
->`$ kubectl get all -n nfs-storageclass`  
-```
-$ kubectl get all -n nfs-storageclass
-NAME                                       READY   STATUS    RESTARTS   AGE
-pod/nfs-pod-provisioner-7f9cb9468d-rqzxc   1/1     Running   0          3m14s
-
-NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/nfs-pod-provisioner   1/1     1            1           3m14s
-
-NAME                                             DESIRED   CURRENT   READY   AGE
-replicaset.apps/nfs-pod-provisioner-7f9cb9468d   1         1         1       3m14s
-```
 
 - **Harbor 리소스 조회**
->`$ kubectl get all -n harbor`   
+>`$ kubectl get all -n harbor`      
 ```
 $ kubectl get all -n harbor
-NAME                                           READY   STATUS    RESTARTS   AGE
-pod/cp-harbor-chartmuseum-65b54f7469-9d6js     1/1     Running   0          3m31s
-pod/cp-harbor-core-5bcd965dd7-4f99l            1/1     Running   0          3m31s
-pod/cp-harbor-database-0                       1/1     Running   0          3m31s
-pod/cp-harbor-jobservice-66c49bd956-xcnxq      1/1     Running   0          3m31s
-pod/cp-harbor-nginx-9bf76d997-2h5rm            1/1     Running   0          3m31s
-pod/cp-harbor-notary-server-68c5f9bb87-t7ltq   1/1     Running   0          3m31s
-pod/cp-harbor-notary-signer-65ccdf7b85-d5jxv   1/1     Running   0          3m31s
-pod/cp-harbor-portal-69775f785f-ljbjz          1/1     Running   0          3m31s
-pod/cp-harbor-redis-0                          1/1     Running   0          3m31s
-pod/cp-harbor-registry-775d9b7dcf-xpbt7        2/2     Running   0          3m31s
-pod/cp-harbor-trivy-0                          1/1     Running   0          3m31s
+NAME                                           READY   STATUS    RESTARTS        AGE
+pod/cp-harbor-chartmuseum-6fdd486868-266t9     1/1     Running   0               3m14s
+pod/cp-harbor-core-794489c7b4-hbtmb            1/1     Running   0               3m14s
+pod/cp-harbor-database-0                       1/1     Running   0               3m14s
+pod/cp-harbor-jobservice-5fdbf6cb6b-vjxxd      1/1     Running   3 (2m27s ago)   3m14s
+pod/cp-harbor-nginx-6db895bdbb-dp7zk           1/1     Running   0               3m14s
+pod/cp-harbor-notary-server-57676cff76-7f292   1/1     Running   0               3m14s
+pod/cp-harbor-notary-signer-64cc867bbb-hwvxp   1/1     Running   0               3m14s
+pod/cp-harbor-portal-7f9d57dcf4-5f68g          1/1     Running   0               3m14s
+pod/cp-harbor-redis-0                          1/1     Running   0               3m14s
+pod/cp-harbor-registry-5fdf76f6cf-jhsxl        2/2     Running   0               3m14s
+pod/cp-harbor-trivy-0                          1/1     Running   0               3m14s
 
 NAME                              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                       AGE
-service/cp-harbor-chartmuseum     ClusterIP   10.233.61.185   <none>        80/TCP                        3m31s
-service/cp-harbor-core            ClusterIP   10.233.63.107   <none>        80/TCP                        3m31s
-service/cp-harbor-database        ClusterIP   10.233.10.172   <none>        5432/TCP                      3m31s
-service/cp-harbor-jobservice      ClusterIP   10.233.46.225   <none>        80/TCP                        3m31s
-service/cp-harbor-notary-server   ClusterIP   10.233.41.132   <none>        4443/TCP                      3m31s
-service/cp-harbor-notary-signer   ClusterIP   10.233.51.119   <none>        7899/TCP                      3m31s
-service/cp-harbor-portal          ClusterIP   10.233.60.132   <none>        80/TCP                        3m31s
-service/cp-harbor-redis           ClusterIP   10.233.4.71     <none>        6379/TCP                      3m31s
-service/cp-harbor-registry        ClusterIP   10.233.54.92    <none>        5000/TCP,8080/TCP             3m31s
-service/cp-harbor-trivy           ClusterIP   10.233.39.198   <none>        8080/TCP                      3m31s
-service/harbor                    NodePort    10.233.36.25    <none>        80:30002/TCP,4443:30004/TCP   3m31s
+service/cp-harbor-chartmuseum     ClusterIP   10.233.10.224   <none>        80/TCP                        3m15s
+service/cp-harbor-core            ClusterIP   10.233.7.180    <none>        80/TCP                        3m15s
+service/cp-harbor-database        ClusterIP   10.233.55.195   <none>        5432/TCP                      3m15s
+service/cp-harbor-jobservice      ClusterIP   10.233.19.242   <none>        80/TCP                        3m15s
+service/cp-harbor-notary-server   ClusterIP   10.233.55.160   <none>        4443/TCP                      3m15s
+service/cp-harbor-notary-signer   ClusterIP   10.233.15.151   <none>        7899/TCP                      3m15s
+service/cp-harbor-portal          ClusterIP   10.233.30.190   <none>        80/TCP                        3m15s
+service/cp-harbor-redis           ClusterIP   10.233.29.164   <none>        6379/TCP                      3m15s
+service/cp-harbor-registry        ClusterIP   10.233.49.111   <none>        5000/TCP,8080/TCP             3m15s
+service/cp-harbor-trivy           ClusterIP   10.233.48.64    <none>        8080/TCP                      3m15s
+service/harbor                    NodePort    10.233.46.29    <none>        80:30002/TCP,4443:30004/TCP   3m15s
 
 NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cp-harbor-chartmuseum     1/1     1            1           3m31s
-deployment.apps/cp-harbor-core            1/1     1            1           3m31s
-deployment.apps/cp-harbor-jobservice      1/1     1            1           3m31s
-deployment.apps/cp-harbor-nginx           1/1     1            1           3m31s
-deployment.apps/cp-harbor-notary-server   1/1     1            1           3m31s
-deployment.apps/cp-harbor-notary-signer   1/1     1            1           3m31s
-deployment.apps/cp-harbor-portal          1/1     1            1           3m31s
-deployment.apps/cp-harbor-registry        1/1     1            1           3m31s
+deployment.apps/cp-harbor-chartmuseum     1/1     1            1           3m15s
+deployment.apps/cp-harbor-core            1/1     1            1           3m15s
+deployment.apps/cp-harbor-jobservice      1/1     1            1           3m15s
+deployment.apps/cp-harbor-nginx           1/1     1            1           3m15s
+deployment.apps/cp-harbor-notary-server   1/1     1            1           3m15s
+deployment.apps/cp-harbor-notary-signer   1/1     1            1           3m15s
+deployment.apps/cp-harbor-portal          1/1     1            1           3m15s
+deployment.apps/cp-harbor-registry        1/1     1            1           3m15s
 
 NAME                                                 DESIRED   CURRENT   READY   AGE
-replicaset.apps/cp-harbor-chartmuseum-65b54f7469     1         1         1       3m31s
-replicaset.apps/cp-harbor-core-5bcd965dd7            1         1         1       3m31s
-replicaset.apps/cp-harbor-jobservice-66c49bd956      1         1         1       3m31s
-replicaset.apps/cp-harbor-nginx-9bf76d997            1         1         1       3m31s
-replicaset.apps/cp-harbor-notary-server-68c5f9bb87   1         1         1       3m31s
-replicaset.apps/cp-harbor-notary-signer-65ccdf7b85   1         1         1       3m31s
-replicaset.apps/cp-harbor-portal-69775f785f          1         1         1       3m31s
-replicaset.apps/cp-harbor-registry-775d9b7dcf        1         1         1       3m31s
+replicaset.apps/cp-harbor-chartmuseum-6fdd486868     1         1         1       3m15s
+replicaset.apps/cp-harbor-core-794489c7b4            1         1         1       3m15s
+replicaset.apps/cp-harbor-jobservice-5fdbf6cb6b      1         1         1       3m15s
+replicaset.apps/cp-harbor-nginx-6db895bdbb           1         1         1       3m15s
+replicaset.apps/cp-harbor-notary-server-57676cff76   1         1         1       3m15s
+replicaset.apps/cp-harbor-notary-signer-64cc867bbb   1         1         1       3m15s
+replicaset.apps/cp-harbor-portal-7f9d57dcf4          1         1         1       3m15s
+replicaset.apps/cp-harbor-registry-5fdf76f6cf        1         1         1       3m15s
 
 NAME                                  READY   AGE
-statefulset.apps/cp-harbor-database   1/1     3m31s
-statefulset.apps/cp-harbor-redis      1/1     3m31s
-statefulset.apps/cp-harbor-trivy      1/1     3m31s
-```
+statefulset.apps/cp-harbor-database   1/1     3m15s
+statefulset.apps/cp-harbor-redis      1/1     3m15s
+statefulset.apps/cp-harbor-trivy      1/1     3m15s
+```  
 
 - **MariaDB 리소스 조회**
->`$ kubectl get all -n mariadb`  
+>`$ kubectl get all -n mariadb`       
 ```
 $ kubectl get all -n mariadb
 NAME               READY   STATUS    RESTARTS   AGE
-pod/cp-mariadb-0   1/1     Running   0          4m29s
+pod/cp-mariadb-0   1/1     Running   0          96s
 
-NAME                 TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-service/cp-mariadb   NodePort   10.233.58.86   <none>        3306:31306/TCP   4m29s
+NAME                 TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/cp-mariadb   NodePort   10.233.19.252   <none>        3306:31306/TCP   97s
 
 NAME                          READY   AGE
-statefulset.apps/cp-mariadb   1/1     4m29s
+statefulset.apps/cp-mariadb   1/1     97s
 ```    
 
 - **Keycloak 리소스 조회**
->`$ kubectl get all -n keycloak`  
+>`$ kubectl get all -n keycloak`     
 ```
 $ kubectl get all -n keycloak
-NAME                               READY   STATUS    RESTARTS   AGE
-pod/cp-keycloak-6cb7f5c8cb-qqv5s   1/1     Running   0          4m49s
-pod/cp-keycloak-6cb7f5c8cb-w65zr   1/1     Running   0          4m49s
+NAME                               READY   STATUS    RESTARTS      AGE
+pod/cp-keycloak-7d49f84bc6-qdljr   1/1     Running   1 (55s ago)   119s
+pod/cp-keycloak-7d49f84bc6-xbg92   1/1     Running   0             119s
 
 NAME                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/cp-keycloak           NodePort    10.233.26.250   <none>        8080:32710/TCP   4m49s
-service/cp-keycloak-cluster   ClusterIP   None            <none>        8080/TCP         4m49s
+service/cp-keycloak           NodePort    10.233.41.247   <none>        8080:32710/TCP   119s
+service/cp-keycloak-cluster   ClusterIP   None            <none>        8080/TCP         119s
 
 NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cp-keycloak   2/2     2            2           4m49s
+deployment.apps/cp-keycloak   2/2     2            2           119s
 
 NAME                                     DESIRED   CURRENT   READY   AGE
-replicaset.apps/cp-keycloak-6cb7f5c8cb   2         2         2       4m49s
+replicaset.apps/cp-keycloak-7d49f84bc6   2         2         2       119s
 ```
 
 - **컨테이너 플랫폼 포털 리소스 조회**
->`$ kubectl get all -n cp-portal`   
+>`$ kubectl get all -n cp-portal`        
 ```
 $ kubectl get all -n cp-portal
-NAME                                                             READY   STATUS    RESTARTS   AGE
-pod/cp-portal-admin-service-broker-deployment-59844fc678-x4hwb   1/1     Running   0          5m56s
-pod/cp-portal-api-deployment-859d5d5bb4-4w4gf                    1/1     Running   0          5m57s
-pod/cp-portal-common-api-deployment-54c6785587-cq8xx             1/1     Running   0          5m57s
-pod/cp-portal-user-service-broker-deployment-5bc6fb785-2p9g5     1/1     Running   0          5m56s
-pod/cp-portal-webadmin-deployment-5d67485c6b-6ppp4               1/1     Running   0          5m58s
-pod/cp-portal-webuser-deployment-96b5698f7-jfdps                 1/1     Running   0          5m57s
+NAME                                                      READY   STATUS    RESTARTS   AGE
+pod/cp-portal-api-deployment-595dd4dfb6-smt9v             1/1     Running   0          69s
+pod/cp-portal-common-api-deployment-c54d88fbc-fq27x       1/1     Running   0          66s
+pod/cp-portal-metric-api-deployment-6599f47b4b-p8sm4      1/1     Running   0          61s
+pod/cp-portal-service-broker-deployment-59b99677b-grnkw   1/1     Running   0          52s
+pod/cp-portal-terraman-deployment-5ccfbf67fc-2tdcq        1/1     Running   0          59s
+pod/cp-portal-ui-deployment-669db699c-8lmlr               1/1     Running   0          74s
 
-NAME                                             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/cp-portal-admin-service-broker-service   NodePort   10.233.52.221   <none>        3330:32704/TCP   5m56s
-service/cp-portal-api-service                    NodePort   10.233.32.119   <none>        3333:32701/TCP   5m57s
-service/cp-portal-common-api-service             NodePort   10.233.49.181   <none>        3334:32700/TCP   5m57s
-service/cp-portal-user-service-broker-service    NodePort   10.233.18.191   <none>        3331:32705/TCP   5m56s
-service/cp-portal-webadmin-service               NodePort   10.233.45.232   <none>        8090:32703/TCP   5m58s
-service/cp-portal-webuser-service                NodePort   10.233.38.66    <none>        8091:32702/TCP   5m57s
+NAME                                       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/cp-portal-api-service              NodePort   10.233.32.224   <none>        3333:32701/TCP   69s
+service/cp-portal-common-api-service       NodePort   10.233.49.204   <none>        3334:32700/TCP   66s
+service/cp-portal-metric-api-service       NodePort   10.233.19.109   <none>        8900:30329/TCP   61s
+service/cp-portal-service-broker-service   NodePort   10.233.11.159   <none>        3330:32704/TCP   52s
+service/cp-portal-terraman-service         NodePort   10.233.12.100   <none>        8091:32707/TCP   59s
+service/cp-portal-ui-service               NodePort   10.233.54.138   <none>        8090:32703/TCP   74s
 
-NAME                                                        READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cp-portal-admin-service-broker-deployment   1/1     1            1           5m56s
-deployment.apps/cp-portal-api-deployment                    1/1     1            1           5m57s
-deployment.apps/cp-portal-common-api-deployment             1/1     1            1           5m57s
-deployment.apps/cp-portal-user-service-broker-deployment    1/1     1            1           5m56s
-deployment.apps/cp-portal-webadmin-deployment               1/1     1            1           5m58s
-deployment.apps/cp-portal-webuser-deployment                1/1     1            1           5m57s
+NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cp-portal-api-deployment              1/1     1            1           69s
+deployment.apps/cp-portal-common-api-deployment       1/1     1            1           66s
+deployment.apps/cp-portal-metric-api-deployment       1/1     1            1           61s
+deployment.apps/cp-portal-service-broker-deployment   1/1     1            1           52s
+deployment.apps/cp-portal-terraman-deployment         1/1     1            1           59s
+deployment.apps/cp-portal-ui-deployment               1/1     1            1           74s
 
-NAME                                                                   DESIRED   CURRENT   READY   AGE
-replicaset.apps/cp-portal-admin-service-broker-deployment-59844fc678   1         1         1       5m56s
-replicaset.apps/cp-portal-api-deployment-859d5d5bb4                    1         1         1       5m57s
-replicaset.apps/cp-portal-common-api-deployment-54c6785587             1         1         1       5m57s
-replicaset.apps/cp-portal-user-service-broker-deployment-5bc6fb785     1         1         1       5m56s
-replicaset.apps/cp-portal-webadmin-deployment-5d67485c6b               1         1         1       5m58s
-replicaset.apps/cp-portal-webuser-deployment-96b5698f7                 1         1         1       5m57s
+NAME                                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/cp-portal-api-deployment-595dd4dfb6             1         1         1       69s
+replicaset.apps/cp-portal-common-api-deployment-c54d88fbc       1         1         1       66s
+replicaset.apps/cp-portal-metric-api-deployment-6599f47b4b      1         1         1       61s
+replicaset.apps/cp-portal-service-broker-deployment-59b99677b   1         1         1       52s
+replicaset.apps/cp-portal-terraman-deployment-5ccfbf67fc        1         1         1       59s
+replicaset.apps/cp-portal-ui-deployment-669db699c               1         1         1       74s
 ```    
 
 <br>
@@ -347,29 +318,30 @@ $ ./uninstall-cp-portal.sh
 ```
 ```    
 Are you sure you want to delete the container platform portal? <y/n> y
-release "cp-nfs-storageclass" uninstalled
-namespace "nfs-storageclass" deleted
 .... 
+    
 release "cp-harbor" uninstalled
 namespace "harbor" deleted
 release "cp-mariadb" uninstalled
 namespace "mariadb" deleted
 release "cp-keycloak" uninstalled
 namespace "keycloak" deleted
-release "cp-portal-admin-service-broker" uninstalled
 release "cp-portal-api" uninstalled
 release "cp-portal-common-api" uninstalled
 release "cp-portal-configmap" uninstalled
-release "cp-portal-user-service-broker" uninstalled
-release "cp-portal-webadmin" uninstalled
-release "cp-portal-webuser" uninstalled
+release "cp-portal-metric-api" uninstalled
+release "cp-portal-service-broker" uninstalled
+release "cp-portal-terraman" uninstalled
+release "cp-portal-ui" uninstalled
 namespace "cp-portal" deleted
 "cp-portal-repository" has been removed from your repositories
 Uninstalled plugin: cm-push
-.... 
+
+....    
 ```
 
-<br>   
+<br>    
+  
 
 ## <div id='4'>4. 컨테이너 플랫폼 포털 사용자 인증 서비스 구성
 컨테이너 플랫폼 포털 사용자 인증은 Keycloak 서비스를 통해 관리된다. PaaS-TA 포털의 사용자 인증 서비스 UAA의 사용자 계정으로 컨테이너 플랫폼 포털 접속을 위해
@@ -380,7 +352,7 @@ UAA 서비스와 Keycloak 서비스 인증 구성을 위한 Deployment 파일을
 :bulb: 해당 내용은 PaaS-TA 포털이 설치된 **BOSH Inception**에서 진행한다.
 
 + 컨테이너 플랫폼 포털 사용자 인증 구성 Deployment 다운로드 :  
-   [cp-saml-deployment-v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/YB4GsA4wZRiNTTi/download)  
+   [cp-saml-deployment-v1.4.0.tar.gz](https://nextcloud.paas-ta.org/index.php/s/MajerbG3ZHQZQJ8/download)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -388,13 +360,13 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/YB4GsA4wZRiNTTi/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/MajerbG3ZHQZQJ8/download
 
 $ ls ~/workspace/container-platform
-  cp-saml-deployment-v1.3.tar.gz
+  cp-saml-deployment-v1.4.0.tar.gz
 
 # Deployment 파일 압축 해제
-$ tar -xvf cp-saml-deployment-v1.3.tar.gz
+$ tar -xvf cp-saml-deployment-v1.4.0.tar.gz
 ```
 <br>
 
@@ -539,51 +511,37 @@ No service brokers found
 ##### 컨테이너 플랫폼 포털 서비스 브로커를 등록한다.
 >`$ cf create-service-broker {서비스팩 이름} {서비스팩 사용자ID} {서비스팩 사용자비밀번호} http://{서비스팩 URL}`
 
-서비스팩 이름 : 서비스 팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭<br>
+서비스팩 이름 : 서비스팩 관리를 위해 개방형 클라우드 플랫폼에서 보여지는 명칭<br>
 서비스팩 사용자 ID/비밀번호 : 서비스팩에 접근할 수 있는 사용자 ID/비밀번호<br>
 서비스팩 URL : 서비스팩이 제공하는 API를 사용할 수 있는 URL<br>
 
 
-###### 컨테이너 플랫폼 운영자 포털 서비스 브로커 등록
->`$ cf create-service-broker cp-portal-admin-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:32704`   
-###### 컨테이너 플랫폼 사용자 포털 서비스 브로커 등록     
->`$ cf create-service-broker cp-portal-user-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:32705`
+###### 컨테이너 플랫폼 포털 서비스 브로커 등록
+>`$ cf create-service-broker cp-portal-service-broker admin cloudfoundry http://{K8S_MASTER_NODE_IP}:32704`   
 
 ```
-$ cf create-service-broker cp-portal-admin-service-broker admin cloudfoundry http://xx.xxx.xxx.xx:32704
-Creating service broker cp-portal-admin-service-broker as admin...
-OK
-
-$ cf create-service-broker cp-portal-user-service-broker admin cloudfoundry http://xx.xxx.xxx.xx:32705
-Creating service broker cp-portal-user-service-broker as admin...
+$ cf create-service-broker cp-portal-service-broker admin cloudfoundry http://xx.xxx.xxx.xx:32704
+Creating service broker cp-portal-service-broker as admin...
 OK
 ```    
-
 
 ##### 등록된 컨테이너 플랫폼 포털 서비스 브로커를 확인한다.
 >`$ cf service-brokers`
 ```
 $ cf service-brokers
 Getting service brokers as admin...
-name                             url
-cp-portal-admin-service-broker   http://xx.xxx.xxx.xx:32704
-cp-portal-user-service-broker    http://xx.xxx.xxx.xx:32705
+name                       url
+cp-portal-service-broker   http://xx.xxx.xxx.xx:32704
 ```
 
 ##### 특정 조직에 해당 서비스 접근 허용을 할당한다.
 
 ###### 컨테이너 플랫폼 운영자 포털 서비스 접근 허용 할당  
->`$ cf enable-service-access cp-portal-admin-service-broker`   
-###### 컨테이너 플랫폼 사용자 포털 서비스 접근 허용 할당     
->`$ cf enable-service-access cp-portal-user-service-broker`
+>`$ cf enable-service-access cp-portal-service-broker`   
 
 ```
-$ cf enable-service-access cp-portal-admin-service-broker
-Enabling access to all plans of service offering cp-portal-admin-service-broker for all orgs as admin...
-OK
-
-$ cf enable-service-access cp-portal-user-service-broker
-Enabling access to all plans of service offering cp-portal-user-service-broker for all orgs as admin...
+$ cf enable-service-access cp-portal-service-broker
+Enabling access to all plans of service offering cp-portal-service-broker for all orgs as admin...
 OK
 ```
 
@@ -595,15 +553,9 @@ OK
 $ cf service-access
 Getting service access as admin...
 
-broker: cp-portal-admin-service-broker
-   offering                         plan       access   orgs
-   cp-portal-admin-service-broker   Advenced   all
-
-broker: cp-portal-user-service-broker
-   offering                        plan       access   orgs
-   cp-portal-user-service-broker   Advenced   all
-   cp-portal-user-service-broker   Micro      all
-   cp-portal-user-service-broker   Small      all
+broker: cp-portal-service-broker
+   offering                   plan       access   orgs
+   cp-portal-service-broker   Advenced   all
 ```
 
 <br>
@@ -615,85 +567,29 @@ broker: cp-portal-user-service-broker
 ![image 007]
 
 
-##### 메뉴 [운영관리]-[카탈로그] 에서 앱서비스 탭 안에 Container Platform Admin Portal, Container Platform User Portal 서비스를 선택하여 설정을 변경한다.
+##### 메뉴 [운영관리]-[카탈로그] 의 '앱 서비스' 목록 중 'Container Platform Portal 서비스' 를 선택한다.
 ![image 008]
 
-##### Container Platform Admin Portal 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
->`'서비스' 항목 : 'cp-portal-admin-service-broker' 로 선택` <br>
+##### 'Container Platform Portal 서비스' 상세 정보를 아래와 같이 설정 후 저장한다.
+>`'서비스' 항목 : 'cp-portal-service-broker' 로 선택` <br>
 >`'공개' 항목 : 'Y' 로 체크`
-
+    
 ![image 009]
 
-##### Container Platform User Portal 서비스를 선택하여 아래와 같이 설정 변경 후 저장한다.
->`'서비스' 항목 : 'cp-portal-user-service-broker' 로 선택` <br>
->`'공개' 항목 : 'Y' 로 체크`
-
-![image 010]    
+##### PaaS-TA 사용자 포털에 접속하여 컨테이너 플랫폼 포털 서비스를 생성한다.
+![image 010]
 
 <br>
 
-#### :bulb: 컨테이너 플랫폼 운영자 포털 서비스 신청 시 유의사항
-- 컨테이너 플랫폼 운영자 포털 서비스의 경우 조직명 **'portal'** 조직에서만 신청 가능하다.
-- 컨테이너 플랫폼 운영자 포털 서비스는 전체 조직 내 한 조직에서만 신청 가능하며 이는 PaaS-TA Portal 배포 시 디폴트로 생성되는 조직 **'portal'** 로 지정하였다.
-- 서비스 신청 시 조직 **'portal'** 이 없는 경우 **'portal'** 명으로 조직 생성 후 서비스 신청이 필요하다.
-
-<br>
-
->`컨테이너 플랫폼 운영자 포털 서비스 신청 시 조직 명 'portal' 확인 후 신청 필요`     
-
-![image 011]       
-
-<br>
-
-### <div id='5.3'/>5.3. 컨테이너 플랫폼 사용자/운영자 포털 사용 가이드
+### <div id='5.3'/>5.3. 컨테이너 플랫폼 포털 사용 가이드
 - 컨테이너 플랫폼 포털 사용방법은 아래 사용가이드를 참고한다.  
-  + [컨테이너 플랫폼 운영자 포털 사용 가이드](../../use-guide/portal/container-platform-admin-portal-guide.md)    
-  + [컨테이너 플랫폼 사용자 포털 사용 가이드](../../use-guide/portal/container-platform-user-portal-guide.md)
-
+  + [컨테이너 플랫폼 포털 사용 가이드](../../use-guide/portal/container-platform-portal-guide.md)    
 
 <br>
 
 ## <div id='6'>6. 컨네이너 플랫폼 포털 참고
 
-### <div id='6.1'>6.1. 운영자 Cluster Role Token 생성
-Cluster Role을 가진 운영자의 Service Account를 생성하고 해당 Service Account의 Token 값을 획득한다.<br>
-획득한 Token 값은 컨테이너 플랫폼 포털 배포 시 사용된다.
-
-- Service Account를 생성한다.
-```
-## {SERVICE_ACCOUNT} : 생성할 Service Account 명
-
-$ kubectl create serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(ex. kubectl create serviceaccount k8sadmin -n kube-system)
-```
-
-- 생성한 Service Account와 kubernetes에서 제공하는 ClusterRole 'cluster-admin'을 바인딩한다.
-```
-$ kubectl create clusterrolebinding {SERVICE_ACCOUNT} --clusterrole=cluster-admin --serviceaccount=kube-system:{SERVICE_ACCOUNT}
-(ex. kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin)
-```
-
-- Service Account의 Mountable secrets 값을 확인한다.
-```
-$ kubectl describe serviceaccount {SERVICE_ACCOUNT} -n kube-system
-(ex. kubectl describe serviceaccount k8sadmin -n kube-system)
-
-...
-
-Mountable secrets:   k8sadmin-token-xxxx
-```
-
-- Service Account의 Token을 획득한다.
-
-```
-## {SECRET_NAME} : Mountable secrets 값 입력
-
-$ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut -f2 -d':' | tr -d " "
-```
-
-<br>
-
-### <div id='6.2'>6.2. Kubernetes 리소스 생성 시 주의사항
+### <div id='6.1'>6.1. Kubernetes 리소스 생성 시 주의사항
 
 컨테이너 플랫폼 이용 중 리소스 생성 시 다음과 같은 prefix를 사용하지 않도록 주의한다.
 
@@ -728,4 +624,3 @@ $ kubectl describe secret {SECRET_NAME} -n kube-system | grep -E '^token' | cut 
 [image 008]:images/cp-008.png
 [image 009]:images/cp-009.png
 [image 010]:images/cp-010.png
-[image 011]:images/cp-011.png
