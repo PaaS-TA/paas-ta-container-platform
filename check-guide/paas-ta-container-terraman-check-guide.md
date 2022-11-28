@@ -442,6 +442,7 @@ resource "aws_nat_gateway" "aws-nat" {
 
 - Iaas의 API 호출 방식이 IP가 아닌 Domain일 경우 Terraform이 설치되어 있는 **Master Node**의 Hosts 파일에 Domain을 추가해야 한다.
   <br>**( $ echo -e "\n{{ API IP }} {{ Domain }}" >> /etc/hosts )**
+  <br>( ex. echo -e "\n192.168.10.111 terraman-ex >> /etc/hosts )
 
 <br>
 
