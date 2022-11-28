@@ -50,31 +50,11 @@ Terraman Process를 실행하기 위한 Terraform은 Container Platform 배포 �
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
-| TCP | 22 | SSH |  
-| TCP | 111 | NFS PortMapper |  
-| TCP | 2049 | NFS |  
-| TCP | 2379-2380 | etcd server client API |  
+| TCP | 22 | SSH | 
 | TCP | 6443 | Kubernetes API Server |  
-| TCP | 10250 | Kubelet API |  
-| TCP | 10251 | kube-scheduler |  
-| TCP | 10252 | kube-controller-manager |  
-| TCP | 10255 | Read-Only Kubelet API |  
-| UDP | 4789 | Calico networking VXLAN |  
-
-- Worker Node
-
-| <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
-| :---: | :---: | :--- |  
-| TCP | 22 | SSH |  
-| TCP | 111 | NFS PortMapper |  
-| TCP | 2049 | NFS |  
-| TCP | 10250 | Kubelet API |  
-| TCP | 10255 | Read-Only Kubelet API |  
-| TCP | 30000-32767 | NodePort Services |  
-| UDP | 4789 | Calico networking VXLAN |  
 
 - 각 Iaas 별 API 방화벽 오픈
-ex) OpenStack API, AWS API
+<br> ex) OpenStack API, AWS API
 - 각 Iaas에서 생성되는 Instance는 remote 접속을 위한 포트가 열려있어야 한다.
 
 <br>
