@@ -42,7 +42,7 @@
 
 ### <div id='2.1'> 2.1. Prerequisite
 본 가이드는 Terraman을 실행하기 전 필수 선행 작업에 대한 내용을 기술하였다.
-Terraman Process를 실행하기 위한 Terraform은 Container Platform 배포 시 자동으로 배포 및 설치 된다.
+<br>Terraman Process를 실행하기 위한 Terraform은 Container Platform 배포 시 자동으로 배포 및 설치 된다.
 
 
 #### 방화벽 정보
@@ -97,7 +97,7 @@ $ kubectl cp /home/ubuntu/.ssh/{{백업해 놓은 Master Node 개인키 명}} {{
 ( ex. kubectl cp /home/ubuntu/.ssh/master-host-node-key terraman-pod:/home/1000/.ssh/paasta-master-key )
 
 $ kubectl cp /home/ubuntu/.ssh/{{Cluster 접속을 위한 개인키 명}} {{Terraman Pod 명}}:/home/1000/.ssh/{{ clusterName }}-key  (Cluster 접속용 개인키)
-( ex. kubectl cp /home/ubuntu/.ssh/terraman-cluster-key terraman-pod:/home/1000/.ssh/cluster-name-key )
+( ex. kubectl cp /home/ubuntu/.ssh/cluster-name-key terraman-pod:/home/1000/.ssh/cluster-name-key )
 ```
 
 <br>
