@@ -232,7 +232,7 @@ resource "openstack_compute_floatingip_associate_v2" "fip_2" {
 
 ### <div id='2.4'> 2.4. Terraman Template AWS
 2.3.Terraman을 이용하여 AWS Instance를 생성 시키는 Template 설명이다.
-현 기본 템플릿은 Instance 생성에 맞추어져 있으므로 네트워크, keypair, 보안그룹 등은 사전에 Iaas에 생성되어 있는 정보를 사용한다. 따라서 Instance 생성외에 리소스는 사전에 생성해야 한다.
+현 기본 템플릿은 keypair, 이미지 리소스는 사전에 Iaas에 생성되어 있는 정보를 사용한다. 따라서 keypair, 이미지 리소스는 사전에 생성해야 한다.
 
 ```
 # 1. data로 시작되는 영역은 Openstack에서 사용가능한 자원을 가져와 보관한다. 
