@@ -67,6 +67,7 @@ KubeEdge 설치에 필요한 주요 소프트웨어 및 패키지 Version 정보
 |주요 소프트웨어|Version|
 |---|---|
 |KubeEdge|v1.12.0|
+|EdgeMesh|v1.12.0|
 |Kubernetes Native|v1.24.6|
 |Kubernetes Native (Edge Node)|v1.22.6|
 |CRI-O|v1.24.0|
@@ -236,7 +237,7 @@ vrrp_instance CloudCore {
 
 - Cloudcore 체크 Script를 추가한다.
 ```
-$ vi /etc/keepalived/check_cloudcore.sh
+# vi /etc/keepalived/check_cloudcore.sh
 ```
 
 ```
@@ -247,6 +248,11 @@ if [ $http_code == 200 ]; then
 else
     exit 1
 fi
+```
+
+- Keepalived를 재시작한다.
+```
+# systemctl restart keepalived.service
 ```
 
 <br>

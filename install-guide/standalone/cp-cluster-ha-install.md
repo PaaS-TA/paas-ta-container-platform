@@ -90,10 +90,11 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 |Helm|v3.8.2|jinja2|2.11.3|
 |Istio|1.11.4|netaddr|0.7.19|
 |Podman|3.4.2|pbr|5.4.4|
-|NFS Common||jmespath|0.9.5|
-|Rook Ceph|1.10.3|ruamel.yaml|0.16.10|
-|Kubeflow|1.6.1|ruamel.yaml.clib|0.2.6|
-|Vault|1.11.3|MarkupSafe|1.1.1|
+|Terraform|1.3.4|jmespath|0.9.5|
+|NFS Common||ruamel.yaml|0.16.10|
+|Rook Ceph|1.10.3|ruamel.yaml.clib|0.2.6|
+|Kubeflow|1.6.1|MarkupSafe|1.1.1|
+|Vault|1.11.3|
 
 Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
 
@@ -397,13 +398,6 @@ export WORKER{n}_NODE_PRIVATE_IP={Worker Node의 갯수에 맞춰 Private IP 정
 export STORAGE_TYPE={설치할 Storage Type 정보 입력}
 export NFS_SERVER_PRIVATE_IP={Storage Type nfs 설정 시 NFS Server의 Private IP 정보 입력}
 
-## Terraman Node Info
-export WORKER1_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 1번 Node의 Public IP 정보 입력}
-export WORKER2_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 2번 Node의 Public IP 정보 입력}
-export WORKER3_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 3번 Node의 Public IP 정보 입력}
-...
-export WORKER{n}_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker Node의 갯수에 맞춰 Public IP 정보 변수 추가}
-
 ## Stacked ETCD 구성
 
 ...
@@ -432,13 +426,6 @@ export WORKER{n}_NODE_PRIVATE_IP={Worker Node의 갯수에 맞춰 Private IP 정
 ## Storage Type Info (eg. nfs, rook-ceph)
 export STORAGE_TYPE={설치할 Storage Type 정보 입력}
 export NFS_SERVER_PRIVATE_IP={Storage Type nfs 설정 시 NFS Server의 Private IP 정보 입력}
-
-## Terraman Node Info
-export WORKER1_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 1번 Node의 Public IP 정보 입력}
-export WORKER2_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 2번 Node의 Public IP 정보 입력}
-export WORKER3_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker 3번 Node의 Public IP 정보 입력}
-...
-export WORKER{n}_NODE_PUBLIC_IP={Multi Cluster 배포 시 Worker Node의 갯수에 맞춰 Public IP 정보 변수 추가}
 ```
 
 <br>
