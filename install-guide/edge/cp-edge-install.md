@@ -13,14 +13,9 @@
 2. [KubeEdge 설치](#2)  
   2.1. [Prerequisite](#2.1)  
   2.2. [Kubernetes Native Cluster 배포](#2.2)  
-  2.3. [KubeEdge keadm 설치](#2.3)  
-  2.4. [KubeEdge CloudCore 설치](#2.4)  
-  2.5. [KubeEdge EdgeCore 설치](#2.5)  
-  2.6. [DaemonSet 설정 변경](#2.6)  
-  2.7. [kubectl logs 기능 활성화](#2.7)  
-  2.8. [EdgeMesh 배포](#2.8)  
-  2.9. [CVE, CCE 취약점 개선](#2.9)  
-  2.10. [KubeEdge 설치 확인](#2.10)  
+  2.3. [KubeEdge 설치 준비](#2.3)  
+  2.4. [KubeEdge 설치](#2.4)  
+  2.5. [KubeEdge 설치 확인](#2.5)  
 
 3. [KubeEdge Reset (참고)](#3)  
 
@@ -328,7 +323,7 @@ $ source deploy-stacked-cp-edge.sh
 
 <br>
 
-### <div id='2.10'> 2.10. KubeEdge 설치 확인
+### <div id='2.5'> 2.5. KubeEdge 설치 확인
 Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 KubeEdge 설치를 확인한다.
 
 ```
