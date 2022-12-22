@@ -120,10 +120,7 @@
 ## Use
 
 ### 포털 이용 가이드
-- 운영자 포털
-  + [운영자 포털 사용 가이드](use-guide/portal/container-platform-admin-portal-guide.md)
-- 사용자 포털
-  + [사용자 포털 사용 가이드](use-guide/portal/container-platform-user-portal-guide.md) 
+  + [포털 사용 가이드](use-guide/portal/container-platform-portal-guide.md) 
 
 ### 서비스 이용 가이드
 - Pipeline 서비스
