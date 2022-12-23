@@ -5,8 +5,7 @@
 <br><br>
 
 ## 시스템 구성도
-![image](https://user-images.githubusercontent.com/67575226/147038676-2ef2e8a6-217d-41ff-95b0-0280a1584885.png)
-
+<img src="https://user-images.githubusercontent.com/33216551/209304557-bda8531f-19de-4e35-989d-05e4053efe6c.png" width="700" height="150" />
 
 
 | 구분  | 인스턴스 수| 스펙 |

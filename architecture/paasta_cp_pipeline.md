@@ -5,7 +5,7 @@
 <br><br>
 
 ## 컨테이너 구성도
-![image](https://user-images.githubusercontent.com/80228983/146350860-3722c081-7338-438d-b7ec-1fdac09160c4.png)
+<img src="https://user-images.githubusercontent.com/33216551/209299431-af201419-9220-425a-8552-d15e379f8ee7.png" width="730" height="440" />
 
 
 
