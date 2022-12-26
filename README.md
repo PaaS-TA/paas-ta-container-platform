@@ -85,6 +85,8 @@
 - 서비스 설치
   + [Pipeline 설치 가이드](install-guide/pipeline/paas-ta-container-platform-pipeline-standalone-guide.md)
   + [SourceControl 설치 가이드](install-guide/source-control/paas-ta-container-platform-source-control-standalone-guide.md)
+- Kubeflow 튜토리얼
+  + [Kubeflow 파이프라인 튜토리얼 가이드](standalone/paas-ta-container-platform-kubeflow-sample-guide.md)
 
 ### 서비스형 배포 
 - 클러스터 설치
@@ -98,6 +100,8 @@
 - 서비스 설치
   + [Pipeline 설치 가이드](install-guide/pipeline/paas-ta-container-platform-pipeline-service-guide.md)
   + [SourceControl 설치 가이드](install-guide/source-control/paas-ta-container-platform-source-control-service-guide.md)
+- Kubeflow 튜토리얼
+  + [Kubeflow 파이프라인 튜토리얼 가이드](standalone/paas-ta-container-platform-kubeflow-sample-guide.md)
 
 ### Edge 배포
 - Edge 설치
