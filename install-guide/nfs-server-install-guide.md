@@ -59,8 +59,13 @@ $ sudo chmod 777 /home/share/nfs
 - 공유 디렉토리 설정
 ```
 $ sudo vi /etc/exports
+
 ## 형식 : [/공유디렉토리] [접근IP] [옵션]
-/home/share/nfs *(rw,no_root_squash,async)
+## 예시 : /home/share/nfs 10.0.0.1(rw,no_root_squash,async)
+/home/share/nfs {{MASTER_NODE_PRIVATE_IP}}(rw,no_root_squash,async)
+/home/share/nfs {{WORKER1_NODE_PRIVATE_IP}}(rw,no_root_squash,async)
+/home/share/nfs {{WORKER2_NODE_PRIVATE_IP}}(rw,no_root_squash,async)
+...
 ```
 >`rw - 읽기쓰기` <br>
 >       `no_root_squash - 클라이언트가 root 권한 획득 가능, 파일생성 시 클라이언트 권한으로 생성됨.`<br>

@@ -31,7 +31,7 @@
 ### <div id='1.3'> 1.3. 시스템 구성도
 시스템 구성은 Kubernetes Cluster(Master, Worker)와 Raspberry Pi(Edge), DHT11 센서(Device) 환경으로 구성되어 있다.
 Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernetes 환경에 KubeEdge를 설치한다.
-총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 1개 이상, Raspberry Pi: 1개 이상**이 필요하다.
+총 필요한 VM 환경으로는 **Master VM: 1개, Worker VM: 3개 이상, Raspberry Pi: 1개 이상**이 필요하다.
 본 문서는 실제 Edge 환경을 구성하기 위한 Edge 환경 구성 및 검증 내용이다.
 
 ![image 001]
@@ -51,8 +51,18 @@ Kubespray를 통해 Kubernetes Cluster(Master, Worker)를 설치하고 Kubernete
 Cloud 환경에 Kubernetes Cluster를 구성하였으며 Raspberry Pi를 이용하여 Edge Node를 추가하였다.
 Raspberry Pi에는 온습도 센서 (DHT11)를 연결, 구성하였다.
 
-Container Platform 포털 설치 진행 전 KubeEdge Sample을 배포하려면 별도로 Podman 설치를 진행해야한다. Podman 설치는 포털 설치 가이드의 **3.1. CRI-O insecure-registry 설정**을 참고한다.
-> https://github.com/PaaS-TA/paas-ta-container-platform/blob/master/install-guide/container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md#3.1
+Container Platform 포털 설치 진행 전 KubeEdge Sample을 배포하려면 별도로 Podman 설치를 진행해야한다.
+
+- Ubuntu 20.04 arm64 Podman 설치
+```
+$ echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | sudo tee etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+
+$ curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key | sudo apt-key add -
+
+$ sudo apt-get update
+$ sudo apt-get -y upgrade 
+$ sudo apt-get -y install podman
+```
 
 <br>
 
@@ -61,9 +71,9 @@ Container Platform 포털 설치 진행 전 KubeEdge Sample을 배포하려면 �
 
 - **Master Node**와 **Edge Node**에서 Sample 배포에 필요한 파일을 다운로드한다.
 ```
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr7wNbcj/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/acaatJ77zgYsEYb/download
 
-$ tar zxvf kubeedge-sample.tar.gz
+$ tar zxvf kubeedge-sample-v1.4.tar.gz
 ```
 
 <br>
@@ -120,7 +130,7 @@ $ kubectl apply -f kubeedge-pi-counter-app.yaml
 
 - **Master Node**에서 Device의 정보를 확인하여 수집중인 Counter 정보를 확인한다. 하단의 value 값 업데이트가 확인된다.
 ```
-$ kubectl get device counter -oyaml -w
+$ kubectl get device counter -oyaml -w -n kubeedge
 ```
 ```
 ...
@@ -163,9 +173,9 @@ $ mosquitto_sub -h 127.0.0.1 -t '$hw/events/device/counter/twin/update' -p 1883
 
 - **Master Node**와 **Edge Node**에서 Sample 배포에 필요한 파일을 다운로드한다.
 ```
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/Bb8diHCZr7wNbcj/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/acaatJ77zgYsEYb/download
 
-$ tar zxvf kubeedge-sample.tar.gz
+$ tar zxvf kubeedge-sample-v1.4.tar.gz
 ```
 
 <br>
@@ -214,7 +224,7 @@ $ kubectl apply -f deployment.yaml
 
 - **Master Node**에서 Device의 정보를 확인하여 수집중인 온도 정보를 확인한다.
 ```
-$ kubectl get device temperature -oyaml -w
+$ kubectl get device temperature -oyaml -w -n kubeedge
 ```
 ```
 ...

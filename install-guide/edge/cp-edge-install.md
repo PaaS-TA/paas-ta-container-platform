@@ -142,116 +142,6 @@ KubeEdge 설치를 위해서는 Cloud 영역에 Kubernetes Cluster가 배포되�
 <br>
 
 ### <div id='2.3'> 2.3. KubeEdge 설치 준비
-KubeEdge CloudCore HA 구성을 위해 2개의 Kubernetes native Worker Node에 Keepalived 사전 설치를 진행한다.
-
-- Keepalived 설치를 진행한다.
-```
-$ sudo su -
-
-# apt-get update
-
-# apt-get install -y keepalived
-
-# echo 'net.ipv4.ip_nonlocal_bind=1' >> /etc/sysctl.conf
-# echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
-# sysctl -p
-```
-
-- Keepalived 설정을 진행한다.
-```
-# vi /etc/keepalived/keepalived.conf
-```
-
-```
-## Interface Name 정보 : 각 호스트의 쉘에서 ifconfig 입력 후 확인
-## VIP 정보 : VM에 할당한 포트의 VIP
-
-## Keepalived Master VM에 설정을 진행한다.
-
-global_defs {
-  router_id lb01
-  vrrp_mcast_group4 224.0.0.19
-}
-# CloudCore
-vrrp_script CloudCore_check {
-  script "/etc/keepalived/check_cloudcore.sh" # the script for health check
-  interval 2
-  weight 2
-  fall 2
-  rise 2
-}
-vrrp_instance CloudCore {
-  state MASTER
-  interface {{INTERFACE_NAME}} # based on your host
-  virtual_router_id 167
-  priority 100
-  advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass 1111
-  }
-  virtual_ipaddress {
-    {{VIP}}/24 # VIP
-  }
-  track_script {
-    CloudCore_check
-  }
-}
-
-## Keepalived Backup VM에 설정을 진행한다.
-global_defs {
-  router_id lb02
-  vrrp_mcast_group4 224.0.0.19
-}
-# CloudCore
-vrrp_script CloudCore_check {
-  script "/etc/keepalived/check_cloudcore.sh" # the script for health check
-  interval 2
-  weight 2
-  fall 2
-  rise 2
-}
-vrrp_instance CloudCore {
-  state BACKUP
-  interface {{INTERFACE_NAME}} # based on your host
-  virtual_router_id 167
-  priority 99
-  advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass 1111
-  }
-  virtual_ipaddress {
-    {{VIP}}/24 # VIP
-  }
-  track_script {
-    CloudCore_check
-  }
-}
-```
-
-- Cloudcore 체크 Script를 추가한다.
-```
-# vi /etc/keepalived/check_cloudcore.sh
-```
-
-```
-#!/usr/bin/env bash
-http_code=`curl -k -o /dev/null -s -w %{http_code} https://127.0.0.1:10002/readyz`
-if [ $http_code == 200 ]; then
-    exit 0
-else
-    exit 1
-fi
-```
-
-- Keepalived를 재시작한다.
-```
-# systemctl restart keepalived.service
-```
-
-<br>
-
 KubeEdge 설치에 필요한 환경변수를 사전 정의 후 쉘 스크립트를 통해 설치를 진행한다.
 
 - EdgeNode의 환경이 **라즈베리파이**일 경우 다음 정보를 추가한다. 라즈베리파이 환경이 아닐 경우 아래의 과정을 생략하고 KubeEdge 설치 환경변수 정의부터 진행한다.
@@ -283,14 +173,13 @@ $ vi cp-edge-vars.sh
 ```
 ## HostName 정보 = 각 호스트의 쉘에서 hostname 명령어 입력
 ## Private IP 정보 = 각 호스트의 쉘에서 ifconfig 입력 후 inet ip 입력
-## Public IP 정보 = 할당된 Public IP 정보 입력, 미 할당 시 Private IP 정보 입력
 
 #!/bin/bash
 
-export CLOUDCORE_VIP=
+export CLOUDCORE_VIP={Master Node의 Public IP 정보 입력}
 
-export CLOUDCORE1_NODE_HOSTNAME=
-export CLOUDCORE2_NODE_HOSTNAME=
+export CLOUDCORE1_NODE_HOSTNAME={CloudCore가 설치될 Node의 HostName 정보 입력}
+export CLOUDCORE2_NODE_HOSTNAME={CloudCore가 설치될 Node의 HostName 정보 입력}
 
 ## Edge Node Count Info
 export EDGE_NODE_CNT={Edge Node의 갯수}
