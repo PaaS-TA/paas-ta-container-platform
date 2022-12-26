@@ -39,13 +39,15 @@
 <br>
 
 ### <div id='1.3'>1.3. 시스템 구성도
-![image](https://user-images.githubusercontent.com/80228983/146350860-3722c081-7338-438d-b7ec-1fdac09160c4.png)
-<br>    
-시스템 구성은 Kubernetes Cluster(Master, Worker) 환경과 데이터 관리를 위한 네트워크 파일 시스템(NFS) 스토리지 서버로 구성되어 있다. 
-Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 소스 컨트롤 이미지 및 Helm Chart를 관리하는 Harbor, 컨테이너 플랫폼 소스 컨트롤 사용자 인증을 관리하는 Keycloak, 컨테이너 플랫폼 소스 컨트롤 메타 데이터를 관리하는 MariaDB(RDBMS)가 컨테이너 플랫폼 포털을 통해서 제공된다.
- 컨테이너 플랫폼 소스 컨트롤에서는 소스를 관리하는 SCM-Server를 컨테이너로 제공한다. 
-총 필요한 VM 환경으로는 Master Node VM: 1개, Worker Node VM: 1개 이상, NFS Server : 1개가 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤 환경을 배포하는 내용이다. 네트워크 파일 시스템(NFS) 은 컨테이너 플랫폼에서 기본으로 제공하는 스토리지로 사용자 환경에 따라 다양한 종류의 스토리지를 사용할 수 있다. 
+<p align="center"><img src="https://user-images.githubusercontent.com/33216551/209299431-af201419-9220-425a-8552-d15e379f8ee7.png" width="850" height="530">
+<br>
 
+시스템 구성은 Kubernetes Cluster(Master, Worker) 환경과 데이터 관리를 위한 스토리지 서버로 구성되어 있다. 
+Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 소스 컨트롤 이미지 및 Helm Chart를 관리하는 Harbor, 컨테이너 플랫폼 소스 컨트롤 사용자 인증을 관리하는 Keycloak, 컨테이너 플랫폼 소스 컨트롤 메타 데이터를 관리하는 MariaDB(RDBMS)가 컨테이너 플랫폼 포털을 통해서 제공된다.
+컨테이너 플랫폼 소스 컨트롤에서는 소스를 관리하는 SCM-Server를 컨테이너로 제공한다. 
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 3개 이상이 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤 환경을 배포하는 내용이다.
+
+<br>
 
 ### <div id='1.4'>1.4. 참고 자료
 > https://kubernetes.io/ko/docs  

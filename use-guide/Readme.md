@@ -3,8 +3,9 @@
 
 ### 포털 이용 가이드
   + [포털 사용 가이드](portal/container-platform-portal-guide.md) 
-
-## 서비스 이용 가이드
+  + [Terraman IaC 스크립트 가이드](../check-guide/paas-ta-container-terraman-check-guide.md)
+  
+### 서비스 이용 가이드
 - Pipeline 서비스
   + [Pipeline 서비스 사용 가이드](pipeline/paas-ta-container-platform-pipeline-use-guide.md)
 - Source Control 서비스

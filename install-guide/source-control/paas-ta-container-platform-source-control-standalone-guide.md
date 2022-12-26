@@ -38,14 +38,15 @@
 <br>
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 Cluster 내부(DBMS, HAProxy, Private Repository, Keycloak)환경으로 구성되어 있다. <br>
-Kubespray를 통해 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 포털 로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포털 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master Node VM**: 1개, Worker Node VM: 1개 이상 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤을 배포하는 내용이다.
+<p align="center"><img src="https://user-images.githubusercontent.com/33216551/209299431-af201419-9220-425a-8552-d15e379f8ee7.png" width="850" height="530">
+<br>
 
-![image](https://user-images.githubusercontent.com/80228983/146350860-3722c081-7338-438d-b7ec-1fdac09160c4.png)
+시스템 구성은 Kubernetes Cluster(Master, Worker) 환경과 데이터 관리를 위한 스토리지 서버로 구성되어 있다. 
+Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 소스 컨트롤 이미지 및 Helm Chart를 관리하는 Harbor, 컨테이너 플랫폼 소스 컨트롤 사용자 인증을 관리하는 Keycloak, 컨테이너 플랫폼 소스 컨트롤 메타 데이터를 관리하는 MariaDB(RDBMS)가 컨테이너 플랫폼 포털을 통해서 제공된다.
+컨테이너 플랫폼 소스 컨트롤에서는 소스를 관리하는 SCM-Server를 컨테이너로 제공한다. 
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 3개 이상이 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤 환경을 배포하는 내용이다.
 
-    
-<br>    
+<br>
 
 ### <div id='1.4'>1.4. 참고 자료
 > https://kubernetes.io/ko/docs  
