@@ -25,7 +25,7 @@
 
 ## <div id='2'>2. Keycloak TLS 설정
 본 가이드는 컨테이너 플랫폼 포털 배포 전 설정이 진행되어야 한다.
-컨테이너 플랫폼 포털 단독형 배포 설치 가이드, 서비스형 배포 설치 가이드 본문의 **[3.2.2. 컨테이너 플랫폼 포털 변수 정의]** 실행 전 작업한다.
+컨테이너 플랫폼 포털 단독형 배포 설치 가이드, 서비스형 배포 설치 가이드 본문의 **[3.1.2. 컨테이너 플랫폼 포털 변수 정의]** 실행 전 작업한다.
 
 ### <div id='2.1'>2.1. TLS 인증서 파일 준비
 컨테이너 플랫폼 포털 배포 전 TLS 인증서 파일 (ex: tls.key, tls.crt)이 사전에 준비되어야 한다.<br>
@@ -33,14 +33,16 @@
 - 인증서 파일 명은 **tls.key**, **tls.crt** 로 변경 필요
 - 인증서 파일 권한 변경 필요
 
-> `Example`
 ```
-# 인증서 파일 keycloak_orig 디렉토리 하위에 위치
-ls ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key
+# 인증서 파일이 위치할 디렉토리 생성
+$ mkdir ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key
+
+# 해당 디렉토리 하위에 인증서 파일 위치 후 확인
+$ ls ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key
 tls.crt  tls.key
 
 # 인증서 파일 권한 변경
-chmod ug+r ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key/*
+$ chmod ug+r ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls-key/*
 ```
 
 
@@ -48,23 +50,18 @@ chmod ug+r ~/workspace/container-platform/cp-portal-deployment/keycloak_orig/tls
     
 ### <div id='2.2'>2.2. Dockerfile 내 인증서 파일 경로 추가 
 Keycloak Dockerfile 내 TLS 인증서 파일 경로를 추가한다.
+
+- > COPY {TLS_FILE_PATH}/* /etc/x509/https/
+  + TLS_FILE_PATH : Deployment 파일 keycloak_orig 디렉토리 내 TLS 인증서 파일 경로
+    
 ```
 $ cd ~/workspace/container-platform/cp-portal-deployment/keycloak_orig
 $ vi Dockerfile
 ```
-    
-```
-# TLS_FILE_PATH : TLS 인증서 파일이 위치한 Deployment 파일 keycloak_orig 디렉토리 내 인증서 파일 경로
-    
-...
-COPY {TLS_FILE_PATH}/* /etc/x509/https/
-...
-```
-    
-> `Example`
 ```
 ...
-COPY tls-key/* /etc/x509/https/
+# If you apply TLS, add the TLS certificate file path. (해당 주석 위치로 이동)
+COPY tls-key/* /etc/x509/https/  (추가)
 COPY container-platform/ /opt/jboss/keycloak/themes/container-platform/
 ...
 ```    
@@ -113,7 +110,7 @@ KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   # keycloak url (if a
 ```
 <br>
     
-위 항목들의 **Keycloak TLS 설정**이 완료되면, 컨테이너 플랫폼 포털 단독형 배포 설치 혹은 서비스형 배포 설치 가이드 본문의 **[3.2.2. 컨테이너 플랫폼 포털 변수 정의]** 부터 진행을 시작한다.
+위 항목들의 **Keycloak TLS 설정**이 완료되면, 컨테이너 플랫폼 포털 단독형 배포 설치 혹은 서비스형 배포 설치 가이드 본문의 **[3.1.2. 컨테이너 플랫폼 포털 변수 정의]** 부터 진행을 시작한다.
 <br>
 
 

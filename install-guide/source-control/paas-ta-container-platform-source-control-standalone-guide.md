@@ -11,8 +11,7 @@
     1.4. [참고 자료](#1.4)  
 
 2. [Prerequisite](#2)  
-    2.1. [NFS 서버 설치](#2.1)  
-    2.2. [컨테이너 플랫폼 포탈 설치](#2.2)  
+    2.1. [컨테이너 플랫폼 포털 설치](#2.1)  
         
 3. [컨테이너 플랫폼 소스 컨트롤 배포](#3)  
     3.1. [컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드](#3.1)  
@@ -29,7 +28,7 @@
 
 ## <div id='1'>1. 문서 개요
 ### <div id='1.1'>1.1. 목적
-본 문서(컨테이너 플랫폼 소스 컨트롤 단독 배포 설치 가이드)는 단독배포된 Kubernetes Cluster 환경에서 컨테이너 플랫폼 포탈이 배포된 환경에서 소스 컨트롤 단독 배포 방법을 기술하였다.<br>
+본 문서(컨테이너 플랫폼 소스 컨트롤 단독 배포 설치 가이드)는 단독배포된 Kubernetes Cluster 환경에서 컨테이너 플랫폼 포털이 배포된 환경에서 소스 컨트롤 단독 배포 방법을 기술하였다.<br>
 
 <br>
 
@@ -39,14 +38,15 @@
 <br>
 
 ### <div id='1.3'>1.3. 시스템 구성도
-시스템 구성은 Kubernetes Cluster(Master, Worker)와 Cluster 내부(DBMS, HAProxy, Private Repository, Keycloak)환경으로 구성되어 있다. <br>
-Kubespray를 통해 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 포탈 로 Database, Private Repository 등 미들웨어 환경을 제공하여 Docker Image로 Kubernetes Cluster에 컨테이너 플랫폼 포탈 환경을 배포한다. <br>
-총 필요한 VM 환경으로는 **Master Node VM**: 1개, Worker Node VM: 1개 이상 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤을 배포하는 내용이다.
+<p align="center"><img src="https://user-images.githubusercontent.com/33216551/209299431-af201419-9220-425a-8552-d15e379f8ee7.png" width="850" height="530">
+<br>
 
-![image](https://user-images.githubusercontent.com/80228983/146350860-3722c081-7338-438d-b7ec-1fdac09160c4.png)
+시스템 구성은 Kubernetes Cluster(Master, Worker) 환경과 데이터 관리를 위한 스토리지 서버로 구성되어 있다. 
+Kubespray를 통해 설치된 Kubernetes Cluster 환경에 컨테이너 플랫폼 소스 컨트롤 이미지 및 Helm Chart를 관리하는 Harbor, 컨테이너 플랫폼 소스 컨트롤 사용자 인증을 관리하는 Keycloak, 컨테이너 플랫폼 소스 컨트롤 메타 데이터를 관리하는 MariaDB(RDBMS)가 컨테이너 플랫폼 포털을 통해서 제공된다.
+컨테이너 플랫폼 소스 컨트롤에서는 소스를 관리하는 SCM-Server를 컨테이너로 제공한다. 
+총 필요한 VM 환경으로는 Master VM: 1개, Worker VM: 3개 이상이 필요하고 본 문서는 Kubernetes Cluster에 컨테이너 플랫폼 소스 컨트롤 환경을 배포하는 내용이다.
 
-    
-<br>    
+<br>
 
 ### <div id='1.4'>1.4. 참고 자료
 > https://kubernetes.io/ko/docs  
@@ -55,18 +55,14 @@ Kubespray를 통해 Kubernetes Cluster를 설치하고 컨테이너 플랫폼 �
 
 ## <div id='2'>2. Prerequisite
     
-### <div id='2.1'>2.1. NFS 서버 설치
-컨테이너 플랫폼 소스 컨트롤에서 사용할 스토리지 **NFS Storage Server** 설치가 사전에 진행되어야 한다.<br>
-NFS Storage Server 설치는 아래 가이드를 참조한다.  
-> [NFS 서버 설치](../nfs-server-install-guide.md)      
-    
-### <div id='2.2'>2.2. 컨테이너 플랫폼 포탈 설치
-컨테이너 플랫폼 소스 컨트롤에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **Maria DB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
-파스타 컨테이너 플랫폼 포탈 배포 시 해당 인프라를 모두 설치한다.
+### <div id='2.1'>2.1. 컨테이너 플랫폼 포털 설치
+컨테이너 플랫폼 소스 컨트롤에서 사용할 인프라로 인증서버 **KeyCloak Server**, 데이터베이스 **MariaDB**, 레포지토리 서버 **Harbor** 설치가 사전에 진행되어야 한다.
+파스타 컨테이너 플랫폼 포털 배포 시 해당 인프라를 모두 설치한다.
 컨테이너 플랫폼 인프라 설치는 아래 가이드를 참조한다.
-> [파스타 컨테이너 플랫폼 포탈 배포](../container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)     
+> [파스타 컨테이너 플랫폼 포털 배포](../container-platform-portal/paas-ta-container-platform-portal-deployment-standalone-guide.md)     
 
-
+<br>
+    
 ## <div id='3'>3. 컨테이너 플랫폼 소스 컨트롤 배포
     
 ### <div id='3.1'>3.1. 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드
@@ -74,7 +70,7 @@ NFS Storage Server 설치는 아래 가이드를 참조한다.
 :bulb: 해당 내용은 Kubernetes **Master Node**에서 진행한다.
 
 + 컨테이너 플랫폼 소스 컨트롤 Deployment 파일 다운로드 :  
-   [paas-ta-container-platform-source-control-deployment_v1.3.tar.gz](https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT)  
+   [cp-source-control-deployment-v1.4.0.tar.gz](https://nextcloud.paas-ta.org/index.php/s/bBKm3JcQFHRw6mB/download)  
 
 ```
 # Deployment 파일 다운로드 경로 생성
@@ -82,15 +78,15 @@ $ mkdir -p ~/workspace/container-platform
 $ cd ~/workspace/container-platform
 
 # Deployment 파일 다운로드 및 파일 경로 확인
-$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/FSMcxmQ88kbBRHT/download
+$ wget --content-disposition https://nextcloud.paas-ta.org/index.php/s/bBKm3JcQFHRw6mB/download
 
 $ ls ~/workspace/container-platform
   ...
-  cp-source-control-deployment-v1.3.tar.gz
+  cp-source-control-deployment-v1.4.0.tar.gz
   ...
 
 # Deployment 파일 압축 해제
-$ tar xvfz cp-source-control-deployment-v1.3.tar.gz
+$ tar xvfz cp-source-control-deployment-v1.4.0.tar.gz
 ```
 
 - Deployment 파일 디렉토리 구성
@@ -113,8 +109,8 @@ $ vi cp-source-control-vars.sh
 
 ```                                                     
 # COMMON VARIABLE
-K8S_MASTER_NODE_IP="{k8s master node public ip}"                 # Kubernetes master node public ip
-PROVIDER_TYPE="{container platform source control provider type}"        # Container platform source-control provider type (Please enter 'standalone' or 'service')
+K8S_MASTER_NODE_IP="{k8s master node public ip}"                       # Kubernetes master node public ip
+PROVIDER_TYPE="{container platform source control provider type}"      # Container platform source-control provider type (Please enter 'standalone' or 'service')
 ....    
 ```
 ```    
@@ -129,11 +125,11 @@ PROVIDER_TYPE="standalone"
 <br>    
 
 :bulb: Keycloak 기본 배포 방식은 **HTTP**이며 인증서를 통한 **HTTPS**를 설정되어 있는 경우
-> [Keycloak TLS 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide.md)
+ > [Keycloak TLS 설정](../container-platform-portal/paas-ta-container-platform-portal-deployment-keycloak-tls-setting-guide.md)
 
 컨테이너 플랫폼 소스 컨트롤 변수 파일 내 아래 내용을 수정한다.
 ```
-$ vi cp-source-control-vars.sh    
+$ vi cp-source-control-vars.sh
 ```    
 ```
 # KEYCLOAK_URL 값 http -> https 로 변경 
@@ -145,6 +141,8 @@ KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   #if apply TLS, https
 ....     
 ```
 
+<br>
+    
 ### <div id='3.3'>3.3. 컨테이너 플랫폼 소스 컨트롤 배포 스크립트 실행
 컨테이너 플랫폼 소스 컨트롤 배포를 위한 배포 스크립트를 실행한다.
 
@@ -152,60 +150,37 @@ KEYCLOAK_URL="https://${K8S_MASTER_NODE_IP}.nip.io:32710"   #if apply TLS, https
 $ chmod +x deploy-cp-source-control.sh
 $ ./deploy-cp-source-control.sh
 ```
-
-```
-
-...
-...
-namespace/cp-source-control created
-secret/cp-secret created
-Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "cp-pipeline-repository" chart repository
-...Successfully got an update from the "cp-portal-repository" chart repository
-...Successfully got an update from the "cp-source-control-repository" chart repository
-Update Complete. ⎈Happy Helming!⎈
-cp-source-control-configmap deployed
-cp-source-control-api deployed
-cp-source-control-manager deployed
-cp-source-control-ui deployed
-...
-...
-
-```
-
 <br>
-    
-- **컨테이너 플랫폼 소스 컨트롤**
+
+컨테이너 플랫폼 소스 컨트롤 관련 리소스가 정상적으로 배포되었는지 확인한다.<br>
+리소스 Pod의 경우 Node에 바인딩 및 컨테이너 생성 후 Running 상태로 전환되기까지 몇 초가 소요된다.
+
+- **컨테이너 플랫폼 소스 컨트롤 리소스 조회**
 
 ```
-# 소스 컨트롤 리소스 확인
 $ kubectl get all -n cp-source-control
 ```
+
 ```
-    
-NAME                                                       READY   STATUS    RESTARTS   AGE
-pod/cp-source-control-api-deployment-76c8c5d8d9-dxh7n      1/1     Running   0          51s
-pod/cp-source-control-manager-deployment-8ff6cb694-p4w25   1/1     Running   0          51s
-pod/cp-source-control-ui-deployment-bbfff5bd8-hl4fg        1/1     Running   0          51s
+NAME                                                        READY   STATUS    RESTARTS   AGE
+pod/cp-source-control-api-deployment-588fdfbfd7-727w2       1/1     Running   0          54s
+pod/cp-source-control-manager-deployment-69b9b87cfd-kcv8l   1/1     Running   0          53s
+pod/cp-source-control-ui-deployment-867557b66d-pq5w9        1/1     Running   0          51s
 
 NAME                                        TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/cp-source-control-api-service       NodePort   10.233.41.43    <none>        8091:30091/TCP   110s
-service/cp-source-control-manager-service   NodePort   10.233.55.178   <none>        8080:30092/TCP   102s
-service/cp-source-control-ui-service        NodePort   10.233.15.193   <none>        8094:30094/TCP   94s
+service/cp-source-control-api-service       NodePort   10.233.21.183   <none>        8091:30091/TCP   54s
+service/cp-source-control-manager-service   NodePort   10.233.22.163   <none>        8080:30092/TCP   53s
+service/cp-source-control-ui-service        NodePort   10.233.14.98    <none>        8094:30094/TCP   51s
 
 NAME                                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cp-source-control-api-deployment       1/1     1            1           108s
-deployment.apps/cp-source-control-manager-deployment   0/1     1            0           102s
-deployment.apps/cp-source-control-ui-deployment        0/1     1            0           94s
+deployment.apps/cp-source-control-api-deployment       1/1     1            1           54s
+deployment.apps/cp-source-control-manager-deployment   1/1     1            1           53s
+deployment.apps/cp-source-control-ui-deployment        1/1     1            1           51s
 
-NAME                                                             DESIRED   CURRENT   READY   AGE
-replicaset.apps/cp-source-control-api-deployment-76c8c5d8d9      1         1         1       51s
-replicaset.apps/cp-source-control-manager-deployment-8ff6cb694   1         1         0       51s
-replicaset.apps/cp-source-control-ui-deployment-bbfff5bd8        1         1         0       51s
-
-
-
-
+NAME                                                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/cp-source-control-api-deployment-588fdfbfd7       1         1         1       54s
+replicaset.apps/cp-source-control-manager-deployment-69b9b87cfd   1         1         1       53s
+replicaset.apps/cp-source-control-ui-deployment-867557b66d        1         1         1       51s
 ```    
 
 <br>
@@ -217,7 +192,6 @@ replicaset.apps/cp-source-control-ui-deployment-bbfff5bd8        1         1    
 $ cd ~/workspace/container-platform/cp-source-control-deployment/script
 $ chmod +x uninstall-cp-source-control.sh
 $ ./uninstall-cp-source-control.sh
-
 ```
 ```
 Are you sure you want to delete the container platform source control? <y/n> # y 입력
@@ -230,6 +204,8 @@ namespace "cp-source-control" deleted
 ...
 ```
 
+<br>
+    
 ## <div id='4'>4. 컨테이너 플랫폼 소스 컨트롤 접속  
 컨테이너 플랫폼 소스 컨트롤 페이지는 아래 주소로 접속 가능하다.<br>
 {K8S_MASTER_NODE_IP} 값은 **Kubernetes Master Node Public IP** 값을 입력한다.
@@ -288,4 +264,4 @@ namespace "cp-source-control" deleted
 
 <br>
 
-### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > SourceControl 설치 가이드 
