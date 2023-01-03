@@ -1,4 +1,4 @@
-### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > 클러스터 설치 가이드
+### [Index](https://github.com/PaaS-TA/Guide/blob/master/README.md) > [CP Install](https://github.com/PaaS-TA/paas-ta-container-platform/tree/master/install-guide/Readme.md) > Terraman IaC 스크립트 가이드
 
 <br>
 
@@ -7,15 +7,15 @@
 1. [문서 개요](#1)  
   1.1. [목적](#1.1)  
   1.2. [범위](#1.2)  
-  1.3. [참고자료](#1.4)  
+  1.3. [참고자료](#1.3)  
 
 2. [Terraman 실행](#2)  
   2.1. [Prerequisite](#2.1)  
-  2.2. [SSH Key 생성 및 사전작업](#2.2)<br>
+  2.2. [SSH Key 생성 및 사전작업](#2.2)  
   2.3. [Terraman Template OpenStack](#2.3)  
   2.4. [Terraman Template AWS](#2.4)  
 
-3. [Resource 생성 시 주의사항](#3)  
+3. [SubCluster 생성 구동 시 주의사항](#3)  
 
 <br>
 
@@ -38,7 +38,7 @@
 > https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 <br>
 
-## <div id='2'> 2. Kubespray 설치
+## <div id='2'> 2. Terraman 실행
 
 ### <div id='2.1'> 2.1. Prerequisite
 본 가이드는 Terraman을 실행하기 전 필수 선행 작업에 대한 내용을 기술하였다.
@@ -53,11 +53,11 @@
 | TCP | 22 | SSH | 
 | TCP | 6443 | Kubernetes API Server |  
 -  IaaS 별 API 방화벽 오픈  
-ex) OpenStack API, AWS API
+ex) OpenStack API (8000, 8774, 5000, 9292, 9876, 9696, 8004, 8780, 8776)
 - 각 Iaas에서 생성되는 Instance는 remote 접속을 위한 포트가 열려있어야 한다.
 <br>
 
-### <div id='2.2'> 2.2. SSH Key 생성 및 배포
+### <div id='2.2'> 2.2. SSH Key 생성 및 사전작업
 - Terraman이 동작하기 위해서는 Terraman Pod에서 **HostCluster의 Master Node**와 **생성되는 SubCluster의 Master Node**에 접속 할 수 있어야 한다.
 - cluster 접속을 위한 key 생성 전 기존 master cluster ansible 구성시 사용되었던 **개인키와 공개키(id_rsa, id_rsa.pub)** 는 백업이 필요하다.
 
@@ -92,11 +92,11 @@ The key's randomart image is:
 - 백업해 놓은 **Master Node 개인키**와 생성된 **Cluster 접속을 위한 개인키**를 Terraman Pod에 복사한다.
 ```
 ## 개인키 복사
-$ kubectl cp /home/ubuntu/.ssh/{{백업해 놓은 Master Node 개인키 명}} {{Terraman Pod 명}}:/home/1000/.ssh/paasta-master-key  (Master Node 접속용 개인키)
-( ex. kubectl cp /home/ubuntu/.ssh/master-host-node-key terraman-pod:/home/1000/.ssh/paasta-master-key )
+$ kubectl cp /home/ubuntu/.ssh/{{백업해 놓은 Master Node 개인키 명}} {{Terraman Pod 명}}:/home/1000/.ssh/paasta-master-key -n cp-portal  (Master Node 접속용 개인키)
+( ex. kubectl cp /home/ubuntu/.ssh/master-host-node-key terraman-pod:/home/1000/.ssh/paasta-master-key -n cp-portal )
 
-$ kubectl cp /home/ubuntu/.ssh/{{Cluster 접속을 위한 개인키 명}} {{Terraman Pod 명}}:/home/1000/.ssh/{{ clusterName }}-key  (Cluster 접속용 개인키)
-( ex. kubectl cp /home/ubuntu/.ssh/cluster-name-key terraman-pod:/home/1000/.ssh/cluster-name-key )
+$ kubectl cp /home/ubuntu/.ssh/{{Cluster 접속을 위한 개인키 명}} {{Terraman Pod 명}}:/home/1000/.ssh/{{ clusterName }}-key -n cp-portal  (Cluster 접속용 개인키)
+( ex. kubectl cp /home/ubuntu/.ssh/cluster-name-key terraman-pod:/home/1000/.ssh/cluster-name-key -n cp-portal )
 ```
 
 <br>

@@ -275,7 +275,7 @@ SSH Key 생성 및 배포 이후의 모든 설치과정은 **1번 Master Node**�
 
 - **1번 Master Node**에서 RSA 공개키를 생성한다.
 ```
-$ ssh-keygen -t rsa
+$ ssh-keygen -t rsa -m PEM
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): [엔터키 입력]
 Enter passphrase (empty for no passphrase): [엔터키 입력]
