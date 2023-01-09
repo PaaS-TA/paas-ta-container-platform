@@ -6,8 +6,9 @@
 
 1. [Minikube 설치](#2)  
   2.1. [Prerequisite](#2.1)  
-  2.2. [Docker 설치](#2.2)<br>
-  2.3. [Minikube 설치](#2.3)  
+  2.2. [Hyper-V 활성화(Windows 11 Home)](#2.2)
+  2.3. [Docker 설치](#2.3)<br>
+  2.4. [Minikube 설치](#2.4)  
 
 <br>
 
@@ -41,7 +42,7 @@ Windows환경에서의 Hardware 요구사항을 참고한다.
 ### <div id='2.2'> 2.2. Hyper-V 활성화(Windows 11 Home)
 윈도우 Home 버전일 경우 Hyper-V 활성화를 할 수 없다.  
 Hyper-v항목이 없음  
-![image (2)](https://user-images.githubusercontent.com/67575226/211250493-e9d17124-1ed7-4915-a2e3-f97868a57bc7.png){: width="200" height="200"}
+![image (2)](https://user-images.githubusercontent.com/67575226/211250493-e9d17124-1ed7-4915-a2e3-f97868a57bc7.png)
 
 1. 메모장을 실행 후 아래 명령어를 붙여넣는다.
 ```
@@ -53,33 +54,33 @@ Dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /A
 pause
 ```
   
-1. 해당파일을 `windows11-home-hyper-v.bat`이름으로 저장한다. (파일이름은 아무거나 상관없음)
-![image](https://user-images.githubusercontent.com/67575226/211251606-3a824764-30a0-4646-950b-edfe0c278c91.png)
+2. 해당파일을 `windows11-home-hyper-v.bat`이름으로 저장한다. (파일이름은 아무거나 상관없음)
+![image](https://user-images.githubusercontent.com/67575226/211254714-85978b24-758b-429f-8154-87956636f8b1.png)
   
-1. 해당 파일에서 마우스 우클릭하여 관리자권한으로 실행 후 시스템을 재부팅 한다.
-![image](https://user-images.githubusercontent.com/67575226/211251733-015a7e60-6d79-4a3e-a2de-85d599925d2e.png)
+3. 해당 파일에서 마우스 우클릭하여 관리자권한으로 실행 후 시스템을 재부팅 한다.
+![image](https://user-images.githubusercontent.com/67575226/211254534-6c16bd50-ca70-4d47-9495-4961343f39ad.png)
   
-1. 재부팅 후 Windows 기능항목에 Hyper-V가 활성화 된 것을 볼 수 있다.
+4. 재부팅 후 Windows 기능항목에 Hyper-V가 활성화 된 것을 볼 수 있다.
  ![image](https://user-images.githubusercontent.com/67575226/211252018-77e01135-4219-4a29-88b9-36d7ef340739.png)
 
-### <div id='2.2'> 2.2. Docker 설치
+### <div id='2.3'> 2.3. Docker 설치
 도커를 설치하기 위한 최소사양
-> 21H2이상 버전의 Windows 11 64bit Home, Pro, Enterprise, Education
-> 2004(19041 빌드) 이상의 Windows 10 Home, Pro 혹은 1909(18363 빌드) 이상의 Windows 10 Enterprise, Education
-> WSL2 혹은 Hyper-V 기능 활성화
-> 4GB이상의 메모리
+> - 21H2이상 버전의 Windows 11 64bit Home, Pro, Enterprise, Education  
+> - 2004(19041 빌드) 이상의 Windows 10 Home, Pro 혹은 1909(18363 빌드) 이상의 Windows 10 Enterprise, Education  
+> - WSL2 혹은 Hyper-V 기능 활성화  
+> - 4GB이상의 메모리  
 
-#### 2.2.1. 설치
+#### 2.3.1. 설치
 1. Windows용 도커 데스크톱 설치 파일을 내려받기 위해 아래 경로에 접속한다.
 > https://www.docker.com/get-started/
+
 ![image](https://user-images.githubusercontent.com/67575226/211242509-86996140-6e5b-49e0-8ba8-188b0fc21604.png)
 2. 도커 공식 홈페이지의 Get Started에서 <Docker Desctop for Windows> 를 클릭해 설치 파일을 내려 받는다. 
 3. 내려받은 Docker Desktop Installer 파일을 실행해 도커 설치를 시작합니다.
-4. Configuration 단계에서 <OK>를 클릭해 도커 설치를 진행. "Install required Windows components for WSL 2"를 체크해 WSL 2 구성 요소 설치를 진행한다. 
-5. 설치를 완료했다면 명령 프롬프트에서 docker -v를 입력해 설치를 확인 한다. 
+4. 설치를 완료했다면 명령 프롬프트에서 docker -v를 입력해 설치를 확인 한다. 
 ![image](https://user-images.githubusercontent.com/67575226/211242726-e6a983c0-2b68-4677-b2ae-a1439003c7e4.png)
 
-#### 2.2.2. Docker 할당 리소스 지정
+#### 2.3.2. Docker 할당 리소스 지정
   
 1. 유저 디렉토리에서 .wslconfig파일을 생성해 Resource 할당 가능. 윈도우 탐색기에서 주소창에 `%UserProfile%`을 입력하여 유저 디렉토리 진입
 ![image](https://user-images.githubusercontent.com/67575226/211242806-d88d1cd8-8e84-4da1-9b77-9d8551a123d1.png)
@@ -97,10 +98,10 @@ pause
 1. 이후 다시 wsl을 실행하면 해당 리소스 값이 적용된 도커를 사용할 수 있다.  
 ![image](https://user-images.githubusercontent.com/67575226/211242961-356badcc-5d8b-4e5e-8816-dd50cbe463e9.png)
 <br>
-### <div id='2.3'> 2.3. Minikube 설치
+### <div id='2.4'> 2.4. Minikube 설치
 Minikube를 설치하는 방법은 여러가지가 있으나, 윈도우즈용 패키지 매니저인 `Chocolatey`를 이용하여 간편하게 설치 할 수 있다.
 아래는 `Chocolatey`를 이용해 설치하는 방법은 설명한다.
-#### 2.3.1. Chocolatey 설치
+#### 2.4.1. Chocolatey 설치
 > https://chocolatey.org/install   
 
 위 URL로 이동 후 Individual 항목으로 설치하는 내용확인.   
@@ -111,7 +112,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ![image](https://user-images.githubusercontent.com/67575226/211243146-218198d8-35e7-4ba0-b65d-7524d86fb205.png)
 
 <br>
-#### 2.3.2. Minikube 설치
+#### 2.4.2. Minikube 설치
 1. `Chocolatey` 설치가 완료되었으면 아래 Command를 통해 Minikube를 설치한다. 
 ```
 $ choco install minikube
