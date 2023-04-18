@@ -287,7 +287,7 @@ $ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK
     ![image](https://user-images.githubusercontent.com/80228983/146140243-b01fe7b7-c610-4c74-b520-839b581ca178.png)  
 <br>
 
-- username : **admin** / password : **admin** 계정으로 접속한다. <br>
+- 관리자 계정으로 접속한다.  <br>
     ![image](https://user-images.githubusercontent.com/80228983/146140270-06c6bc41-94cd-4947-8376-f6ade73b61ac.png)
 
 <br>
