@@ -127,7 +127,10 @@
 ## <div id='2-2'/> 2.2 단독 배포 컨테이너 플랫폼 파이프라인 접속
 1. 배포한 클러스터의 공인 IP로 웹 브라우저에서 http://{K8S_MASTER_NODE_IP}:30084 로 접속하여 진행한다.
 
-2. 키클락 로그인 화면에서 계정 정보를 입력한다. (초기 관리자 계정: admin / admin )
+2. 컨테이너 플랫폼 파이프라인 접속 초기 정보를 확인한 후 파이프라인에 로그인한다.
+```
+$ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
+```
 ![image](https://user-images.githubusercontent.com/80228983/146735412-c7b1e66b-c8a1-4f37-8d79-182a666a318d.png)
 
 3. 컨테이너 플랫폼 파이프라인 접속을 확인한다.

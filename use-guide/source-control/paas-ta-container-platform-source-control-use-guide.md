@@ -65,7 +65,10 @@
 
 <br>
 
-2. 키클락 로그인 화면에서 계정 정보를 입력한다. (초기 관리자 계정: admin / admin )
+2. 컨테이너 플랫폼 소스 컨트롤 접속 초기 정보를 확인한 후 소스 컨트롤에 로그인한다.
+```
+$ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
+```
 ![image](https://user-images.githubusercontent.com/67407365/147020597-632f5a59-5054-49a4-b420-36d8385eadf7.png)
 
 <br>
