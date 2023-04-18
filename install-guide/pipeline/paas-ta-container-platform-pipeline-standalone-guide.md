@@ -270,11 +270,15 @@ namespace "cp-pipeline" deleted
 <br>
     
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 파이프라인 관리자 로그인
-컨테이너 플랫폼 파이프라인 접속 초기 정보를 확인한 후 파이프라인에 로그인한다.
-- http://{K8S_MASTER_NODE_IP}:30084에 접속한다.   
+컨테이너 플랫폼 파이프라인 접속 초기 정보를 확인한 후 파이프라인에 로그인한다.  
+- http://{K8S_MASTER_NODE_IP}:30084에 접속
+- 초기 계정정보 확인하여 로그인
+
+> 초기 계정정보는 아래 명령어를 통해 확인
 ```
 $ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
 ```
+
 ![image](https://user-images.githubusercontent.com/80228983/146140178-76e85cbb-03a0-4a84-9059-7e5074c1d90e.png)
 
 <br>    

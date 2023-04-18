@@ -128,6 +128,8 @@
 1. 배포한 클러스터의 공인 IP로 웹 브라우저에서 http://{K8S_MASTER_NODE_IP}:30084 로 접속하여 진행한다.
 
 2. 컨테이너 플랫폼 파이프라인 접속 초기 정보를 확인한 후 파이프라인에 로그인한다.
+
+> 초기 계정정보는 아래 명령어를 통해 확인
 ```
 $ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
 ```

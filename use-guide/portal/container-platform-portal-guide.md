@@ -82,6 +82,8 @@
 
 ### <div id='3-1'/>3.1. 컨테이너 플랫폼 포털 관리자 계정 로그인
 컨테이너 플랫폼 포털 관리자 계정 로그인 초기 정보를 확인한 후 포털에 로그인한다.
+
+> 초기 계정정보는 아래 명령어를 통해 확인
 ```
 $ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
 ```

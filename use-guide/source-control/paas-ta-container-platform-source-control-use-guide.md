@@ -66,6 +66,8 @@
 <br>
 
 2. 컨테이너 플랫폼 소스 컨트롤 접속 초기 정보를 확인한 후 소스 컨트롤에 로그인한다.
+
+> 초기 계정정보는 아래 명령어를 통해 확인
 ```
 $ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
 ```
