@@ -72,7 +72,6 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP Network |  
 | TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | Kubernetes API Server |  
@@ -80,19 +79,18 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 | TCP | 10251 | kube-scheduler |  
 | TCP | 10252 | kube-controller-manager |  
 | TCP | 10255 | Read-Only Kubelet API |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| UDP | 4789 | Calico networking VXLAN |  
 
 - Worker Node
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP network |  
 | TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 30000-32767 | NodePort Services |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| UDP | 4789 | Calico networking VXLAN |
 
 <br>
 

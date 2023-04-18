@@ -64,7 +64,6 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP Network |  
 | TCP | 2049 | NFS |  
 | TCP | 2379-2380 | etcd server client API |  
 | TCP | 6443 | Kubernetes API Server |  
@@ -72,19 +71,18 @@ IaaS Security Group의 열어줘야할 Port를 설정한다.
 | TCP | 10251 | kube-scheduler |  
 | TCP | 10252 | kube-controller-manager |  
 | TCP | 10255 | Read-Only Kubelet API |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| UDP | 4789 | Calico networking VXLAN |  
 
 - Worker Node
 
 | <center>프로토콜</center> | <center>포트</center> | <center>비고</center> |  
 | :---: | :---: | :--- |  
 | TCP | 111 | NFS PortMapper |  
-| TCP | 179 | Calio BGP network |  
 | TCP | 2049 | NFS |  
 | TCP | 10250 | Kubelet API |  
 | TCP | 10255 | Read-Only Kubelet API |  
 | TCP | 30000-32767 | NodePort Services |  
-| IP-in-IP (Protocol Num 4) || Calico Overlay Network |  
+| UDP | 4789 | Calico networking VXLAN |  
 
 <br>
 
@@ -340,8 +338,14 @@ Uninstalled plugin: cm-push
 <br>
 
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 포털 관리자 계정 로그인
-컨테이너 플랫폼 포털 관리자 계정 로그인 초기 정보는 아래와 같다.  
-- username : **admin** / password : **admin** 계정으로 컨테이너 플랫폼 포털에 로그인한다.
+컨테이너 플랫폼 포털 관리자 계정 로그인 초기 정보를 확인한 후 포털에 로그인한다.
+- http://{K8S_MASTER_NODE_IP}:32703 접속
+- 초기 계정정보 확인하여 로그인
+
+> 초기 계정정보는 아래 명령어를 통해 확인
+```
+$ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
+```
 ![image 002]
 
 <br>    

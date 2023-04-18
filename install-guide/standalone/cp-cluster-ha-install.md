@@ -96,11 +96,11 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 |Kubeflow|1.6.1|MarkupSafe|1.1.1|
 |Vault|1.11.3|
 
-Kubernetes 공식 가이드 문서에서는 Cluster 배포 시 다음을 권고하고 있다.
+본 가이드 문서에서는 Container Platform 배포 시 다음을 권고하고 있다.
 
 - deb / rpm 호환 Linux OS를 실행하는 하나 이상의 머신 (Ubuntu 또는 CentOS)
-- 머신 당 2G 이상의 RAM
-- control-plane 노드로 사용하는 머신에 2 개 이상의 CPU
+- 머신 당 8G (최소사양) or 16G (권장사양) 이상의 RAM
+- control-plane 노드로 사용하는 머신에 2 개 (최소사양) or 4 개 (권장사양) 이상의 CPU
 - 클러스터의 모든 시스템 간의 완전한 네트워크 연결
 
 
@@ -275,7 +275,7 @@ SSH Key 생성 및 배포 이후의 모든 설치과정은 **1번 Master Node**�
 
 - **1번 Master Node**에서 RSA 공개키를 생성한다.
 ```
-$ ssh-keygen -t rsa
+$ ssh-keygen -t rsa -m PEM
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): [엔터키 입력]
 Enter passphrase (empty for no passphrase): [엔터키 입력]

@@ -215,9 +215,14 @@ namespace "cp-source-control" deleted
 <br>
     
 ### <div id='4.1'/>4.1. 컨테이너 플랫폼 소스 컨트롤 관리자 로그인
-컨테이너 플랫폼 소스 컨트롤 접속 초기 정보는 아래와 같다.
-- http://{K8S_MASTER_NODE_IP}:30094에 접속한다.   
-- username : **admin** / password : **admin** 계정으로 컨테이너 플랫폼 소스 컨트롤에 로그인한다.
+컨테이너 플랫폼 소스 컨트롤 접속 초기 정보를 확인한 후 소스 컨트롤에 로그인한다.
+- http://{K8S_MASTER_NODE_IP}:30094에 접속
+- 초기 계정정보 확인하여 로그인
+
+> 초기 계정정보는 아래 명령어를 통해 확인
+```
+$ kubectl get configmap -n cp-portal cp-portal-configmap -o yaml | grep KEYCLOAK_ADMIN
+```
 ![image](https://user-images.githubusercontent.com/80228983/146140178-76e85cbb-03a0-4a84-9059-7e5074c1d90e.png)
 
 <br>    
@@ -230,7 +235,7 @@ namespace "cp-source-control" deleted
     ![image](https://user-images.githubusercontent.com/80228983/146140243-b01fe7b7-c610-4c74-b520-839b581ca178.png)
 <br>
 
-- username : **admin** / password : **admin** 계정으로 접속한다. <br>
+- 관리자 계정으로 접속한다. <br>
     ![image](https://user-images.githubusercontent.com/80228983/146140270-06c6bc41-94cd-4947-8376-f6ade73b61ac.png)
 <br>
 
