@@ -70,16 +70,16 @@ Kubespray 설치에 필요한 주요 소프트웨어 및 패키지 Version 정�
 
 |주요 소프트웨어|Version|Python Package|Version
 |---|---|---|---|
-|Kubespray|v2.20.0|ansible|5.7.1|
-|Kubernetes Native|v1.24.6|ansible-core|2.12.5|
-|CRI-O|v1.24.3|cryptography|3.4.8|
-|Helm|v3.8.2|jinja2|2.11.3|
+|Kubespray|v2.21.0|ansible|5.7.1|
+|Kubernetes Native|v1.25.6|ansible-core|2.12.5|
+|CRI-O|v1.25.1|cryptography|3.4.8|
+|Helm|v3.10.3|jinja2|2.11.3|
 |Istio|1.11.4|netaddr|0.7.19|
 |Podman|3.4.2|pbr|5.4.4|
 |Terraform|1.3.4|jmespath|0.9.5|
 |NFS Common||ruamel.yaml|0.16.10|
-|Rook Ceph|1.10.3|ruamel.yaml.clib|0.2.6|
-|Kubeflow|1.6.1|MarkupSafe|1.1.1|
+|Rook Ceph|1.10.3|ruamel.yaml.clib|0.2.7|
+|Kubeflow|1.7.0|MarkupSafe|1.1.1|
 |Vault|1.11.3|
 
 본 가이드 문서에서는 Container Platform 배포 시 다음을 권고하고 있다.
