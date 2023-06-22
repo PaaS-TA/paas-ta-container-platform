@@ -173,9 +173,9 @@ Kubespray 설치에 필요한 Source File을 Download 받아 Kubespray 설치 �
 
 - Kubespray Download URL : https://github.com/PaaS-TA/paas-ta-container-platform-deployment
 
-- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.20.0 이다.
+- git clone 명령을 통해 다음 경로에서 Kubespray 다운로드를 진행한다. 본 설치 가이드에서의 Kubespray 버전은 v2.21.0 이다.
 ```
-$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git -b branch_v1.4.x
+$ git clone https://github.com/PaaS-TA/paas-ta-container-platform-deployment.git
 ```
 
 <br>
@@ -248,10 +248,10 @@ Kubernetes Node 및 kube-system Namespace의 Pod를 확인하여 Kubespray 설�
 ```
 $ kubectl get nodes
 NAME                 STATUS   ROLES                  AGE   VERSION
-paasta-cp-master     Ready    control-plane          12m   v1.24.6
-paasta-cp-worker-1   Ready    <none>                 10m   v1.24.6
-paasta-cp-worker-2   Ready    <none>                 10m   v1.24.6
-paasta-cp-worker-3   Ready    <none>                 10m   v1.24.6
+paasta-cp-master     Ready    control-plane          12m   v1.25.6
+paasta-cp-worker-1   Ready    <none>                 10m   v1.25.6
+paasta-cp-worker-2   Ready    <none>                 10m   v1.25.6
+paasta-cp-worker-3   Ready    <none>                 10m   v1.25.6
 
 $ kubectl get pods -n kube-system
 NAME                                          READY   STATUS    RESTARTS      AGE
