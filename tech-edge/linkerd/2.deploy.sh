@@ -53,6 +53,10 @@ for ctx in "${context[@]}"; do
     helm install linkerd-viz -n linkerd-viz --create-namespace linkerd/linkerd-viz --kube-context=$ctx
 done
 
+# ncloud에서 제공하는 ingress-nginx 컨트롤러 배포(ctx-2)
+echo $PROCESS"nCloud Kubernetes Service에 ingress 컨트롤러 배포"
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/cloud/deploy.yaml --context=ctx-2
+
 # Cluster별로ingress 생성 
 echo $PROCESS"Ingress 생성"
 for ctx in "${context[@]}"; do
