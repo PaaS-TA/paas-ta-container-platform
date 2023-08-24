@@ -1,0 +1,12 @@
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: helloworld
+spec:
+  service: helloworld
+  backends:
+  - service: helloworld
+    weight: 70
+  - service: helloworld-cluster2
+    weight: 30
+
