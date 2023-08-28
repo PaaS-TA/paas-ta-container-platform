@@ -1,6 +1,7 @@
 #!/bin/bash
 export PROCESS="● [MultiCluster]"
 context=("ctx-1" "ctx-2")
+spinner=( '|' '/' '-' '\' )
 
 # cluster1(ctx-1)에 linkerd-multicluster 설치
 echo $PROCESS"linkerd-multicluster 설치"
@@ -13,8 +14,7 @@ done
 linkerd multicluster link --context=ctx-2  --cluster-name cluster2  |  kubectl --context=ctx-1 apply -f -
 
 echo $PROCESS"sleep 5sec..."
-#sleep 5s
-spinner=( '|' '/' '-' '\' )
+sleep 40s
 
 max=$((SECONDS + 10))
 
