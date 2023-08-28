@@ -10,11 +10,11 @@ for ctx in "${context[@]}"; do
     helm install linkerd-multicluster -n linkerd-multicluster --create-namespace linkerd/linkerd-multicluster --kube-context=$ctx
 done
 
+echo $PROCESS"sleep 40sec..."
+sleep 40s
+
 # cluster2(ctx-2) 자격증명 추출 후 cluster1(ctx-1)에 생성
 linkerd multicluster link --context=ctx-2  --cluster-name cluster2  |  kubectl --context=ctx-1 apply -f -
-
-echo $PROCESS"sleep 5sec..."
-sleep 40s
 
 max=$((SECONDS + 10))
 
