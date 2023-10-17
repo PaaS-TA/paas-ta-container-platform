@@ -1,5 +1,13 @@
 # PaaS-TA 컨테이너 플랫폼
 
+## 🚩 Notice 
+PaaS-TA 명칭이 K-PaaS로 변경됨에 따라 Repository Domain 주소가 변경됩니다.  
+이전 PaaS-TA 가이드로는 다운로드 도메인 등이 변경되어 정상 설치가 불가능하오니,    
+아래 Repository를 참조하세요. 
+> https://github.com/K-PaaS/container-platform
+
+<br>
+
 <table>
   <tr>
     <td colspan=2 align=center>플랫폼</td>
